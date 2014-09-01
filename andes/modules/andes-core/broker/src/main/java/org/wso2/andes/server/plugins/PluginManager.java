@@ -22,13 +22,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.felix.framework.Felix;
 import org.apache.felix.framework.util.StringMap;
 import org.apache.log4j.Logger;
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleException;
-import org.osgi.framework.launch.Framework;
-import org.osgi.util.tracker.ServiceTracker;
 import org.wso2.andes.common.Closeable;
-import org.wso2.andes.policies.SlowConsumerPolicyPluginFactory;
 import org.wso2.andes.server.configuration.TopicConfiguration;
 import org.wso2.andes.server.configuration.plugins.ConfigurationPluginFactory;
 import org.wso2.andes.server.configuration.plugins.SlowConsumerDetectionConfiguration.SlowConsumerDetectionConfigurationFactory;
@@ -45,6 +39,12 @@ import org.wso2.andes.server.security.auth.manager.PrincipalDatabaseAuthenticati
 import org.wso2.andes.server.virtualhost.plugins.SlowConsumerDetection;
 import org.wso2.andes.server.virtualhost.plugins.VirtualHostPluginFactory;
 import org.wso2.andes.server.virtualhost.plugins.policies.TopicDeletePolicy;
+import org.wso2.andes.policies.SlowConsumerPolicyPluginFactory;
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleException;
+import org.osgi.framework.launch.Framework;
+import org.osgi.util.tracker.ServiceTracker;
 
 import java.io.File;
 import java.util.*;

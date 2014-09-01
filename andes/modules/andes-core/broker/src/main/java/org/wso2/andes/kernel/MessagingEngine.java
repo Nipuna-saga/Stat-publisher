@@ -18,6 +18,13 @@
 
 package org.wso2.andes.kernel;
 
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.log4j.Logger;
 import org.wso2.andes.messageStore.CQLBasedMessageStoreImpl;
 import org.wso2.andes.messageStore.InMemoryMessageStore;
@@ -34,10 +41,6 @@ import org.wso2.andes.server.util.AndesUtils;
 import org.wso2.andes.subscription.ClusterwideSubscriptionChangeNotifier;
 import org.wso2.andes.subscription.OrphanedMessagesDueToUnsubscriptionHandler;
 import org.wso2.andes.tools.utils.DisruptorBasedExecutor;
-import org.wso2.carbon.stat.publisher.internal.publisher.PublisherObserver;
-
-import java.nio.ByteBuffer;
-import java.util.*;
 
 
 /**
@@ -48,7 +51,7 @@ public class MessagingEngine {
     private static MessagingEngine messagingEngine = null;
     private MessageStore cassandraBasedMessageStore;
     private InMemoryMessageStore inMemoryMessageStore;
-    private DisruptorBasedExecutor disruptorBasedExecutor;
+    private DisruptorBasedExecutor disruptorBasedExecutor ;
     private SubscriptionStore subscriptionStore;
     private MessageIdGenerator messageIdGenerator;
     private ClusterConfiguration config;
@@ -56,7 +59,7 @@ public class MessagingEngine {
 
 
     public static synchronized MessagingEngine getInstance() {
-        if (messagingEngine == null) {
+        if(messagingEngine == null){
             messagingEngine = new MessagingEngine();
         }
         return messagingEngine;
@@ -72,8 +75,8 @@ public class MessagingEngine {
 
 
     public MessageStore getCassandraBasedMessageStore() {
-        return cassandraBasedMessageStore;
-    }
+		return cassandraBasedMessageStore;
+	}
 
     public InMemoryMessageStore getInMemoryMessageStore() {
         return inMemoryMessageStore;
@@ -91,17 +94,17 @@ public class MessagingEngine {
         return config;
     }
 
-    public void setCassandraBasedMessageStore(
-            MessageStore cassandraBasedMessageStore) {
-        this.cassandraBasedMessageStore = cassandraBasedMessageStore;
-    }
+	public void setCassandraBasedMessageStore(
+			MessageStore cassandraBasedMessageStore) {
+		this.cassandraBasedMessageStore = cassandraBasedMessageStore;
+	}
 
-    public DisruptorBasedExecutor getDisruptorBasedExecutor() {
-        return disruptorBasedExecutor;
-    }
+	public DisruptorBasedExecutor getDisruptorBasedExecutor() {
+		return disruptorBasedExecutor;
+	}
 
 
-    public void messageContentReceived(AndesMessagePart part) {
+	public void messageContentReceived(AndesMessagePart part) {
         disruptorBasedExecutor.messagePartReceived(part);
     }
 
@@ -123,79 +126,73 @@ public class MessagingEngine {
 
     public void messageReceived(AndesMessageMetadata message, long channelID) throws AndesException {
         try {
-
             if (message.isTopic) {
                 List<Subscrption> subscriptionList = subscriptionStore.getClusterSubscribersForTopic(message.getDestination());
                 if (subscriptionList.size() == 0) {
                     log.info("Message routing key: " + message.getDestination() + " No routes in cluster.");
-                    List<Long> messageIdList = new ArrayList<Long>();
+                    List<Long> messageIdList =  new ArrayList<Long>();
                     messageIdList.add(message.getMessageID());
                     cassandraBasedMessageStore.deleteMessageParts(messageIdList);
                 }
 
                 Set<String> targetAndesNodeSet = new HashSet<String>();
                 boolean originalMessageUsed = false;
-                boolean hasNonDurableSubscriptions = false;
+                boolean hasNonDurableSubscriptions = false; 
                 for (Subscrption subscriberQueue : subscriptionList) {
                     if (subscriberQueue.isDurable()) {
-                        /**
-                         * If message is durable, we clone the message (if there is more than one subscription) and send them to a queue created for with the name of the
-                         * Subscription ID by writing it to the global queue.
-                         */
-                        message.setDestination(subscriberQueue.getTargetQueue());
-                        AndesMessageMetadata clone = null;
-                        if (!originalMessageUsed) {
-                            originalMessageUsed = true;
-                            clone = message;
-                        } else {
-                            clone = cloneAndesMessageMetadataAndContent(message);
-                        }
-                        //We must update the routing key in metadata as well
-                        clone.updateMetadata(subscriberQueue.getTargetQueue());
+                    	/**
+                    	 * If message is durable, we clone the message (if there is more than one subscription) and send them to a queue created for with the name of the
+                    	 * Subscription ID by writing it to the global queue.
+                    	 */
+                    	message.setDestination(subscriberQueue.getTargetQueue());
+                    	AndesMessageMetadata clone = null; 
+                    	if(!originalMessageUsed){
+                    		originalMessageUsed = true;
+                    		clone = message; 
+                    	}else{
+                    		clone = cloneAndesMessageMetadataAndContent(message);
+                    	}
+                		//We must update the routing key in metadata as well
+                		clone.updateMetadata(subscriberQueue.getTargetQueue());
 
-                        String globalQueueName = AndesUtils.getGlobalQueueNameForDestinationQueue(clone.getDestination());
+                		String globalQueueName = AndesUtils.getGlobalQueueNameForDestinationQueue(clone.getDestination());
                         QueueAddress globalQueueAddress = new QueueAddress(QueueAddress.QueueType.GLOBAL_QUEUE, globalQueueName);
-                        sendMessageToMessageStore(globalQueueAddress, clone, channelID);
+                    	sendMessageToMessageStore(globalQueueAddress, clone, channelID);
                     } else {
-                        hasNonDurableSubscriptions = true;
+                    	hasNonDurableSubscriptions = true; 
                     }
                 }
-
-                if (hasNonDurableSubscriptions) {
-                    /**
-                     * If there are non durable subscriptions, we write it to each node where there is a subscription. Here we collect all nodes to which we need to write to.
-                     */
-                    targetAndesNodeSet = subscriptionStore.getNodeQueuesHavingSubscriptionsForTopic(message.getDestination());
+                
+                if(hasNonDurableSubscriptions){
+                	/**
+                	 * If there are non durable subscriptions, we write it to each node where there is a subscription. Here we collect all nodes to which we need to write to.
+                	 */
+                    targetAndesNodeSet  = subscriptionStore.getNodeQueuesHavingSubscriptionsForTopic(message.getDestination());
                     for (String hostId : targetAndesNodeSet) {
-                        AndesMessageMetadata clone = null;
-                        if (!originalMessageUsed) {
-                            originalMessageUsed = true;
-                            clone = message;
-                        } else {
-                            clone = message.deepClone(messageIdGenerator.getNextId());
-                        }
+                    	AndesMessageMetadata clone = null; 
+                    	if(!originalMessageUsed){
+                    		originalMessageUsed = true;
+                    		clone = message; 
+                    	}else{
+                    		clone = message.deepClone(messageIdGenerator.getNextId());
+                    	}
                         QueueAddress globalQueueAddress = new QueueAddress(QueueAddress.QueueType.TOPIC_NODE_QUEUE, hostId);
-                        sendMessageToMessageStore(globalQueueAddress, clone, channelID);
+                    	sendMessageToMessageStore(globalQueueAddress, clone, channelID);
                     }
                 }
             } else {
-                //If Queue, we write the message to Global Queue
+            	//If Queue, we write the message to Global Queue
                 String globalQueueName = AndesUtils.getGlobalQueueNameForDestinationQueue(message.getDestination());
                 QueueAddress globalQueueAddress = new QueueAddress(QueueAddress.QueueType.GLOBAL_QUEUE, globalQueueName);
-                sendMessageToMessageStore(globalQueueAddress, message, channelID);
+            	sendMessageToMessageStore(globalQueueAddress, message, channelID);
             }
         } catch (Exception e) {
             throw new AndesException("Error in storing the message to the store", e);
         }
-
-        PublisherObserver publisherObserverInstance=new PublisherObserver();
-        publisherObserverInstance.messageStatPublisherTask(message);
-
-
     }
 
     public void ackReceived(AndesAckData ack) {
-        disruptorBasedExecutor.ackReceived(ack);
+    	disruptorBasedExecutor.ackReceived(ack);
     }
 
     public void messageReturned(List<AndesAckData> ackList) {
@@ -204,10 +201,9 @@ public class MessagingEngine {
 
     /**
      * remove messages of the queue matching to some destination queue
-     *
-     * @param queueAddress                queue address
-     * @param destinationQueueNameToMatch destination queue name to match
-     * @return number of messages removed
+     * @param queueAddress  queue address
+     * @param destinationQueueNameToMatch  destination queue name to match
+     * @return  number of messages removed
      * @throws AndesException
      */
     public int removeMessagesOfQueue(QueueAddress queueAddress, String destinationQueueNameToMatch) throws AndesException {
@@ -273,32 +269,32 @@ public class MessagingEngine {
     public long generateNewMessageId() {
         return messageIdGenerator.getNextId();
     }
-
-    private void sendMessageToMessageStore(QueueAddress queueAdr, AndesMessageMetadata message, long channelID) throws AndesException {
-        if (message.isPersistent()) {
+    
+    private void sendMessageToMessageStore(QueueAddress queueAdr, AndesMessageMetadata message, long channelID)throws AndesException{
+    	if(message.isPersistent()){
             disruptorBasedExecutor.messageCompleted(queueAdr, message, channelID);
-        } else {
-            //TODO stop creating this list
-            List<AndesMessageMetadata> list = new ArrayList<AndesMessageMetadata>(1);
-            list.add(message);
-            inMemoryMessageStore.addMessageMetaData(queueAdr, list);
-        }
+    	}else{
+    		//TODO stop creating this list
+    		List<AndesMessageMetadata> list = new ArrayList<AndesMessageMetadata>(1);
+    		list.add(message);
+    		inMemoryMessageStore.addMessageMetaData(queueAdr ,list);
+    	}
     }
 
     private AndesMessageMetadata cloneAndesMessageMetadataAndContent(AndesMessageMetadata message) throws AndesException {
         long newMessageId = messageIdGenerator.getNextId();
-        AndesMessageMetadata clone = message.deepClone(newMessageId);
+    	AndesMessageMetadata clone = message.deepClone(newMessageId);
 
         //duplicate message content
-        ((CQLBasedMessageStoreImpl) cassandraBasedMessageStore).duplicateMessageContent(message.getMessageID(), newMessageId);
+        ((CQLBasedMessageStoreImpl) cassandraBasedMessageStore).duplicateMessageContent(message.getMessageID(),newMessageId);
 
         return clone;
 
     }
-
-    public static String getMyNodeQueueName() {
+    
+    public static String getMyNodeQueueName(){
         ClusterManager clusterManager = ClusterResourceHolder.getInstance().getClusterManager();
-        String nodeQueueName = AndesConstants.NODE_QUEUE_NAME_PREFIX + clusterManager.getMyNodeID();
+        String nodeQueueName = AndesConstants.NODE_QUEUE_NAME_PREFIX + clusterManager.getMyNodeID() ;
         return nodeQueueName;
     }
 
@@ -323,20 +319,19 @@ public class MessagingEngine {
 
     /**
      * start message delivery. Start threads. If not created create.
-     *
      * @throws Exception
      */
-    public void startMessageDelivey() throws Exception {
+    public void startMessageDelivey() throws Exception{
 
         log.info("Starting queue message publisher");
         QueueDeliveryWorker qdw =
                 ClusterResourceHolder.getInstance().getQueueDeliveryWorker();
-        if (qdw == null) {
+        if(qdw == null) {
             boolean isInMemoryMode = ClusterResourceHolder.getInstance().getClusterConfiguration().isInMemoryMode();
             int queueWorkerInterval = ClusterResourceHolder.getInstance().getClusterConfiguration().getQueueWorkerInterval();
             QueueDeliveryWorker queueDeliveryWorker = new QueueDeliveryWorker(queueWorkerInterval, isInMemoryMode);
             ClusterResourceHolder.getInstance().setQueueDeliveryWorker(queueDeliveryWorker);
-        } else {
+        }  else {
             if (!qdw.isWorking()) {
                 qdw.setWorking();
             }
@@ -345,10 +340,10 @@ public class MessagingEngine {
         log.info("Starting topic message publisher");
         TopicDeliveryWorker tdw =
                 ClusterResourceHolder.getInstance().getTopicDeliveryWorker();
-        if (tdw == null) {
+        if(tdw == null) {
             TopicDeliveryWorker topicDeliveryWorker = new TopicDeliveryWorker();
             ClusterResourceHolder.getInstance().setTopicDeliveryWorker(topicDeliveryWorker);
-        } else {
+        }  else {
             if (!tdw.isWorking()) {
                 tdw.setWorking();
             }
@@ -364,7 +359,7 @@ public class MessagingEngine {
 
         log.info("Stopping queue message publisher");
         QueueDeliveryWorker qdw = ClusterResourceHolder.getInstance().getQueueDeliveryWorker();
-        if (qdw != null && qdw.isWorking()) {
+        if(qdw != null && qdw.isWorking()) {
             qdw.stopFlusher();
         }
 
@@ -384,5 +379,5 @@ public class MessagingEngine {
         stopMessageDelivery();
 
     }
-
+    
 }
