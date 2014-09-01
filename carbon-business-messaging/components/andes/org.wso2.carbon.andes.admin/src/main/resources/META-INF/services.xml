@@ -1,0 +1,84 @@
+<serviceGroup>
+    <service name="AndesAdminService"
+             scope="transportsession"
+             targetNamespace="http://wso2.org/carbon/andes/admin">
+        <schema schemaNamespace="http://wso2.org/carbon/andes/admin/xsd"
+                elementFormDefaultQualified="true"/>
+        <transports>
+            <transport>https</transport>
+        </transports>
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/robust-in-only"
+                             class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver"/>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-only"
+                             class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver"/>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out"
+                             class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+        </messageReceivers>
+        <parameter name="ServiceClass">
+            org.wso2.carbon.andes.admin.AndesAdminService
+        </parameter>
+        <parameter name="adminService" locked="true">true</parameter>
+        <parameter name="hiddenService" locked="true">true</parameter>
+        <operation name="browseQueue">
+            <parameter name="AuthorizationAction" locked="false">/permission/admin/manage/queue,/permission/admin/manage/dlc</parameter>
+        </operation>
+        <operation name="createQueue">
+            <parameter name="AuthorizationAction" locked="false">/permission/admin/manage/queue</parameter>
+        </operation>
+        <operation name="getAllQueues">
+            <parameter name="AuthorizationAction" locked="false">/permission/admin/manage/queue,/permission/admin/manage/dlc</parameter>
+        </operation>
+        <operation name="getUserRoles">
+            <parameter name="AuthorizationAction" locked="false">/permission/admin/manage/queue</parameter>
+        </operation>
+        <operation name="getQueueRolePermission">
+            <parameter name="AuthorizationAction" locked="false">/permission/admin/manage/queue</parameter>
+        </operation>
+        <operation name="updatePermission">
+            <parameter name="AuthorizationAction" locked="false">/permission/admin/manage/queue</parameter>
+        </operation>
+        <operation name="getMessageCountForQueue">
+            <parameter name="AuthorizationAction" locked="false">/permission/admin/manage/queue</parameter>
+        </operation>
+        <operation name="getTotalMessagesInQueue">
+            <parameter name="AuthorizationAction" locked="false">/permission/admin/manage/queue,/permission/admin/manage/dlc</parameter>
+        </operation>
+        <operation name="purgeMessagesOfQueue">
+            <parameter name="AuthorizationAction" locked="false">/permission/admin/manage/queue</parameter>
+        </operation>
+        <operation name="sendMessage">
+            <parameter name="AuthorizationAction" locked="false">/permission/admin/manage/queue</parameter>
+        </operation>
+        <operation name="deleteQueue">
+            <parameter name="AuthorizationAction" locked="false">/permission/admin/manage/queue</parameter>
+        </operation>
+        <operation name="restoreMessagesFromDeadLetterQueue">
+            <parameter name="AuthorizationAction" locked="false">/permission/admin/manage/dlc</parameter>
+        </operation>
+        <operation name="restoreMessagesFromDeadLetterQueueWithDifferentDestination">
+            <parameter name="AuthorizationAction" locked="false">/permission/admin/manage/dlc</parameter>
+        </operation>
+        <operation name="deleteMessagesFromDeadLetterQueue">
+            <parameter name="AuthorizationAction" locked="false">/permission/admin/manage/dlc</parameter>
+        </operation>
+        <operation name="getAllSubscriptions">
+            <parameter name="AuthorizationAction" locked="false">/permission/admin/manage/subscriptions</parameter>
+        </operation>
+        <operation name="getAllDurableQueueSubscriptions">
+            <parameter name="AuthorizationAction" locked="false">/permission/admin/manage/subscriptions</parameter>
+        </operation>
+        <operation name="getAllDurableTopicSubscriptions">
+            <parameter name="AuthorizationAction" locked="false">/permission/admin/manage/subscriptions</parameter>
+        </operation>
+        <operation name="getAllLocalTempQueueSubscriptions">
+            <parameter name="AuthorizationAction" locked="false">/permission/admin/manage/subscriptions</parameter>
+        </operation>
+        <operation name="getAllLocalTempTopicSubscriptions">
+            <parameter name="AuthorizationAction" locked="false">/permission/admin/manage/subscriptions</parameter>
+        </operation>
+        <operation name="getAccessKey">
+            <parameter name="AuthorizationAction" locked="false">/permission/admin/manage/getAccessKey</parameter>
+        </operation>
+    </service>
+</serviceGroup>
