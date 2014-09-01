@@ -36,6 +36,7 @@
 			<modules>
 				<module>org.wso2.carbon.andes.mgt.stub</module>
 				<module>org.wso2.carbon.andes.stub</module>
+<module>org.wso2.carbon.stat.publisher.stub</module>
             </modules>
 
     <build>
