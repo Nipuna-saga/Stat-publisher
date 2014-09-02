@@ -10,7 +10,7 @@ public class StatPublisherService {
 
     private StatConfigurationDTO StatConfigurationDTOObject;
 
-
+    //StatConfiguration details get method
     public StatConfiguration getStatConfiguration() {
         int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();
 
@@ -19,7 +19,7 @@ public class StatPublisherService {
     }
 
 
-    //Credential details set method
+    //StatConfiguration details set method
     public boolean setStatConfiguration(StatConfiguration StatConfigurationData) {
         StatConfigurationDTOObject = new StatConfigurationDTO();
         StatConfigurationDTOObject.WriteRegistry(StatConfigurationData);

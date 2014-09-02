@@ -23,13 +23,13 @@ public class PublisherObserver {
 
 
     public PublisherObserver() {
-        tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();
+        tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
 
 
     }
 
 
-    //timer task
+    //Timer task to publish system and MB stats
     public void statPublisherTimerTask() {
 
         TimerTask taskPublishStat = new TimerTask() {
@@ -45,16 +45,17 @@ public class PublisherObserver {
                 if (statConfigurationInstance.isEnableStatPublisher()) {
 
                     if (statConfigurationInstance.isSystem_statEnable()) {
+
                         System.out.println("System stat Publishing activated" + tenantID);
+
                     }
                     if (statConfigurationInstance.isMB_statEnable()) {
+
                         System.out.println("MB stat Publishing activated" + tenantID);
+
                     }
 
-
                 }
-
-
             }
         };
 
@@ -64,7 +65,7 @@ public class PublisherObserver {
         timer.scheduleAtFixedRate(taskPublishStat, new Date(), timeInterval);
     }
 
-
+    //method to publish message statistics
     public void messageStatPublisherTask(AndesMessageMetadata message) {
         statConfigurationDTOObject = new StatConfigurationDTO();
 

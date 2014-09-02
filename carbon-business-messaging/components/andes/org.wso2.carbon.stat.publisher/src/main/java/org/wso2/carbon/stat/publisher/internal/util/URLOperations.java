@@ -7,7 +7,7 @@ import java.net.Socket;
  */
 public class URLOperations {
 
-
+    //URL validation method
     public boolean URLValidator(String URL) {
 
         boolean response = true;
@@ -36,6 +36,7 @@ public class URLOperations {
 
     }
 
+    //Url split method
     public String[] URLSplitter(String URL) {
 
 

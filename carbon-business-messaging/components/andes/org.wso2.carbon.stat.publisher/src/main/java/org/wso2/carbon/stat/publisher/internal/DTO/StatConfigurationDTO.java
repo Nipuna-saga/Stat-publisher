@@ -36,12 +36,12 @@ public class StatConfigurationDTO {
 
         StatConfiguration statConfigurationReadObject = new StatConfiguration();
         if (tenantID == -1234) {
-            statConfigurationReadObject.setEnableStatPublisher(true);
-            statConfigurationReadObject.setUsername("admin");
+            statConfigurationReadObject.setEnableStatPublisher(false);
+            statConfigurationReadObject.setUsername("admin56");
             statConfigurationReadObject.setPassword("admin");
             statConfigurationReadObject.setTenantID(-1234);
 
-            statConfigurationReadObject.setMB_statEnable(true);
+            statConfigurationReadObject.setMB_statEnable(false);
             statConfigurationReadObject.setMessage_statEnable(true);
             statConfigurationReadObject.setURL("127.0.0.1:9443;127.0.0.1:9443");
             statConfigurationReadObject.setSystem_statEnable(true);
@@ -50,11 +50,11 @@ public class StatConfigurationDTO {
             statConfigurationReadObject.setEnableStatPublisher(false);
             statConfigurationReadObject.setUsername("tenant");
             statConfigurationReadObject.setPassword("admin");
-            statConfigurationReadObject.setTenantID(2);
+            statConfigurationReadObject.setTenantID(1);
 
-            statConfigurationReadObject.setMB_statEnable(false);
-            statConfigurationReadObject.setMessage_statEnable(false);
-            statConfigurationReadObject.setURL("127.0.0.1:9443");
+            statConfigurationReadObject.setMB_statEnable(true);
+            statConfigurationReadObject.setMessage_statEnable(true);
+            statConfigurationReadObject.setURL("127.0.0.1:944377");
             statConfigurationReadObject.setSystem_statEnable(false);
         }
         return statConfigurationReadObject;
