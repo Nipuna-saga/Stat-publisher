@@ -17,7 +17,7 @@ import java.util.List;
 public class DataAgent {
 
     private static Logger logger = Logger.getLogger(DataAgent.class);
-    private StatConfigurationDTO statConfigurationDTOInstance;
+
     private StatConfiguration statConfigurationInstance;
     private static DataAgent instance = null;
     private Agent agent;
@@ -49,7 +49,7 @@ public class DataAgent {
         System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonConfigDirPath() + "repository/resources/security/client-truststore.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", "wso2carbon");
         agent = new Agent(agentConfiguration);
-        statConfigurationDTOInstance = new StatConfigurationDTO();
+
     }
 
     public static DataAgent getObjectDataAgent() {
@@ -64,16 +64,49 @@ public class DataAgent {
 
 
 
-/*TODO *********************************************************************************
-    Sample method
-    public void sendSystemStats(int tenantID) {
+/*
+
+TODO *********************************************************************************
+    Sample methods
+    public void sendSystemStats(StatConfiguration statConfigurationInstance) {
 
 
-   statConfigurationInstance= statConfigurationDTOInstance.ReadRegistry(tenantID);
+   this.statConfigurationInstance= statConfigurationInstance;
 
-
+        System.out.println("System stat Publishing activated" + statConfigurationInstance.getTenantID()+" "+statConfigurationInstance.getUsername());
 
     }
+
+
+    public void sendMBStatistics(StatConfiguration statConfigurationInstance) {
+
+
+   this.statConfigurationInstance= statConfigurationInstance;
+
+        System.out.println("System stat Publishing activated" + statConfigurationInstance.getTenantID()+" "+statConfigurationInstance.getUsername());
+
+    }
+
+     public void sendMessageStatistics(StatConfiguration statConfigurationInstance,AndesMessageMetadata message) {
+
+
+   this.statConfigurationInstance= statConfigurationInstance;
+
+        System.out.println("System stat Publishing activated" + statConfigurationInstance.getTenantID()+" "+statConfigurationInstance.getUsername());
+
+    }
+
+    TODO*********
+     public void sendACKStatistics(StatConfiguration statConfigurationInstance,AndesMessageMetadata message) {
+
+
+   this.statConfigurationInstance= statConfigurationInstance;
+
+        System.out.println("System stat Publishing activated" + statConfigurationInstance.getTenantID()+" "+statConfigurationInstance.getUsername());
+
+    }
+
+
     TODO ************************************************************************************8
 */
 

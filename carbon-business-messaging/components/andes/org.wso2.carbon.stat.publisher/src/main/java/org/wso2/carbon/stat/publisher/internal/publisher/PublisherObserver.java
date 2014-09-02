@@ -17,14 +17,16 @@ public class PublisherObserver {
 
     StatConfigurationDTO statConfigurationDTOObject;
     StatConfiguration statConfigurationInstance;
-
+    DataAgent dataAgentInstance;
     int tenantID;
     private long timeInterval = 5000; //time interval for scheduled task
 
 
     public PublisherObserver() {
         tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
+        statConfigurationDTOObject = new StatConfigurationDTO();
 
+        statConfigurationInstance = statConfigurationDTOObject.ReadRegistry(tenantID);
 
     }
 
@@ -42,17 +44,25 @@ public class PublisherObserver {
                 statConfigurationDTOObject = new StatConfigurationDTO();
 
                 statConfigurationInstance = statConfigurationDTOObject.ReadRegistry(tenantID);
-                if (statConfigurationInstance.isEnableStatPublisher()) {
 
-                    if (statConfigurationInstance.isSystem_statEnable()) {
+
+                if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
+
+                    dataAgentInstance = DataAgent.getObjectDataAgent();
+
+                    if (statConfigurationInstance.isSystem_statEnable()) {//check system stat enable configuration
 
                         System.out.println("System stat Publishing activated" + tenantID);
 
+
+                        //   dataAgentInstance.sendSystemStats(statConfigurationInstance);
+
                     }
-                    if (statConfigurationInstance.isMB_statEnable()) {
+                    if (statConfigurationInstance.isMB_statEnable()) {//check MB stat enable configuration
 
                         System.out.println("MB stat Publishing activated" + tenantID);
 
+                        //   dataAgentInstance.sendMBStatistics(statConfigurationInstance);
                     }
 
                 }
@@ -67,15 +77,17 @@ public class PublisherObserver {
 
     //method to publish message statistics
     public void messageStatPublisherTask(AndesMessageMetadata message) {
-        statConfigurationDTOObject = new StatConfigurationDTO();
 
-        statConfigurationInstance = statConfigurationDTOObject.ReadRegistry(tenantID);
 
-        if (statConfigurationInstance.isEnableStatPublisher()) {
+        if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
 
-            if (statConfigurationInstance.isMessage_statEnable()) {
+            if (statConfigurationInstance.isMessage_statEnable()) { //check message stat enable configuration
 
                 System.out.println("Message stat Publishing activated" + tenantID + message.getDestination());
+
+                //   dataAgentInstance=DataAgent.getObjectDataAgent();
+                //   dataAgentInstance.sendMessageStatistics(statConfigurationInstance,message);
+
 
             }
 
