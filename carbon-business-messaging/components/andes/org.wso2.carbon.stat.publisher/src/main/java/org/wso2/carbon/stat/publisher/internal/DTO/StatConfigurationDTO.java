@@ -37,7 +37,7 @@ public class StatConfigurationDTO {
         StatConfiguration statConfigurationReadObject = new StatConfiguration();
         if (tenantID == -1234) {
             statConfigurationReadObject.setEnableStatPublisher(true);
-            statConfigurationReadObject.setUsername("admin56");
+            statConfigurationReadObject.setUsername("admin2014");
             statConfigurationReadObject.setPassword("admin");
             statConfigurationReadObject.setTenantID(-1234);
 

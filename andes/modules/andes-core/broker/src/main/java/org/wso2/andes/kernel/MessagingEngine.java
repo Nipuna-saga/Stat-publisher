@@ -54,6 +54,8 @@ public class MessagingEngine {
     private ClusterConfiguration config;
     private final String ID_GENENRATOR = "idGenerator";
 
+    private PublisherObserver publisherObserverInstance;
+
 
     public static synchronized MessagingEngine getInstance() {
         if (messagingEngine == null) {
@@ -188,7 +190,7 @@ public class MessagingEngine {
             throw new AndesException("Error in storing the message to the store", e);
         }
 
-        PublisherObserver publisherObserverInstance=new PublisherObserver();
+         publisherObserverInstance=new PublisherObserver();
         publisherObserverInstance.messageStatPublisherTask(message);
 
 
@@ -196,6 +198,10 @@ public class MessagingEngine {
 
     public void ackReceived(AndesAckData ack) {
         disruptorBasedExecutor.ackReceived(ack);
+
+        publisherObserverInstance=new PublisherObserver();
+        publisherObserverInstance.messageAckStatPublisherTask(ack);
+
     }
 
     public void messageReturned(List<AndesAckData> ackList) {
