@@ -11,6 +11,9 @@ import java.io.IOException;
 /**
  * Created by nipuna on 8/15/14.
  */
+
+//Stat Configuration form servlet
+
 public class StatConfigurationServlet extends HttpServlet {
 
     @Override
@@ -31,8 +34,9 @@ public class StatConfigurationServlet extends HttpServlet {
         button_action = req.getParameter("saveButton");
 
         StatConfiguration statConfigurationSetObject = new StatConfiguration();
-        if (button_action.equals("Save")) {
 
+        if (button_action.equals("Save")) { //check submit button action
+       //get values from jsp page
             enable = Boolean.parseBoolean(req.getParameter("enable_check"));
 
             username = req.getParameter("username");
@@ -43,6 +47,8 @@ public class StatConfigurationServlet extends HttpServlet {
             system_stat = Boolean.parseBoolean(req.getParameter("system_stat_check"));
             MB_stat = Boolean.parseBoolean(req.getParameter("MB_stat_check"));
 
+
+            //set stat Configuration object
             statConfigurationSetObject.setEnableStatPublisher(enable);
             statConfigurationSetObject.setUsername(username);
             statConfigurationSetObject.setPassword(password);

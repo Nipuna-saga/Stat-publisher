@@ -12,7 +12,7 @@ public class StatPublisherService {
 
     //StatConfiguration details get method
     public StatConfiguration getStatConfiguration() {
-        int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();
+        int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
 
         StatConfigurationDTOObject = new StatConfigurationDTO();
         return StatConfigurationDTOObject.ReadRegistry(tenantID);

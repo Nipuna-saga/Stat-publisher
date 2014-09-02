@@ -43,7 +43,7 @@ public class PublisherObserver {
 
                 statConfigurationDTOObject = new StatConfigurationDTO();
 
-                statConfigurationInstance = statConfigurationDTOObject.ReadRegistry(tenantID);
+                statConfigurationInstance = statConfigurationDTOObject.ReadRegistry(tenantID); //get statConfiguration Instance according to tenant ID
 
 
                 if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
