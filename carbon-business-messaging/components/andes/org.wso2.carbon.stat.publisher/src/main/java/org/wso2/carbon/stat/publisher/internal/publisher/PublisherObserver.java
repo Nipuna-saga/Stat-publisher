@@ -2,7 +2,6 @@ package org.wso2.carbon.stat.publisher.internal.publisher;
 
 import org.wso2.andes.kernel.AndesMessageMetadata;
 import org.wso2.carbon.context.CarbonContext;
-import org.wso2.carbon.stat.publisher.StatPublisherService;
 import org.wso2.carbon.stat.publisher.internal.DTO.StatConfigurationDTO;
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
 
@@ -18,7 +17,7 @@ public class PublisherObserver {
 
     StatConfigurationDTO statConfigurationDTOObject;
     StatConfiguration statConfigurationInstance;
-    StatPublisherService statPublisherServiceInstance;
+
     int tenantID;
     private long timeInterval = 5000; //time interval for scheduled task
 
@@ -31,7 +30,7 @@ public class PublisherObserver {
 
 
     //timer task
-    public void initializeTimerTask() {
+    public void statPublisherTimerTask() {
 
         TimerTask taskPublishStat = new TimerTask() {
 

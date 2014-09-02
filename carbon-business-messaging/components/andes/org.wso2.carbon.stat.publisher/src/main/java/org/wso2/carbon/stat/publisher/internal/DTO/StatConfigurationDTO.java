@@ -25,7 +25,7 @@ public class StatConfigurationDTO {
         System.out.println(tenantID);
 
         PublisherObserver obj = new PublisherObserver();
-        obj.initializeTimerTask();
+        obj.statPublisherTimerTask();
 
 
         return true;
