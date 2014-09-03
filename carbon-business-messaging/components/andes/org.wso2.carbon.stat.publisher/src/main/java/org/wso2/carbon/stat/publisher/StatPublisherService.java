@@ -21,9 +21,9 @@ public class StatPublisherService {
 
     //StatConfiguration details set method
     public boolean setStatConfiguration(StatConfiguration StatConfigurationData) {
+        int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
         StatConfigurationDTOObject = new StatConfigurationDTO();
-        StatConfigurationDTOObject.WriteRegistry(StatConfigurationData);
-
+        StatConfigurationDTOObject.WriteRegistry(StatConfigurationData,tenantID);
 
         return true;
     }
