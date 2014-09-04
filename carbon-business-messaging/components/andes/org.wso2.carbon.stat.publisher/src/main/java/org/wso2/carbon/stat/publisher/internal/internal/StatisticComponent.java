@@ -4,10 +4,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentContext;
+import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.stat.publisher.StatPublisherService;
 import org.wso2.carbon.stat.publisher.internal.DTO.StatConfigurationDTO;
-import org.wso2.carbon.stat.publisher.internal.publisher.PublisherObserver;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
 /**
@@ -28,7 +28,7 @@ public class StatisticComponent {
 
     private static final Log log = LogFactory.getLog(StatisticComponent.class);
     private ServiceRegistration statAdminServiceRegistration;
-    private PublisherObserver publisherObserverInstance;
+
 
     protected void activate(ComponentContext context) {
         try {
@@ -37,6 +37,11 @@ public class StatisticComponent {
             StatPublisherService Service = StatPublisherBuilder.createMediationService();
             context.getBundleContext().registerService(StatPublisherService.class.getName(),
                     Service, null);
+
+
+            int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
+            StatConfigurationDTO statConfigurationDTO = new StatConfigurationDTO();
+            statConfigurationDTO.ReadRegistry(tenantID);
 
             log.info("Successfully created the stat publisher service");
             System.out.println("====================Activated the bundle==================");
