@@ -34,6 +34,7 @@ public class PublisherObserver {
 
     //Timer task to publish system and MB stats
     public void statPublisherTimerTask() {
+        Timer timer;
 
         TimerTask taskPublishStat = new TimerTask() {
 
@@ -42,9 +43,12 @@ public class PublisherObserver {
 
             public void run() {
 
-                statConfigurationDTOObject = new StatConfigurationDTO();
+            //    statConfigurationDTOObject = new StatConfigurationDTO();
 
-                statConfigurationInstance = statConfigurationDTOObject.ReadRegistry(tenantID); //get statConfiguration Instance according to tenant ID
+            statConfigurationInstance = statConfigurationDTOObject.ReadRegistry(tenantID); //get statConfiguration Instance according to tenant ID
+
+
+
 
 
                 if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
@@ -67,10 +71,10 @@ public class PublisherObserver {
                     }
 
                 }
-            }
+           }
         };
 
-        Timer timer = new Timer();
+         timer = new Timer();
 
         // scheduling the task at fixed rate
         timer.scheduleAtFixedRate(taskPublishStat, new Date(), timeInterval);
@@ -88,7 +92,8 @@ public class PublisherObserver {
 
                 //   dataAgentInstance=DataAgent.getObjectDataAgent();
                 //   dataAgentInstance.sendMessageStatistics(statConfigurationInstance,message);
-
+             PublisherObserver publisherObserverInstance = new PublisherObserver();
+             publisherObserverInstance.statPublisherTimerTask();
 
             }
 

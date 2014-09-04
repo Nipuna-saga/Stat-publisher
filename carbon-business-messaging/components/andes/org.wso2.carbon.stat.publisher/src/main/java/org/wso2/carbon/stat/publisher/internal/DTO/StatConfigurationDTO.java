@@ -34,7 +34,7 @@ public class StatConfigurationDTO {
             Registry registry=registryService.getConfigSystemRegistry(tenantId);
 
             updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.ENABLE_STAT_PUBLISHER,
-                    statConfigurationWriteObject.isEnableStatPublisher(),registry);
+                    statConfigurationWriteObject.isEnableStatPublisher(), registry);
             updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.USER_NAME,
                     statConfigurationWriteObject.getUsername(),registry);
             updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.PASSWORD,
@@ -50,6 +50,8 @@ public class StatConfigurationDTO {
         } catch (Exception e) {
             log.error("Could not update the registry", e);
         }
+
+
     }
 
     public void updateConfigProperty(String propertyName, Object value,Registry registry)
@@ -93,6 +95,7 @@ public class StatConfigurationDTO {
 
             String enableStatPublisher = getConfigurationProperty(
                     org.wso2.carbon.stat.publisher.internal.DTO.Constants.ENABLE_STAT_PUBLISHER, registry);
+
             String userName = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.USER_NAME,
                     registry);
             String password = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.PASSWORD,
