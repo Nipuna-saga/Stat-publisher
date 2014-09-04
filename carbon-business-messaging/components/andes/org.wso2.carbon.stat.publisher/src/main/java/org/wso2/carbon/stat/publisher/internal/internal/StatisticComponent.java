@@ -8,6 +8,8 @@ import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.stat.publisher.StatPublisherService;
 import org.wso2.carbon.stat.publisher.internal.DTO.StatConfigurationDTO;
+import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
+import org.wso2.carbon.stat.publisher.internal.publisher.PublisherObserver;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
 /**
@@ -28,10 +30,13 @@ public class StatisticComponent {
 
     private static final Log log = LogFactory.getLog(StatisticComponent.class);
     private ServiceRegistration statAdminServiceRegistration;
+    StatConfigurationDTO statConfigurationDTOObject;
+    StatConfiguration statConfigurationInstance;
+
 
     protected void activate(ComponentContext context) {
         try {
-            System.out.println("====================Activating the bundle==================");
+            System.out.println("=====================Activating the bundle==================");
 
             StatPublisherService Service = StatPublisherBuilder.createMediationService();
             context.getBundleContext().registerService(StatPublisherService.class.getName(),
@@ -48,6 +53,20 @@ public class StatisticComponent {
         } catch (RuntimeException e) {
             log.error("Can not create stat publisher service ", e);
         }
+        statConfigurationDTOObject = new StatConfigurationDTO();
+
+        statConfigurationInstance = statConfigurationDTOObject.ReadRegistry(CarbonContext.getThreadLocalCarbonContext().getTenantId());
+
+        PublisherObserver.timerFlag=false;
+
+        if(statConfigurationInstance.isSystem_statEnable()||statConfigurationInstance.isMB_statEnable()){
+
+            PublisherObserver publisherObserverInstance = new PublisherObserver();
+            publisherObserverInstance.statPublisherTimerTask();
+            PublisherObserver.timerFlag=true;
+        }
+
+
 
 
     }

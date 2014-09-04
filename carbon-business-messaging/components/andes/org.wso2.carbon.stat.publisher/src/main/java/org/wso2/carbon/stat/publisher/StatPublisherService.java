@@ -3,6 +3,7 @@ package org.wso2.carbon.stat.publisher;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.stat.publisher.internal.DTO.StatConfigurationDTO;
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
+import org.wso2.carbon.stat.publisher.internal.publisher.PublisherObserver;
 import org.wso2.carbon.stat.publisher.internal.util.URLOperations;
 
 public class StatPublisherService {
@@ -19,14 +20,27 @@ public class StatPublisherService {
     }
 
 
-    //StatConfiguration details set method
+    //StatConfiguration details set// method
     public boolean setStatConfiguration(StatConfiguration StatConfigurationData) {
         int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
         StatConfigurationDTOObject = new StatConfigurationDTO();
 
-        if(!StatConfigurationData.isSystem_statEnable()){
+        if(StatConfigurationData.isSystem_statEnable()||StatConfigurationData.isMB_statEnable()){
 
-          //  PublisherObserver.timer.cancel();
+            if(!PublisherObserver.timerFlag){
+                PublisherObserver publisherObserverInstance = new PublisherObserver();
+                publisherObserverInstance.statPublisherTimerTask();
+                PublisherObserver.timerFlag=true;
+            }
+
+        } else{
+
+
+            if( PublisherObserver.timerFlag) {
+                PublisherObserver.timer.cancel();
+
+                PublisherObserver.timerFlag = false;
+            }
         }
 
         StatConfigurationDTOObject.WriteRegistry(StatConfigurationData, tenantID);

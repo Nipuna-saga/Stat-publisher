@@ -17,13 +17,14 @@ import java.util.TimerTask;
  */
 public class PublisherObserver {
 
-
+    public static Timer timer;
+    public static boolean timerFlag=true;
     StatConfigurationDTO statConfigurationDTOObject;
     StatConfiguration statConfigurationInstance;
     DataAgent dataAgentInstance;
     int tenantID;
     private long timeInterval = 5000; //time interval for scheduled task
-
+//
 
     public PublisherObserver() {
         tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
@@ -36,7 +37,7 @@ public class PublisherObserver {
 
     //Timer task to publish system and MB stats
     public void statPublisherTimerTask() {
-        Timer timer;
+
 
         TimerTask taskPublishStat = new TimerTask() {
 
@@ -47,44 +48,46 @@ public class PublisherObserver {
 
                 try {
                     PrivilegedCarbonContext.startTenantFlow();
-                    PrivilegedCarbonContext.getThreadLocalCarbonContext().setTenantId(tenantID,true);
+                    PrivilegedCarbonContext.getThreadLocalCarbonContext().setTenantId(tenantID, true);
 
-                statConfigurationInstance = statConfigurationDTOObject.ReadRegistry(tenantID); //get statConfiguration Instance according to tenant ID
+                    statConfigurationInstance = statConfigurationDTOObject.ReadRegistry(tenantID); //get statConfiguration Instance according to tenant ID
 
 
-                //if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
+                    if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
 
-                dataAgentInstance = DataAgent.getObjectDataAgent();
-                //todo uncomment this line
+
+                        System.out.println(" stat Publishing activated");
+                        dataAgentInstance = DataAgent.getObjectDataAgent();
+                        //todo uncomment this line
 //String URL = statConfigurationInstance.getURL();
 
 //todo remove this line
-                String URLList = "tcp://localhost:7611";
+                        String URLList = "tcp://localhost:7611";
 
-                URLOperations urlOperations = new URLOperations();
-                String URLArray[] = urlOperations.URLSplitter(URLList);
-                String[] credentials={"admin","admin"};
+                        URLOperations urlOperations = new URLOperations();
+                        String URLArray[] = urlOperations.URLSplitter(URLList);
+                        String[] credentials = {"admin", "admin"};
 
-                for(String URL : URLArray) {
+                        //    for(String URL : URLArray) {
 
-                    //if (statConfigurationInstance.isSystem_statEnable()) {//check system stat enable configuration
+                        if (statConfigurationInstance.isSystem_statEnable()) {//check system stat enable configuration
 
-                    //System.out.println("System stat Publishing activated" + tenantID);
+                            System.out.println("System stat Publishing activated" + tenantID);
 
-                    System.out.println(URL);
-                    dataAgentInstance.sendSystemStats(URL,credentials);
+                            //System.out.println(URL);
+                            //  dataAgentInstance.sendSystemStats(URL,credentials);
 
-                    //}
-                    //if (statConfigurationInstance.isMB_statEnable()) {//check MB stat enable configuration
+                        }
+                        if (statConfigurationInstance.isMB_statEnable()) {//check MB stat enable configuration
 
-                    // System.out.println("MB stat Publishing activated" + tenantID);
+                            System.out.println("MB stat Publishing activated" + tenantID);
 
-                    //   dataAgentInstance.sendMBStatistics(statConfigurationInstance);
-                    // }
-                }
+                            //   dataAgentInstance.sendMBStatistics(statConfigurationInstance);
+                        }
+                        //     }
 
 
-                //}
+                    }
 
                 } catch (Exception e) {
                     //  log.error("failed to update statics from BAM publisher", e);
@@ -115,7 +118,6 @@ public class PublisherObserver {
         //todo move this to activator method
         PublisherObserver publisherObserverInstance = new PublisherObserver();
         publisherObserverInstance.statPublisherTimerTask();
-
 
 
         // }
