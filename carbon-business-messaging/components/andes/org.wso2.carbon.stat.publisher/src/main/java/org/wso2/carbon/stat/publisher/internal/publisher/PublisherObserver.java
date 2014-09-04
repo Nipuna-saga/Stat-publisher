@@ -43,12 +43,9 @@ public class PublisherObserver {
 
             public void run() {
 
-            //    statConfigurationDTOObject = new StatConfigurationDTO();
+                //    statConfigurationDTOObject = new StatConfigurationDTO();
 
-            statConfigurationInstance = statConfigurationDTOObject.ReadRegistry(tenantID); //get statConfiguration Instance according to tenant ID
-
-
-
+                statConfigurationInstance = statConfigurationDTOObject.ReadRegistry(tenantID); //get statConfiguration Instance according to tenant ID
 
 
                 if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
@@ -71,10 +68,10 @@ public class PublisherObserver {
                     }
 
                 }
-           }
+            }
         };
 
-         timer = new Timer();
+        timer = new Timer();
 
         // scheduling the task at fixed rate
         timer.scheduleAtFixedRate(taskPublishStat, new Date(), timeInterval);
@@ -92,8 +89,8 @@ public class PublisherObserver {
 
                 //   dataAgentInstance=DataAgent.getObjectDataAgent();
                 //   dataAgentInstance.sendMessageStatistics(statConfigurationInstance,message);
-             PublisherObserver publisherObserverInstance = new PublisherObserver();
-             publisherObserverInstance.statPublisherTimerTask();
+                PublisherObserver publisherObserverInstance = new PublisherObserver();
+                publisherObserverInstance.statPublisherTimerTask();
 
             }
 
@@ -102,10 +99,7 @@ public class PublisherObserver {
 
     }
 
-   
 
-<<<<<<< HEAD
-=======
     //method to publish message statistics
     public void messageAckStatPublisherTask(AndesAckData ack) {
 
@@ -115,9 +109,10 @@ public class PublisherObserver {
             if (statConfigurationInstance.isMessage_statEnable()) { //check message stat enable configuration
 
                 System.out.println("Message stat Ack Publishing activated" + tenantID + ack.qName);
->>>>>>> d439d0cc58010b1904f5854616d80c5360742a1a
 
 
-
+            }
+        }
+    }
 
 }
