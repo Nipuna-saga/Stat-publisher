@@ -28,11 +28,7 @@ public class StatisticComponent {
 
     private static final Log log = LogFactory.getLog(StatisticComponent.class);
     private ServiceRegistration statAdminServiceRegistration;
-<<<<<<< HEAD
-=======
-
->>>>>>> b0b039cd22518b6e4c894f97ab7fb5ff2fc4a6f0
-
+    
     protected void activate(ComponentContext context) {
         try {
             System.out.println("====================Activating the bundle==================");
