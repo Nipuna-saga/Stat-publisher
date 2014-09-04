@@ -2,8 +2,8 @@ package org.wso2.carbon.stat.publisher;
 
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.stat.publisher.internal.DTO.StatConfigurationDTO;
-import org.wso2.carbon.stat.publisher.internal.util.URLOperations;
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
+import org.wso2.carbon.stat.publisher.internal.util.URLOperations;
 
 public class StatPublisherService {
 
@@ -23,7 +23,9 @@ public class StatPublisherService {
     public boolean setStatConfiguration(StatConfiguration StatConfigurationData) {
         int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
         StatConfigurationDTOObject = new StatConfigurationDTO();
-        StatConfigurationDTOObject.WriteRegistry(StatConfigurationData,tenantID);
+        StatConfigurationDTOObject.WriteRegistry(StatConfigurationData, tenantID);
+
+
 
         return true;
     }

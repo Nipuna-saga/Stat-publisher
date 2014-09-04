@@ -49,17 +49,21 @@ public class StatConfigurationDTO {
                         statConfigurationWriteObject.isSystem_statEnable(), registry);
             } else {
                 updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.ENABLE_STAT_PUBLISHER, false, registry);
-                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.USER_NAME,"", registry);
-                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.PASSWORD,"", registry);
-                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.URL,"", registry);
-                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.MB_STAT_ENABLE,false, registry);
-                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.MESSAGE_STAT_ENABLE,false, registry);
-                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.SYSTEM_STAT_ENABLE,false, registry);
+                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.USER_NAME, "", registry);
+                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.PASSWORD, "", registry);
+                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.URL, "", registry);
+                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.MB_STAT_ENABLE, false, registry);
+                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.MESSAGE_STAT_ENABLE, false, registry);
+                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.SYSTEM_STAT_ENABLE, false, registry);
+
 
             }
+
         } catch (Exception e) {
             log.error("Could not update the registry", e);
         }
+
+
     }
 
     public void updateConfigProperty(String propertyName, Object value, Registry registry)
@@ -103,6 +107,7 @@ public class StatConfigurationDTO {
 
             String enableStatPublisher = getConfigurationProperty(
                     org.wso2.carbon.stat.publisher.internal.DTO.Constants.ENABLE_STAT_PUBLISHER, registry);
+
             String userName = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.USER_NAME,
                     registry);
             String password = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.PASSWORD,

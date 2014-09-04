@@ -6,8 +6,8 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentContext;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.registry.core.service.RegistryService;
-import org.wso2.carbon.stat.publisher.internal.DTO.StatConfigurationDTO;
 import org.wso2.carbon.stat.publisher.StatPublisherService;
+import org.wso2.carbon.stat.publisher.internal.DTO.StatConfigurationDTO;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
 /**
@@ -28,6 +28,10 @@ public class StatisticComponent {
 
     private static final Log log = LogFactory.getLog(StatisticComponent.class);
     private ServiceRegistration statAdminServiceRegistration;
+<<<<<<< HEAD
+=======
+
+>>>>>>> b0b039cd22518b6e4c894f97ab7fb5ff2fc4a6f0
 
     protected void activate(ComponentContext context) {
         try {
@@ -48,6 +52,8 @@ public class StatisticComponent {
         } catch (RuntimeException e) {
             log.error("Can not create stat publisher service ", e);
         }
+
+
     }
 
     protected void deactivate(ComponentContext context) {
