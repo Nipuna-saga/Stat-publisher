@@ -15,14 +15,14 @@ import java.io.IOException;
 /**
  * Created by dilshani on 8/18/14.
  */
-public class ReadXML {
+public class ReadJMXConfig {
 
     private boolean StartRMIServer;
     private String HostName;
     private String RMIRegistryPort;
     private String RMIServerPort;
 
-    public static Log log = LogFactory.getLog(ReadXML.class);
+    public static Log log = LogFactory.getLog(ReadJMXConfig.class);
 
     public void ReadJMXConfig(){
 

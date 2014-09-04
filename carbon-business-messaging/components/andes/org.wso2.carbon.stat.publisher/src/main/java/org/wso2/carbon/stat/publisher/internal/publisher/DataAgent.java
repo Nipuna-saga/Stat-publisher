@@ -8,6 +8,7 @@ import org.wso2.carbon.databridge.agent.thrift.conf.AgentConfiguration;
 import org.wso2.carbon.databridge.agent.thrift.exception.AgentException;
 import org.wso2.carbon.databridge.commons.Event;
 import org.wso2.carbon.serverStats.mbeans.MbeansStats;
+import org.wso2.carbon.stat.publisher.internal.conf.ReadJMXConfig;
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
 import org.wso2.carbon.utils.CarbonUtils;
 
@@ -38,16 +39,22 @@ public class DataAgent {
     //topic and queue
     private int noOfTopics;
     private int totalSubscribers;
+    private  String JMSConfiguration[];
 
 
     private DataAgent() { //private constructor
-
-        System.out.println("gggggggggggggggggggggggggggggggggggggggggggggggggg----------"+ CarbonUtils.getCarbonHome());
+//todo need to be removed sleep
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         AgentConfiguration agentConfiguration = new AgentConfiguration();
         System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonHome() + "/repository/resources/security/client-truststore.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", "wso2carbon");
         agent = new Agent(agentConfiguration);
+
 
     }
 
@@ -72,19 +79,20 @@ public class DataAgent {
 
             //get JMX configuration
 
-            String JMSConfiguration[] = getJMXConfiguration();
+            JMSConfiguration = getJMXConfiguration();
+
 
             MbeansStats mbeansStats = new MbeansStats(JMSConfiguration[0], Integer.parseInt(JMSConfiguration[1]), JMSConfiguration[2], JMSConfiguration[3]);
 
             String heapMemoryUsage = mbeansStats.getHeapMemoryUsage();
             String nonHeapMemoryUsage = mbeansStats.getNonHeapMemoryUsage();
             String CPULoadAverage = mbeansStats.getCPULoadAverage();
-            System.out.println( CarbonUtils.getCarbonHome());
+
 
             //Using Asynchronous data publisher
-           // if (asyncDataPublisherSystemStats == null) { //create the publisher object only once
+           if (asyncDataPublisherSystemStats == null) { //create the publisher object only once
                 asyncDataPublisherSystemStats = new AsyncDataPublisher( URL, "admin", "admin", agent);
-           // }
+            }
             String VERSION_SYSTEM_STATISTICS = "1.0.0";
             String messageStreamDefinition = "{" +
                     "  'name':'" + "SYSTEM_STATISTICS_MB" + "'," +
@@ -174,7 +182,7 @@ public class DataAgent {
 
     }
 
-    private void sendMessageStatistics(String URL, String[] credentials, AndesMessageMetadata message, String application, int subscribers) {
+    private void sendMessageStatistics(String URL, String[] credentials, AndesMessageMetadata message,  int subscribers) {
 
 
         long messageID = message.getMessageID();
@@ -226,7 +234,7 @@ public class DataAgent {
     }
 
 
-    public void sendACKStatistics(String URL, String[] credentials, AndesAckData ack, String application) {
+    public void sendACKStatistics(String URL, String[] credentials, AndesAckData ack) {
 
         long ackMessageID = ack.messageID;
         String queueName = ack.qName;
@@ -312,6 +320,10 @@ public class DataAgent {
     //this method will return JMXConfiguration as an array. array contains ip,port,username,password
     private String[] getJMXConfiguration() {
 
+       ReadJMXConfig readJMXConfig = new ReadJMXConfig();
+
+        readJMXConfig.ReadJMXConfig();
+        System.out.println("hostname-------------------: " + readJMXConfig.getHostName());
 
         String JMSConfig[] = {"localhost", "10000", "admin", "admin"};
 
