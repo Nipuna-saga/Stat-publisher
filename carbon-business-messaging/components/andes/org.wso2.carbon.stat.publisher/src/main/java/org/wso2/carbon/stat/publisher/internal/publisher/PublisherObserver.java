@@ -102,6 +102,10 @@ public class PublisherObserver {
 
     }
 
+   
+
+<<<<<<< HEAD
+=======
     //method to publish message statistics
     public void messageAckStatPublisherTask(AndesAckData ack) {
 
@@ -111,18 +115,7 @@ public class PublisherObserver {
             if (statConfigurationInstance.isMessage_statEnable()) { //check message stat enable configuration
 
                 System.out.println("Message stat Ack Publishing activated" + tenantID + ack.qName);
-
-                //   dataAgentInstance=DataAgent.getObjectDataAgent();
-                //   dataAgentInstance.sendACKStatistics(statConfigurationInstance,ack);
-
-
-            }
-
-        }
-
-
-    }
-
+>>>>>>> d439d0cc58010b1904f5854616d80c5360742a1a
 
 
 
