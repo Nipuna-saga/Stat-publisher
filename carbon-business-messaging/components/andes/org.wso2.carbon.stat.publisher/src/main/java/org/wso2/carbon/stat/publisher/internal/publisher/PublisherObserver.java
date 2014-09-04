@@ -3,6 +3,7 @@ package org.wso2.carbon.stat.publisher.internal.publisher;
 import org.wso2.andes.kernel.AndesAckData;
 import org.wso2.andes.kernel.AndesMessageMetadata;
 import org.wso2.carbon.context.CarbonContext;
+import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.stat.publisher.internal.DTO.StatConfigurationDTO;
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
 import org.wso2.carbon.stat.publisher.internal.util.URLOperations;
@@ -44,7 +45,9 @@ public class PublisherObserver {
 
             public void run() {
 
-                //    statConfigurationDTOObject = new StatConfigurationDTO();
+                try {
+                    PrivilegedCarbonContext.startTenantFlow();
+                    PrivilegedCarbonContext.getThreadLocalCarbonContext().setTenantId(tenantID,true);
 
                 statConfigurationInstance = statConfigurationDTOObject.ReadRegistry(tenantID); //get statConfiguration Instance according to tenant ID
 
@@ -82,6 +85,12 @@ public class PublisherObserver {
 
 
                 //}
+
+                } catch (Exception e) {
+                    //  log.error("failed to update statics from BAM publisher", e);
+                } finally {
+                    PrivilegedCarbonContext.endTenantFlow();
+                }
             }
         };
 
