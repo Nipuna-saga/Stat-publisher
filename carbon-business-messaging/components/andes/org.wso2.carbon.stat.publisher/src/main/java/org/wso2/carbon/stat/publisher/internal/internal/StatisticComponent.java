@@ -28,7 +28,6 @@ public class StatisticComponent {
 
     private static final Log log = LogFactory.getLog(StatisticComponent.class);
     private ServiceRegistration statAdminServiceRegistration;
-    //private MediationStatisticsService mediationStatisticsService;
 
     protected void activate(ComponentContext context) {
         try {

@@ -86,6 +86,7 @@ public class StatConfigurationDTO {
     public StatConfiguration ReadRegistry(int tenantId) {
 
         StatConfiguration statConfigurationReadObject = new StatConfiguration();
+
         // First set it to defaults, but do not persist
         statConfigurationReadObject.setEnableStatPublisher(false);
         statConfigurationReadObject.setUsername(EMPTY_STRING);
@@ -137,6 +138,7 @@ public class StatConfigurationDTO {
 //            }
         } catch (Exception e) {
             log.error("Could not load values from registry", e);
+
         }
         return statConfigurationReadObject;
     }

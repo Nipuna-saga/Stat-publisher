@@ -9,7 +9,6 @@ import org.wso2.carbon.databridge.agent.thrift.conf.AgentConfiguration;
 import org.wso2.carbon.databridge.agent.thrift.exception.AgentException;
 import org.wso2.carbon.databridge.commons.Event;
 import org.wso2.carbon.serverStats.mbeans.MbeansStats;
-import org.wso2.carbon.stat.publisher.internal.DTO.StatConfigurationDTO;
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
 import org.wso2.carbon.utils.CarbonUtils;
 
@@ -98,7 +97,7 @@ TODO ***************************************************************************
     }
 
     TODO*********
-     public void sendACKStatistics(StatConfiguration statConfigurationInstance,AndesMessageMetadata message) {
+     public void sendACKStatistics(StatConfiguration statConfigurationInstance,AndesAckData ack) {
 
 
    this.statConfigurationInstance= statConfigurationInstance;

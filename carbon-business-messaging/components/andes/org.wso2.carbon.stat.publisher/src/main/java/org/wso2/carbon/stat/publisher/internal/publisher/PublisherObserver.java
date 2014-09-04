@@ -1,5 +1,6 @@
 package org.wso2.carbon.stat.publisher.internal.publisher;
 
+import org.wso2.andes.kernel.AndesAckData;
 import org.wso2.andes.kernel.AndesMessageMetadata;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.stat.publisher.internal.DTO.StatConfigurationDTO;
@@ -95,5 +96,27 @@ public class PublisherObserver {
 
 
     }
+
+    //method to publish message statistics
+    public void messageAckStatPublisherTask(AndesAckData ack) {
+
+
+        if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
+
+            if (statConfigurationInstance.isMessage_statEnable()) { //check message stat enable configuration
+
+                System.out.println("Message stat Ack Publishing activated" + tenantID + ack.qName);
+
+                //   dataAgentInstance=DataAgent.getObjectDataAgent();
+                //   dataAgentInstance.sendACKStatistics(statConfigurationInstance,ack);
+
+
+            }
+
+        }
+
+
+    }
+
 
 }
