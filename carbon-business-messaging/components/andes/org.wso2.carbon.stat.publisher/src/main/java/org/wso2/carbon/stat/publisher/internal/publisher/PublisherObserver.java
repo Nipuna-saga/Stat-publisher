@@ -3,6 +3,7 @@ package org.wso2.carbon.stat.publisher.internal.publisher;
 import org.wso2.andes.kernel.AndesAckData;
 import org.wso2.andes.kernel.AndesMessageMetadata;
 import org.wso2.carbon.context.CarbonContext;
+import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.stat.publisher.internal.DTO.StatConfigurationDTO;
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
 
@@ -34,7 +35,7 @@ public class PublisherObserver {
 
     //Timer task to publish system and MB stats
     public void statPublisherTimerTask() {
-        Timer timer;
+        Timer timer = null;
 
         TimerTask taskPublishStat = new TimerTask() {
 
@@ -42,6 +43,10 @@ public class PublisherObserver {
             @Override
 
             public void run() {
+                try {
+                    PrivilegedCarbonContext.startTenantFlow();
+                    PrivilegedCarbonContext.getThreadLocalCarbonContext().setTenantId(tenantID,true);
+
 
                 //    statConfigurationDTOObject = new StatConfigurationDTO();
 
@@ -68,7 +73,13 @@ public class PublisherObserver {
                     }
 
                 }
-            }
+                } catch (Exception e) {
+                    //  log.error("failed to update statics from BAM publisher", e);
+                } finally {
+                    PrivilegedCarbonContext.endTenantFlow();
+                }   }
+
+
         };
 
         timer = new Timer();
@@ -81,9 +92,9 @@ public class PublisherObserver {
     public void messageStatPublisherTask(AndesMessageMetadata message) {
 
 
-        if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
+       if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
 
-            if (statConfigurationInstance.isMessage_statEnable()) { //check message stat enable configuration
+           if (statConfigurationInstance.isMessage_statEnable()) { //check message stat enable configuration
 
                 System.out.println("Message stat Publishing activated" + tenantID + message.getDestination());
 
@@ -94,7 +105,7 @@ public class PublisherObserver {
 
             }
 
-        }
+       }
 
 
     }
