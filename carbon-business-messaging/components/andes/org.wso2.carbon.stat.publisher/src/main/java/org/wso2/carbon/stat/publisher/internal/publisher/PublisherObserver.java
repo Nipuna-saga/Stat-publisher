@@ -99,6 +99,10 @@ public class PublisherObserver {
 
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2ee5c1fbd1f501494e802e6d7b5c08674c6ffc2e
 
     //method to publish message statistics
     public void messageAckStatPublisherTask(AndesAckData ack) {
