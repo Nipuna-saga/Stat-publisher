@@ -16,7 +16,7 @@ import java.util.TimerTask;
  */
 public class PublisherObserver {
 
-
+    public static Timer timer ;
     StatConfigurationDTO statConfigurationDTOObject;
     StatConfiguration statConfigurationInstance;
     DataAgent dataAgentInstance;
@@ -35,7 +35,7 @@ public class PublisherObserver {
 
     //Timer task to publish system and MB stats
     public void statPublisherTimerTask() {
-        Timer timer = null;
+
 
         TimerTask taskPublishStat = new TimerTask() {
 
@@ -48,14 +48,15 @@ public class PublisherObserver {
                     PrivilegedCarbonContext.getThreadLocalCarbonContext().setTenantId(tenantID,true);
 
 
-                //    statConfigurationDTOObject = new StatConfigurationDTO();
 
                 statConfigurationInstance = statConfigurationDTOObject.ReadRegistry(tenantID); //get statConfiguration Instance according to tenant ID
+
+                    System.out.println("timer task activated" + tenantID);
 
 
                 if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
 
-                    dataAgentInstance = DataAgent.getObjectDataAgent();
+                //    dataAgentInstance = DataAgent.getObjectDataAgent();
 
                     if (statConfigurationInstance.isSystem_statEnable()) {//check system stat enable configuration
 
