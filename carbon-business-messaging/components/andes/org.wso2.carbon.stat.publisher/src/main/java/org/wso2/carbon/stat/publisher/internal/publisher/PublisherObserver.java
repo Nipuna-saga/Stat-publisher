@@ -102,7 +102,7 @@ public class PublisherObserver {
 
     }
 
-   
+
 
     //method to publish message statistics
     public void messageAckStatPublisherTask(AndesAckData ack) {
