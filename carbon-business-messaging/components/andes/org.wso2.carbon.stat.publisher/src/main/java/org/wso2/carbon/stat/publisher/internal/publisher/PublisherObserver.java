@@ -5,6 +5,7 @@ import org.wso2.andes.kernel.AndesMessageMetadata;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.stat.publisher.internal.DTO.StatConfigurationDTO;
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
+import org.wso2.carbon.stat.publisher.internal.util.URLOperations;
 
 import java.util.Date;
 import java.util.Timer;
@@ -43,38 +44,48 @@ public class PublisherObserver {
 
             public void run() {
 
-            //    statConfigurationDTOObject = new StatConfigurationDTO();
+                //    statConfigurationDTOObject = new StatConfigurationDTO();
 
-            statConfigurationInstance = statConfigurationDTOObject.ReadRegistry(tenantID); //get statConfiguration Instance according to tenant ID
-
-
+                statConfigurationInstance = statConfigurationDTOObject.ReadRegistry(tenantID); //get statConfiguration Instance according to tenant ID
 
 
-
-                if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
+                //if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
 
                     dataAgentInstance = DataAgent.getObjectDataAgent();
+                //todo uncomment this line
+//String URL = statConfigurationInstance.getURL();
 
-                    if (statConfigurationInstance.isSystem_statEnable()) {//check system stat enable configuration
+//todo remove this line
+                String URLList = "tcp://localhost:7611";
 
-                        System.out.println("System stat Publishing activated" + tenantID);
+                URLOperations urlOperations = new URLOperations();
+                String URLArray[] = urlOperations.URLSplitter(URLList);
+                String[] credentials={"admin","admin"};
 
+                for(String URL : URLArray) {
 
-                        //   dataAgentInstance.sendSystemStats(statConfigurationInstance);
+                    //if (statConfigurationInstance.isSystem_statEnable()) {//check system stat enable configuration
 
-                    }
-                    if (statConfigurationInstance.isMB_statEnable()) {//check MB stat enable configuration
+                    //System.out.println("System stat Publishing activated" + tenantID);
 
-                        System.out.println("MB stat Publishing activated" + tenantID);
+                    System.out.println(URL);
+                    dataAgentInstance.sendSystemStats(URL,credentials);
 
-                        //   dataAgentInstance.sendMBStatistics(statConfigurationInstance);
-                    }
+                    //}
+                    //if (statConfigurationInstance.isMB_statEnable()) {//check MB stat enable configuration
 
+                   // System.out.println("MB stat Publishing activated" + tenantID);
+
+                    //   dataAgentInstance.sendMBStatistics(statConfigurationInstance);
+                    // }
                 }
-           }
+
+
+                //}
+            }
         };
 
-         timer = new Timer();
+        timer = new Timer();
 
         // scheduling the task at fixed rate
         timer.scheduleAtFixedRate(taskPublishStat, new Date(), timeInterval);
@@ -83,29 +94,29 @@ public class PublisherObserver {
     //method to publish message statistics
     public void messageStatPublisherTask(AndesMessageMetadata message) {
 
-
-        if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
-
-            if (statConfigurationInstance.isMessage_statEnable()) { //check message stat enable configuration
+//todo enable if
+       // if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
+//todo enable if
+           // if (statConfigurationInstance.isMessage_statEnable()) { //check message stat enable configuration
 
                 System.out.println("Message stat Publishing activated" + tenantID + message.getDestination());
 
                 //   dataAgentInstance=DataAgent.getObjectDataAgent();
                 //   dataAgentInstance.sendMessageStatistics(statConfigurationInstance,message);
-             PublisherObserver publisherObserverInstance = new PublisherObserver();
-             publisherObserverInstance.statPublisherTimerTask();
+        //todo move this to activator method
+               PublisherObserver publisherObserverInstance = new PublisherObserver();
+                publisherObserverInstance.statPublisherTimerTask();
 
-            }
 
-        }
+
+           // }
+
+//        }
 
 
     }
 
 
-
-<<<<<<< HEAD
-=======
     //method to publish message statistics
     public void messageAckStatPublisherTask(AndesAckData ack) {
 
@@ -115,9 +126,10 @@ public class PublisherObserver {
             if (statConfigurationInstance.isMessage_statEnable()) { //check message stat enable configuration
 
                 System.out.println("Message stat Ack Publishing activated" + tenantID + ack.qName);
->>>>>>> d439d0cc58010b1904f5854616d80c5360742a1a
 
 
+            }
 
-
+        }
+    }
 }

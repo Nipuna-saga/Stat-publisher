@@ -2,7 +2,6 @@ package org.wso2.carbon.stat.publisher.internal.publisher;
 
 import org.apache.log4j.Logger;
 import org.wso2.andes.kernel.*;
-import org.wso2.andes.subscription.*;
 import org.wso2.carbon.databridge.agent.thrift.Agent;
 import org.wso2.carbon.databridge.agent.thrift.AsyncDataPublisher;
 import org.wso2.carbon.databridge.agent.thrift.conf.AgentConfiguration;
@@ -43,10 +42,10 @@ public class DataAgent {
 
     private DataAgent() { //private constructor
 
-        System.out.println(CarbonUtils.getCarbonConfigDirPath());
+        System.out.println("gggggggggggggggggggggggggggggggggggggggggggggggggg----------"+ CarbonUtils.getCarbonHome());
 
         AgentConfiguration agentConfiguration = new AgentConfiguration();
-        System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonConfigDirPath() + "repository/resources/security/client-truststore.jks");
+        System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonHome() + "/repository/resources/security/client-truststore.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", "wso2carbon");
         agent = new Agent(agentConfiguration);
 
@@ -64,51 +63,7 @@ public class DataAgent {
 
 
 
-/*
 
-TODO *********************************************************************************
-    Sample methods
-    public void sendSystemStats(StatConfiguration statConfigurationInstance) {
-
-
-   this.statConfigurationInstance= statConfigurationInstance;
-
-        System.out.println("System stat Publishing activated" + statConfigurationInstance.getTenantID()+" "+statConfigurationInstance.getUsername());
-
-    }
-
-
-    public void sendMBStatistics(StatConfiguration statConfigurationInstance) {
-
-
-   this.statConfigurationInstance= statConfigurationInstance;
-
-        System.out.println("System stat Publishing activated" + statConfigurationInstance.getTenantID()+" "+statConfigurationInstance.getUsername());
-
-    }
-
-     public void sendMessageStatistics(StatConfiguration statConfigurationInstance,AndesMessageMetadata message) {
-
-
-   this.statConfigurationInstance= statConfigurationInstance;
-
-        System.out.println("System stat Publishing activated" + statConfigurationInstance.getTenantID()+" "+statConfigurationInstance.getUsername());
-
-    }
-
-    TODO*********
-     public void sendACKStatistics(StatConfiguration statConfigurationInstance,AndesAckData ack) {
-
-
-   this.statConfigurationInstance= statConfigurationInstance;
-
-        System.out.println("System stat Publishing activated" + statConfigurationInstance.getTenantID()+" "+statConfigurationInstance.getUsername());
-
-    }
-
-
-    TODO ************************************************************************************8
-*/
 
     public void sendSystemStats(String URL, String[] credentials) {
 
@@ -124,12 +79,12 @@ TODO ***************************************************************************
             String heapMemoryUsage = mbeansStats.getHeapMemoryUsage();
             String nonHeapMemoryUsage = mbeansStats.getNonHeapMemoryUsage();
             String CPULoadAverage = mbeansStats.getCPULoadAverage();
-
+            System.out.println( CarbonUtils.getCarbonHome());
 
             //Using Asynchronous data publisher
-            if (asyncDataPublisherSystemStats == null) { //create the publisher object only once
-                asyncDataPublisherSystemStats = new AsyncDataPublisher("tcp://" + URL, credentials[0], credentials[1], agent);
-            }
+           // if (asyncDataPublisherSystemStats == null) { //create the publisher object only once
+                asyncDataPublisherSystemStats = new AsyncDataPublisher( URL, "admin", "admin", agent);
+           // }
             String VERSION_SYSTEM_STATISTICS = "1.0.0";
             String messageStreamDefinition = "{" +
                     "  'name':'" + "SYSTEM_STATISTICS_MB" + "'," +
@@ -174,7 +129,7 @@ TODO ***************************************************************************
 
         //Using Asynchronous data publisher
         if (asyncDataPublisherMBStatistics == null) { //create the publisher object only once
-            asyncDataPublisherMBStatistics = new AsyncDataPublisher("tcp://" + URL, credentials[0], credentials[1], agent);
+            asyncDataPublisherMBStatistics = new AsyncDataPublisher(URL, credentials[0], credentials[1], agent);
         }
 
         String VERSION_MB_STATISTICS = "1.0.0";
@@ -233,7 +188,7 @@ TODO ***************************************************************************
 
         //Using Asynchronous data publisher
         if (asyncDataPublisherMessageStatistics == null) { //create the publisher object only once
-            asyncDataPublisherMessageStatistics = new AsyncDataPublisher("tcp://" + URL, credentials[0], credentials[1], agent);
+            asyncDataPublisherMessageStatistics = new AsyncDataPublisher(URL, credentials[0], credentials[1], agent);
         }
         String messageStreamDefinition = "{" +
                 "  'name':'" + "MESSAGE_STATISTICS" + "'," +
@@ -278,7 +233,7 @@ TODO ***************************************************************************
 
         //Using Asynchronous data publisher
         if (asyncDataPublisherACKStatistics == null) { //create the publisher object only once
-            asyncDataPublisherACKStatistics = new AsyncDataPublisher("tcp://" + URL, credentials[0], credentials[1], agent);
+            asyncDataPublisherACKStatistics = new AsyncDataPublisher(URL, credentials[0], credentials[1], agent);
         }
 
         String ackStreamDefinition = "{" +
