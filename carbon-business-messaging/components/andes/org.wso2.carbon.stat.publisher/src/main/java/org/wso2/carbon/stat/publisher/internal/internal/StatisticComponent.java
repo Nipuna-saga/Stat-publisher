@@ -48,6 +48,12 @@ public class StatisticComponent {
             log.info("Successfully created the stat publisher service");
             System.out.println("====================Activated the bundle==================");
 
+
+
+
+            PublisherObserver publisherObserverInstance = new PublisherObserver();
+            publisherObserverInstance.statPublisherTimerTask();
+
         } catch (RuntimeException e) {
             log.error("Can not create stat publisher service ", e);
         }
