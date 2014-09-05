@@ -25,18 +25,18 @@ public class StatPublisherService {
         int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
         StatConfigurationDTOObject = new StatConfigurationDTO();
 
-        if(StatConfigurationData.isSystem_statEnable()||StatConfigurationData.isMB_statEnable()){
+        if (StatConfigurationData.isSystem_statEnable() || StatConfigurationData.isMB_statEnable()) {
 
-            if(!PublisherObserver.timerFlag){
+            if (!PublisherObserver.timerFlag) {
                 PublisherObserver publisherObserverInstance = new PublisherObserver();
                 publisherObserverInstance.statPublisherTimerTask();
-                PublisherObserver.timerFlag=true;
+                PublisherObserver.timerFlag = true;
             }
 
-        } else{
+        } else {
 
 
-            if( PublisherObserver.timerFlag) {
+            if (PublisherObserver.timerFlag) {
                 PublisherObserver.timer.cancel();
 
                 PublisherObserver.timerFlag = false;
@@ -44,7 +44,6 @@ public class StatPublisherService {
         }
 
         StatConfigurationDTOObject.WriteRegistry(StatConfigurationData, tenantID);
-
 
 
         return true;

@@ -55,14 +55,10 @@ public class StatConfigurationDTO {
                 updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.MB_STAT_ENABLE, false, registry);
                 updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.MESSAGE_STAT_ENABLE, false, registry);
                 updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.SYSTEM_STAT_ENABLE, false, registry);
-
-
             }
-
         } catch (Exception e) {
             log.error("Could not update the registry", e);
         }
-
 
     }
 
@@ -102,11 +98,9 @@ public class StatConfigurationDTO {
 
         // then load it from registry
         try {
-
             Registry registry = registryService.getConfigSystemRegistry(tenantId);
 
-            String enableStatPublisher = getConfigurationProperty(
-                    org.wso2.carbon.stat.publisher.internal.DTO.Constants.ENABLE_STAT_PUBLISHER, registry);
+            String enableStatPublisher = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.ENABLE_STAT_PUBLISHER, registry);
 
             String userName = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.USER_NAME,
                     registry);
