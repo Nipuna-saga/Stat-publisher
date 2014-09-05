@@ -15,16 +15,16 @@ import java.io.IOException;
 /**
  * Created by dilshani on 8/18/14.
  */
-public class ReadXML {
 
+public class ReadJMXConfig {
     private boolean StartRMIServer;
     private String HostName;
     private String RMIRegistryPort;
     private String RMIServerPort;
 
-    public static Log log = LogFactory.getLog(ReadXML.class);
+    public static Log log = LogFactory.getLog(ReadJMXConfig.class);
 
-    public void ReadJMXConfig(){
+    public ReadJMXConfig(){
 
         final String emptyString= "";
 
@@ -46,17 +46,11 @@ public class ReadXML {
                 doc = docBuilder.parse(filePath);
                 doc.getDocumentElement().normalize();
 
-                // Node startRMIServerNode = doc.getElementsByTagName("StartRMIServer").item(0);
-                //NamedNodeMap attr = publishers.getAttributes();
-                //Node nodeAttr = attr.getNamedItem("name");
-                // String value = nodeAttr.getNodeValue().toString();
-                NodeList dataList = doc.getElementsByTagName("JMX");
+                String rootNode =  doc.getDocumentElement().getNodeName();
+                NodeList dataList = doc.getElementsByTagName(rootNode);
 
-                String StartRMIServerValue =
-                        (String) ((Element) dataList.item(0)).getElementsByTagName("StartRMIServer")
-                                .item(0)
-                                .getTextContent();
-
+                String StartRMIServerValue = (String) ((Element) dataList.item(0)).getElementsByTagName("StartRMIServer").
+                        item(0).getChildNodes().item(0).getTextContent();
                 if (StartRMIServerValue.equals(emptyString)) {
                     StartRMIServer = false;
                 } else {
@@ -66,23 +60,18 @@ public class ReadXML {
 
                 }
 
-                String hostNameValue =
-                        (String) ((Element) dataList.item(0)).getElementsByTagName("HostName")
-                                .item(0)
-                                .getTextContent();
-                String HostName = hostNameValue.trim();
+                String HostNameValue = (String) ((Element) dataList.item(0)).getElementsByTagName("HostName").
+                        item(0).getChildNodes().item(0).getTextContent();
+                this.HostName=HostNameValue.trim();
 
-                String RMIRegistryPortValue =
-                        (String) ((Element) dataList.item(0)).getElementsByTagName("RMIRegistryPort")
-                                .item(0)
-                                .getTextContent();
-                String RMIRegistryPort = RMIRegistryPortValue.trim();
+                String RMIRegistryPortValue = (String) ((Element) dataList.item(0)).getElementsByTagName("RMIRegistryPort").
+                        item(0).getChildNodes().item(0).getTextContent();
+                this.RMIRegistryPort=RMIRegistryPortValue.trim();
 
-                String RMIServerPortValue =
-                        (String) ((Element) dataList.item(0)).getElementsByTagName("RMIServerPort")
-                                .item(0)
-                                .getTextContent();
-                String RMIServerPort = RMIServerPortValue.trim();
+                String RMIServerPortValue = (String) ((Element) dataList.item(0)).getElementsByTagName("RMIRegistryPort").
+                        item(0).getChildNodes().item(0).getTextContent();
+                this.RMIServerPort=RMIServerPortValue.trim();
+
 
             }
         }catch(ParserConfigurationException parserException){
