@@ -23,7 +23,7 @@ public class PublisherObserver {
     StatConfiguration statConfigurationInstance;
     DataAgent dataAgentInstance;
     int tenantID;
-    private long timeInterval = 5000; //time interval for scheduled task
+    private long timeInterval = 20000; //time interval for scheduled task
 //
 
     public PublisherObserver() {
@@ -53,7 +53,7 @@ public class PublisherObserver {
                     statConfigurationInstance = statConfigurationDTOObject.ReadRegistry(tenantID); //get statConfiguration Instance according to tenant ID
 
 
-                    if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
+                 //   if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
 
 
                         System.out.println(" stat Publishing activated");
@@ -68,26 +68,26 @@ public class PublisherObserver {
                         String URLArray[] = urlOperations.URLSplitter(URLList);
                         String[] credentials = {"admin", "admin"};
 
-                        //    for(String URL : URLArray) {
+                           for(String URL : URLArray) {
 
-                        if (statConfigurationInstance.isSystem_statEnable()) {//check system stat enable configuration
+                     //   if (statConfigurationInstance.isSystem_statEnable()) {//check system stat enable configuration
 
                             System.out.println("System stat Publishing activated" + tenantID);
 
                             //System.out.println(URL);
-                            //  dataAgentInstance.sendSystemStats(URL,credentials);
+                            dataAgentInstance.sendSystemStats(URL,credentials);
 
-                        }
-                        if (statConfigurationInstance.isMB_statEnable()) {//check MB stat enable configuration
+                      //  }
+                       // if (statConfigurationInstance.isMB_statEnable()) {//check MB stat enable configuration
 
                             System.out.println("MB stat Publishing activated" + tenantID);
 
-                            //   dataAgentInstance.sendMBStatistics(statConfigurationInstance);
-                        }
-                        //     }
+                              dataAgentInstance.sendMBStatistics(URL,credentials);
+                       // }
+                            }
 
 
-                    }
+                  //  }
 
                 } catch (Exception e) {
                     //  log.error("failed to update statics from BAM publisher", e);
@@ -116,8 +116,7 @@ public class PublisherObserver {
         //   dataAgentInstance=DataAgent.getObjectDataAgent();
         //   dataAgentInstance.sendMessageStatistics(statConfigurationInstance,message);
         //todo move this to activator method
-        PublisherObserver publisherObserverInstance = new PublisherObserver();
-        publisherObserverInstance.statPublisherTimerTask();
+
 
 
         // }
