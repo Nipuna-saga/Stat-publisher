@@ -8,10 +8,7 @@ import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.stat.publisher.StatPublisherService;
 import org.wso2.carbon.stat.publisher.internal.DTO.StatConfigurationDTO;
-<<<<<<< HEAD
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
-=======
->>>>>>> fe5cecadb301011d305a33981dd05cad92abbec9
 import org.wso2.carbon.stat.publisher.internal.publisher.PublisherObserver;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
@@ -47,9 +44,6 @@ public class StatisticComponent {
 
             log.info("Successfully created the stat publisher service");
             System.out.println("====================Activated the bundle==================");
-
-
-
 
             PublisherObserver publisherObserverInstance = new PublisherObserver();
             publisherObserverInstance.statPublisherTimerTask();
