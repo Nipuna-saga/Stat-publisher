@@ -142,10 +142,10 @@ public class StatConfigurationDTO {
             String systemStatEnable = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.SYSTEM_STAT_ENABLE,
                     registry);
 
-
+//
             Boolean isEnableStatPublisher = Boolean.parseBoolean(enableStatPublisher);
 
-            if (isEnableStatPublisher && url != null && userName != null && password != null) {
+            if ( url != null && userName != null && password != null) {
 
                 statConfigurationReadObject.setEnableStatPublisher(Boolean.parseBoolean(enableStatPublisher));
                 statConfigurationReadObject.setURL(url);

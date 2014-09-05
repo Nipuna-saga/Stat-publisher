@@ -11,7 +11,7 @@ public class StatPublisherService {
 
     private StatConfigurationDTO StatConfigurationDTOObject;
 
-    //StatConfiguration details get method
+    ////StatConfiguration details get method
     public StatConfiguration getStatConfiguration() {
         int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
 
@@ -24,6 +24,9 @@ public class StatPublisherService {
     public boolean setStatConfiguration(StatConfiguration StatConfigurationData) {
         int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
         StatConfigurationDTOObject = new StatConfigurationDTO();
+
+        PublisherObserver.statConfigurationInstance = StatConfigurationData;
+
 
         if (StatConfigurationData.isSystem_statEnable() || StatConfigurationData.isMB_statEnable()) {
 

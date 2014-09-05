@@ -319,6 +319,7 @@ public class DataAgent {
     //this method will return JMXConfiguration as an array. array contains ip,port,username,password
     private String[] getJMXConfiguration() {
 
+
        ReadJMXConfig readJMXConfig = new ReadJMXConfig();
 
 

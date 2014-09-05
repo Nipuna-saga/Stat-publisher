@@ -4,7 +4,6 @@ import org.wso2.andes.kernel.AndesAckData;
 import org.wso2.andes.kernel.AndesMessageMetadata;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
-import org.wso2.carbon.stat.publisher.internal.DTO.StatConfigurationDTO;
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
 import org.wso2.carbon.stat.publisher.internal.util.URLOperations;
 
@@ -19,18 +18,21 @@ public class PublisherObserver {
 
     public static Timer timer;
     public static boolean timerFlag = true;
-    StatConfigurationDTO statConfigurationDTOObject;
-    StatConfiguration statConfigurationInstance;
-    DataAgent dataAgentInstance;
-    int tenantID;
-    private long timeInterval = 20000; //time interval for scheduled task
+
+
+    public static StatConfiguration statConfigurationInstance;
+
+
+    private DataAgent dataAgentInstance;
+    private int tenantID;
+    private long timeInterval = 5000; //time interval for scheduled task
+
+
 //
 
     public PublisherObserver() {
         tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
-        statConfigurationDTOObject = new StatConfigurationDTO();
 
-        statConfigurationInstance = statConfigurationDTOObject.ReadRegistry(tenantID);
 
     }
 
@@ -43,7 +45,7 @@ public class PublisherObserver {
                 try {
                     PrivilegedCarbonContext.startTenantFlow();
                     PrivilegedCarbonContext.getThreadLocalCarbonContext().setTenantId(tenantID, true);
-                    statConfigurationInstance = statConfigurationDTOObject.ReadRegistry(tenantID); //get statConfiguration Instance according to tenant ID
+                    // statConfigurationInstance = statConfigurationDTOObject.ReadRegistry(tenantID); //get statConfiguration Instance according to tenant ID
 
                     if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
 
@@ -66,7 +68,7 @@ public class PublisherObserver {
                             }
                             if (statConfigurationInstance.isMB_statEnable()) {//check MB stat enable configuration
                                 System.out.println("MB stat Publishing activated " + tenantID);
-                                dataAgentInstance.sendMBStatistics(URL, credentials);
+                                //      dataAgentInstance.sendMBStatistics(URL, credentials);
                             }
                         }
                     }

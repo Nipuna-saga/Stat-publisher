@@ -34,13 +34,13 @@ public class StatisticComponent {
 
     private static final Log log = LogFactory.getLog(StatisticComponent.class);
     private ServiceRegistration statAdminServiceRegistration;
-    StatConfigurationDTO statConfigurationDTOObject;
-    StatConfiguration statConfigurationInstance;
+    private StatConfigurationDTO statConfigurationDTOObject;
+    private StatConfiguration statConfigurationInstance;
 
 
     protected void activate(ComponentContext context) {
         try {
-            System.out.println("=====================Activating the bundle==================");
+            System.out.println("======================Activating the bundle==================");
 
             StatPublisherService Service = StatPublisherBuilder.createMediationService();
             context.getBundleContext().registerService(StatPublisherService.class.getName(),
@@ -49,26 +49,28 @@ public class StatisticComponent {
             log.info("Successfully created the stat publisher service");
             System.out.println("====================Activated the bundle==================");
 
-            PublisherObserver publisherObserverInstance = new PublisherObserver();
-            publisherObserverInstance.statPublisherTimerTask();
 
         } catch (RuntimeException e) {
             log.error("Can not create stat publisher service ", e);
         }
         statConfigurationDTOObject = new StatConfigurationDTO();
 
+
+
         statConfigurationInstance = statConfigurationDTOObject.ReadRegistry(CarbonContext.getThreadLocalCarbonContext().getTenantId());
 
-        PublisherObserver.timerFlag=false;
+        PublisherObserver.statConfigurationInstance = statConfigurationInstance;
 
-        if(statConfigurationInstance.isSystem_statEnable()||statConfigurationInstance.isMB_statEnable()){
+        PublisherObserver.timerFlag = false;
+
+        if (statConfigurationInstance.isSystem_statEnable() || statConfigurationInstance.isMB_statEnable()) {
 
             PublisherObserver publisherObserverInstance = new PublisherObserver();
             publisherObserverInstance.statPublisherTimerTask();
-            PublisherObserver.timerFlag=true;
+            PublisherObserver.timerFlag = true;
+
+
         }
-
-
 
 
     }
