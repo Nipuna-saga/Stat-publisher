@@ -190,7 +190,6 @@ public class DataAgent {
         //  messageMetaData = message.getMetadata();
         int messageContentLength = message.getMessageContentLength();
         long expirationTime = message.getExpirationTime();
-
         int noOfsubscribers = subscribers;
 
 
@@ -322,7 +321,7 @@ public class DataAgent {
 
        ReadJMXConfig readJMXConfig = new ReadJMXConfig();
 
-        
+
         System.out.println("hostname-------------------: " + readJMXConfig.getHostName());
 
         String JMSConfig[] = {"localhost", "10000", "admin", "admin"};

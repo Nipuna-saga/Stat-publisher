@@ -51,8 +51,8 @@ public class PublisherObserver {
                         dataAgentInstance = DataAgent.getObjectDataAgent();
 
 
-                 //String URL = statConfigurationInstance.getURL();
-                  //todo remove this line
+                        //String URL = statConfigurationInstance.getURL();
+                        //todo remove this line
 
                         String URLList = "tcp://localhost:7611";
                         URLOperations urlOperations = new URLOperations();
@@ -83,8 +83,6 @@ public class PublisherObserver {
 // scheduling the task at fixed rate
         timer.scheduleAtFixedRate(taskPublishStat, new Date(), timeInterval);
     }
-
-
 
 
     //method to publish message statistics
