@@ -322,7 +322,7 @@ public class DataAgent {
 
        ReadJMXConfig readJMXConfig = new ReadJMXConfig();
 
-        readJMXConfig.ReadJMXConfig();
+        
         System.out.println("hostname-------------------: " + readJMXConfig.getHostName());
 
         String JMSConfig[] = {"localhost", "10000", "admin", "admin"};

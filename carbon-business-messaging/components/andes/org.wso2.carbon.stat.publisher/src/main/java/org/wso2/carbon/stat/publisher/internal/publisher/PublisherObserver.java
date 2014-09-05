@@ -47,12 +47,9 @@ public class PublisherObserver {
 
                     if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
 
-
-
-
                         System.out.println(" stat Publishing activated");
                         dataAgentInstance = DataAgent.getObjectDataAgent();
-                        
+
 
                  //String URL = statConfigurationInstance.getURL();
                   //todo remove this line
@@ -63,12 +60,12 @@ public class PublisherObserver {
                         String[] credentials = {"admin", "admin"};
                         for (String URL : URLArray) {
                             if (statConfigurationInstance.isSystem_statEnable()) {//check system stat enable configuration
-                                System.out.println("System stat Publishing activated" + tenantID);
+                                System.out.println("System stat Publishing activated " + tenantID);
 
                                 dataAgentInstance.sendSystemStats(URL, credentials);
                             }
                             if (statConfigurationInstance.isMB_statEnable()) {//check MB stat enable configuration
-                                System.out.println("MB stat Publishing activated" + tenantID);
+                                System.out.println("MB stat Publishing activated " + tenantID);
                                 dataAgentInstance.sendMBStatistics(URL, credentials);
                             }
                         }
@@ -86,6 +83,8 @@ public class PublisherObserver {
 // scheduling the task at fixed rate
         timer.scheduleAtFixedRate(taskPublishStat, new Date(), timeInterval);
     }
+
+
 
 
     //method to publish message statistics
