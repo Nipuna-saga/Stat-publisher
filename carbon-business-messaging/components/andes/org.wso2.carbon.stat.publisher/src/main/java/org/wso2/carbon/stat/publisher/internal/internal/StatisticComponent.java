@@ -8,6 +8,7 @@ import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.stat.publisher.StatPublisherService;
 import org.wso2.carbon.stat.publisher.internal.DTO.StatConfigurationDTO;
+import org.wso2.carbon.stat.publisher.internal.publisher.PublisherObserver;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
 /**
@@ -36,11 +37,6 @@ public class StatisticComponent {
             StatPublisherService Service = StatPublisherBuilder.createMediationService();
             context.getBundleContext().registerService(StatPublisherService.class.getName(),
                     Service, null);
-
-
-            int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
-            StatConfigurationDTO statConfigurationDTO = new StatConfigurationDTO();
-            statConfigurationDTO.ReadRegistry(tenantID);
 
             log.info("Successfully created the stat publisher service");
             System.out.println("====================Activated the bundle==================");
