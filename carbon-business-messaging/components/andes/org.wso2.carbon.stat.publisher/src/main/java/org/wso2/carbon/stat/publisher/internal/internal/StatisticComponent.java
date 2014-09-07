@@ -56,19 +56,18 @@ public class StatisticComponent {
         statConfigurationDTOObject = new StatConfigurationDTO();
 
 
-
         statConfigurationInstance = statConfigurationDTOObject.ReadRegistry(CarbonContext.getThreadLocalCarbonContext().getTenantId());
 
         PublisherObserver.statConfigurationInstance = statConfigurationInstance;
 
         PublisherObserver.timerFlag = false;
 
-        if (statConfigurationInstance.isSystem_statEnable() || statConfigurationInstance.isMB_statEnable()) {
+        if ((statConfigurationInstance.isSystem_statEnable() || statConfigurationInstance.isMB_statEnable()) && statConfigurationInstance.isEnableStatPublisher()) {
 
             PublisherObserver publisherObserverInstance = new PublisherObserver();
             publisherObserverInstance.statPublisherTimerTask();
             PublisherObserver.timerFlag = true;
-
+            System.out.println("==================Stat Publishing Activated==================");
 
         }
 

@@ -50,7 +50,6 @@ public class StatConfigurationDTO {
                         statConfigurationWriteObject.isSystem_statEnable(), registry);
             } else {
 
-                System.out.println("================="+statConfigurationWriteObject.getUsername()+"=====================");
 
                 String userName = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.USER_NAME,
                         registry);
@@ -76,8 +75,6 @@ public class StatConfigurationDTO {
                     statConfigurationWriteObject.setSystem_statEnable(Boolean.parseBoolean(systemStatEnable));
                 }
 
-                System.out.println("================="+statConfigurationWriteObject.getUsername()+"=====================");
-                System.out.println("================="+statConfigurationWriteObject.isEnableStatPublisher()+"=====================");
 
                 updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.ENABLE_STAT_PUBLISHER,
                         statConfigurationWriteObject.isEnableStatPublisher(), registry);
@@ -145,7 +142,7 @@ public class StatConfigurationDTO {
 //
             Boolean isEnableStatPublisher = Boolean.parseBoolean(enableStatPublisher);
 
-            if ( url != null && userName != null && password != null) {
+            if (url != null && userName != null && password != null) {
 
                 statConfigurationReadObject.setEnableStatPublisher(Boolean.parseBoolean(enableStatPublisher));
                 statConfigurationReadObject.setURL(url);

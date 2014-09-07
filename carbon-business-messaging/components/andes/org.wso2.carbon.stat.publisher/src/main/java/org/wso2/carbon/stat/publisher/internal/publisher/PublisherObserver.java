@@ -37,7 +37,7 @@ public class PublisherObserver {
     }
 
 
-    //Timer task to publish system and MB stats
+    ////Timer task to publish system and MB stats
     public void statPublisherTimerTask() {
         TimerTask taskPublishStat = new TimerTask() {
             @Override
@@ -49,14 +49,13 @@ public class PublisherObserver {
 
                     if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
 
-                        System.out.println(" stat Publishing activated");
                         dataAgentInstance = DataAgent.getObjectDataAgent();
 
 
-                        //String URL = statConfigurationInstance.getURL();
+                        String URLList = statConfigurationInstance.getURL();
                         //todo remove this line
 
-                        String URLList = "tcp://localhost:7611";
+                        // String URLList = "tcp://localhost:7611";
                         URLOperations urlOperations = new URLOperations();
                         String URLArray[] = urlOperations.URLSplitter(URLList);
                         String[] credentials = {"admin", "admin"};
@@ -68,7 +67,7 @@ public class PublisherObserver {
                             }
                             if (statConfigurationInstance.isMB_statEnable()) {//check MB stat enable configuration
                                 System.out.println("MB stat Publishing activated " + tenantID);
-                                //      dataAgentInstance.sendMBStatistics(URL, credentials);
+                                dataAgentInstance.sendMBStatistics(URL, credentials);
                             }
                         }
                     }

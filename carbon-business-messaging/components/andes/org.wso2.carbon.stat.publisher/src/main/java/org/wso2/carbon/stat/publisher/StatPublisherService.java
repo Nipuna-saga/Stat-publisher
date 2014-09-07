@@ -20,7 +20,7 @@ public class StatPublisherService {
     }
 
 
-    //StatConfiguration details set// method
+    //StatConfiguration details set method
     public boolean setStatConfiguration(StatConfiguration StatConfigurationData) {
         int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
         StatConfigurationDTOObject = new StatConfigurationDTO();
@@ -28,9 +28,12 @@ public class StatPublisherService {
         PublisherObserver.statConfigurationInstance = StatConfigurationData;
 
 
-        if (StatConfigurationData.isSystem_statEnable() || StatConfigurationData.isMB_statEnable()) {
+        if ((StatConfigurationData.isSystem_statEnable() || StatConfigurationData.isMB_statEnable()) && StatConfigurationData.isEnableStatPublisher()) {
 
             if (!PublisherObserver.timerFlag) {
+
+                System.out.println("==================Stat Publishing Activated==================");
+
                 PublisherObserver publisherObserverInstance = new PublisherObserver();
                 publisherObserverInstance.statPublisherTimerTask();
                 PublisherObserver.timerFlag = true;
@@ -43,6 +46,7 @@ public class StatPublisherService {
                 PublisherObserver.timer.cancel();
 
                 PublisherObserver.timerFlag = false;
+                System.out.println("==================Stat Publishing Deactivated==================");
             }
         }
 
