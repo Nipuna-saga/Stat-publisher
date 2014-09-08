@@ -7,7 +7,7 @@ import org.wso2.carbon.databridge.agent.thrift.AsyncDataPublisher;
 import org.wso2.carbon.databridge.agent.thrift.conf.AgentConfiguration;
 import org.wso2.carbon.databridge.agent.thrift.exception.AgentException;
 import org.wso2.carbon.databridge.commons.Event;
-import org.wso2.carbon.serverStats.mbeans.MbeansStats;
+import org.wso2.carbon.stat.publisher.internal.serverStats.MbeansStats;
 import org.wso2.carbon.stat.publisher.internal.conf.ReadJMXConfig;
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
 import org.wso2.carbon.utils.CarbonUtils;
@@ -323,9 +323,9 @@ public class DataAgent {
        ReadJMXConfig readJMXConfig = new ReadJMXConfig();
 
 
-        System.out.println("hostname-------------------: " + readJMXConfig.getHostName());
+        System.out.println("=================port===================================================: " + readJMXConfig.getRMIServerPort());
 
-        String JMSConfig[] = {"localhost", "10000", "admin", "admin"};
+        String JMSConfig[] = {readJMXConfig.getHostName(), "10000", "admin", "admin"};
 
         return JMSConfig;
 

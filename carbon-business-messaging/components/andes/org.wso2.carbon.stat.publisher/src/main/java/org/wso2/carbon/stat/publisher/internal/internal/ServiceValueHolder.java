@@ -3,9 +3,6 @@ package org.wso2.carbon.stat.publisher.internal.internal;
 import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
-/**
- * Created by dilshani on 9/1/14.
- */
 public class ServiceValueHolder {
     private RegistryService registryService;
     private ConfigurationContextService configurationContextService;

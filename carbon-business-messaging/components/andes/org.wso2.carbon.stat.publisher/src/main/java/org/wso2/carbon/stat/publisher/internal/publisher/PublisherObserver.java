@@ -11,9 +11,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/**
- * Created by nipuna on 8/18/14.
- */
+
 public class PublisherObserver {
 
     public static Timer timer;

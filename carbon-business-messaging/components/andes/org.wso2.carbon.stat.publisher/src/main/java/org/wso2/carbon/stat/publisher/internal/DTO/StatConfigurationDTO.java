@@ -9,9 +9,7 @@ import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
 import org.wso2.carbon.stat.publisher.internal.util.PublisherException;
 
-/**
- * Created by dilshani on 8/28/14.
- */
+
 public class StatConfigurationDTO {
 
     public static final String EMPTY_STRING = "";

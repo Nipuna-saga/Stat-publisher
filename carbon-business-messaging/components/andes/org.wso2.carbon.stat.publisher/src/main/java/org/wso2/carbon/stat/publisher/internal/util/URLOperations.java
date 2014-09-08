@@ -2,9 +2,7 @@ package org.wso2.carbon.stat.publisher.internal.util;
 
 import java.net.Socket;
 
-/**
- * Created by nipuna on 8/15/14.
- */
+
 public class URLOperations {
 
     //URL validation method
