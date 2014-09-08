@@ -66,6 +66,8 @@ public class StatisticComponent {
             PublisherObserver.timerFlag = true;
             System.out.println("==================Stat Publishing Activated==================");
 
+
+
         }
 
 

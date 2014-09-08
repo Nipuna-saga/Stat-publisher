@@ -182,7 +182,7 @@ public class DataAgent {
 
     }
 
-    private void sendMessageStatistics(String URL, String[] credentials, AndesMessageMetadata message,  int subscribers) {
+    public void sendMessageStatistics(String URL, String[] credentials, AndesMessageMetadata message,  int subscribers) {
 
 
         long messageID = message.getMessageID();
