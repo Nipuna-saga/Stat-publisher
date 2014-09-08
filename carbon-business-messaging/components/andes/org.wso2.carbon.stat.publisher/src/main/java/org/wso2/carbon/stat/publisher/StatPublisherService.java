@@ -17,6 +17,9 @@ public class StatPublisherService {
 
         StatConfigurationDTOObject = new StatConfigurationDTO();
         return StatConfigurationDTOObject.ReadRegistry(tenantID);
+
+
+
     }
 
 
