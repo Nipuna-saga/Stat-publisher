@@ -41,9 +41,10 @@ public class PublisherObserver {
             @Override
             public void run() {
                 try {
+                    //set tenant ID to Carbon context in thread
                     PrivilegedCarbonContext.startTenantFlow();
                     PrivilegedCarbonContext.getThreadLocalCarbonContext().setTenantId(tenantID, true);
-                    // statConfigurationInstance = statConfigurationDTOObject.ReadRegistry(tenantID); //get statConfiguration Instance according to tenant ID
+
 
                     if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
 
@@ -85,7 +86,7 @@ public class PublisherObserver {
 
 
     //method to publish message statistics
-    public void messageStatPublisherTask(AndesMessageMetadata message,int subscribers) { //todo nipuna me method ekata subscribersla gana pass wenna one messagin engine eke idala. https://github.com/Nipuna-saga/MB-DataAgent/blob/master/MessagingEngine.java meke 137 line eke thiyenawa num of subscribresla ganna widiha
+    public void messageStatPublisherTask(AndesMessageMetadata message,int subscribers) {
 
 
         if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
