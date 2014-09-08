@@ -85,7 +85,7 @@ public class PublisherObserver {
 
 
     //method to publish message statistics
-    public void messageStatPublisherTask(AndesMessageMetadata message,int subscribers) {
+    public void messageStatPublisherTask(AndesMessageMetadata message,int subscribers) { //todo nipuna me method ekata subscribersla gana pass wenna one messagin engine eke idala. https://github.com/Nipuna-saga/MB-DataAgent/blob/master/MessagingEngine.java meke 137 line eke thiyenawa num of subscribresla ganna widiha
 
 
         if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
@@ -98,8 +98,6 @@ public class PublisherObserver {
 
                     if (statConfigurationInstance.isMessage_statEnable()) { //check message stat enable configuration
 
-                        //   dataAgentInstance=DataAgent.getObjectDataAgent();
-                        //   dataAgentInstance.sendMessageStatistics(statConfigurationInstance,message);
 
                         String URLList = statConfigurationInstance.getURL();
 
