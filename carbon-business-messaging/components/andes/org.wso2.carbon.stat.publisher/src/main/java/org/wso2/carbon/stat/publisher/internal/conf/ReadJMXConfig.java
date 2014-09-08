@@ -12,9 +12,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * Created by dilshani on 8/18/14.
- */
+
 
 public class ReadJMXConfig {
     private boolean StartRMIServer;

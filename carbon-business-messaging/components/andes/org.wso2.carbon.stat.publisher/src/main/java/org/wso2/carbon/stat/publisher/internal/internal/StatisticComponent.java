@@ -16,9 +16,6 @@ import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
 import org.wso2.carbon.stat.publisher.internal.publisher.PublisherObserver;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
-/**
- * Created by dilshani on 9/1/14.
- */
 
 /**
  * @scr.component name="org.wso2.carbon.stat.publisher" immediate="true"
@@ -68,6 +65,8 @@ public class StatisticComponent {
             publisherObserverInstance.statPublisherTimerTask();
             PublisherObserver.timerFlag = true;
             System.out.println("==================Stat Publishing Activated==================");
+
+
 
         }
 

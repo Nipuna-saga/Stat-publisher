@@ -1,8 +1,6 @@
 package org.wso2.carbon.stat.publisher.internal.DTO;
 
-/**
- * Created by dilshani on 8/20/14.
- */
+
 
 import org.wso2.carbon.core.RegistryResources;
 

@@ -11,9 +11,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/**
- * Created by nipuna on 8/18/14.
- */
+
 public class PublisherObserver {
 
     public static Timer timer;
@@ -87,34 +85,38 @@ public class PublisherObserver {
 
 
     //method to publish message statistics
-    public void messageStatPublisherTask(AndesMessageMetadata message) {
+    public void messageStatPublisherTask(AndesMessageMetadata message,int subscribers) { //todo nipuna me method ekata subscribersla gana pass wenna one messagin engine eke idala. https://github.com/Nipuna-saga/MB-DataAgent/blob/master/MessagingEngine.java meke 137 line eke thiyenawa num of subscribresla ganna widiha
 
-
-//todo enable if
-        // if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
-//todo enable if
-        // if (statConfigurationInstance.isMessage_statEnable()) { //check message stat enable configuration
-
-        System.out.println("Message stat Publishing activated" + tenantID + message.getDestination());
 
         if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
 
             if (statConfigurationInstance.isMessage_statEnable()) { //check message stat enable configuration
 
-                //   dataAgentInstance=DataAgent.getObjectDataAgent();
-                //   dataAgentInstance.sendMessageStatistics(statConfigurationInstance,message);
-                //todo move this to activator method
+                System.out.println("Message stat Publishing activated" + tenantID + message.getDestination());
+
+                if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
+
+                    if (statConfigurationInstance.isMessage_statEnable()) { //check message stat enable configuration
 
 
-                //   dataAgentInstance=DataAgent.getObjectDataAgent();
-                //   dataAgentInstance.sendMessageStatistics(statConfigurationInstance,message);
-                //todo move this to activator method
-                PublisherObserver publisherObserverInstance = new PublisherObserver();
-                publisherObserverInstance.statPublisherTimerTask();
+                        String URLList = statConfigurationInstance.getURL();
+
+                        URLOperations urlOperations = new URLOperations();
+                        String URLArray[] = urlOperations.URLSplitter(URLList);
+                        String[] credentials = {statConfigurationInstance.getUsername(), statConfigurationInstance.getPassword()};
+
+                        for (String URL : URLArray) {
 
 
+                            dataAgentInstance = DataAgent.getObjectDataAgent();
+                            dataAgentInstance.sendMessageStatistics(URL,credentials,message,subscribers);
+
+                        }
+
+                    }
+
+                }
             }
-
         }
     }
 

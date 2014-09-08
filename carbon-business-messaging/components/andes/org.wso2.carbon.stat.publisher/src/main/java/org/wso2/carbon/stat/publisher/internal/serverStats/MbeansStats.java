@@ -1,4 +1,4 @@
-package org.wso2.carbon.serverStats.mbeans;
+package org.wso2.carbon.stat.publisher.internal.serverStats;
 
 import org.wso2.andes.management.common.JMXConnnectionFactory;
 
@@ -23,7 +23,7 @@ public class MbeansStats {
     private long timeout=100000;
 
 	
-public  MbeansStats(String host,int port, String username, String password) throws Exception {
+public MbeansStats(String host, int port, String username, String password) throws Exception {
 
 
    jmxc =  JMXConnnectionFactory.getJMXConnection(100000, host, port, username,password);
