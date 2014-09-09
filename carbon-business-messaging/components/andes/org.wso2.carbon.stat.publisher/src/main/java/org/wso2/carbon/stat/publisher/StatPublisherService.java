@@ -49,7 +49,7 @@ public class StatPublisherService {
                 PublisherObserver.timer.cancel();
 
                 PublisherObserver.timerFlag = false;
-                System.out.println("==================Stat Publishing Deactivated==================");
+                System.out.println("==================Stat Publishing Deactivated=================="+CarbonContext.getCurrentContext().getUsername());
             }
         }
 

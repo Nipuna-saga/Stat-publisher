@@ -34,6 +34,7 @@ public class PublisherObserver {
         tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
 
 
+
     }
 
 
@@ -180,7 +181,7 @@ public class PublisherObserver {
 
         @Override
         public void run() {
-            System.out.println("MB stat Publishing activated " + Thread.currentThread().getName() +URL);
+            System.out.println("MB stat Publishing activated " + Thread.currentThread().getName() +CarbonContext.getThreadLocalCarbonContext().getUsername());
             dataAgentInstance.sendMBStatistics(URL, credentials);
         }
     }
