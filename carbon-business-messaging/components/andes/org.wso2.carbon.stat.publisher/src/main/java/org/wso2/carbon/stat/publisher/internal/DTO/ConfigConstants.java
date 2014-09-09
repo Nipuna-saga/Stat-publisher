@@ -4,7 +4,7 @@ package org.wso2.carbon.stat.publisher.internal.DTO;
 
 import org.wso2.carbon.core.RegistryResources;
 
-public class Constants {
+public class ConfigConstants{
     public static final String ENABLE_STAT_PUBLISHER = "enableStatPublisher";
     public static final String USER_NAME = "username";
     public static final String PASSWORD = "password";
