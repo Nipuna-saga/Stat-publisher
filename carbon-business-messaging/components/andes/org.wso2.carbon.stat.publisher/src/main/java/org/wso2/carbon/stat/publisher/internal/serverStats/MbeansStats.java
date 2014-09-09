@@ -26,15 +26,13 @@ public class MbeansStats {
 public MbeansStats(String host, int port, String username, String password) throws Exception {
 
 
-   jmxc =  JMXConnnectionFactory.getJMXConnection(100000, host, port, username,password);
-	
-	//JMXConnector jmxc = JMXConnectorFactory.connect(url, environment);
-	//MBeanServerConnection conn =   
+   jmxc =  JMXConnnectionFactory.getJMXConnection(timeout, host, port, username,password);
+
 	
 	connection =jmxc.getMBeanServerConnection();
 
     setHeapMemoryUsageAndNonHeapMemUsage();
-   setCPUUsage();
+    setCPUUsage();
 
 
 

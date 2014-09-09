@@ -27,7 +27,6 @@ public class PublisherObserver {
     private DataAgent dataAgentInstance;
 
     private int tenantID;
-    private long timeInterval = 5000; //time interval for scheduled task
 
 
     public PublisherObserver() {
@@ -60,10 +59,11 @@ public class PublisherObserver {
 
                         String URLList = statConfigurationInstance.getURL();
 
+
                         // String URLList = "tcp://localhost:7611";
                         URLOperations urlOperations = new URLOperations();
                         String URLArray[] = urlOperations.URLSplitter(URLList);
-                        String[] credentials = {"admin", "admin"};
+                        String[] credentials = {statConfigurationInstance.getUsername(), statConfigurationInstance.getPassword()};
                         for (String URL : URLArray) {
                             if (statConfigurationInstance.isSystem_statEnable()) {//check system stat enable configuration
 
@@ -98,6 +98,7 @@ public class PublisherObserver {
         };
         timer = new Timer();
 // scheduling the task at fixed rate
+        long timeInterval = 5000;
         timer.scheduleAtFixedRate(taskPublishStat, new Date(), timeInterval);
     }
 
@@ -138,7 +139,22 @@ public class PublisherObserver {
 
             if (statConfigurationInstance.isMessage_statEnable()) { //check message stat enable configuration
 
-                System.out.println("Message stat Ack Publishing activated" + tenantID + ack.qName);
+               // System.out.println("Message stat Ack Publishing activated" + tenantID + ack.qName);
+
+
+                String URLList = statConfigurationInstance.getURL();
+
+                URLOperations urlOperations = new URLOperations();
+                String URLArray[] = urlOperations.URLSplitter(URLList);
+                String[] credentials = {statConfigurationInstance.getUsername(), statConfigurationInstance.getPassword()};
+
+                for (String URL : URLArray) {
+
+
+                    dataAgentInstance = DataAgent.getObjectDataAgent();
+                    dataAgentInstance.sendACKStatistics(URL,credentials,ack);
+
+                }
 
 
             }

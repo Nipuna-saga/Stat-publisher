@@ -41,17 +41,14 @@ public class DataAgent {
     private int totalSubscribers;
     private  String JMSConfiguration[];
 
+    private String FORWARD_SLASH = "/";
+
 
     private DataAgent() { //private constructor
-//todo need to be removed sleep
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
 
         AgentConfiguration agentConfiguration = new AgentConfiguration();
-        System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonHome() + "/repository/resources/security/client-truststore.jks");
+        System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonHome() + FORWARD_SLASH + "repository"+FORWARD_SLASH+"resources"+FORWARD_SLASH+"security"+FORWARD_SLASH+"client-truststore.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", "wso2carbon");
         agent = new Agent(agentConfiguration);
 
@@ -91,7 +88,7 @@ public class DataAgent {
 
             //Using Asynchronous data publisher
            if (asyncDataPublisherSystemStats == null) { //create the publisher object only once
-                asyncDataPublisherSystemStats = new AsyncDataPublisher( URL, "admin", "admin", agent);
+                asyncDataPublisherSystemStats = new AsyncDataPublisher( URL, credentials[0], credentials[1], agent);
             }
             String VERSION_SYSTEM_STATISTICS = "1.0.0";
             String messageStreamDefinition = "{" +
@@ -190,7 +187,7 @@ public class DataAgent {
         //  messageMetaData = message.getMetadata();
         int messageContentLength = message.getMessageContentLength();
         long expirationTime = message.getExpirationTime();
-        int noOfsubscribers = subscribers;
+
 
 
         //Using Asynchronous data publisher
@@ -220,7 +217,7 @@ public class DataAgent {
         timeStamp = getTimeStamp();
 
 
-        Object[] payload = new Object[]{messageID, messageDestination, messageContentLength, expirationTime, Integer.toString(noOfsubscribers), timeStamp};
+        Object[] payload = new Object[]{messageID, messageDestination, messageContentLength, expirationTime, Integer.toString(subscribers), timeStamp};
         Event event = eventObject(null, new Object[]{URL}, payload);
         try {
 
@@ -309,8 +306,6 @@ public class DataAgent {
         subscriptionStore = messaginEngine.getSubscriptionStore();
         List<String> topics = subscriptionStore.getTopics();
         noOfTopics = topics.size();
-
-
         return topics;
 
 
