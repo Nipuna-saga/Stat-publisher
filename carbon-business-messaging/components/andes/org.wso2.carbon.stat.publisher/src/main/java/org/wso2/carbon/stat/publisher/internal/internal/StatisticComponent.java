@@ -8,12 +8,11 @@ import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.stat.publisher.StatPublisherService;
 import org.wso2.carbon.stat.publisher.internal.DTO.StatConfigurationDTO;
-
-
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
-
-
 import org.wso2.carbon.stat.publisher.internal.publisher.PublisherObserver;
+import org.wso2.carbon.user.core.UserRealm;
+import org.wso2.carbon.user.core.UserStoreException;
+import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
 
@@ -25,15 +24,17 @@ import org.wso2.carbon.utils.ConfigurationContextService;
  * @scr.reference name="org.wso2.carbon.registry.service"
  * interface="org.wso2.carbon.registry.core.service.RegistryService" cardinality="1..1"
  * policy="dynamic" bind="setRegistryService" unbind="unsetRegistryService"
+ * @scr.reference name="realm.service" interface="org.wso2.carbon.user.core.service.RealmService"
+ * cardinality="1..1" policy="dynamic" bind="setRealmService" unbind="unsetRealmService"
  */
 
 public class StatisticComponent {
 
     private static final Log log = LogFactory.getLog(StatisticComponent.class);
+    public StatConfigurationDTO statConfigurationDTOObject;
+    public StatConfiguration statConfigurationInstance;
     private ServiceRegistration statAdminServiceRegistration;
-    private StatConfigurationDTO statConfigurationDTOObject;
-    private StatConfiguration statConfigurationInstance;
-
+    private RealmService realmService;
 
     protected void activate(ComponentContext context) {
         try {
@@ -66,10 +67,18 @@ public class StatisticComponent {
             PublisherObserver.timerFlag = true;
             System.out.println("==================Stat Publishing Activated==================");
 
-
-
         }
+        try {
+            StatConfiguration statConfiguration = new StatConfiguration();
+            UserRealm realm = realmService.getBootstrapRealm();
+            String userName = realm.getRealmConfiguration().getAdminUserName();
+            statConfiguration.setAdminUserName(userName);
+            String password = realm.getRealmConfiguration().getAdminPassword();
+            statConfiguration.setAdminPassword(password);
 
+        } catch (UserStoreException e) {
+            log.error("Error in realmService", e);
+        }
 
     }
 
@@ -101,6 +110,16 @@ public class StatisticComponent {
 
     protected void unsetRegistryService(RegistryService registryService) {
         StatConfigurationDTO.setRegistryService(null);
+    }
+
+    protected void setRealmService(RealmService realmService) {
+        this.realmService = realmService;
+    }
+
+    protected void unsetRealmService(RealmService realmService) {
+        if (this.realmService != null) {
+            this.realmService = null;
+        }
     }
 
 }
