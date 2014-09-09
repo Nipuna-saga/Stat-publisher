@@ -23,8 +23,8 @@ public class StatConfigurationDTO {
     /**
      * Updates the Registry with given config data.
      *
-     * @param statConfigurationWriteObject eventing configuration data
-     * @param tenantId                     get tenantID
+     * @param statConfigurationWriteObject - eventing configuration data
+     * @param tenantId - get tenantID
      */
     public void WriteRegistry(StatConfiguration statConfigurationWriteObject, int tenantId) {
         try {
@@ -84,6 +84,15 @@ public class StatConfigurationDTO {
 
     }
 
+    /**
+     * Update the properties
+     *
+     * @param propertyName - resource Name
+     * @param value - Value to store
+     * @param registry - load registry
+     * @throws org.wso2.carbon.registry.core.exceptions.RegistryException
+     * @throws PublisherException
+     */
     public void updateConfigProperty(String propertyName, Object value, Registry registry)
             throws RegistryException, PublisherException {
         String resourcePath = org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.MEDIATION_STATISTICS_REG_PATH + propertyName;
@@ -105,6 +114,14 @@ public class StatConfigurationDTO {
         }
     }
 
+
+    /**
+     * Loads configuration from Registry.
+     *
+     * @return  statConfigurationReadObject
+     * @param tenantId - get tenantID
+     *
+     */
     public StatConfiguration ReadRegistry(int tenantId) {
 
         StatConfiguration statConfigurationReadObject = new StatConfiguration();
@@ -137,7 +154,7 @@ public class StatConfigurationDTO {
             String systemStatEnable = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.SYSTEM_STAT_ENABLE,
                     registry);
 
-//
+
             Boolean isEnableStatPublisher = Boolean.parseBoolean(enableStatPublisher);
 
             if (url != null && userName != null && password != null) {
@@ -153,10 +170,6 @@ public class StatConfigurationDTO {
 
             }
 
-//            else {
-//                // Registry does not have eventing config
-//                update(statConfigurationReadObject, tenantId);
-//            }
         } catch (Exception e) {
             log.error("Could not load values from registry", e);
 
@@ -164,6 +177,13 @@ public class StatConfigurationDTO {
         return statConfigurationReadObject;
     }
 
+    /**
+     * Read the resource from registry
+     *
+     * @param propertyName - get resource name
+     * @param registry - load registry
+     *
+     */
     public String getConfigurationProperty(String propertyName, Registry registry)
             throws RegistryException, PublisherException {
         String resourcePath = org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.MEDIATION_STATISTICS_REG_PATH + propertyName;

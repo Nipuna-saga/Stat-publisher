@@ -6,6 +6,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import org.w3c.dom.*;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -13,23 +14,23 @@ import java.io.File;
 import java.io.IOException;
 
 
-
 public class ReadJMXConfig {
+    public static Log log = LogFactory.getLog(ReadJMXConfig.class);
     private boolean StartRMIServer;
     private String HostName;
     private String RMIRegistryPort;
     private String RMIServerPort;
 
-    public static Log log = LogFactory.getLog(ReadJMXConfig.class);
+    public ReadJMXConfig() {
 
-    public ReadJMXConfig(){
-
-        final String emptyString= "";
+        final String emptyString = "";
 
         try {
-            String filePath= "repository/conf/etc/jmx.xml";
+            String filePath = ConfConstants.JMXFilePath;
 
-            // get XML file
+            /**
+             * Loads XML file
+             */
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
             Document doc;
@@ -38,13 +39,13 @@ public class ReadJMXConfig {
 
             if (!file.exists()) {
 
-                System.err.println("jmx.xml doesn't exists!!");
+                log.error("jmx.xml doesn't exists!!");
 
             } else {
                 doc = docBuilder.parse(filePath);
                 doc.getDocumentElement().normalize();
 
-                String rootNode =  doc.getDocumentElement().getNodeName();
+                String rootNode = doc.getDocumentElement().getNodeName();
                 NodeList dataList = doc.getElementsByTagName(rootNode);
 
                 String StartRMIServerValue = (String) ((Element) dataList.item(0)).getElementsByTagName("StartRMIServer").
@@ -60,26 +61,24 @@ public class ReadJMXConfig {
 
                 String HostNameValue = (String) ((Element) dataList.item(0)).getElementsByTagName("HostName").
                         item(0).getChildNodes().item(0).getTextContent();
-                this.HostName=HostNameValue.trim();
+                this.HostName = HostNameValue.trim();
 
                 String RMIRegistryPortValue = (String) ((Element) dataList.item(0)).getElementsByTagName("RMIRegistryPort").
                         item(0).getChildNodes().item(0).getTextContent();
-                this.RMIRegistryPort=RMIRegistryPortValue.trim();
+                this.RMIRegistryPort = RMIRegistryPortValue.trim();
 
                 String RMIServerPortValue = (String) ((Element) dataList.item(0)).getElementsByTagName("RMIRegistryPort").
                         item(0).getChildNodes().item(0).getTextContent();
-                this.RMIServerPort=RMIServerPortValue.trim();
+                this.RMIServerPort = RMIServerPortValue.trim();
 
 
             }
-        }catch(ParserConfigurationException parserException){
-            log.error("ParserConfigurationException",parserException);
-        }
-        catch(SAXException saxException){
-            log.error("SAXException",saxException);
-        }
-        catch(IOException ioException){
-            log.error("IOException",ioException);
+        } catch (ParserConfigurationException parserException) {
+            log.error("ParserConfigurationException", parserException);
+        } catch (SAXException saxException) {
+            log.error("SAXException", saxException);
+        } catch (IOException ioException) {
+            log.error("IOException", ioException);
         }
     }
 
