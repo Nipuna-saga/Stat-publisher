@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <configuration>
-    <versionMessage>1.0.0</versionMessage>
-    <versionAck>1.0.2</versionAck>
     <forwardSlash>/</forwardSlash>
     <trustStorePassword>wso2carbon</trustStorePassword>
+    <versionMessage>1.0.0</versionMessage>
+    <versionAck>1.0.2</versionAck>
     <versionSystemStatistic>1.0.0</versionSystemStatistic>
+    <versionMBStatistic>1.0.0</versionMBStatistic>
 </configuration>
