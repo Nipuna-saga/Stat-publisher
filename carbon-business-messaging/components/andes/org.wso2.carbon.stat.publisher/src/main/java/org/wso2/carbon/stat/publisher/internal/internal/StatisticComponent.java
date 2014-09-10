@@ -1,5 +1,7 @@
 package org.wso2.carbon.stat.publisher.internal.internal;
 
+import org.apache.juli.logging.Log;
+import org.apache.juli.logging.LogFactory;
 import org.apache.log4j.Logger;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentContext;
@@ -29,13 +31,11 @@ import org.wso2.carbon.utils.ConfigurationContextService;
 
 public class StatisticComponent {
 
-<<<<<<< HEAD
+
     private static Logger logger = Logger.getLogger(StatPublisherService.class);
-=======
     private static final Log log = LogFactory.getLog(StatisticComponent.class);
     public StatConfigurationDTO statConfigurationDTOObject;
     public StatConfiguration statConfigurationInstance;
->>>>>>> e7848ad7c7e79599193f2b563620600655d64588
     private ServiceRegistration statAdminServiceRegistration;
     private RealmService realmService;
 
@@ -67,24 +67,11 @@ public class StatisticComponent {
             PublisherObserver publisherObserverInstance = new PublisherObserver();
             publisherObserverInstance.statPublisherTimerTask();
             PublisherObserver.timerFlag = true;
-<<<<<<< HEAD
+
             logger.info("==================Stat Publishing Activated==================");
 
-=======
             System.out.println("==================Stat Publishing Activated==================");
->>>>>>> e7848ad7c7e79599193f2b563620600655d64588
 
-        }
-        try {
-            StatConfiguration statConfiguration = new StatConfiguration();
-            UserRealm realm = realmService.getBootstrapRealm();
-            String userName = realm.getRealmConfiguration().getAdminUserName();
-            statConfiguration.setAdminUserName(userName);
-            String password = realm.getRealmConfiguration().getAdminPassword();
-            statConfiguration.setAdminPassword(password);
-
-        } catch (UserStoreException e) {
-            log.error("Error in realmService", e);
         }
 
     }

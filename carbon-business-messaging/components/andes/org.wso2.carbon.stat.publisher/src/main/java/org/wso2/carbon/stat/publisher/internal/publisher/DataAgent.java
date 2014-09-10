@@ -7,14 +7,15 @@ import org.wso2.carbon.databridge.agent.thrift.AsyncDataPublisher;
 import org.wso2.carbon.databridge.agent.thrift.conf.AgentConfiguration;
 import org.wso2.carbon.databridge.agent.thrift.exception.AgentException;
 import org.wso2.carbon.databridge.commons.Event;
-<<<<<<< HEAD
 import org.wso2.carbon.stat.publisher.internal.conf.ReadJMXConfig;
-=======
 import org.wso2.carbon.stat.publisher.internal.conf.ReadConfValues;
 import org.wso2.carbon.stat.publisher.internal.conf.ReadJMXConfig;
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
->>>>>>> e7848ad7c7e79599193f2b563620600655d64588
+
 import org.wso2.carbon.stat.publisher.internal.serverStats.MbeansStats;
+import org.wso2.carbon.user.core.UserRealm;
+import org.wso2.carbon.user.core.UserStoreException;
+import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.utils.CarbonUtils;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class DataAgent {
 
     private static DataAgent instance = null;
     private Agent agent;
+    private RealmService realmService;
     long timeStamp;
     AsyncDataPublisher asyncDataPublisherSystemStats = null;
     AsyncDataPublisher asyncDataPublisherMBStatistics = null;
@@ -65,13 +67,11 @@ public class DataAgent {
 
 
         AgentConfiguration agentConfiguration = new AgentConfiguration();
-<<<<<<< HEAD
         System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonHome() + FORWARD_SLASH + "repository" + FORWARD_SLASH + "resources" + FORWARD_SLASH + "security" + FORWARD_SLASH + "client-truststore.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", "wso2carbon");
-=======
         System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonHome() + FORWARD_SLASH + "repository"+FORWARD_SLASH+"resources"+FORWARD_SLASH+"security"+FORWARD_SLASH+"client-truststore.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", trustStorePassword);
->>>>>>> e7848ad7c7e79599193f2b563620600655d64588
+
         agent = new Agent(agentConfiguration);
 
 
@@ -330,10 +330,19 @@ public class DataAgent {
 
     //this method will return JMXConfiguration as an array. array contains ip,port,username,password
     private String[] getJMXConfiguration() {
+        try {
+            StatConfiguration statConfiguration = new StatConfiguration();
+            UserRealm realm = realmService.getBootstrapRealm();
+            String userName = realm.getRealmConfiguration().getAdminUserName();
+            statConfiguration.setAdminUserName(userName);
+            String password = realm.getRealmConfiguration().getAdminPassword();
+            statConfiguration.setAdminPassword(password);
 
+        } catch (UserStoreException e) {
+            logger.error("Error in realmService", e);
+        }
 
         ReadJMXConfig readJMXConfig = new ReadJMXConfig();
-
 
         System.out.println("=================port===================================================: " + readJMXConfig.getRMIServerPort());
 

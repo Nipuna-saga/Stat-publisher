@@ -13,14 +13,6 @@ public class ServiceValueHolder {
         return instance;
     }
 
-    public void registerRegistryService(RegistryService registryService) {
-        this.registryService = registryService;
-    }
-
-    public RegistryService getRegistryService() {
-        return this.registryService;
-    }
-
     public ConfigurationContextService getConfigurationContextService() {
         return configurationContextService;
     }
