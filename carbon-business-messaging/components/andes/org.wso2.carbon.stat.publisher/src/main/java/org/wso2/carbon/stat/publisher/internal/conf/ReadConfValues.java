@@ -24,6 +24,7 @@ public class ReadConfValues {
     private String forwardSlash;
     private String trustStorePassword;
     private String versionSystemStatistic;
+    private String versionMBStatistic;
 
     public ReadConfValues() {
 
@@ -72,6 +73,10 @@ public class ReadConfValues {
                         item(0).getChildNodes().item(0).getTextContent();
                 this.versionSystemStatistic = versionSystemStatisticValue.trim();
 
+                String versionMBStatisticValue = (String) ((Element) dataList.item(0)).getElementsByTagName("versionMBStatistic").
+                        item(0).getChildNodes().item(0).getTextContent();
+                this.versionMBStatistic = versionMBStatisticValue.trim();
+
             }
         } catch (ParserConfigurationException parserException) {
             log.error("ParserConfigurationException", parserException);
@@ -101,4 +106,6 @@ public class ReadConfValues {
     public String getVersionSystemStatistic() {
         return versionSystemStatistic;
     }
+
+    public String getVersionMBStatistic() { return versionMBStatistic; }
 }
