@@ -7,7 +7,13 @@ import org.wso2.carbon.databridge.agent.thrift.AsyncDataPublisher;
 import org.wso2.carbon.databridge.agent.thrift.conf.AgentConfiguration;
 import org.wso2.carbon.databridge.agent.thrift.exception.AgentException;
 import org.wso2.carbon.databridge.commons.Event;
+<<<<<<< HEAD
 import org.wso2.carbon.stat.publisher.internal.conf.ReadJMXConfig;
+=======
+import org.wso2.carbon.stat.publisher.internal.conf.ReadConfValues;
+import org.wso2.carbon.stat.publisher.internal.conf.ReadJMXConfig;
+import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
+>>>>>>> e7848ad7c7e79599193f2b563620600655d64588
 import org.wso2.carbon.stat.publisher.internal.serverStats.MbeansStats;
 import org.wso2.carbon.utils.CarbonUtils;
 
@@ -27,8 +33,10 @@ public class DataAgent {
     AsyncDataPublisher asyncDataPublisherACKStatistics = null;
 
 
-    public final String VERSION_MESSAGE = "1.0.0";
-    public final String VERSION_ACK = "1.0.2";
+    private final String VERSION_MESSAGE;
+    private final String VERSION_ACK;
+   private final String VERSION_SYSTEM_STATISTICS;
+    private final  String VERSION_MB_STATISTICS = "1.0.0";
 
 
     //subscriptions
@@ -40,15 +48,30 @@ public class DataAgent {
     private int totalSubscribers;
     private String JMSConfiguration[];
 
-    private String FORWARD_SLASH = "/";
+    private final String FORWARD_SLASH;
+    private  final String trustStorePassword;
 
 
     private DataAgent() { //private constructor
 
+        ReadConfValues  readConfValues = new ReadConfValues();
+
+
+        FORWARD_SLASH = readConfValues.getForwardSlash();
+        VERSION_MESSAGE = readConfValues.getVersionMessage();
+        VERSION_ACK = readConfValues.getVersionAck();
+        VERSION_SYSTEM_STATISTICS=readConfValues.getVersionSystemStatistic();
+        trustStorePassword = readConfValues.getTrustStorePassword();
+
 
         AgentConfiguration agentConfiguration = new AgentConfiguration();
+<<<<<<< HEAD
         System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonHome() + FORWARD_SLASH + "repository" + FORWARD_SLASH + "resources" + FORWARD_SLASH + "security" + FORWARD_SLASH + "client-truststore.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", "wso2carbon");
+=======
+        System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonHome() + FORWARD_SLASH + "repository"+FORWARD_SLASH+"resources"+FORWARD_SLASH+"security"+FORWARD_SLASH+"client-truststore.jks");
+        System.setProperty("javax.net.ssl.trustStorePassword", trustStorePassword);
+>>>>>>> e7848ad7c7e79599193f2b563620600655d64588
         agent = new Agent(agentConfiguration);
 
 
@@ -85,7 +108,7 @@ public class DataAgent {
             if (asyncDataPublisherSystemStats == null) { //create the publisher object only once
                 asyncDataPublisherSystemStats = new AsyncDataPublisher(URL, credentials[0], credentials[1], agent);
             }
-            String VERSION_SYSTEM_STATISTICS = "1.0.0";
+
             String messageStreamDefinition = "{" +
                     "  'name':'" + "SYSTEM_STATISTICS_MB" + "'," +
                     "  'version':'" + VERSION_SYSTEM_STATISTICS + "'," +
@@ -132,7 +155,7 @@ public class DataAgent {
             asyncDataPublisherMBStatistics = new AsyncDataPublisher(URL, credentials[0], credentials[1], agent);
         }
 
-        String VERSION_MB_STATISTICS = "1.0.0";
+
         String messageStreamDefinition = "{" +
                 "  'name':'" + "MB_STATISTICS" + "'," +
                 "  'version':'" + VERSION_MB_STATISTICS + "'," +

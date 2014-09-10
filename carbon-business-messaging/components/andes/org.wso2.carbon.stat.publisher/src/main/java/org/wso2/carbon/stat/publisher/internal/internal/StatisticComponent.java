@@ -9,6 +9,9 @@ import org.wso2.carbon.stat.publisher.StatPublisherService;
 import org.wso2.carbon.stat.publisher.internal.DTO.StatConfigurationDTO;
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
 import org.wso2.carbon.stat.publisher.internal.publisher.PublisherObserver;
+import org.wso2.carbon.user.core.UserRealm;
+import org.wso2.carbon.user.core.UserStoreException;
+import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
 
@@ -20,15 +23,21 @@ import org.wso2.carbon.utils.ConfigurationContextService;
  * @scr.reference name="org.wso2.carbon.registry.service"
  * interface="org.wso2.carbon.registry.core.service.RegistryService" cardinality="1..1"
  * policy="dynamic" bind="setRegistryService" unbind="unsetRegistryService"
+ * @scr.reference name="realm.service" interface="org.wso2.carbon.user.core.service.RealmService"
+ * cardinality="1..1" policy="dynamic" bind="setRealmService" unbind="unsetRealmService"
  */
 
 public class StatisticComponent {
 
+<<<<<<< HEAD
     private static Logger logger = Logger.getLogger(StatPublisherService.class);
+=======
+    private static final Log log = LogFactory.getLog(StatisticComponent.class);
+    public StatConfigurationDTO statConfigurationDTOObject;
+    public StatConfiguration statConfigurationInstance;
+>>>>>>> e7848ad7c7e79599193f2b563620600655d64588
     private ServiceRegistration statAdminServiceRegistration;
-    private StatConfigurationDTO statConfigurationDTOObject;
-    private StatConfiguration statConfigurationInstance;
-
+    private RealmService realmService;
 
     protected void activate(ComponentContext context) {
         try {
@@ -58,11 +67,25 @@ public class StatisticComponent {
             PublisherObserver publisherObserverInstance = new PublisherObserver();
             publisherObserverInstance.statPublisherTimerTask();
             PublisherObserver.timerFlag = true;
+<<<<<<< HEAD
             logger.info("==================Stat Publishing Activated==================");
 
+=======
+            System.out.println("==================Stat Publishing Activated==================");
+>>>>>>> e7848ad7c7e79599193f2b563620600655d64588
 
         }
+        try {
+            StatConfiguration statConfiguration = new StatConfiguration();
+            UserRealm realm = realmService.getBootstrapRealm();
+            String userName = realm.getRealmConfiguration().getAdminUserName();
+            statConfiguration.setAdminUserName(userName);
+            String password = realm.getRealmConfiguration().getAdminPassword();
+            statConfiguration.setAdminPassword(password);
 
+        } catch (UserStoreException e) {
+            log.error("Error in realmService", e);
+        }
 
     }
 
@@ -94,6 +117,16 @@ public class StatisticComponent {
 
     protected void unsetRegistryService(RegistryService registryService) {
         StatConfigurationDTO.setRegistryService(null);
+    }
+
+    protected void setRealmService(RealmService realmService) {
+        this.realmService = realmService;
+    }
+
+    protected void unsetRealmService(RealmService realmService) {
+        if (this.realmService != null) {
+            this.realmService = null;
+        }
     }
 
 }

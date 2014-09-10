@@ -23,8 +23,8 @@ public class StatConfigurationDTO {
     /**
      * Updates the Registry with given config data.
      *
-     * @param statConfigurationWriteObject eventing configuration data
-     * @param tenantId                     get tenantID
+     * @param statConfigurationWriteObject - eventing configuration data
+     * @param tenantId - get tenantID
      */
     public void WriteRegistry(StatConfiguration statConfigurationWriteObject, int tenantId) {
         try {
@@ -33,33 +33,33 @@ public class StatConfigurationDTO {
 
             if (statConfigurationWriteObject.isEnableStatPublisher()) {
 
-                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.ENABLE_STAT_PUBLISHER,
+                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.ENABLE_STAT_PUBLISHER,
                         statConfigurationWriteObject.isEnableStatPublisher(), registry);
-                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.USER_NAME,
+                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.USER_NAME,
                         statConfigurationWriteObject.getUsername(), registry);
-                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.PASSWORD,
+                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.PASSWORD,
                         statConfigurationWriteObject.getPassword(), registry);
-                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.URL, statConfigurationWriteObject.getURL(), registry);
-                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.MB_STAT_ENABLE,
+                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.URL, statConfigurationWriteObject.getURL(), registry);
+                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.MB_STAT_ENABLE,
                         statConfigurationWriteObject.isMB_statEnable(), registry);
-                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.MESSAGE_STAT_ENABLE,
+                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.MESSAGE_STAT_ENABLE,
                         statConfigurationWriteObject.isMessage_statEnable(), registry);
-                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.SYSTEM_STAT_ENABLE,
+                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.SYSTEM_STAT_ENABLE,
                         statConfigurationWriteObject.isSystem_statEnable(), registry);
             } else {
 
 
-                String userName = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.USER_NAME,
+                String userName = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.USER_NAME,
                         registry);
-                String password = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.PASSWORD,
+                String password = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.PASSWORD,
                         registry);
-                String url = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.URL,
+                String url = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.URL,
                         registry);
-                String mbStatEnable = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.MB_STAT_ENABLE,
+                String mbStatEnable = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.MB_STAT_ENABLE,
                         registry);
-                String messageStatEnable = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.MESSAGE_STAT_ENABLE,
+                String messageStatEnable = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.MESSAGE_STAT_ENABLE,
                         registry);
-                String systemStatEnable = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.SYSTEM_STAT_ENABLE,
+                String systemStatEnable = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.SYSTEM_STAT_ENABLE,
                         registry);
 
                 if (url != null && userName != null && password != null) {
@@ -74,7 +74,7 @@ public class StatConfigurationDTO {
                 }
 
 
-                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.ENABLE_STAT_PUBLISHER,
+                updateConfigProperty(org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.ENABLE_STAT_PUBLISHER,
                         statConfigurationWriteObject.isEnableStatPublisher(), registry);
 
             }
@@ -84,9 +84,18 @@ public class StatConfigurationDTO {
 
     }
 
+    /**
+     * Update the properties
+     *
+     * @param propertyName - resource Name
+     * @param value - Value to store
+     * @param registry - load registry
+     * @throws org.wso2.carbon.registry.core.exceptions.RegistryException
+     * @throws PublisherException
+     */
     public void updateConfigProperty(String propertyName, Object value, Registry registry)
             throws RegistryException, PublisherException {
-        String resourcePath = org.wso2.carbon.stat.publisher.internal.DTO.Constants.MEDIATION_STATISTICS_REG_PATH + propertyName;
+        String resourcePath = org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.MEDIATION_STATISTICS_REG_PATH + propertyName;
         Resource resource;
         if (registry != null) {
             try {
@@ -105,6 +114,14 @@ public class StatConfigurationDTO {
         }
     }
 
+
+    /**
+     * Loads configuration from Registry.
+     *
+     * @return  statConfigurationReadObject
+     * @param tenantId - get tenantID
+     *
+     */
     public StatConfiguration ReadRegistry(int tenantId) {
 
         StatConfiguration statConfigurationReadObject = new StatConfiguration();
@@ -122,22 +139,22 @@ public class StatConfigurationDTO {
         try {
             Registry registry = registryService.getConfigSystemRegistry(tenantId);
 
-            String enableStatPublisher = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.ENABLE_STAT_PUBLISHER, registry);
+            String enableStatPublisher = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.ENABLE_STAT_PUBLISHER, registry);
 
-            String userName = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.USER_NAME,
+            String userName = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.USER_NAME,
                     registry);
-            String password = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.PASSWORD,
+            String password = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.PASSWORD,
                     registry);
-            String url = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.URL,
+            String url = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.URL,
                     registry);
-            String mbStatEnable = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.MB_STAT_ENABLE,
+            String mbStatEnable = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.MB_STAT_ENABLE,
                     registry);
-            String messageStatEnable = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.MESSAGE_STAT_ENABLE,
+            String messageStatEnable = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.MESSAGE_STAT_ENABLE,
                     registry);
-            String systemStatEnable = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.Constants.SYSTEM_STAT_ENABLE,
+            String systemStatEnable = getConfigurationProperty(org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.SYSTEM_STAT_ENABLE,
                     registry);
 
-//
+
             Boolean isEnableStatPublisher = Boolean.parseBoolean(enableStatPublisher);
 
             if (url != null && userName != null && password != null) {
@@ -153,10 +170,6 @@ public class StatConfigurationDTO {
 
             }
 
-//            else {
-//                // Registry does not have eventing config
-//                update(statConfigurationReadObject, tenantId);
-//            }
         } catch (Exception e) {
             log.error("Could not load values from registry", e);
 
@@ -164,9 +177,16 @@ public class StatConfigurationDTO {
         return statConfigurationReadObject;
     }
 
+    /**
+     * Read the resource from registry
+     *
+     * @param propertyName - get resource name
+     * @param registry - load registry
+     *
+     */
     public String getConfigurationProperty(String propertyName, Registry registry)
             throws RegistryException, PublisherException {
-        String resourcePath = org.wso2.carbon.stat.publisher.internal.DTO.Constants.MEDIATION_STATISTICS_REG_PATH + propertyName;
+        String resourcePath = org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.MEDIATION_STATISTICS_REG_PATH + propertyName;
         String value = null;
         if (registry != null) {
             try {
