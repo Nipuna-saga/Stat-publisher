@@ -43,7 +43,7 @@ public class ReadConfValues {
 
             if (!file.exists()) {
 
-                log.error("jmx.xml doesn't exists!!");
+                log.error("ConfigurationData.xml doesn't exists!!");
 
             } else {
                 doc = docBuilder.parse(filePath);
