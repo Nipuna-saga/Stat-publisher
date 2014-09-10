@@ -1,5 +1,6 @@
 package org.wso2.carbon.stat.publisher.internal.publisher;
 
+import org.apache.log4j.Logger;
 import org.wso2.andes.kernel.AndesAckData;
 import org.wso2.andes.kernel.AndesMessageMetadata;
 import org.wso2.carbon.context.CarbonContext;
@@ -16,6 +17,8 @@ import java.util.concurrent.Executors;
 
 public class PublisherObserver {
 
+    private static Logger logger = Logger.getLogger(PublisherObserver.class);
+
     public static Timer timer;
     public static boolean timerFlag = true;
     public static StatConfiguration statConfigurationInstance;
@@ -31,7 +34,6 @@ public class PublisherObserver {
 
     public PublisherObserver() {
         tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
-
 
 
     }
@@ -68,17 +70,15 @@ public class PublisherObserver {
                             if (statConfigurationInstance.isSystem_statEnable()) {//check system stat enable configuration
 
 
-                                //  dataAgentInstance.sendSystemStats(URL, credentials);
-                                Runnable worker = new SystemStatPublisher(URL, credentials);
-                                executor.execute(worker);
+                                dataAgentInstance.sendSystemStats(URL, credentials);
+                                //       System.out.println("System stat Publishing activated " + Thread.currentThread().getName());
 
                             }
                             if (statConfigurationInstance.isMB_statEnable()) {//check MB stat enable configuration
 
-                                //   dataAgentInstance.sendMBStatistics(URL, credentials);
-                                Runnable worker = new MBStatPublisher(URL, credentials);
-                                executor.execute(worker);
+                                dataAgentInstance.sendMBStatistics(URL, credentials);
 
+                                //       System.out.println("MB stat Publishing activated " + Thread.currentThread().getName());
 
                             }
                         }
@@ -88,7 +88,7 @@ public class PublisherObserver {
 
 
                 } catch (Exception e) {
-// log.error("failed to update statics from BAM publisher", e);
+                    logger.error("failed to update statics from BAM publisher", e);
                 } finally {
                     PrivilegedCarbonContext.endTenantFlow();
                 }
@@ -97,7 +97,7 @@ public class PublisherObserver {
 
         };
         timer = new Timer();
-// scheduling the task at fixed rate
+           // scheduling the task at fixed rate
         long timeInterval = 5000;
         timer.scheduleAtFixedRate(taskPublishStat, new Date(), timeInterval);
     }
@@ -111,7 +111,7 @@ public class PublisherObserver {
 
             if (statConfigurationInstance.isMessage_statEnable()) { //check message stat enable configuration
 
-                System.out.println("Message stat Publishing activated" + tenantID + message.getDestination());
+                logger.info("Message stat Publishing activated");
 
 
                 String URLList = statConfigurationInstance.getURL();
@@ -139,7 +139,7 @@ public class PublisherObserver {
 
             if (statConfigurationInstance.isMessage_statEnable()) { //check message stat enable configuration
 
-               // System.out.println("Message stat Ack Publishing activated" + tenantID + ack.qName);
+                // System.out.println("Message stat Ack Publishing activated" + tenantID + ack.qName);
 
 
                 String URLList = statConfigurationInstance.getURL();
@@ -150,9 +150,9 @@ public class PublisherObserver {
 
                 for (String URL : URLArray) {
 
-
+                    logger.info("Message ack stat Publishing activated");
                     dataAgentInstance = DataAgent.getObjectDataAgent();
-                    dataAgentInstance.sendACKStatistics(URL,credentials,ack);
+                    dataAgentInstance.sendACKStatistics(URL, credentials, ack);
 
                 }
 
@@ -161,7 +161,7 @@ public class PublisherObserver {
 
         }
     }
-
+/*
     //System stat publisher inner class with runnable implementation
     private class SystemStatPublisher implements Runnable {
 
@@ -286,6 +286,6 @@ public class PublisherObserver {
 
 
     }
-
+*/
 }
 

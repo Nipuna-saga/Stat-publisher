@@ -1,5 +1,6 @@
 package org.wso2.carbon.stat.publisher;
 
+import org.apache.log4j.Logger;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.stat.publisher.internal.DTO.StatConfigurationDTO;
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
@@ -8,7 +9,7 @@ import org.wso2.carbon.stat.publisher.internal.util.URLOperations;
 
 public class StatPublisherService {
 
-
+    private static Logger logger = Logger.getLogger(StatPublisherService.class);
     private StatConfigurationDTO StatConfigurationDTOObject;
 
     ////StatConfiguration details get method
@@ -35,7 +36,7 @@ public class StatPublisherService {
 
             if (!PublisherObserver.timerFlag) {
 
-                System.out.println("==================Stat Publishing Activated==================");
+                logger.info("==================Stat Publishing Activated==================");
 
                 PublisherObserver publisherObserverInstance = new PublisherObserver();
                 publisherObserverInstance.statPublisherTimerTask();
@@ -49,7 +50,7 @@ public class StatPublisherService {
                 PublisherObserver.timer.cancel();
 
                 PublisherObserver.timerFlag = false;
-                System.out.println("==================Stat Publishing Deactivated=================="+CarbonContext.getCurrentContext().getUsername());
+                logger.info("==================Stat Publishing Deactivated==================");
             }
         }
 

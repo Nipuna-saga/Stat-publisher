@@ -7,9 +7,8 @@ import org.wso2.carbon.databridge.agent.thrift.AsyncDataPublisher;
 import org.wso2.carbon.databridge.agent.thrift.conf.AgentConfiguration;
 import org.wso2.carbon.databridge.agent.thrift.exception.AgentException;
 import org.wso2.carbon.databridge.commons.Event;
-import org.wso2.carbon.stat.publisher.internal.serverStats.MbeansStats;
 import org.wso2.carbon.stat.publisher.internal.conf.ReadJMXConfig;
-import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
+import org.wso2.carbon.stat.publisher.internal.serverStats.MbeansStats;
 import org.wso2.carbon.utils.CarbonUtils;
 
 import java.util.List;
@@ -18,7 +17,7 @@ public class DataAgent {
 
     private static Logger logger = Logger.getLogger(DataAgent.class);
 
-    private StatConfiguration statConfigurationInstance;
+
     private static DataAgent instance = null;
     private Agent agent;
     long timeStamp;
@@ -39,7 +38,7 @@ public class DataAgent {
     //topic and queue
     private int noOfTopics;
     private int totalSubscribers;
-    private  String JMSConfiguration[];
+    private String JMSConfiguration[];
 
     private String FORWARD_SLASH = "/";
 
@@ -48,7 +47,7 @@ public class DataAgent {
 
 
         AgentConfiguration agentConfiguration = new AgentConfiguration();
-        System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonHome() + FORWARD_SLASH + "repository"+FORWARD_SLASH+"resources"+FORWARD_SLASH+"security"+FORWARD_SLASH+"client-truststore.jks");
+        System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonHome() + FORWARD_SLASH + "repository" + FORWARD_SLASH + "resources" + FORWARD_SLASH + "security" + FORWARD_SLASH + "client-truststore.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", "wso2carbon");
         agent = new Agent(agentConfiguration);
 
@@ -63,10 +62,6 @@ public class DataAgent {
         }
         return instance;
     }
-
-
-
-
 
 
     public void sendSystemStats(String URL, String[] credentials) {
@@ -87,8 +82,8 @@ public class DataAgent {
 
 
             //Using Asynchronous data publisher
-           if (asyncDataPublisherSystemStats == null) { //create the publisher object only once
-                asyncDataPublisherSystemStats = new AsyncDataPublisher( URL, credentials[0], credentials[1], agent);
+            if (asyncDataPublisherSystemStats == null) { //create the publisher object only once
+                asyncDataPublisherSystemStats = new AsyncDataPublisher(URL, credentials[0], credentials[1], agent);
             }
             String VERSION_SYSTEM_STATISTICS = "1.0.0";
             String messageStreamDefinition = "{" +
@@ -179,7 +174,7 @@ public class DataAgent {
 
     }
 
-    public void sendMessageStatistics(String URL, String[] credentials, AndesMessageMetadata message,  int subscribers) {
+    public void sendMessageStatistics(String URL, String[] credentials, AndesMessageMetadata message, int subscribers) {
 
 
         long messageID = message.getMessageID();
@@ -187,7 +182,6 @@ public class DataAgent {
         //  messageMetaData = message.getMetadata();
         int messageContentLength = message.getMessageContentLength();
         long expirationTime = message.getExpirationTime();
-
 
 
         //Using Asynchronous data publisher
@@ -315,7 +309,7 @@ public class DataAgent {
     private String[] getJMXConfiguration() {
 
 
-       ReadJMXConfig readJMXConfig = new ReadJMXConfig();
+        ReadJMXConfig readJMXConfig = new ReadJMXConfig();
 
 
         System.out.println("=================port===================================================: " + readJMXConfig.getRMIServerPort());

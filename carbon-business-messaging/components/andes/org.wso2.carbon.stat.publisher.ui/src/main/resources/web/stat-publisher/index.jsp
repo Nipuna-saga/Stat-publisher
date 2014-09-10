@@ -213,7 +213,7 @@
                             <input type="checkbox" id="system_stat_check" name="system_stat_check"
                                    value="true" <%=system_stat_check_value%>/>
                         </td>
-                        <td colspan="3">MB</td>
+                        <td colspan="3">Message Broker</td>
                         <td>
                             <input type="checkbox" id="MB_stat_check" name="MB_stat_check" value="true"
                                    value="true" <%=MB_stat_check_value%>/>

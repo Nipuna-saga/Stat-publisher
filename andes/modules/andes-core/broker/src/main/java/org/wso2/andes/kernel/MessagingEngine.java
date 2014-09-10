@@ -193,7 +193,7 @@ public class MessagingEngine {
         }
 
         publisherObserverInstance = new PublisherObserver();
-        publisherObserverInstance.messageStatPublisherTask(message,noOfSubscriptions);
+        publisherObserverInstance.messageStatPublisherTask(message, noOfSubscriptions);
 
 
     }

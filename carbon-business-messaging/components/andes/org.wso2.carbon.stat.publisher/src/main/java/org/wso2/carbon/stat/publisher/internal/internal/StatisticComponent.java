@@ -1,18 +1,13 @@
 package org.wso2.carbon.stat.publisher.internal.internal;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentContext;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.stat.publisher.StatPublisherService;
 import org.wso2.carbon.stat.publisher.internal.DTO.StatConfigurationDTO;
-
-
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
-
-
 import org.wso2.carbon.stat.publisher.internal.publisher.PublisherObserver;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
@@ -29,7 +24,7 @@ import org.wso2.carbon.utils.ConfigurationContextService;
 
 public class StatisticComponent {
 
-    private static final Log log = LogFactory.getLog(StatisticComponent.class);
+    private static Logger logger = Logger.getLogger(StatPublisherService.class);
     private ServiceRegistration statAdminServiceRegistration;
     private StatConfigurationDTO statConfigurationDTOObject;
     private StatConfiguration statConfigurationInstance;
@@ -37,18 +32,17 @@ public class StatisticComponent {
 
     protected void activate(ComponentContext context) {
         try {
-            System.out.println("======================Activating the bundle==================");
+
 
             StatPublisherService Service = StatPublisherBuilder.createMediationService();
             context.getBundleContext().registerService(StatPublisherService.class.getName(),
                     Service, null);
 
-            log.info("Successfully created the stat publisher service");
-            System.out.println("====================Activated the bundle==================");
+            logger.info("Successfully created the stat publisher service");
 
 
         } catch (RuntimeException e) {
-            log.error("Can not create stat publisher service ", e);
+            logger.error("Can not create stat publisher service ", e);
         }
         statConfigurationDTOObject = new StatConfigurationDTO();
 
@@ -64,8 +58,7 @@ public class StatisticComponent {
             PublisherObserver publisherObserverInstance = new PublisherObserver();
             publisherObserverInstance.statPublisherTimerTask();
             PublisherObserver.timerFlag = true;
-            System.out.println("==================Stat Publishing Activated==================");
-
+            logger.info("==================Stat Publishing Activated==================");
 
 
         }
@@ -76,8 +69,8 @@ public class StatisticComponent {
     protected void deactivate(ComponentContext context) {
         // unregistered MBStatsPublisherAdmin service from the OSGi Service Register.
         statAdminServiceRegistration.unregister();
-        if (log.isDebugEnabled()) {
-            log.debug("MB statistics publisher bundle is deactivated");
+        if (logger.isDebugEnabled()) {
+            logger.debug("MB statistics publisher bundle is deactivated");
         }
     }
 
@@ -95,7 +88,7 @@ public class StatisticComponent {
         try {
             StatConfigurationDTO.setRegistryService(registryService);
         } catch (Exception e) {
-            log.error("Cannot retrieve System Registry", e);
+            logger.error("Cannot retrieve System Registry", e);
         }
     }
 
