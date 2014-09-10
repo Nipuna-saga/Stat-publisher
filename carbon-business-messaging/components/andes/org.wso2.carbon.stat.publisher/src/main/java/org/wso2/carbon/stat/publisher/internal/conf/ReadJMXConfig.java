@@ -20,6 +20,7 @@ public class ReadJMXConfig {
     private String HostName;
     private String RMIRegistryPort;
     private String RMIServerPort;
+    private String offSet;
 
     public ReadJMXConfig() {
 
@@ -95,7 +96,6 @@ public class ReadJMXConfig {
                 String rootNode = document.getDocumentElement().getNodeName();
                 NodeList dataList = document.getElementsByTagName(rootNode);
 
-
                 String RMIRegistryPortValue = (String) ((Element) dataList.item(0)).getElementsByTagName("RMIRegistryPort").
                         item(0).getChildNodes().item(0).getTextContent();
                 this.RMIRegistryPort = RMIRegistryPortValue.trim();
@@ -103,6 +103,10 @@ public class ReadJMXConfig {
                 String RMIServerPortValue = (String) ((Element) dataList.item(0)).getElementsByTagName("RMIServerPort").
                         item(0).getChildNodes().item(0).getTextContent();
                 this.RMIServerPort = RMIServerPortValue.trim();
+
+                String offSetValue = (String) ((Element) dataList.item(0)).getElementsByTagName("Offset").
+                        item(0).getChildNodes().item(0).getTextContent();
+                this.offSet = offSetValue.trim();
             }
         }
         catch (ParserConfigurationException parserException) {
@@ -130,4 +134,6 @@ public class ReadJMXConfig {
     public String getRMIRegistryPort() {
         return RMIRegistryPort;
     }
+
+    public String getOffSet() { return offSet;}
 }
