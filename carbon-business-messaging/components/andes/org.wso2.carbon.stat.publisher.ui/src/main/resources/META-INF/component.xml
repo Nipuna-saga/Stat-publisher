@@ -20,7 +20,7 @@
     <menus>
         <menu>
             <id>stat-publisher_menu</id>
-            <i18n-key>publisher</i18n-key>
+            <i18n-key>publisher.menu.caption</i18n-key>
             <i18n-bundle>org.wso2.carbon.stat.publisher.ui.i18n.Resources</i18n-bundle>
             <parent-menu>monitor_menu</parent-menu>
             <link>../stat-publisher/index.jsp</link>

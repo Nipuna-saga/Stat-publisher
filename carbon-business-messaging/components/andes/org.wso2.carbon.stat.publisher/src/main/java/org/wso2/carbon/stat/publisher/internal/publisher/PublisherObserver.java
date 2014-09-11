@@ -71,14 +71,14 @@ public class PublisherObserver {
 
 
                                 dataAgentInstance.sendSystemStats(URL, credentials);
-                                //       System.out.println("System stat Publishing activated " + Thread.currentThread().getName());
+                                //       logger.info("System stat Publishing activated " + Thread.currentThread().getName());
 
                             }
                             if (statConfigurationInstance.isMB_statEnable()) {//check MB stat enable configuration
 
                                 dataAgentInstance.sendMBStatistics(URL, credentials);
 
-                                //       System.out.println("MB stat Publishing activated " + Thread.currentThread().getName());
+                                //       logger.info("MB stat Publishing activated " + Thread.currentThread().getName());
 
                             }
                         }
@@ -139,7 +139,7 @@ public class PublisherObserver {
 
             if (statConfigurationInstance.isMessage_statEnable()) { //check message stat enable configuration
 
-                // System.out.println("Message stat Ack Publishing activated" + tenantID + ack.qName);
+                // logger.info("Message stat Ack Publishing activated" + tenantID + ack.qName);
 
 
                 String URLList = statConfigurationInstance.getURL();

@@ -26,9 +26,6 @@
 <%@ page import="org.wso2.carbon.utils.ServerConstants" %>
 
 
-
-
-
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://wso2.org/projects/carbon/taglibs/carbontags.jar" prefix="carbon" %>
 <script type="text/javascript" src="js/toggle.js"></script>
@@ -61,17 +58,99 @@
     }
 %>
 <%
+    String setConfig = request.getParameter("setConfig");
 
-    String response_message = "";
-    String enable_checked_value = "";
 
-    String get_username_value = "";
-    String get_password_value = "";
-    String get_URL_value = "";
+    String enable_checked_value = request.getParameter("enable_check");
+    ;
 
-    String message_stat_check_value = "";
-    String system_stat_check_value = "";
-    String MB_stat_check_value = "";
+    String get_username_value = request.getParameter("user_name");
+    ;
+    String get_password_value = request.getParameter("password");
+    ;
+    String get_URL_value = request.getParameter("url_address");
+    ;
+
+    String message_stat_check_value = request.getParameter("message_stat_enable_check");
+    ;
+    String system_stat_check_value = request.getParameter("system_stat_enable_check");
+    ;
+    String MB_stat_check_value = request.getParameter("mb_stat_enable_check");
+    ;
+
+
+    if (setConfig != null) {    // form submitted request to set eventing config
+        statConfigurationGetObject = new StatConfiguration();
+
+        if (enable_checked_value != null) {
+            statConfigurationGetObject.setEnableStatPublisher(true);
+        } else {
+            statConfigurationGetObject.setEnableStatPublisher(false);
+        }
+        if (message_stat_check_value != null) {
+            statConfigurationGetObject.setMessage_statEnable(true);
+        } else {
+            statConfigurationGetObject.setMessage_statEnable(false);
+        }
+        if (system_stat_check_value != null) {
+            statConfigurationGetObject.setSystem_statEnable(true);
+        } else {
+            statConfigurationGetObject.setSystem_statEnable(false);
+        }
+        if (MB_stat_check_value != null) {
+            statConfigurationGetObject.setMB_statEnable(true);
+        } else {
+            statConfigurationGetObject.setMB_statEnable(false);
+        }
+        if (get_URL_value != null) {
+            statConfigurationGetObject.setURL(get_URL_value);
+        }
+        if (get_username_value != null) {
+            statConfigurationGetObject.setUsername(get_username_value);
+        }
+        if (get_password_value != null) {
+            statConfigurationGetObject.setPassword(get_password_value);
+        }
+
+
+        try {
+            client.setStatConfiguration(statConfigurationGetObject);
+
+%>
+<script type="text/javascript">
+    /*jQuery(document).init(function () {*/
+    function handleOK() {
+
+    }
+
+    CARBON.showInfoDialog("Statistics Configuration Successfully Updated!", handleOK);
+    /*});*/
+</script>
+<%
+} catch (Exception e) {
+    if (e.getCause().getMessage().toLowerCase().indexOf("you are not authorized") == -1) {
+        response.setStatus(500);
+        CarbonUIMessage uiMsg = new CarbonUIMessage(CarbonUIMessage.ERROR, e.getMessage(), e);
+        session.setAttribute(CarbonUIMessage.ID, uiMsg);
+%>
+<jsp:include page="../admin/error.jsp"/>
+<%
+        }
+    }
+} else {
+    try {
+        statConfigurationGetObject = client.getStatConfiguration();
+    } catch (Exception e) {
+        if (e.getCause().getMessage().toLowerCase().indexOf("you are not authorized") == -1) {
+            response.setStatus(500);
+            CarbonUIMessage uiMsg = new CarbonUIMessage(CarbonUIMessage.ERROR, e.getMessage(), e);
+            session.setAttribute(CarbonUIMessage.ID, uiMsg);
+%>
+<jsp:include page="../admin/error.jsp"/>
+<%
+            }
+        }
+    }
 
 
     if (statConfigurationGetObject != null) {
@@ -103,141 +182,103 @@
 
     }
 
-    if (!(request.getAttribute("servlet_resp") == null)) {
-
-        response_message = (String) request.getAttribute("servlet_resp");
 
 %>
-<script type="text/javascript">
-    alertMessage("<%=response_message%>");
 
-</script>
-
-<%
-
-
-    }
-
-%>
 
 <div id="middle">
     <h2><fmt:message key="mb.stat.publisher"/></h2>
 
     <div id="workArea">
 
-        <form id="details_form" action="/carbon/stat-publisher/statConfigurationServlet" method="POST"
+        <form id="details_form" action="/carbon/stat-publisher/index.jsp" method="POST"
               onsubmit="return DoValidation();">
-            <table class="styledLeft" style="width: 20%">
-
+            <input type="hidden" name="setConfig" value="on"/>
+            <table width="100%" class="styledLeft" style="margin-left: 0px;">
+                <col width="40%">
+                <thead>
+                <tr>
+                    <th colspan="4"><fmt:message key="connection.configuration"/></th>
+                </tr>
+                </thead>
                 <tbody>
                 <tr>
-                    <td colspan="5">Enable Publisher</td>
-                    <td><input type="checkbox" id="enable_check" name="enable_check" value="true"
-                               onclick="toggleTable();" <%=enable_checked_value%>/></td>
+                    <td><input type="checkbox" id="enable_check" name="enable_check" <%=enable_checked_value%>
+                               onclick="toggleTable();"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <fmt:message key="enable.publisher"/>
+                    </td>
+                    <td></td>
                 </tr>
                 </tbody>
-            </table>
-
-
-            <br><br>
-
-            <div id="toggle">
-                <table class="styledLeft" style="width: 100%" id="authentication_table">
-                    <col width=20%>
-                    <col width=30%>
-                    <col width=50%>
-                    <thead>
-                    <tr>
-                        <th colspan="2">Authentication</th>
-                    </tr>
-                    </thead>
+                <div id="toggleTable">
                     <tbody>
                     <tr>
-                        <td class="formRaw"><fmt:message key="username"/><span
-                                class="required">*</span></td>
-                        <td>&nbsp<input type="text" id="username" name="username" value="<%=get_username_value%>"/></td>
-                    </tr>
-                    <tr>
-                        <td class="formRaw"><fmt:message key="password"/><span
-                                class="required">*</span></td>
-                        <td>&nbsp<input type="password" id="password" name="password" value="<%=get_password_value%>"/>
+                        <td>
+                            <fmt:message key="username"/>
                         </td>
+                        <td><input type="text" id="user_name" name="user_name" value="<%=get_username_value%>"/></td>
+
                     </tr>
-                </table>
-
-                <br><br>
-
-                <table class="styledLeft" style="width: 100%" id="transport_table">
-                    <col width=20%>
-                    <col width=30%>
-                    <col width=50%>
-                    <thead>
                     <tr>
-                        <th colspan="2">Transport</th>
+                        <td>
+                            <fmt:message key="password"/>
+                        </td>
+                        <td><input type="password" id="password" name="password" value="<%=get_password_value%>"/></td>
+
                     </tr>
-                    </thead>
-                    <tbody>
 
                     <tr>
-                        <td class="formRaw"><fmt:message key="url"/><span
-                                class="required">*</span></td>
+                        <td>
+                            <fmt:message key="url"/>
+                        </td>
                         <td><input type="text" id="url_address" name="url_address" value="<%=get_URL_value%>"/>
-                            <input type="button" class="button" id="testBut" value="<fmt:message key="test"/>"
-                                   onclick="validateURL()"/>
+                            <input type="button" value="<fmt:message key="test.server"/>" onclick="testServer()"/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<i> eg:- tcp://localhost:7611;tcp://...</i>
                         </td>
 
                     </tr>
-
-                </table>
-                <br><br>
-                <table class="styledLeft" style="width: 50%" id="stat_table">
-                    <col width=10%>
-                    <col width=10%>
-                    <col width=10%>
-
+                    </tbody>
                     <thead>
                     <tr>
-                        <th colspan="12">Statistic Configuration</th>
+                        <th colspan="4"><fmt:message key="statistic.configuration"/></th>
                     </tr>
-
-
                     </thead>
-                    <tr>
-                        <td colspan="3">Message</td>
-                        <td>
-                            <input type="checkbox" id="message_stat_check" name="message_stat_check"
-                                   value="true" <%=message_stat_check_value%>/>
-                        </td>
-                        <td colspan="3">System</td>
-                        <td>
-                            <input type="checkbox" id="system_stat_check" name="system_stat_check"
-                                   value="true" <%=system_stat_check_value%>/>
-                        </td>
-                        <td colspan="3">Message Broker</td>
-                        <td>
-                            <input type="checkbox" id="MB_stat_check" name="MB_stat_check" value="true"
-                                   value="true" <%=MB_stat_check_value%>/>
-                        </td>
 
+                    <tbody>
+                    <tr>
+                        <td><input type="checkbox" id="message_stat_enable_check" name="message_stat_enable_check"
+                                <%=message_stat_check_value%>
+                                />&nbsp;&nbsp;&nbsp;&nbsp;
+                            <fmt:message key="publish.message.statistics"/>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" id="system_stat_enable_check" name="system_stat_enable_check"
+                                <%=system_stat_check_value%>
+                                />&nbsp;&nbsp;&nbsp;&nbsp;
+                            <fmt:message key="publish.system.statistics"/>
+                        </td>
+                        <td></td>
                     </tr>
 
-                </table>
-                <br>
-            </div>
-            <table class="styledLeft" style="width: 50%" id="button_table">
-                <tr>
-
-                    <td class="buttonRow"><input type="submit" class="button" id="saveButton"
-                                                 name="saveButton"
-                                                 value="<fmt:message key="save"/>"
-                            />
-                        <input type="submit" class="button" id="resetButton"
-                               name="saveButton"
-                               value="<fmt:message key="reset"/>"
+                    <tr>
+                        <td><input type="checkbox" id="mb_stat_enable_check" name="mb_stat_enable_check"
+                                <%=MB_stat_check_value%>
+                                />&nbsp;&nbsp;&nbsp;&nbsp;
+                            <fmt:message key="publish.mb.statistics"/>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><input type="submit" value="<fmt:message key="button.update"/>"
                                 />
-                    </td>
 
-                </tr>
+                        </td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </div>
             </table>
 
         </form>
