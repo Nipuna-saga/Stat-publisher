@@ -31,7 +31,7 @@ public class ReadConfValues {
         final String emptyString = "";
 
         try {
-            String filePath= ConfConstants.ConfDataFilePath;
+            String filePath= ConfConstants.CONF_DATA_FILE_PATH;
 
             /**
              * Loads configurationData.xml file

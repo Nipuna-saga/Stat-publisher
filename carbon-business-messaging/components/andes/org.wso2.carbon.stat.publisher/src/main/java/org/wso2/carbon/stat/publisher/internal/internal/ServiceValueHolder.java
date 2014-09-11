@@ -15,8 +15,8 @@ public class ServiceValueHolder {
     public ConfigurationContextService getConfigurationContextService() {
         return configurationContextService;
     }
-    public void registerConfigurationContextService(
-            ConfigurationContextService configurationContextService) {
+
+    public void setConfigurationContextService(ConfigurationContextService configurationContextService) {
         this.configurationContextService = configurationContextService;
     }
 }

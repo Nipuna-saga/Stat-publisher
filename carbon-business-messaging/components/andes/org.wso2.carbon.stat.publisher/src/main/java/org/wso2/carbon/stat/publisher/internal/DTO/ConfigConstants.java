@@ -12,5 +12,5 @@ public class ConfigConstants {
     public static final String SYSTEM_STAT_ENABLE = "systemStatEnable";
 
     public static final String MEDIATION_STATISTICS_REG_PATH = RegistryResources.COMPONENTS
-            + "org.wso2.carbon.stat.publisher/messageBrokerStats/stat";
+            + "org.wso2.carbon.stat.publisher/messageBrokerStats/";
 }

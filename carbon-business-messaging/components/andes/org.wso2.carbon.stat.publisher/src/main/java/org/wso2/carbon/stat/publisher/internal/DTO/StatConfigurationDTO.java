@@ -8,7 +8,6 @@ import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
 import org.wso2.carbon.stat.publisher.internal.util.StatPublisherException;
 import org.wso2.carbon.utils.xml.StringUtils;
 
-
 public class StatConfigurationDTO {
 
     public static final String EMPTY_STRING = "";
@@ -24,9 +23,9 @@ public class StatConfigurationDTO {
      * @param statConfigurationWriteObject - eventing configuration data
      * @param tenantId - get tenantID
      */
-    public void StoreConfigurationData(StatConfiguration statConfigurationWriteObject, int tenantId) throws StatPublisherException {
+    public void StoreConfigurationData(StatConfiguration statConfigurationWriteObject, int tenantId)
+            throws StatPublisherException {
         try {
-
             Registry registry = registryService.getConfigSystemRegistry(tenantId);
 
             if (statConfigurationWriteObject.isEnableStatPublisher()) {
@@ -54,7 +53,7 @@ public class StatConfigurationDTO {
                 String messageStatEnable = getConfigurationProperty(ConfigConstants.MESSAGE_STAT_ENABLE,registry);
                 String systemStatEnable = getConfigurationProperty(ConfigConstants.SYSTEM_STAT_ENABLE,registry);
 
-                if (url != null && userName != null && password != null) {
+                if (StringUtils.isEmpty(url) && StringUtils.isEmpty(userName) && StringUtils.isEmpty(password)) {
 
                     statConfigurationWriteObject.setURL(url);
                     statConfigurationWriteObject.setUsername(userName);
@@ -65,13 +64,12 @@ public class StatConfigurationDTO {
                     statConfigurationWriteObject.setSystem_statEnable(Boolean.parseBoolean(systemStatEnable));
                 }
 
-
                 updateConfigProperty(ConfigConstants.ENABLE_STAT_PUBLISHER,
                         statConfigurationWriteObject.isEnableStatPublisher(), registry);
 
             }
         } catch (Exception e) {
-            throw new StatPublisherException("Could not update registry:",e);
+            throw new StatPublisherException("Could not update registry",e);
         }
 
     }
@@ -168,7 +166,7 @@ public class StatConfigurationDTO {
      */
     public String getConfigurationProperty(String propertyName, Registry registry)
             throws RegistryException, StatPublisherException {
-        String resourcePath = org.wso2.carbon.stat.publisher.internal.DTO.ConfigConstants.MEDIATION_STATISTICS_REG_PATH + propertyName;
+        String resourcePath = ConfigConstants.MEDIATION_STATISTICS_REG_PATH + propertyName;
         String value = null;
         if (registry != null) {
             try {

@@ -27,7 +27,7 @@ public class ReadJMXConfig {
         final String emptyString = "";
 
         try {
-            String filePath_JMX = ConfConstants.JMXFilePath;
+            String filePath_JMX = ConfConstants.JMX_FILE_PATH;
 
             /**
              * Loads jmx.xml file
@@ -75,7 +75,7 @@ public class ReadJMXConfig {
 
         try{
 
-            String filePath_Carbon = ConfConstants.CarbonFilePath;
+            String filePath_Carbon = ConfConstants.CARBON_FILE_PATH;
 
             /**
              * Loads carbon.xml file
