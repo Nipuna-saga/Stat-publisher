@@ -8,8 +8,6 @@ public class StatConfiguration {
     //credential details
     private String username;
     private String password;
-    private String adminUserName;
-    private String adminPassword;
     private String URL;
     private int tenantID;
 
@@ -80,21 +78,5 @@ public class StatConfiguration {
 
     public void setTenantID(int tenantID) {
         this.tenantID = tenantID;
-    }
-
-    public String getAdminUserName() {
-        return adminUserName;
-    }
-
-    public void setAdminUserName(String adminUserName) {
-        this.adminUserName = adminUserName;
-    }
-
-    public String getAdminPassword() {
-        return adminPassword;
-    }
-
-    public void setAdminPassword(String adminPassword) {
-        this.adminPassword = adminPassword;
     }
 }

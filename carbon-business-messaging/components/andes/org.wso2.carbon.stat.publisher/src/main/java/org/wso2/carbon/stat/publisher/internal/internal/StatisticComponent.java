@@ -1,7 +1,6 @@
 package org.wso2.carbon.stat.publisher.internal.internal;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+
 import org.apache.log4j.Logger;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentContext;
@@ -10,9 +9,9 @@ import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.stat.publisher.StatPublisherService;
 import org.wso2.carbon.stat.publisher.internal.DTO.StatConfigurationDTO;
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
+import org.wso2.carbon.stat.publisher.internal.publisher.DataAgent;
 import org.wso2.carbon.stat.publisher.internal.publisher.PublisherObserver;
-import org.wso2.carbon.user.core.UserRealm;
-import org.wso2.carbon.user.core.UserStoreException;
+import org.wso2.carbon.stat.publisher.internal.util.StatPublisherException;
 import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
@@ -32,14 +31,12 @@ import org.wso2.carbon.utils.ConfigurationContextService;
 public class StatisticComponent {
 
 
-    private static Logger logger = Logger.getLogger(StatPublisherService.class);
-    private static final Log log = LogFactory.getLog(StatisticComponent.class);
+    private static Logger logger = Logger.getLogger(StatisticComponent.class);
     public StatConfigurationDTO statConfigurationDTOObject;
     public StatConfiguration statConfigurationInstance;
     private ServiceRegistration statAdminServiceRegistration;
-    private RealmService realmService;
 
-    protected void activate(ComponentContext context) {
+    protected void activate(ComponentContext context) throws StatPublisherException {
         try {
 
 
@@ -51,18 +48,19 @@ public class StatisticComponent {
 
 
         } catch (RuntimeException e) {
-            logger.error("Can not create stat publisher service ", e);
+            throw new StatPublisherException("Can not create stat publisher service", e);
         }
         statConfigurationDTOObject = new StatConfigurationDTO();
 
 
-        statConfigurationInstance = statConfigurationDTOObject.ReadRegistry(CarbonContext.getThreadLocalCarbonContext().getTenantId());
+        statConfigurationInstance =statConfigurationDTOObject.LoadConfigurationData(CarbonContext.getThreadLocalCarbonContext().getTenantId());
 
         PublisherObserver.statConfigurationInstance = statConfigurationInstance;
 
         PublisherObserver.timerFlag = false;
 
-        if ((statConfigurationInstance.isSystem_statEnable() || statConfigurationInstance.isMB_statEnable()) && statConfigurationInstance.isEnableStatPublisher()) {
+        if ((statConfigurationInstance.isSystem_statEnable() || statConfigurationInstance.isMB_statEnable()) &&
+                statConfigurationInstance.isEnableStatPublisher()) {
 
             PublisherObserver publisherObserverInstance = new PublisherObserver();
             publisherObserverInstance.statPublisherTimerTask();
@@ -94,11 +92,11 @@ public class StatisticComponent {
 
     }
 
-    protected void setRegistryService(RegistryService registryService) {
+    protected void setRegistryService(RegistryService registryService) throws StatPublisherException {
         try {
             StatConfigurationDTO.setRegistryService(registryService);
         } catch (Exception e) {
-            logger.error("Cannot retrieve System Registry", e);
+            throw new StatPublisherException("Cannot retrieve System Registry", e);
         }
     }
 
@@ -106,14 +104,16 @@ public class StatisticComponent {
         StatConfigurationDTO.setRegistryService(null);
     }
 
-    protected void setRealmService(RealmService realmService) {
-        this.realmService = realmService;
+    protected void setRealmService(RealmService realmService) throws StatPublisherException {
+        try {
+            DataAgent.setRealmService(realmService);
+        } catch (Exception e) {
+            throw new StatPublisherException("Cannot retrieve Realm Service", e);
+        }
     }
 
     protected void unsetRealmService(RealmService realmService) {
-        if (this.realmService != null) {
-            this.realmService = null;
-        }
+        DataAgent.setRealmService(null);
     }
 
 }

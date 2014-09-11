@@ -9,10 +9,10 @@ import org.wso2.carbon.databridge.agent.thrift.exception.AgentException;
 import org.wso2.carbon.databridge.commons.Event;
 import org.wso2.carbon.stat.publisher.internal.conf.ReadJMXConfig;
 import org.wso2.carbon.stat.publisher.internal.conf.ReadConfValues;
-import org.wso2.carbon.stat.publisher.internal.conf.ReadJMXConfig;
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
 
 import org.wso2.carbon.stat.publisher.internal.serverStats.MbeansStats;
+import org.wso2.carbon.stat.publisher.internal.util.StatPublisherException;
 import org.wso2.carbon.user.core.UserRealm;
 import org.wso2.carbon.user.core.UserStoreException;
 import org.wso2.carbon.user.core.service.RealmService;
@@ -27,7 +27,7 @@ public class DataAgent {
 
     private static DataAgent instance = null;
     private Agent agent;
-    private RealmService realmService;
+    private static RealmService realmService;
     long timeStamp;
     AsyncDataPublisher asyncDataPublisherSystemStats = null;
     AsyncDataPublisher asyncDataPublisherMBStatistics = null;
@@ -54,7 +54,7 @@ public class DataAgent {
     private  final String trustStorePassword;
 
 
-    private DataAgent() { //private constructor
+    private DataAgent() throws StatPublisherException { //private constructor
 
         ReadConfValues  readConfValues = new ReadConfValues();
 
@@ -77,7 +77,7 @@ public class DataAgent {
 
     }
 
-    public static DataAgent getObjectDataAgent() {
+    public static DataAgent getObjectDataAgent() throws StatPublisherException {
 
         if (instance == null) {
             instance = new DataAgent();
@@ -328,15 +328,20 @@ public class DataAgent {
 
     }
 
+    public static void setRealmService(RealmService realmServiceParam) {
+        realmService = realmServiceParam;
+    }
+
     //this method will return JMXConfiguration as an array. array contains ip,port,username,password
-    private String[] getJMXConfiguration() {
+    private String[] getJMXConfiguration() throws StatPublisherException {
+        String userName=null;
+        String password=null;
         try {
             StatConfiguration statConfiguration = new StatConfiguration();
             UserRealm realm = realmService.getBootstrapRealm();
-            String userName = realm.getRealmConfiguration().getAdminUserName();
-            statConfiguration.setAdminUserName(userName);
-            String password = realm.getRealmConfiguration().getAdminPassword();
-            statConfiguration.setAdminPassword(password);
+            userName = realm.getRealmConfiguration().getAdminUserName();
+            password = realm.getRealmConfiguration().getAdminPassword();
+
 
         } catch (UserStoreException e) {
             logger.error("Error in realmService", e);
@@ -344,7 +349,9 @@ public class DataAgent {
 
         ReadJMXConfig readJMXConfig = new ReadJMXConfig();
 
-        System.out.println("=================port===================================================: " + readJMXConfig.getRMIServerPort());
+        System.out.println("=================username===================================================: " + userName+password);
+
+      //  System.out.println("=================port===================================================: " + readJMXConfig.getRMIServerPort());
 
         String JMSConfig[] = {readJMXConfig.getHostName(), "10000", "admin", "admin"};
 
