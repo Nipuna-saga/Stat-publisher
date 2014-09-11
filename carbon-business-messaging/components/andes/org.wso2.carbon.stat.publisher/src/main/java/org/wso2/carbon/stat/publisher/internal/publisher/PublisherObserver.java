@@ -6,6 +6,7 @@ import org.wso2.andes.kernel.AndesMessageMetadata;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
+import org.wso2.carbon.stat.publisher.internal.util.StatPublisherException;
 import org.wso2.carbon.stat.publisher.internal.util.URLOperations;
 
 import java.util.Date;
@@ -104,7 +105,7 @@ public class PublisherObserver {
 
 
     //method to publish message statistics
-    public void messageStatPublisherTask(AndesMessageMetadata message, int subscribers) {
+    public void messageStatPublisherTask(AndesMessageMetadata message, int subscribers) throws StatPublisherException {
 
 
         if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
@@ -133,7 +134,7 @@ public class PublisherObserver {
     }
 
     //method to publish message statistics
-    public void messageAckStatPublisherTask(AndesAckData ack) {
+    public void messageAckStatPublisherTask(AndesAckData ack) throws StatPublisherException {
 
         if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
 

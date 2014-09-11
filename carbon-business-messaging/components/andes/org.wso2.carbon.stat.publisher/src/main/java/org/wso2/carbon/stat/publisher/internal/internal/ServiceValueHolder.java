@@ -4,7 +4,6 @@ import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
 public class ServiceValueHolder {
-    private RegistryService registryService;
     private ConfigurationContextService configurationContextService;
 
     private static ServiceValueHolder instance = new ServiceValueHolder();
@@ -17,8 +16,7 @@ public class ServiceValueHolder {
         return configurationContextService;
     }
 
-    public void registerConfigurationContextService(
-            ConfigurationContextService configurationContextService) {
+    public void setConfigurationContextService(ConfigurationContextService configurationContextService) {
         this.configurationContextService = configurationContextService;
     }
 }

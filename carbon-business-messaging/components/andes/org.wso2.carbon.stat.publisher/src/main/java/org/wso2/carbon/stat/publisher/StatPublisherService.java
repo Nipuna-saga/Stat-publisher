@@ -5,6 +5,7 @@ import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.stat.publisher.internal.DTO.StatConfigurationDTO;
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
 import org.wso2.carbon.stat.publisher.internal.publisher.PublisherObserver;
+import org.wso2.carbon.stat.publisher.internal.util.StatPublisherException;
 import org.wso2.carbon.stat.publisher.internal.util.URLOperations;
 
 public class StatPublisherService {
@@ -12,14 +13,13 @@ public class StatPublisherService {
     private static Logger logger = Logger.getLogger(StatPublisherService.class);
     private StatConfigurationDTO StatConfigurationDTOObject;
 
-    ////StatConfiguration details get method
-    public StatConfiguration getStatConfiguration() {
+    //StatConfiguration details get method
+    public StatConfiguration getStatConfiguration() throws StatPublisherException {
         int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
 
         StatConfigurationDTOObject = new StatConfigurationDTO();
-        return StatConfigurationDTOObject.ReadRegistry(tenantID);
 
-
+        return StatConfigurationDTOObject.LoadConfigurationData(tenantID);
 
     }
 
@@ -54,8 +54,11 @@ public class StatPublisherService {
             }
         }
 
-        StatConfigurationDTOObject.WriteRegistry(StatConfigurationData, tenantID);
-
+        try {
+            StatConfigurationDTOObject.StoreConfigurationData(StatConfigurationData, tenantID);
+        } catch (StatPublisherException e) {
+            e.printStackTrace();
+        }
 
         return true;
     }

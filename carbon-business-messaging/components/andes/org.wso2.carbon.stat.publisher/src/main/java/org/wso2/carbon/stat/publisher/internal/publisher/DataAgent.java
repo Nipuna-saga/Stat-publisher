@@ -9,10 +9,10 @@ import org.wso2.carbon.databridge.agent.thrift.exception.AgentException;
 import org.wso2.carbon.databridge.commons.Event;
 import org.wso2.carbon.stat.publisher.internal.conf.ReadJMXConfig;
 import org.wso2.carbon.stat.publisher.internal.conf.ReadConfValues;
-import org.wso2.carbon.stat.publisher.internal.conf.ReadJMXConfig;
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
 
 import org.wso2.carbon.stat.publisher.internal.serverStats.MbeansStats;
+import org.wso2.carbon.stat.publisher.internal.util.StatPublisherException;
 import org.wso2.carbon.user.core.UserRealm;
 import org.wso2.carbon.user.core.UserStoreException;
 import org.wso2.carbon.user.core.service.RealmService;
@@ -23,27 +23,22 @@ import java.util.List;
 public class DataAgent {
 
     private static Logger logger = Logger.getLogger(DataAgent.class);
-
-
     private static DataAgent instance = null;
     private Agent agent;
-    private RealmService realmService;
+    private static RealmService realmService;
     long timeStamp;
     AsyncDataPublisher asyncDataPublisherSystemStats = null;
     AsyncDataPublisher asyncDataPublisherMBStatistics = null;
     AsyncDataPublisher asyncDataPublisherMessageStatistics = null;
     AsyncDataPublisher asyncDataPublisherACKStatistics = null;
 
-
     private final String VERSION_MESSAGE;
     private final String VERSION_ACK;
    private final String VERSION_SYSTEM_STATISTICS;
     private final  String VERSION_MB_STATISTICS = "1.0.0";
 
-
     //subscriptions
     private SubscriptionStore subscriptionStore;
-
 
     //topic and queue
     private int noOfTopics;
@@ -53,11 +48,9 @@ public class DataAgent {
     private final String FORWARD_SLASH;
     private  final String trustStorePassword;
 
-
-    private DataAgent() { //private constructor
+    private DataAgent() throws StatPublisherException { //private constructor
 
         ReadConfValues  readConfValues = new ReadConfValues();
-
 
         FORWARD_SLASH = readConfValues.getForwardSlash();
         VERSION_MESSAGE = readConfValues.getVersionMessage();
@@ -74,14 +67,11 @@ public class DataAgent {
 
         agent = new Agent(agentConfiguration);
 
-
     }
 
-    public static DataAgent getObjectDataAgent() {
-
+    public static DataAgent getObjectDataAgent() throws StatPublisherException {
         if (instance == null) {
             instance = new DataAgent();
-
         }
         return instance;
     }
@@ -91,18 +81,14 @@ public class DataAgent {
 
         //get server stats
         try {
-
             //get JMX configuration
-
             JMSConfiguration = getJMXConfiguration();
-
 
             MbeansStats mbeansStats = new MbeansStats(JMSConfiguration[0], Integer.parseInt(JMSConfiguration[1]), JMSConfiguration[2], JMSConfiguration[3]);
 
             String heapMemoryUsage = mbeansStats.getHeapMemoryUsage();
             String nonHeapMemoryUsage = mbeansStats.getNonHeapMemoryUsage();
             String CPULoadAverage = mbeansStats.getCPULoadAverage();
-
 
             //Using Asynchronous data publisher
             if (asyncDataPublisherSystemStats == null) { //create the publisher object only once
@@ -126,12 +112,9 @@ public class DataAgent {
                     "  ]" +
                     "}";
 
-
             asyncDataPublisherSystemStats.addStreamDefinition(messageStreamDefinition, "SYSTEM_STATISTICS_MB", VERSION_SYSTEM_STATISTICS);
 
-
             timeStamp = getTimeStamp();
-
 
             Object[] payload = new Object[]{heapMemoryUsage, nonHeapMemoryUsage, CPULoadAverage, timeStamp};
             Event event = eventObject(null, new Object[]{URL}, payload);
@@ -139,22 +122,18 @@ public class DataAgent {
 
             logger.info("System statistics sent at " + timeStamp);
 
-
         } catch (Exception e) {
             logger.error("Failed to send server stats", e);
         }
-
 
     }
 
     public void sendMBStatistics(String URL, String[] credentials) {
 
-
         //Using Asynchronous data publisher
         if (asyncDataPublisherMBStatistics == null) { //create the publisher object only once
             asyncDataPublisherMBStatistics = new AsyncDataPublisher(URL, credentials[0], credentials[1], agent);
         }
-
 
         String messageStreamDefinition = "{" +
                 "  'name':'" + "MB_STATISTICS" + "'," +
@@ -174,7 +153,6 @@ public class DataAgent {
                 "}";
         asyncDataPublisherMBStatistics.addStreamDefinition(messageStreamDefinition, "MB_STATISTICS", VERSION_MB_STATISTICS);
 
-
         timeStamp = getTimeStamp();
 
         try {
@@ -184,9 +162,7 @@ public class DataAgent {
             Object[] payload = new Object[]{totalSubscribers, noOfTopics, timeStamp};
             Event event = eventObject(null, new Object[]{URL}, payload);
 
-
             asyncDataPublisherMBStatistics.publish("MB_STATISTICS", VERSION_MB_STATISTICS, event);
-
 
         } catch (AgentException e) {
             logger.error("Failed to publish event", e);
@@ -198,7 +174,6 @@ public class DataAgent {
     }
 
     public void sendMessageStatistics(String URL, String[] credentials, AndesMessageMetadata message, int subscribers) {
-
 
         long messageID = message.getMessageID();
         String messageDestination = message.getDestination();
@@ -233,11 +208,9 @@ public class DataAgent {
         asyncDataPublisherMessageStatistics.addStreamDefinition(messageStreamDefinition, "MESSAGE_STATISTICS", VERSION_MESSAGE);
         timeStamp = getTimeStamp();
 
-
         Object[] payload = new Object[]{messageID, messageDestination, messageContentLength, expirationTime, Integer.toString(subscribers), timeStamp};
         Event event = eventObject(null, new Object[]{URL}, payload);
         try {
-
             asyncDataPublisherMessageStatistics.publish("MESSAGE_STATISTICS", VERSION_MESSAGE, event);
         } catch (AgentException e) {
             logger.error("Failed to publish event for send message statistics", e);
@@ -275,47 +248,31 @@ public class DataAgent {
                 "  ]" +
                 "}";
         asyncDataPublisherACKStatistics.addStreamDefinition(ackStreamDefinition, "MESSAGE_STATISTICS", VERSION_ACK);
-
-
         timeStamp = getTimeStamp();
-
-
         Object[] payload = new Object[]{ackMessageID, queueName, timeStamp};
         Event event = eventObject(null, new Object[]{URL}, payload);
         try {
-
             asyncDataPublisherACKStatistics.publish("MESSAGE_STATISTICS", VERSION_ACK, event);
         } catch (AgentException e) {
             logger.error("Failed to publish event", e);
         }
-
-
     }
 
     private int getTotalSubscriptions() throws Exception {
 
         totalSubscribers = 0;
-
         List<String> topics = getTopicList();
-
         MessagingEngine messagingEngine = MessagingEngine.getInstance();
         subscriptionStore = messagingEngine.getSubscriptionStore();
 
         for (String topic : topics) {
-
-
             List<Subscrption> subscriptionsList = subscriptionStore.getActiveClusterSubscribersForDestination(topic, true);
             totalSubscribers += subscriptionsList.size();
-
-
         }
-
 
         return totalSubscribers;
 
-
     }
-
 
     private List<String> getTopicList() throws Exception {
 
@@ -328,15 +285,20 @@ public class DataAgent {
 
     }
 
+    public static void setRealmService(RealmService realmServiceParam) {
+        realmService = realmServiceParam;
+    }
+
     //this method will return JMXConfiguration as an array. array contains ip,port,username,password
-    private String[] getJMXConfiguration() {
+    private String[] getJMXConfiguration() throws StatPublisherException {
+        String userName=null;
+        String password=null;
         try {
             StatConfiguration statConfiguration = new StatConfiguration();
             UserRealm realm = realmService.getBootstrapRealm();
-            String userName = realm.getRealmConfiguration().getAdminUserName();
-            statConfiguration.setAdminUserName(userName);
-            String password = realm.getRealmConfiguration().getAdminPassword();
-            statConfiguration.setAdminPassword(password);
+            userName = realm.getRealmConfiguration().getAdminUserName();
+            password = realm.getRealmConfiguration().getAdminPassword();
+
 
         } catch (UserStoreException e) {
             logger.error("Error in realmService", e);
@@ -344,7 +306,6 @@ public class DataAgent {
 
         ReadJMXConfig readJMXConfig = new ReadJMXConfig();
 
-        System.out.println("=================port===================================================: " + readJMXConfig.getRMIServerPort());
 
         String JMSConfig[] = {readJMXConfig.getHostName(), "10000", "admin", "admin"};
 
