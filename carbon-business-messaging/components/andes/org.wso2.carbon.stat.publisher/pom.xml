@@ -38,6 +38,11 @@
             <version>4.2.0</version>
         </dependency>
         <dependency>
+            <groupId>org.wso2.carbon</groupId>
+            <artifactId>org.wso2.carbon.utils</artifactId>
+            <version>4.2.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.wso2.andes</groupId>
             <artifactId>andes-broker</artifactId>
             <version>3.0.0-SNAPSHOT</version>
@@ -72,9 +77,7 @@
             <artifactId>andes</artifactId>
             <version>3.0.0-SNAPSHOT</version>
         </dependency>
-
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -98,13 +101,10 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
-
                         <Export-Package>
-
                             org.wso2.carbon.stat.publisher.*,
                         </Export-Package>
                         <Import-Package>
-
                             *;resolution:=optional
                         </Import-Package>
                         <DynamicImport-Package>*</DynamicImport-Package>

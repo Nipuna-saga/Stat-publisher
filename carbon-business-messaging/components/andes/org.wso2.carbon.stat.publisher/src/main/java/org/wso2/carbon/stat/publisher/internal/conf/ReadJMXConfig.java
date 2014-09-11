@@ -1,8 +1,8 @@
 package org.wso2.carbon.stat.publisher.internal.conf;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
+import org.wso2.carbon.stat.publisher.internal.util.StatPublisherException;
 import org.xml.sax.SAXException;
 
 import org.w3c.dom.*;
@@ -13,20 +13,21 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 
-
 public class ReadJMXConfig {
-    public static Log log = LogFactory.getLog(ReadJMXConfig.class);
+
+    private static Logger logger = Logger.getLogger(ReadJMXConfig.class);
     private boolean StartRMIServer;
     private String HostName;
     private String RMIRegistryPort;
     private String RMIServerPort;
+    private String offSet;
 
-    public ReadJMXConfig() {
+    public ReadJMXConfig() throws StatPublisherException {
 
         final String emptyString = "";
 
         try {
-            String filePath_JMX = ConfConstants.JMXFilePath;
+            String filePath_JMX = ConfConstants.JMX_FILE_PATH;
 
             /**
              * Loads jmx.xml file
@@ -39,7 +40,7 @@ public class ReadJMXConfig {
 
             if (!jmx_file.exists()) {
 
-                log.error("jmx.xml doesn't exists!!!");
+                logger.error("jmx.xml doesn't exists!!!");
 
             } else {
                 doc = docBuilder.parse(filePath_JMX);
@@ -48,32 +49,33 @@ public class ReadJMXConfig {
                 String rootNode = doc.getDocumentElement().getNodeName();
                 NodeList dataList = doc.getElementsByTagName(rootNode);
 
-                String StartRMIServerValue = (String) ((Element) dataList.item(0)).getElementsByTagName("StartRMIServer").
+                String StartRMIServerValue =
+                        (String) ((Element) dataList.item(0)).getElementsByTagName("StartRMIServer").
                         item(0).getChildNodes().item(0).getTextContent();
+
                 if (StartRMIServerValue.equals(emptyString)) {
                     StartRMIServer = false;
                 } else {
-
                     String nodeValue = StartRMIServerValue.trim();
                     StartRMIServer = Boolean.parseBoolean(nodeValue);
-
                 }
 
-                String HostNameValue = (String) ((Element) dataList.item(0)).getElementsByTagName("HostName").
+                String HostNameValue =
+                        (String) ((Element) dataList.item(0)).getElementsByTagName("HostName").
                         item(0).getChildNodes().item(0).getTextContent();
                 this.HostName = HostNameValue.trim();
             }
         } catch (ParserConfigurationException parserException) {
-            log.error("ParserConfigurationException", parserException);
+           throw new StatPublisherException("ParserConfigurationException", parserException);
         } catch (SAXException saxException) {
-            log.error("SAXException", saxException);
+            throw new StatPublisherException("SAXException", saxException);
         } catch (IOException ioException) {
-            log.error("IOException", ioException);
+            throw new StatPublisherException("IOException", ioException);
         }
 
         try{
 
-            String filePath_Carbon = ConfConstants.CarbonFilePath;
+            String filePath_Carbon = ConfConstants.CARBON_FILE_PATH;
 
             /**
              * Loads carbon.xml file
@@ -86,7 +88,7 @@ public class ReadJMXConfig {
 
             if (!carbon_file.exists()) {
 
-                log.error("carbon.xml doesn't exists!!!");
+                logger.error("carbon.xml doesn't exists!!!");
 
             } else {
                 document = docBuilder_carbon.parse(filePath_Carbon);
@@ -95,24 +97,29 @@ public class ReadJMXConfig {
                 String rootNode = document.getDocumentElement().getNodeName();
                 NodeList dataList = document.getElementsByTagName(rootNode);
 
-
-                String RMIRegistryPortValue = (String) ((Element) dataList.item(0)).getElementsByTagName("RMIRegistryPort").
+                String RMIRegistryPortValue =
+                        (String) ((Element) dataList.item(0)).getElementsByTagName("RMIRegistryPort").
                         item(0).getChildNodes().item(0).getTextContent();
                 this.RMIRegistryPort = RMIRegistryPortValue.trim();
 
-                String RMIServerPortValue = (String) ((Element) dataList.item(0)).getElementsByTagName("RMIServerPort").
+                String RMIServerPortValue =
+                        (String) ((Element) dataList.item(0)).getElementsByTagName("RMIServerPort").
                         item(0).getChildNodes().item(0).getTextContent();
                 this.RMIServerPort = RMIServerPortValue.trim();
+
+                String offSetValue =
+                        (String) ((Element) dataList.item(0)).getElementsByTagName("Offset").
+                        item(0).getChildNodes().item(0).getTextContent();
+                this.offSet = offSetValue.trim();
             }
         }
         catch (ParserConfigurationException parserException) {
-        log.error("ParserConfigurationException", parserException);
+            throw new StatPublisherException("ParserConfigurationException", parserException);
     } catch (SAXException saxException) {
-        log.error("SAXException", saxException);
+            throw new StatPublisherException("SAXException", saxException);
     } catch (IOException ioException) {
-        log.error("IOException", ioException);
+            throw new StatPublisherException("IOException", ioException);
     }
-
 }
 
     public boolean isStartRMIServer() {
@@ -130,4 +137,7 @@ public class ReadJMXConfig {
     public String getRMIRegistryPort() {
         return RMIRegistryPort;
     }
+
+    public String getOffSet() { return offSet;}
+
 }
