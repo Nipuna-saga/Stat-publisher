@@ -55,7 +55,7 @@ public class StatPublisherService {
         }
 
         try {
-            StatConfigurationDTOObject.StoreConfigurationData(StatConfigurationData, tenantID);
+            StatConfigurationDTOObject.storeConfigurationData(StatConfigurationData, tenantID);
         } catch (StatPublisherException e) {
             e.printStackTrace();
         }

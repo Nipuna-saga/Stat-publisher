@@ -2,7 +2,14 @@ package org.wso2.carbon.stat.publisher.internal.serverStats;
 
 import org.wso2.andes.management.common.JMXConnnectionFactory;
 
-import javax.management.*;
+import javax.management.AttributeNotFoundException;
+import javax.management.InstanceNotFoundException;
+import javax.management.MBeanException;
+import javax.management.MBeanServerConnection;
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectInstance;
+import javax.management.ObjectName;
+import javax.management.ReflectionException;
 import javax.management.openmbean.CompositeData;
 import javax.management.remote.JMXConnector;
 import java.io.IOException;
@@ -15,35 +22,32 @@ import java.util.Set;
 
 public class MbeansStats {
 
-	private String heapMemoryUsage = null;
+    private String heapMemoryUsage = null;
     private String nonHeapMemoryUsage = null;
     private String CPULoadAverage;
     private JMXConnector jmxc;
     private MBeanServerConnection connection;
-    private long timeout=100000;
-
-	
-public MbeansStats(String host, int port, String username, String password) throws Exception {
+    private long timeout = 100000;
 
 
-   jmxc =  JMXConnnectionFactory.getJMXConnection(timeout, host, port, username,password);
-
-	
-	connection =jmxc.getMBeanServerConnection();
-
-    setHeapMemoryUsageAndNonHeapMemUsage();
-    setCPUUsage();
+    public MbeansStats(String host, int port, String username, String password) throws Exception {
 
 
+        jmxc = JMXConnnectionFactory.getJMXConnection(timeout, host, port, username, password);
 
 
-}
+        connection = jmxc.getMBeanServerConnection();
+
+        setHeapMemoryUsageAndNonHeapMemUsage();
+        setCPUUsage();
 
 
+    }
 
 
-
-    public void setHeapMemoryUsageAndNonHeapMemUsage() throws MalformedObjectNameException, IOException, AttributeNotFoundException, MBeanException, ReflectionException, InstanceNotFoundException {
+    public void setHeapMemoryUsageAndNonHeapMemUsage()
+            throws MalformedObjectNameException, IOException, AttributeNotFoundException,
+                   MBeanException, ReflectionException, InstanceNotFoundException {
 
 
         Set<ObjectInstance> set = connection.queryMBeans(new ObjectName("java.lang:type=Memory"), null);
@@ -57,17 +61,18 @@ public MbeansStats(String host, int port, String username, String password) thro
         }*/
 
 
-
         // replace "used" with "max" to get max
-        heapMemoryUsage = ((CompositeData)attrValue).get("used").toString();
+        heapMemoryUsage = ((CompositeData) attrValue).get("used").toString();
 
         Object attrValue_nonHeapMem = connection.getAttribute(oi.getObjectName(), "NonHeapMemoryUsage");
-        nonHeapMemoryUsage = ((CompositeData)attrValue_nonHeapMem).get("used").toString();
+        nonHeapMemoryUsage = ((CompositeData) attrValue_nonHeapMem).get("used").toString();
 
 
     }
 
-    public void setCPUUsage() throws MalformedObjectNameException, IOException, AttributeNotFoundException, MBeanException, ReflectionException, InstanceNotFoundException {
+    public void setCPUUsage()
+            throws MalformedObjectNameException, IOException, AttributeNotFoundException,
+                   MBeanException, ReflectionException, InstanceNotFoundException {
 
 
      /*   Set<ObjectInstance> set = connection.queryMBeans(new ObjectName("java.lang:type=OperatingSystem"), null);
@@ -87,7 +92,7 @@ public MbeansStats(String host, int port, String username, String password) thro
         CPULoadAverage = Double.toString(osBean.getSystemLoadAverage());
 
 // What % load the overall system is at, from 0.0-1.0
-       // System.out.println(osBean.getSystemCpuLoad());
+        // System.out.println(osBean.getSystemCpuLoad());
 
 
 
@@ -99,23 +104,20 @@ public MbeansStats(String host, int port, String username, String password) thro
 */
 
 
-
-
-
     }
 
-    public String getHeapMemoryUsage(){
+    public String getHeapMemoryUsage() {
 
         return heapMemoryUsage;
 
     }
 
-    public String getNonHeapMemoryUsage(){
+    public String getNonHeapMemoryUsage() {
 
         return nonHeapMemoryUsage;
     }
 
-    public String getCPULoadAverage(){
+    public String getCPULoadAverage() {
         return CPULoadAverage;
     }
 }

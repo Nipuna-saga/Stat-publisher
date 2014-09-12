@@ -18,16 +18,12 @@ import java.util.concurrent.Executors;
 
 public class PublisherObserver {
 
-    private static Logger logger = Logger.getLogger(PublisherObserver.class);
-
+    private static final int NUMBER_OF_THREADS = 20;
     public static Timer timer;
     public static boolean timerFlag = true;
     public static StatConfiguration statConfigurationInstance;
-
+    private static Logger logger = Logger.getLogger(PublisherObserver.class);
     private ExecutorService executor;
-    private static final int NUMBER_OF_THREADS = 20;
-
-
     private DataAgent dataAgentInstance;
 
     private int tenantID;
@@ -38,7 +34,6 @@ public class PublisherObserver {
 
 
     }
-
 
     ////Timer task to publish system and MB stats
     public void statPublisherTimerTask() {
@@ -98,14 +93,15 @@ public class PublisherObserver {
 
         };
         timer = new Timer();
-           // scheduling the task at fixed rate
+        // scheduling the task at fixed rate
         long timeInterval = 5000;
         timer.scheduleAtFixedRate(taskPublishStat, new Date(), timeInterval);
     }
 
 
     //method to publish message statistics
-    public void messageStatPublisherTask(AndesMessageMetadata message, int subscribers) throws StatPublisherException {
+    public void messageStatPublisherTask(AndesMessageMetadata message, int subscribers)
+            throws StatPublisherException {
 
 
         if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
