@@ -45,27 +45,20 @@ public class DataAgent {
     private static Logger logger = Logger.getLogger(DataAgent.class);
     private static DataAgent instance = null;
     private static RealmService realmService;
-    private final String VERSION_MESSAGE;
-    private final String VERSION_ACK;
-    private final String VERSION_SYSTEM_STATISTICS;
-    private final String VERSION_MB_STATISTICS = "1.0.0";
-    private final String FORWARD_SLASH;
-    private final String trustStorePassword;
+    private  String VERSION_MESSAGE;
+    private  String VERSION_ACK;
+    private  String VERSION_SYSTEM_STATISTICS;
+    private  String VERSION_MB_STATISTICS = "1.0.0";
+    private  String FORWARD_SLASH;
+    private  String trustStorePassword;
     long timeStamp;
     AsyncDataPublisher asyncDataPublisherSystemStats = null;
     AsyncDataPublisher asyncDataPublisherMBStatistics = null;
     AsyncDataPublisher asyncDataPublisherMessageStatistics = null;
     AsyncDataPublisher asyncDataPublisherACKStatistics = null;
-<<<<<<< HEAD
 
-    private final String VERSION_MESSAGE;
-    private final String VERSION_ACK;
-    private final String VERSION_SYSTEM_STATISTICS;
-    private final String VERSION_MB_STATISTICS = "1.0.0";
-
-=======
     private Agent agent;
->>>>>>> 9ae5a2bd927f045014c2c5dd96b111216744bdd4
+
     //subscriptions
     private SubscriptionStore subscriptionStore;
     //topic and queue
@@ -73,31 +66,15 @@ public class DataAgent {
     private int totalSubscribers;
     private String JMSConfiguration[];
 
-<<<<<<< HEAD
-    private final String FORWARD_SLASH;
-    private final String trustStorePassword;
+
 
     private DataAgent() throws StatPublisherException { //private constructor
 
-        ReadConfValues readConfValues = new ReadConfValues();
 
-        FORWARD_SLASH = readConfValues.getForwardSlash();
-        VERSION_MESSAGE = readConfValues.getVersionMessage();
-        VERSION_ACK = readConfValues.getVersionAck();
-        VERSION_SYSTEM_STATISTICS = readConfValues.getVersionSystemStatistic();
-        trustStorePassword = readConfValues.getTrustStorePassword();
 
 
         AgentConfiguration agentConfiguration = new AgentConfiguration();
 
-
-
-
-        System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonHome() +
-                FORWARD_SLASH + "repository" + FORWARD_SLASH + "resources" + FORWARD_SLASH +
-                "security" + FORWARD_SLASH + "client-truststore.jks");
-=======
-    private DataAgent() throws StatPublisherException { //private constructor
 
         ReadStreamConfiguration readStreamConfiguration = new ReadStreamConfiguration();
 
@@ -108,14 +85,13 @@ public class DataAgent {
         trustStorePassword = readStreamConfiguration.getTrustStorePassword();
 
 
-        AgentConfiguration agentConfiguration = new AgentConfiguration();
+        agentConfiguration = new AgentConfiguration();
         System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonHome() + FORWARD_SLASH + "repository" + FORWARD_SLASH + "resources" + FORWARD_SLASH + "security" + FORWARD_SLASH + "client-truststore.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", "wso2carbon");
-        System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonHome() + FORWARD_SLASH + "repository" + FORWARD_SLASH + "resources" + FORWARD_SLASH + "security" + FORWARD_SLASH + "client-truststore.jks");
->>>>>>> 9ae5a2bd927f045014c2c5dd96b111216744bdd4
+
         System.setProperty("javax.net.ssl.trustStorePassword", trustStorePassword);
 
-        agent = new Agent(agentConfiguration);
+        agent = new Agent();
 
 
     }
@@ -192,7 +168,7 @@ public class DataAgent {
         }
 
         String messageStreamDefinition = "{" +
-<<<<<<< HEAD
+
                 "  'name':'" + "MB_STATISTICS" + "'," +
                 "  'version':'" + VERSION_MB_STATISTICS + "'," +
                 "  'nickName': 'MB stats'," +
@@ -210,24 +186,6 @@ public class DataAgent {
                 "}";
         asyncDataPublisherMBStatistics.addStreamDefinition(messageStreamDefinition, "MB_STATISTICS",
                 VERSION_MB_STATISTICS);
-=======
-                                         "  'name':'" + "MB_STATISTICS" + "'," +
-                                         "  'version':'" + VERSION_MB_STATISTICS + "'," +
-                                         "  'nickName': 'MB stats'," +
-                                         "  'description': 'Server Stats'," +
-                                         "  'metaData':[" +
-                                         "          {'name':'publisherIP','type':'STRING'}" +
-                                         "  ]," +
-                                         "  'payloadData':[" +
-
-
-                                         "          {'name':'NoOfSubscribers','type':'INT'}," +
-                                         "          {'name':'NoOfTopics','type':'INT'}," +
-                                         " 			{'name':'timestamp','type':'LONG'}" +
-                                         "  ]" +
-                                         "}";
-        asyncDataPublisherMBStatistics.addStreamDefinition(messageStreamDefinition, "MB_STATISTICS", VERSION_MB_STATISTICS);
->>>>>>> 9ae5a2bd927f045014c2c5dd96b111216744bdd4
 
         timeStamp = getTimeStamp();
 
@@ -381,15 +339,13 @@ public class DataAgent {
         ReadJMXConfiguration readJMXConfiguration = new ReadJMXConfiguration();
 
 
-<<<<<<< HEAD
+
         logger.info("=================port===================================================: " +
-                readJMXConfig.getRMIServerPort());
+                readJMXConfiguration.getRMIServerPort());
 
 
-        String JMSConfig[] = {readJMXConfig.getHostName(), "10000", "admin", "admin"};
-=======
         String JMSConfig[] = {readJMXConfiguration.getHostName(), "10000", "admin", "admin"};
->>>>>>> 9ae5a2bd927f045014c2c5dd96b111216744bdd4
+
 
         return JMSConfig;
 

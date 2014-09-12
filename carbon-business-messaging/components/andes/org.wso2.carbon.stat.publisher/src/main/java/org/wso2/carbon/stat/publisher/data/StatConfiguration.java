@@ -28,6 +28,7 @@ public class StatConfiguration {
     private String password;
     private String URL;
     private int tenantID;
+    private String nodeURL;
 
     //enable Stat publisher features (message,system and message broker)
     private boolean message_statEnable;
@@ -96,5 +97,13 @@ public class StatConfiguration {
 
     public void setTenantID(int tenantID) {
         this.tenantID = tenantID;
+    }
+
+    public String getNodeURL() {
+        return nodeURL;
+    }
+
+    public void setNodeURL(String nodeURL) {
+        this.nodeURL = nodeURL;
     }
 }

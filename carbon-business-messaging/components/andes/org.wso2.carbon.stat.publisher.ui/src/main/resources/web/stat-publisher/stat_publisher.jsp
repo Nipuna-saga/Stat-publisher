@@ -19,7 +19,7 @@
 <%@ page import="org.apache.axis2.context.ConfigurationContext" %>
 <%@ page import="org.wso2.carbon.CarbonConstants" %>
 <%@ page import="org.wso2.carbon.andes.ui.Constants" %>
-<%@ page import="org.wso2.carbon.stat.publisher.internal.data.xsd.StatConfiguration" %>
+<%@ page import="org.wso2.carbon.stat.publisher.data.xsd.StatConfiguration" %>
 <%@ page import="org.wso2.carbon.stat.publisher.ui.StatPublisherClient" %>
 <%@ page import="org.wso2.carbon.ui.CarbonUIMessage" %>
 <%@ page import="org.wso2.carbon.ui.CarbonUIUtil" %>
@@ -75,7 +75,8 @@
     ;
     String MB_stat_check_value = request.getParameter("mb_stat_enable_check");
     ;
-
+    String get_node_URL = request.getLocalAddr() + ":" + request.getLocalPort();
+    ;
 
     if (setConfig != null) {    // form submitted request to set eventing config
         statConfigurationInstance = new StatConfiguration();
@@ -109,7 +110,9 @@
         if (get_password_value != null) {
             statConfigurationInstance.setPassword(get_password_value);
         }
-
+        if (get_node_URL != null) {
+            statConfigurationInstance.setNodeURL(get_node_URL);
+        }
 
         try {
             client.setStatConfiguration(statConfigurationInstance);
@@ -183,13 +186,12 @@
 
 %>
 
-
 <div id="middle">
     <h2><fmt:message key="mb.stat.publisher"/></h2>
 
     <div id="workArea">
 
-        <form id="details_form" action="/carbon/stat-publisher/index.jsp" method="POST"
+        <form id="details_form" action="/carbon/stat-publisher/stat_publisher.jsp" method="POST"
               onsubmit="return DoValidation();">
             <input type="hidden" name="setConfig" value="on"/>
             <table width="100%" class="styledLeft" style="margin-left: 0px;">

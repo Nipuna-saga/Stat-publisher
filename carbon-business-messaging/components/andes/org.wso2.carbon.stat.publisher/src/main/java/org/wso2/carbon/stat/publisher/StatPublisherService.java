@@ -46,6 +46,7 @@ public class StatPublisherService {
         StatConfigurationDTOObject = new StatConfigurationDTO();
 
         PublisherObserver.statConfigurationInstance = StatConfigurationData;
+        System.out.println(StatConfigurationData.getNodeURL());
 
         //check SystemStat,MessageBrokerStat and Stat Publisher enable or not
         if ((StatConfigurationData.isSystem_statEnable() || StatConfigurationData.isMB_statEnable()) &&

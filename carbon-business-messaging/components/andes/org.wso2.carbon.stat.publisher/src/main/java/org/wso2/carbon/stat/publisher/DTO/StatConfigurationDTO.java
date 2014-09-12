@@ -65,10 +65,11 @@ public class StatConfigurationDTO {
                     statConfigurationWriteObject.setMB_statEnable(Boolean.parseBoolean(mbStatEnable));
                     statConfigurationWriteObject.setMessage_statEnable(Boolean.parseBoolean(messageStatEnable));
                     statConfigurationWriteObject.setSystem_statEnable(Boolean.parseBoolean(systemStatEnable));
-                }
+                }}
                 updateConfigProperty(StatConfigurationConstants.ENABLE_STAT_PUBLISHER,
                                      statConfigurationWriteObject.isEnableStatPublisher(), registry);
-            }
+
+
         } catch (RegistryException e) {
             throw new StatPublisherException("Could not update registry", e);
         }
@@ -141,7 +142,8 @@ public class StatConfigurationDTO {
                     getConfigurationProperty(StatConfigurationConstants.MESSAGE_STAT_ENABLE, registry);
             String systemStatEnable =
                     getConfigurationProperty(StatConfigurationConstants.SYSTEM_STAT_ENABLE, registry);
-            if (StringUtils.isEmpty(url)) {
+
+            if (!StringUtils.isEmpty(url)) {
                 statConfigurationReadObject.setEnableStatPublisher(Boolean.parseBoolean(enableStatPublisher));
                 statConfigurationReadObject.setURL(url);
                 statConfigurationReadObject.setUsername(userName);

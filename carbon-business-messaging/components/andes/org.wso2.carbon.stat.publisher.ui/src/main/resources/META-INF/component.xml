@@ -23,7 +23,7 @@
             <i18n-key>publisher.menu.caption</i18n-key>
             <i18n-bundle>org.wso2.carbon.stat.publisher.ui.i18n.Resources</i18n-bundle>
             <parent-menu>monitor_menu</parent-menu>
-            <link>../stat-publisher/index.jsp</link>
+            <link>../stat-publisher/stat_publisher.jsp</link>
             <region>region4</region>
             <order>50</order>
             <style-class>monitor</style-class>
@@ -32,20 +32,4 @@
         </menu>
     </menus>
 
-
-    <servlets>
-        <servlet id="statConfiguration">
-            <servlet-name>statConfigurationServlet</servlet-name>
-            <url-pattern>/carbon/stat-publisher/statConfigurationServlet</url-pattern>
-            <display-name>statConfigurationServlet</display-name>
-            <servlet-class>org.wso2.carbon.stat.publisher.ui.StatConfigurationServlet</servlet-class>
-        </servlet>
-
-        <servlet id="urlValidator">
-            <servlet-name>URLValidateServlet</servlet-name>
-            <url-pattern>/carbon/stat-publisher/URLValidateServlet</url-pattern>
-            <display-name>URLValidateServlet</display-name>
-            <servlet-class>org.wso2.carbon.stat.publisher.ui.URLValidationServlet</servlet-class>
-        </servlet>
-    </servlets>
-</component>
+   </component>

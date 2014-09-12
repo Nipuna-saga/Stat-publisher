@@ -57,25 +57,9 @@ public class StatisticComponent {
             //TODO log and return
             throw new StatPublisherException("Can not create stat publisher service", e);
         }
-<<<<<<< HEAD
-
-        statConfigurationDTOObject = new StatConfigurationDTO();
-        statConfigurationInstance =
-                statConfigurationDTOObject.LoadConfigurationData(CarbonContext.getThreadLocalCarbonContext().getTenantId());
-        PublisherObserver.statConfigurationInstance = statConfigurationInstance;
-        PublisherObserver.timerFlag = false;
-
-        if ((statConfigurationInstance.isSystem_statEnable() || statConfigurationInstance.isMB_statEnable()) &&
-                statConfigurationInstance.isEnableStatPublisher()) {
-            PublisherObserver publisherObserverInstance = new PublisherObserver();
-            publisherObserverInstance.statPublisherTimerTask();
-            PublisherObserver.timerFlag = true;
 
         }
 
-=======
->>>>>>> 9ae5a2bd927f045014c2c5dd96b111216744bdd4
-    }
 
     protected void deactivate(ComponentContext context) {
         // unregistered MBStatsPublisherAdmin service from the OSGi Service Register.
@@ -96,6 +80,7 @@ public class StatisticComponent {
     }
 
     protected void setRegistryService(RegistryService registryService)
+
             throws StatPublisherException {
         try {
             StatConfigurationDTO.setRegistryService(registryService);
@@ -104,7 +89,7 @@ public class StatisticComponent {
         }
     }
 
-    protected void unsetRegistryService() {
+    protected void unsetRegistryService(RegistryService registryService) {
         StatConfigurationDTO.setRegistryService(null);
     }
 
@@ -116,7 +101,7 @@ public class StatisticComponent {
         }
     }
 
-    protected void unsetRealmService() {
+    protected void unsetRealmService(RealmService realmService) {
         DataAgent.setRealmService(null);
     }
 
