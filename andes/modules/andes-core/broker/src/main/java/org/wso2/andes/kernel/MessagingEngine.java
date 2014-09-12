@@ -36,6 +36,7 @@ import org.wso2.andes.subscription.OrphanedMessagesDueToUnsubscriptionHandler;
 import org.wso2.andes.tools.utils.DisruptorBasedExecutor;
 
 import org.wso2.carbon.stat.publisher.internal.publisher.PublisherObserver;
+import org.wso2.carbon.stat.publisher.internal.util.StatPublisherException;
 
 import java.nio.ByteBuffer;
 import java.util.*;
@@ -193,7 +194,11 @@ public class MessagingEngine {
         }
 
         publisherObserverInstance = new PublisherObserver();
-        publisherObserverInstance.messageStatPublisherTask(message, noOfSubscriptions);
+        try {
+            publisherObserverInstance.messageStatPublisherTask(message, noOfSubscriptions);
+        } catch (StatPublisherException e) {
+            e.printStackTrace();
+        }
 
 
     }
@@ -201,7 +206,11 @@ public class MessagingEngine {
     public void ackReceived(AndesAckData ack) {
         disruptorBasedExecutor.ackReceived(ack);
         publisherObserverInstance = new PublisherObserver();
-        publisherObserverInstance.messageAckStatPublisherTask(ack);
+        try {
+            publisherObserverInstance.messageAckStatPublisherTask(ack);
+        } catch (StatPublisherException e) {
+            e.printStackTrace();
+        }
     }
 
     public void messageReturned(List<AndesAckData> ackList) {

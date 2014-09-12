@@ -1,3 +1,21 @@
+/*
+*  Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*
+*  WSO2 Inc. licenses this file to you under the Apache License,
+*  Version 2.0 (the "License"); you may not use this file except
+*  in compliance with the License.
+*  You may obtain a copy of the License at
+*
+*    http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing,
+* software distributed under the License is distributed on an
+* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+* KIND, either express or implied.  See the License for the
+* specific language governing permissions and limitations
+* under the License.
+*/
+
 package org.wso2.carbon.stat.publisher.internal.publisher;
 
 import org.apache.log4j.Logger;
@@ -8,12 +26,9 @@ import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
 import org.wso2.carbon.stat.publisher.internal.util.StatPublisherException;
 import org.wso2.carbon.stat.publisher.internal.util.URLOperations;
-
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 
 public class PublisherObserver {
@@ -23,27 +38,17 @@ public class PublisherObserver {
     public static Timer timer;
     public static boolean timerFlag = true;
     public static StatConfiguration statConfigurationInstance;
-
-    private ExecutorService executor;
-    private static final int NUMBER_OF_THREADS = 20;
-
-
     private DataAgent dataAgentInstance;
-
     private int tenantID;
 
 
     public PublisherObserver() {
         tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
-
-
     }
 
 
     ////Timer task to publish system and MB stats
     public void statPublisherTimerTask() {
-
-        executor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
 
         TimerTask taskPublishStat = new TimerTask() {
@@ -98,7 +103,7 @@ public class PublisherObserver {
 
         };
         timer = new Timer();
-           // scheduling the task at fixed rate
+        // scheduling the task at fixed rate
         long timeInterval = 5000;
         timer.scheduleAtFixedRate(taskPublishStat, new Date(), timeInterval);
     }
@@ -140,9 +145,6 @@ public class PublisherObserver {
 
             if (statConfigurationInstance.isMessage_statEnable()) { //check message stat enable configuration
 
-                // logger.info("Message stat Ack Publishing activated" + tenantID + ack.qName);
-
-
                 String URLList = statConfigurationInstance.getURL();
 
                 URLOperations urlOperations = new URLOperations();
@@ -162,131 +164,6 @@ public class PublisherObserver {
 
         }
     }
-/*
-    //System stat publisher inner class with runnable implementation
-    private class SystemStatPublisher implements Runnable {
 
-        private String URL;
-        private String[] credentials;
-
-        public SystemStatPublisher(String URL, String[] credentials) {
-            this.URL = URL;
-            this.credentials = credentials;
-
-        }
-
-        @Override
-        public void run() {
-
-            System.out.println("System stat Publishing activated " + Thread.currentThread().getName());
-            dataAgentInstance.sendSystemStats(URL, credentials);
-        }
-    }
-
-    //MB stat publisher inner class with runnable implementation
-
-    public class MBStatPublisher implements Runnable {
-        private String URL;
-        private String[] credentials;
-
-        public MBStatPublisher(String URL, String[] credentials) {
-            this.URL = URL;
-            this.credentials = credentials;
-
-        }
-
-
-        @Override
-        public void run() {
-            System.out.println("MB stat Publishing activated " + Thread.currentThread().getName() +CarbonContext.getThreadLocalCarbonContext().getUsername());
-            dataAgentInstance.sendMBStatistics(URL, credentials);
-        }
-    }
-
-    //Message stat publisher inner class with runnable implementation
-    public class MessageStatPublisher implements Runnable {
-
-        private AndesMessageMetadata message;
-        private int subscribers;
-
-        public MessageStatPublisher(AndesMessageMetadata message, int subscribers) {
-
-            this.message = message;
-            this.subscribers = subscribers;
-
-        }
-
-
-        @Override
-        public void run() {
-
-            messageStatPublisherTask(message, subscribers);
-        }
-
-        //method to publish message statistics
-        private void messageStatPublisherTask(AndesMessageMetadata message, int subscribers) {
-
-
-            if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
-
-                if (statConfigurationInstance.isMessage_statEnable()) { //check message stat enable configuration
-
-                    System.out.println("Message stat Publishing activated" + tenantID + message.getDestination() + " " + Thread.currentThread().getName());
-
-
-                    String URLList = statConfigurationInstance.getURL();
-
-                    URLOperations urlOperations = new URLOperations();
-                    String URLArray[] = urlOperations.URLSplitter(URLList);
-                    String[] credentials = {statConfigurationInstance.getUsername(), statConfigurationInstance.getPassword()};
-
-                    for (String URL : URLArray) {
-
-
-                        dataAgentInstance = DataAgent.getObjectDataAgent();
-                        dataAgentInstance.sendMessageStatistics(URL, credentials, message, subscribers);
-
-
-                    }
-                }
-            }
-        }
-
-    }
-
-    //Message Ack stat publisher inner class with runnable implementation
-
-    public class MessageAckStatPublisher implements Runnable {
-        private AndesAckData ack;
-
-        public MessageAckStatPublisher(AndesAckData ack) {
-            this.ack = ack;
-
-        }
-
-
-        @Override
-        public void run() {
-            messageAckStatPublisherTask(ack);
-        }
-
-        //method to publish message statistics
-        private void messageAckStatPublisherTask(AndesAckData ack) {
-
-            if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
-
-                if (statConfigurationInstance.isMessage_statEnable()) { //check message stat enable configuration
-
-                    System.out.println("Message stat Ack Publishing activated" + tenantID + ack.qName + " " + Thread.currentThread().getName());
-
-
-                }
-
-            }
-        }
-
-
-    }
-*/
 }
 

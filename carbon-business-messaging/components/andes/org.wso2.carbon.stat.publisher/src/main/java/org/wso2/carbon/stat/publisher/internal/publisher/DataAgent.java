@@ -1,3 +1,21 @@
+/*
+*  Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*
+*  WSO2 Inc. licenses this file to you under the Apache License,
+*  Version 2.0 (the "License"); you may not use this file except
+*  in compliance with the License.
+*  You may obtain a copy of the License at
+*
+*    http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing,
+* software distributed under the License is distributed on an
+* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+* KIND, either express or implied.  See the License for the
+* specific language governing permissions and limitations
+* under the License.
+*/
+
 package org.wso2.carbon.stat.publisher.internal.publisher;
 
 import org.apache.log4j.Logger;
@@ -7,19 +25,15 @@ import org.wso2.carbon.databridge.agent.thrift.AsyncDataPublisher;
 import org.wso2.carbon.databridge.agent.thrift.conf.AgentConfiguration;
 import org.wso2.carbon.databridge.agent.thrift.exception.AgentException;
 import org.wso2.carbon.databridge.commons.Event;
-
 import org.wso2.carbon.stat.publisher.internal.conf.ReadJMXConfig;
 import org.wso2.carbon.stat.publisher.internal.conf.ReadConfValues;
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
-
-
 import org.wso2.carbon.stat.publisher.internal.serverStats.MbeansStats;
 import org.wso2.carbon.stat.publisher.internal.util.StatPublisherException;
 import org.wso2.carbon.user.core.UserRealm;
 import org.wso2.carbon.user.core.UserStoreException;
 import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.utils.CarbonUtils;
-
 import java.util.List;
 
 public class DataAgent {
@@ -66,7 +80,9 @@ public class DataAgent {
 
 
 
-        System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonHome() + FORWARD_SLASH + "repository" + FORWARD_SLASH + "resources" + FORWARD_SLASH + "security" + FORWARD_SLASH + "client-truststore.jks");
+        System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonHome() +
+                FORWARD_SLASH + "repository" + FORWARD_SLASH + "resources" + FORWARD_SLASH +
+                "security" + FORWARD_SLASH + "client-truststore.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", trustStorePassword);
 
         agent = new Agent(agentConfiguration);
@@ -89,7 +105,8 @@ public class DataAgent {
             //get JMX configuration
             JMSConfiguration = getJMXConfiguration();
 
-            MbeansStats mbeansStats = new MbeansStats(JMSConfiguration[0], Integer.parseInt(JMSConfiguration[1]), JMSConfiguration[2], JMSConfiguration[3]);
+            MbeansStats mbeansStats = new MbeansStats(JMSConfiguration[0], Integer.parseInt(JMSConfiguration[1]),
+                    JMSConfiguration[2], JMSConfiguration[3]);
 
             String heapMemoryUsage = mbeansStats.getHeapMemoryUsage();
             String nonHeapMemoryUsage = mbeansStats.getNonHeapMemoryUsage();
@@ -117,7 +134,8 @@ public class DataAgent {
                     "  ]" +
                     "}";
 
-            asyncDataPublisherSystemStats.addStreamDefinition(messageStreamDefinition, "SYSTEM_STATISTICS_MB", VERSION_SYSTEM_STATISTICS);
+            asyncDataPublisherSystemStats.addStreamDefinition(messageStreamDefinition, "SYSTEM_STATISTICS_MB",
+                    VERSION_SYSTEM_STATISTICS);
 
             timeStamp = getTimeStamp();
 
@@ -156,7 +174,8 @@ public class DataAgent {
                 " 			{'name':'timestamp','type':'LONG'}" +
                 "  ]" +
                 "}";
-        asyncDataPublisherMBStatistics.addStreamDefinition(messageStreamDefinition, "MB_STATISTICS", VERSION_MB_STATISTICS);
+        asyncDataPublisherMBStatistics.addStreamDefinition(messageStreamDefinition, "MB_STATISTICS",
+                VERSION_MB_STATISTICS);
 
         timeStamp = getTimeStamp();
 
@@ -213,7 +232,8 @@ public class DataAgent {
         asyncDataPublisherMessageStatistics.addStreamDefinition(messageStreamDefinition, "MESSAGE_STATISTICS", VERSION_MESSAGE);
         timeStamp = getTimeStamp();
 
-        Object[] payload = new Object[]{messageID, messageDestination, messageContentLength, expirationTime, Integer.toString(subscribers), timeStamp};
+        Object[] payload =
+                new Object[]{messageID, messageDestination, messageContentLength, expirationTime, Integer.toString(subscribers), timeStamp};
         Event event = eventObject(null, new Object[]{URL}, payload);
         try {
             asyncDataPublisherMessageStatistics.publish("MESSAGE_STATISTICS", VERSION_MESSAGE, event);
@@ -271,7 +291,8 @@ public class DataAgent {
         subscriptionStore = messagingEngine.getSubscriptionStore();
 
         for (String topic : topics) {
-            List<Subscrption> subscriptionsList = subscriptionStore.getActiveClusterSubscribersForDestination(topic, true);
+            List<Subscrption> subscriptionsList =
+                    subscriptionStore.getActiveClusterSubscribersForDestination(topic, true);
             totalSubscribers += subscriptionsList.size();
         }
 
@@ -312,7 +333,8 @@ public class DataAgent {
         ReadJMXConfig readJMXConfig = new ReadJMXConfig();
 
 
-        logger.info("=================port===================================================: " + readJMXConfig.getRMIServerPort());
+        logger.info("=================port===================================================: " +
+                readJMXConfig.getRMIServerPort());
 
 
         String JMSConfig[] = {readJMXConfig.getHostName(), "10000", "admin", "admin"};

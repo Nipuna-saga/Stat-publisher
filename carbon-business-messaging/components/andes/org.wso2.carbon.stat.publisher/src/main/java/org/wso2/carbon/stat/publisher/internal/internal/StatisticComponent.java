@@ -28,12 +28,6 @@ import org.wso2.carbon.utils.ConfigurationContextService;
 
 public class StatisticComponent {
 
-
-
-
-
-
-
     private static Logger logger = Logger.getLogger(StatisticComponent.class);
     public StatConfigurationDTO statConfigurationDTOObject;
     public StatConfiguration statConfigurationInstance;

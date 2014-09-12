@@ -40,19 +40,17 @@
     String cookie = (String) session.getAttribute(ServerConstants.ADMIN_SERVICE_COOKIE);
 
     StatPublisherClient client;
-    StatConfiguration statConfigurationGetObject;
+    StatConfiguration statConfigurationInstance;
 
 
     try {
         client = new StatPublisherClient(configContext, serverURL, cookie);
-        statConfigurationGetObject = client.getStatConfiguration();
+        statConfigurationInstance = client.getStatConfiguration();
 
     } catch (Exception e) {
         CarbonUIMessage.sendCarbonUIMessage(e.getMessage(), CarbonUIMessage.ERROR, request, e);
 %>
-<script type="text/javascript">
-    location.href = "../admin/error.jsp";
-</script>
+<jsp:include page="../admin/error.jsp"/>
 <%
         return;
     }
@@ -80,41 +78,41 @@
 
 
     if (setConfig != null) {    // form submitted request to set eventing config
-        statConfigurationGetObject = new StatConfiguration();
+        statConfigurationInstance = new StatConfiguration();
 
         if (enable_checked_value != null) {
-            statConfigurationGetObject.setEnableStatPublisher(true);
+            statConfigurationInstance.setEnableStatPublisher(true);
         } else {
-            statConfigurationGetObject.setEnableStatPublisher(false);
+            statConfigurationInstance.setEnableStatPublisher(false);
         }
         if (message_stat_check_value != null) {
-            statConfigurationGetObject.setMessage_statEnable(true);
+            statConfigurationInstance.setMessage_statEnable(true);
         } else {
-            statConfigurationGetObject.setMessage_statEnable(false);
+            statConfigurationInstance.setMessage_statEnable(false);
         }
         if (system_stat_check_value != null) {
-            statConfigurationGetObject.setSystem_statEnable(true);
+            statConfigurationInstance.setSystem_statEnable(true);
         } else {
-            statConfigurationGetObject.setSystem_statEnable(false);
+            statConfigurationInstance.setSystem_statEnable(false);
         }
         if (MB_stat_check_value != null) {
-            statConfigurationGetObject.setMB_statEnable(true);
+            statConfigurationInstance.setMB_statEnable(true);
         } else {
-            statConfigurationGetObject.setMB_statEnable(false);
+            statConfigurationInstance.setMB_statEnable(false);
         }
         if (get_URL_value != null) {
-            statConfigurationGetObject.setURL(get_URL_value);
+            statConfigurationInstance.setURL(get_URL_value);
         }
         if (get_username_value != null) {
-            statConfigurationGetObject.setUsername(get_username_value);
+            statConfigurationInstance.setUsername(get_username_value);
         }
         if (get_password_value != null) {
-            statConfigurationGetObject.setPassword(get_password_value);
+            statConfigurationInstance.setPassword(get_password_value);
         }
 
 
         try {
-            client.setStatConfiguration(statConfigurationGetObject);
+            client.setStatConfiguration(statConfigurationInstance);
 
 %>
 <script type="text/javascript">
@@ -139,7 +137,7 @@
     }
 } else {
     try {
-        statConfigurationGetObject = client.getStatConfiguration();
+        statConfigurationInstance = client.getStatConfiguration();
     } catch (Exception e) {
         if (e.getCause().getMessage().toLowerCase().indexOf("you are not authorized") == -1) {
             response.setStatus(500);
@@ -153,28 +151,28 @@
     }
 
 
-    if (statConfigurationGetObject != null) {
+    if (statConfigurationInstance != null) {
 
 
-        if (statConfigurationGetObject.getEnableStatPublisher()) {
+        if (statConfigurationInstance.getEnableStatPublisher()) {
             enable_checked_value = "checked";
         }
 
-        get_username_value = statConfigurationGetObject.getUsername();
-        get_password_value = statConfigurationGetObject.getPassword();
-        get_URL_value = statConfigurationGetObject.getURL();
+        get_username_value = statConfigurationInstance.getUsername();
+        get_password_value = statConfigurationInstance.getPassword();
+        get_URL_value = statConfigurationInstance.getURL();
 
 
-        if (statConfigurationGetObject.getMB_statEnable()) {
+        if (statConfigurationInstance.getMB_statEnable()) {
             MB_stat_check_value = "checked";
 
         }
 
-        if (statConfigurationGetObject.getMessage_statEnable()) {
+        if (statConfigurationInstance.getMessage_statEnable()) {
             message_stat_check_value = "checked";
 
         }
-        if (statConfigurationGetObject.getSystem_statEnable()) {
+        if (statConfigurationInstance.getSystem_statEnable()) {
             system_stat_check_value = "checked";
 
         }
@@ -270,15 +268,15 @@
                         </td>
                         <td></td>
                     </tr>
-                    <tr>
-                        <td><input type="submit" value="<fmt:message key="button.update"/>"
-                                />
-
-                        </td>
-                        <td></td>
-                    </tr>
-                    </tbody>
                 </div>
+                <tr>
+                    <td><input type="submit" value="<fmt:message key="button.update"/>"/>
+
+                    </td>
+                    <td></td>
+                </tr>
+                </tbody>
+
             </table>
 
         </form>

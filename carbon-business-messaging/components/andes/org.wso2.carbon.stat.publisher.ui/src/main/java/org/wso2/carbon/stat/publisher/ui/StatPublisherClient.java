@@ -1,3 +1,21 @@
+/*
+*  Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*
+*  WSO2 Inc. licenses this file to you under the Apache License,
+*  Version 2.0 (the "License"); you may not use this file except
+*  in compliance with the License.
+*  You may obtain a copy of the License at
+*
+*    http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing,
+* software distributed under the License is distributed on an
+* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+* KIND, either express or implied.  See the License for the
+* specific language governing permissions and limitations
+* under the License.
+*/
+
 package org.wso2.carbon.stat.publisher.ui;
 
 import org.apache.axis2.client.Options;
@@ -22,50 +40,42 @@ public class StatPublisherClient {
         options.setManageSession(true);
         options.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, cookie);
         statPublisherClient = this;
+
     }
 
+
+    //get statisticPublisher client
     public static StatPublisherClient getStatPublisherClient() {
 
         return statPublisherClient;
     }
 
+    //get statistic configuration from StatPublisher service
     public StatConfiguration getStatConfiguration() {
 
-        StatConfiguration response;
+        StatConfiguration statConfigurationInstance;
         try {
-            response = stub.getStatConfiguration();
+            statConfigurationInstance = stub.getStatConfiguration();
         } catch (RemoteException e) {
-            response = new StatConfiguration();
+            statConfigurationInstance = new StatConfiguration();
         }
 
-        return response;
+        return statConfigurationInstance;
     }
 
-
-    public String setStatConfiguration(StatConfiguration statConfigurationObject) {
+    //send statistic configuration from StatPublisher service
+    public String setStatConfiguration(StatConfiguration statConfigurationObject){
         String response;
 
         try {
             stub.setStatConfiguration(statConfigurationObject);
             response = "Configuration Saved Successfully";
         } catch (RemoteException e) {
-            response = "" + e;
+            return e + "";
         }
 
         return response;
     }
 
-
-    public boolean URLValidator(String URL) {
-
-        boolean response;
-
-        try {
-            response = stub.uRLValidator(URL);
-        } catch (Exception e) {
-            response = false;
-        }
-        return response;
-    }
 
 }
