@@ -29,6 +29,7 @@ import org.wso2.carbon.stat.publisher.util.URLOperations;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
 
 
 public class PublisherObserver {
@@ -37,11 +38,9 @@ public class PublisherObserver {
     public static Timer timer;
     public static boolean timerFlag = true;
     public static StatConfiguration statConfigurationInstance;
-<<<<<<< HEAD
-=======
+
     private static Logger logger = Logger.getLogger(PublisherObserver.class);
     private ExecutorService executor;
->>>>>>> 9ae5a2bd927f045014c2c5dd96b111216744bdd4
     private DataAgent dataAgentInstance;
     private int tenantID;
 
