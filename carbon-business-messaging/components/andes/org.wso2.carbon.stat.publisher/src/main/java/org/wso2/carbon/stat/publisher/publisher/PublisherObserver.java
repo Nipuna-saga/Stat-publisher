@@ -23,8 +23,8 @@ import org.wso2.andes.kernel.AndesAckData;
 import org.wso2.andes.kernel.AndesMessageMetadata;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
-import org.wso2.carbon.stat.publisher.data.StatConfiguration;
-import org.wso2.carbon.stat.publisher.util.StatPublisherException;
+import org.wso2.carbon.stat.publisher.conf.StatConfiguration;
+import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.wso2.carbon.stat.publisher.util.URLOperations;
 import java.util.Date;
 import java.util.Timer;
@@ -34,6 +34,7 @@ import java.util.concurrent.ExecutorService;
 
 public class PublisherObserver {
 
+    //TODO rename StatisticObserver
 
     public static Timer timer;
     public static boolean timerFlag = true;
@@ -47,6 +48,9 @@ public class PublisherObserver {
 >>>>>>> 6c08b1c3c36da4892f91abe2a4d7f84ecb922b3e
     private DataAgent dataAgentInstance;
     private int tenantID;
+
+    //TODO startMonitoring method
+    //TODO StatisticManager class
 
 
     public PublisherObserver() {
@@ -73,7 +77,7 @@ public class PublisherObserver {
 
                         String URLList = statConfigurationInstance.getURL();
 
-
+//todo tenant loading  update when change tenant conf: not now :) future
                         // String URLList = "tcp://localhost:7611";
                         URLOperations urlOperations = new URLOperations();
                         String URLArray[] = urlOperations.URLSplitter(URLList);
@@ -117,7 +121,7 @@ public class PublisherObserver {
 
     //method to publish message statistics
     public void messageStatPublisherTask(AndesMessageMetadata message, int subscribers)
-            throws StatPublisherException {
+            throws StatPublisherConfigurationException {
 
 
         if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
@@ -146,7 +150,8 @@ public class PublisherObserver {
     }
 
     //method to publish message statistics
-    public void messageAckStatPublisherTask(AndesAckData ack) throws StatPublisherException {
+    public void messageAckStatPublisherTask(AndesAckData ack) throws
+                                                              StatPublisherConfigurationException {
 
         if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
 

@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.wso2.carbon.stat.publisher.util.StatPublisherException;
+import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -46,7 +46,7 @@ public class ReadStreamConfiguration {
     /**
      * ReadStreamConfiguration Class constructor load configurationData.xml and read values
      */
-    public ReadStreamConfiguration() throws StatPublisherException {
+    public ReadStreamConfiguration() throws StatPublisherConfigurationException {
 
         try {
             /**
@@ -59,7 +59,7 @@ public class ReadStreamConfiguration {
             File file = new File(filePath);
 
             if (!file.exists()) {
-                logger.error("configurationData.xml doesn't exists!!");
+                logger.error("mb-stat.xml doesn't exists!!");
             } else {
                 document = docBuilder.parse(filePath);
                 document.getDocumentElement().normalize();
@@ -98,11 +98,11 @@ public class ReadStreamConfiguration {
 
             }
         } catch (ParserConfigurationException e) {
-            throw new StatPublisherException("Indicate configuration error!", e);
+            throw new StatPublisherConfigurationException("Indicate configuration error!", e);
         } catch (SAXException e) {
-            throw new StatPublisherException("Indicate a general SAX error or warning!", e);
+            throw new StatPublisherConfigurationException("Indicate a general SAX error or warning!", e);
         } catch (IOException e) {
-            throw new StatPublisherException("Indicate file loading error!", e);
+            throw new StatPublisherConfigurationException("Indicate file loading error!", e);
         }
     }
 

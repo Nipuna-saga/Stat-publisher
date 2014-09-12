@@ -29,11 +29,11 @@ import org.wso2.carbon.databridge.agent.thrift.AsyncDataPublisher;
 import org.wso2.carbon.databridge.agent.thrift.conf.AgentConfiguration;
 import org.wso2.carbon.databridge.agent.thrift.exception.AgentException;
 import org.wso2.carbon.databridge.commons.Event;
-import org.wso2.carbon.stat.publisher.conf.ReadJMXConfiguration;
+import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
 import org.wso2.carbon.stat.publisher.conf.ReadStreamConfiguration;
-import org.wso2.carbon.stat.publisher.data.StatConfiguration;
+import org.wso2.carbon.stat.publisher.conf.StatConfiguration;
+import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.wso2.carbon.stat.publisher.serverStats.MbeansStats;
-import org.wso2.carbon.stat.publisher.util.StatPublisherException;
 import org.wso2.carbon.user.core.UserRealm;
 import org.wso2.carbon.user.core.UserStoreException;
 import org.wso2.carbon.user.core.service.RealmService;
@@ -45,21 +45,14 @@ public class DataAgent {
     private static Logger logger = Logger.getLogger(DataAgent.class);
     private static DataAgent instance = null;
     private static RealmService realmService;
-<<<<<<< HEAD
-    private  String VERSION_MESSAGE;
-    private  String VERSION_ACK;
-    private  String VERSION_SYSTEM_STATISTICS;
-    private  String VERSION_MB_STATISTICS = "1.0.0";
-    private  String FORWARD_SLASH;
-    private  String trustStorePassword;
-=======
+
     private String VERSION_MESSAGE;
     private String VERSION_ACK;
     private  String VERSION_SYSTEM_STATISTICS;
     private  String VERSION_MB_STATISTICS = "1.0.0";
     private  String FORWARD_SLASH;
     private String trustStorePassword;
->>>>>>> 6c08b1c3c36da4892f91abe2a4d7f84ecb922b3e
+
     long timeStamp;
     AsyncDataPublisher asyncDataPublisherSystemStats = null;
     AsyncDataPublisher asyncDataPublisherMBStatistics = null;
@@ -75,21 +68,15 @@ public class DataAgent {
     private int totalSubscribers;
     private String JMSConfiguration[];
 
-<<<<<<< HEAD
 
 
-    private DataAgent() throws StatPublisherException { //private constructor
-
+    private DataAgent() throws StatPublisherConfigurationException { //private constructor
 
 
 
-        AgentConfiguration agentConfiguration = new AgentConfiguration();
+//TODO rename DataPublisher
 
 
-=======
-    private DataAgent() throws StatPublisherException { //private constructor
-
->>>>>>> 6c08b1c3c36da4892f91abe2a4d7f84ecb922b3e
         ReadStreamConfiguration readStreamConfiguration = new ReadStreamConfiguration();
 
         FORWARD_SLASH = readStreamConfiguration.getForwardSlash();
@@ -102,10 +89,8 @@ public class DataAgent {
         agentConfiguration = new AgentConfiguration();
         System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonHome() + FORWARD_SLASH + "repository" + FORWARD_SLASH + "resources" + FORWARD_SLASH + "security" + FORWARD_SLASH + "client-truststore.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", "wso2carbon");
-<<<<<<< HEAD
-=======
+//TODO remove trustStorepassword
         System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonHome() + FORWARD_SLASH + "repository" + FORWARD_SLASH + "resources" + FORWARD_SLASH + "security" + FORWARD_SLASH + "client-truststore.jks");
->>>>>>> 6c08b1c3c36da4892f91abe2a4d7f84ecb922b3e
 
         System.setProperty("javax.net.ssl.trustStorePassword", trustStorePassword);
 
@@ -114,7 +99,7 @@ public class DataAgent {
 
     }
 
-    public static DataAgent getObjectDataAgent() throws StatPublisherException {
+    public static DataAgent getObjectDataAgent() throws StatPublisherConfigurationException {
         if (instance == null) {
             instance = new DataAgent();
         }
@@ -348,7 +333,7 @@ public class DataAgent {
     }
 
     //this method will return JMXConfiguration as an array. array contains ip,port,username,password
-    private String[] getJMXConfiguration() throws StatPublisherException {
+    private String[] getJMXConfiguration() throws StatPublisherConfigurationException {
         String userName = null;
         String password = null;
         try {
@@ -362,18 +347,14 @@ public class DataAgent {
             logger.error("Error in realmService", e);
         }
 
-        ReadJMXConfiguration readJMXConfiguration = new ReadJMXConfiguration();
+        JMXConfiguration JMXConfiguration = new JMXConfiguration();
 
 
-<<<<<<< HEAD
-
-        logger.info("=================port===================================================: " +
-                readJMXConfiguration.getRMIServerPort());
-=======
->>>>>>> 6c08b1c3c36da4892f91abe2a4d7f84ecb922b3e
 
 
-        String JMSConfig[] = {readJMXConfiguration.getHostName(), "10000", "admin", "admin"};
+//todo read jms conf from class
+
+        String JMSConfig[] = {JMXConfiguration.getHostName(), "10000", "admin", "admin"};
 
 
         return JMSConfig;

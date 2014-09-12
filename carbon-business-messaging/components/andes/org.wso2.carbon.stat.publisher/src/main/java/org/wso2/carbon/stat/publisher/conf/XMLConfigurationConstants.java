@@ -18,11 +18,16 @@
 
 package org.wso2.carbon.stat.publisher.conf;
 
+import java.io.File;
+
 /**
  * Keep relevant xml files' paths as constants
  */
 public final class XMLConfigurationConstants {
-    public static final String JMX_FILE_PATH = "repository/conf/etc/jmx.xml";
+    public static final String JMX_FILE_PATH = "jmx.xml";
     public static final String CARBON_FILE_PATH = "repository/conf/carbon.xml";
     public static final String CONF_DATA_FILE_PATH = "repository/conf/configurationData.xml";
+    public static final String CONF_DIRECTORY_PATH = "repository"+ File.separator+"conf"+File.separator;
+    //TODO fix this
+
 }
