@@ -19,14 +19,18 @@
 package org.wso2.carbon.stat.publisher.internal.publisher;
 
 import org.apache.log4j.Logger;
-import org.wso2.andes.kernel.*;
+import org.wso2.andes.kernel.AndesAckData;
+import org.wso2.andes.kernel.AndesMessageMetadata;
+import org.wso2.andes.kernel.MessagingEngine;
+import org.wso2.andes.kernel.SubscriptionStore;
+import org.wso2.andes.kernel.Subscrption;
 import org.wso2.carbon.databridge.agent.thrift.Agent;
 import org.wso2.carbon.databridge.agent.thrift.AsyncDataPublisher;
 import org.wso2.carbon.databridge.agent.thrift.conf.AgentConfiguration;
 import org.wso2.carbon.databridge.agent.thrift.exception.AgentException;
 import org.wso2.carbon.databridge.commons.Event;
-import org.wso2.carbon.stat.publisher.internal.conf.ReadJMXConfig;
-import org.wso2.carbon.stat.publisher.internal.conf.ReadConfValues;
+import org.wso2.carbon.stat.publisher.internal.conf.ReadJMXConfiguration;
+import org.wso2.carbon.stat.publisher.internal.conf.ReadStreamConfiguration;
 import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
 import org.wso2.carbon.stat.publisher.internal.serverStats.MbeansStats;
 import org.wso2.carbon.stat.publisher.internal.util.StatPublisherException;
@@ -40,27 +44,36 @@ public class DataAgent {
 
     private static Logger logger = Logger.getLogger(DataAgent.class);
     private static DataAgent instance = null;
-    private Agent agent;
     private static RealmService realmService;
+    private final String VERSION_MESSAGE;
+    private final String VERSION_ACK;
+    private final String VERSION_SYSTEM_STATISTICS;
+    private final String VERSION_MB_STATISTICS = "1.0.0";
+    private final String FORWARD_SLASH;
+    private final String trustStorePassword;
     long timeStamp;
     AsyncDataPublisher asyncDataPublisherSystemStats = null;
     AsyncDataPublisher asyncDataPublisherMBStatistics = null;
     AsyncDataPublisher asyncDataPublisherMessageStatistics = null;
     AsyncDataPublisher asyncDataPublisherACKStatistics = null;
+<<<<<<< HEAD
 
     private final String VERSION_MESSAGE;
     private final String VERSION_ACK;
     private final String VERSION_SYSTEM_STATISTICS;
     private final String VERSION_MB_STATISTICS = "1.0.0";
 
+=======
+    private Agent agent;
+>>>>>>> 9ae5a2bd927f045014c2c5dd96b111216744bdd4
     //subscriptions
     private SubscriptionStore subscriptionStore;
-
     //topic and queue
     private int noOfTopics;
     private int totalSubscribers;
     private String JMSConfiguration[];
 
+<<<<<<< HEAD
     private final String FORWARD_SLASH;
     private final String trustStorePassword;
 
@@ -83,6 +96,23 @@ public class DataAgent {
         System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonHome() +
                 FORWARD_SLASH + "repository" + FORWARD_SLASH + "resources" + FORWARD_SLASH +
                 "security" + FORWARD_SLASH + "client-truststore.jks");
+=======
+    private DataAgent() throws StatPublisherException { //private constructor
+
+        ReadStreamConfiguration readStreamConfiguration = new ReadStreamConfiguration();
+
+        FORWARD_SLASH = readStreamConfiguration.getForwardSlash();
+        VERSION_MESSAGE = readStreamConfiguration.getVersionMessage();
+        VERSION_ACK = readStreamConfiguration.getVersionAck();
+        VERSION_SYSTEM_STATISTICS = readStreamConfiguration.getVersionSystemStatistic();
+        trustStorePassword = readStreamConfiguration.getTrustStorePassword();
+
+
+        AgentConfiguration agentConfiguration = new AgentConfiguration();
+        System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonHome() + FORWARD_SLASH + "repository" + FORWARD_SLASH + "resources" + FORWARD_SLASH + "security" + FORWARD_SLASH + "client-truststore.jks");
+        System.setProperty("javax.net.ssl.trustStorePassword", "wso2carbon");
+        System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonHome() + FORWARD_SLASH + "repository" + FORWARD_SLASH + "resources" + FORWARD_SLASH + "security" + FORWARD_SLASH + "client-truststore.jks");
+>>>>>>> 9ae5a2bd927f045014c2c5dd96b111216744bdd4
         System.setProperty("javax.net.ssl.trustStorePassword", trustStorePassword);
 
         agent = new Agent(agentConfiguration);
@@ -97,6 +127,9 @@ public class DataAgent {
         return instance;
     }
 
+    public static void setRealmService(RealmService realmServiceParam) {
+        realmService = realmServiceParam;
+    }
 
     public void sendSystemStats(String URL, String[] credentials) {
 
@@ -118,21 +151,21 @@ public class DataAgent {
             }
 
             String messageStreamDefinition = "{" +
-                    "  'name':'" + "SYSTEM_STATISTICS_MB" + "'," +
-                    "  'version':'" + VERSION_SYSTEM_STATISTICS + "'," +
-                    "  'nickName': 'MB stats'," +
-                    "  'description': 'Server Stats'," +
-                    "  'metaData':[" +
-                    "          {'name':'publisherIP','type':'STRING'}" +
-                    "  ]," +
-                    "  'payloadData':[" +
+                                             "  'name':'" + "SYSTEM_STATISTICS_MB" + "'," +
+                                             "  'version':'" + VERSION_SYSTEM_STATISTICS + "'," +
+                                             "  'nickName': 'MB stats'," +
+                                             "  'description': 'Server Stats'," +
+                                             "  'metaData':[" +
+                                             "          {'name':'publisherIP','type':'STRING'}" +
+                                             "  ]," +
+                                             "  'payloadData':[" +
 
-                    " {'name':'HeapMemoryUsage','type':'STRING'}," +
-                    "         {'name':'nonHeapMemoryUsage','type':'STRING'}," +
-                    "          {'name':'CPULoadAverage','type':'STRING'}," +
-                    " 			{'name':'timestamp','type':'LONG'}" +
-                    "  ]" +
-                    "}";
+                                             " {'name':'HeapMemoryUsage','type':'STRING'}," +
+                                             "         {'name':'nonHeapMemoryUsage','type':'STRING'}," +
+                                             "          {'name':'CPULoadAverage','type':'STRING'}," +
+                                             " 			{'name':'timestamp','type':'LONG'}" +
+                                             "  ]" +
+                                             "}";
 
             asyncDataPublisherSystemStats.addStreamDefinition(messageStreamDefinition, "SYSTEM_STATISTICS_MB",
                     VERSION_SYSTEM_STATISTICS);
@@ -159,6 +192,7 @@ public class DataAgent {
         }
 
         String messageStreamDefinition = "{" +
+<<<<<<< HEAD
                 "  'name':'" + "MB_STATISTICS" + "'," +
                 "  'version':'" + VERSION_MB_STATISTICS + "'," +
                 "  'nickName': 'MB stats'," +
@@ -176,6 +210,24 @@ public class DataAgent {
                 "}";
         asyncDataPublisherMBStatistics.addStreamDefinition(messageStreamDefinition, "MB_STATISTICS",
                 VERSION_MB_STATISTICS);
+=======
+                                         "  'name':'" + "MB_STATISTICS" + "'," +
+                                         "  'version':'" + VERSION_MB_STATISTICS + "'," +
+                                         "  'nickName': 'MB stats'," +
+                                         "  'description': 'Server Stats'," +
+                                         "  'metaData':[" +
+                                         "          {'name':'publisherIP','type':'STRING'}" +
+                                         "  ]," +
+                                         "  'payloadData':[" +
+
+
+                                         "          {'name':'NoOfSubscribers','type':'INT'}," +
+                                         "          {'name':'NoOfTopics','type':'INT'}," +
+                                         " 			{'name':'timestamp','type':'LONG'}" +
+                                         "  ]" +
+                                         "}";
+        asyncDataPublisherMBStatistics.addStreamDefinition(messageStreamDefinition, "MB_STATISTICS", VERSION_MB_STATISTICS);
+>>>>>>> 9ae5a2bd927f045014c2c5dd96b111216744bdd4
 
         timeStamp = getTimeStamp();
 
@@ -197,7 +249,8 @@ public class DataAgent {
 
     }
 
-    public void sendMessageStatistics(String URL, String[] credentials, AndesMessageMetadata message, int subscribers) {
+    public void sendMessageStatistics(String URL, String[] credentials,
+                                      AndesMessageMetadata message, int subscribers) {
 
         long messageID = message.getMessageID();
         String messageDestination = message.getDestination();
@@ -211,24 +264,24 @@ public class DataAgent {
             asyncDataPublisherMessageStatistics = new AsyncDataPublisher(URL, credentials[0], credentials[1], agent);
         }
         String messageStreamDefinition = "{" +
-                "  'name':'" + "MESSAGE_STATISTICS" + "'," +
-                "  'version':'" + VERSION_MESSAGE + "'," +
-                "  'nickName': 'MB stats'," +
-                "  'description': 'A message received'," +
-                "  'metaData':[" +
-                "          {'name':'publisherIP','type':'STRING'}" +
-                "  ]," +
-                "  'payloadData':[" +
+                                         "  'name':'" + "MESSAGE_STATISTICS" + "'," +
+                                         "  'version':'" + VERSION_MESSAGE + "'," +
+                                         "  'nickName': 'MB stats'," +
+                                         "  'description': 'A message received'," +
+                                         "  'metaData':[" +
+                                         "          {'name':'publisherIP','type':'STRING'}" +
+                                         "  ]," +
+                                         "  'payloadData':[" +
 
-                "          {'name':'Message_id','type':'LONG'}," +
-                "          {'name':'Destination','type':'STRING'}," +
-                "          {'name':'MessageContentLength','type':'INT'}," +
-                "          {'name':'expirationTime','type':'LONG'}," +
-                "          {'name':'NoOfSubscriptions','type':'STRING'}," +
+                                         "          {'name':'Message_id','type':'LONG'}," +
+                                         "          {'name':'Destination','type':'STRING'}," +
+                                         "          {'name':'MessageContentLength','type':'INT'}," +
+                                         "          {'name':'expirationTime','type':'LONG'}," +
+                                         "          {'name':'NoOfSubscriptions','type':'STRING'}," +
 
-                " 			{'name':'timestamp','type':'LONG'}" +
-                "  ]" +
-                "}";
+                                         " 			{'name':'timestamp','type':'LONG'}" +
+                                         "  ]" +
+                                         "}";
         asyncDataPublisherMessageStatistics.addStreamDefinition(messageStreamDefinition, "MESSAGE_STATISTICS", VERSION_MESSAGE);
         timeStamp = getTimeStamp();
 
@@ -244,7 +297,6 @@ public class DataAgent {
 
     }
 
-
     public void sendACKStatistics(String URL, String[] credentials, AndesAckData ack) {
 
         long ackMessageID = ack.messageID;
@@ -256,22 +308,22 @@ public class DataAgent {
         }
 
         String ackStreamDefinition = "{" +
-                "  'name':'" + "" + "MESSAGE_STATISTICS'," +
-                "  'version':'" + VERSION_ACK + "'," +
-                "  'nickName': 'MB stats'," +
-                "  'description': 'A ack received'," +
-                "  'metaData':[" +
-                "          {'name':'publisherIP','type':'STRING'}" +
-                "  ]," +
-                "  'payloadData':[" +
+                                     "  'name':'" + "" + "MESSAGE_STATISTICS'," +
+                                     "  'version':'" + VERSION_ACK + "'," +
+                                     "  'nickName': 'MB stats'," +
+                                     "  'description': 'A ack received'," +
+                                     "  'metaData':[" +
+                                     "          {'name':'publisherIP','type':'STRING'}" +
+                                     "  ]," +
+                                     "  'payloadData':[" +
 
-                "          {'name':'Message_id','type':'LONG'}," +
-                " 			{'name':'timestamp','type':'LONG'}," +
-                " 			{'name':'queueName','type':'STRING'}" +
+                                     "          {'name':'Message_id','type':'LONG'}," +
+                                     " 			{'name':'timestamp','type':'LONG'}," +
+                                     " 			{'name':'queueName','type':'STRING'}" +
 
 
-                "  ]" +
-                "}";
+                                     "  ]" +
+                                     "}";
         asyncDataPublisherACKStatistics.addStreamDefinition(ackStreamDefinition, "MESSAGE_STATISTICS", VERSION_ACK);
         timeStamp = getTimeStamp();
         Object[] payload = new Object[]{ackMessageID, queueName, timeStamp};
@@ -311,14 +363,10 @@ public class DataAgent {
 
     }
 
-    public static void setRealmService(RealmService realmServiceParam) {
-        realmService = realmServiceParam;
-    }
-
     //this method will return JMXConfiguration as an array. array contains ip,port,username,password
     private String[] getJMXConfiguration() throws StatPublisherException {
-        String userName=null;
-        String password=null;
+        String userName = null;
+        String password = null;
         try {
             StatConfiguration statConfiguration = new StatConfiguration();
             UserRealm realm = realmService.getBootstrapRealm();
@@ -330,14 +378,18 @@ public class DataAgent {
             logger.error("Error in realmService", e);
         }
 
-        ReadJMXConfig readJMXConfig = new ReadJMXConfig();
+        ReadJMXConfiguration readJMXConfiguration = new ReadJMXConfiguration();
 
 
+<<<<<<< HEAD
         logger.info("=================port===================================================: " +
                 readJMXConfig.getRMIServerPort());
 
 
         String JMSConfig[] = {readJMXConfig.getHostName(), "10000", "admin", "admin"};
+=======
+        String JMSConfig[] = {readJMXConfiguration.getHostName(), "10000", "admin", "admin"};
+>>>>>>> 9ae5a2bd927f045014c2c5dd96b111216744bdd4
 
         return JMSConfig;
 

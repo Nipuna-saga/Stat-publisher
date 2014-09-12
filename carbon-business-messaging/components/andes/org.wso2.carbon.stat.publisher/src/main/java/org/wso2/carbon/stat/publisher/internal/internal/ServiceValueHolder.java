@@ -1,12 +1,10 @@
 package org.wso2.carbon.stat.publisher.internal.internal;
 
-import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
 public class ServiceValueHolder {
-    private ConfigurationContextService configurationContextService;
-
     private static ServiceValueHolder instance = new ServiceValueHolder();
+    private ConfigurationContextService configurationContextService;
 
     public static ServiceValueHolder getInstance() {
         return instance;
@@ -16,7 +14,8 @@ public class ServiceValueHolder {
         return configurationContextService;
     }
 
-    public void setConfigurationContextService(ConfigurationContextService configurationContextService) {
+    public void setConfigurationContextService(
+            ConfigurationContextService configurationContextService) {
         this.configurationContextService = configurationContextService;
     }
 }

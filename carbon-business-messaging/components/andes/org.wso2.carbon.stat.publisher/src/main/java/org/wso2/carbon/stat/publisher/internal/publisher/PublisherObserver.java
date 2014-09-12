@@ -33,11 +33,15 @@ import java.util.TimerTask;
 
 public class PublisherObserver {
 
-    private static Logger logger = Logger.getLogger(PublisherObserver.class);
-
+    private static final int NUMBER_OF_THREADS = 20;
     public static Timer timer;
     public static boolean timerFlag = true;
     public static StatConfiguration statConfigurationInstance;
+<<<<<<< HEAD
+=======
+    private static Logger logger = Logger.getLogger(PublisherObserver.class);
+    private ExecutorService executor;
+>>>>>>> 9ae5a2bd927f045014c2c5dd96b111216744bdd4
     private DataAgent dataAgentInstance;
     private int tenantID;
 
@@ -45,7 +49,6 @@ public class PublisherObserver {
     public PublisherObserver() {
         tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
     }
-
 
     ////Timer task to publish system and MB stats
     public void statPublisherTimerTask() {
@@ -110,7 +113,8 @@ public class PublisherObserver {
 
 
     //method to publish message statistics
-    public void messageStatPublisherTask(AndesMessageMetadata message, int subscribers) throws StatPublisherException {
+    public void messageStatPublisherTask(AndesMessageMetadata message, int subscribers)
+            throws StatPublisherException {
 
 
         if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable

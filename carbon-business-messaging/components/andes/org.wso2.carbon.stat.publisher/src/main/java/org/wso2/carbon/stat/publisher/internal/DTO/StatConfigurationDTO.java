@@ -21,71 +21,71 @@ public class StatConfigurationDTO {
      * Updates the Registry with given config data.
      *
      * @param statConfigurationWriteObject - eventing configuration data
-     * @param tenantId - get tenantID
+     * @param tenantId                     - get tenantID
      */
-    public void StoreConfigurationData(StatConfiguration statConfigurationWriteObject, int tenantId)
+    public void storeConfigurationData(StatConfiguration statConfigurationWriteObject, int tenantId)
             throws StatPublisherException {
         try {
             Registry registry = registryService.getConfigSystemRegistry(tenantId);
 
             if (statConfigurationWriteObject.isEnableStatPublisher()) {
 
-                updateConfigProperty(ConfigConstants.ENABLE_STAT_PUBLISHER,
-                        statConfigurationWriteObject.isEnableStatPublisher(), registry);
-                updateConfigProperty(ConfigConstants.USER_NAME,
-                        statConfigurationWriteObject.getUsername(), registry);
-                updateConfigProperty(ConfigConstants.PASSWORD,
-                        statConfigurationWriteObject.getPassword(), registry);
-                updateConfigProperty(ConfigConstants.URL,
-                        statConfigurationWriteObject.getURL(), registry);
-                updateConfigProperty(ConfigConstants.MB_STAT_ENABLE,
-                        statConfigurationWriteObject.isMB_statEnable(), registry);
-                updateConfigProperty(ConfigConstants.MESSAGE_STAT_ENABLE,
-                        statConfigurationWriteObject.isMessage_statEnable(), registry);
-                updateConfigProperty(ConfigConstants.SYSTEM_STAT_ENABLE,
-                        statConfigurationWriteObject.isSystem_statEnable(), registry);
+                updateConfigProperty(StatConfigurationConstants.ENABLE_STAT_PUBLISHER,
+                                     statConfigurationWriteObject.isEnableStatPublisher(), registry);
+                updateConfigProperty(StatConfigurationConstants.USER_NAME,
+                                     statConfigurationWriteObject.getUsername(), registry);
+                updateConfigProperty(StatConfigurationConstants.PASSWORD,
+                                     statConfigurationWriteObject.getPassword(), registry);
+                updateConfigProperty(StatConfigurationConstants.URL,
+                                     statConfigurationWriteObject.getURL(), registry);
+                updateConfigProperty(StatConfigurationConstants.MB_STAT_ENABLE,
+                                     statConfigurationWriteObject.isMB_statEnable(), registry);
+                updateConfigProperty(StatConfigurationConstants.MESSAGE_STAT_ENABLE,
+                                     statConfigurationWriteObject.isMessage_statEnable(), registry);
+                updateConfigProperty(StatConfigurationConstants.SYSTEM_STAT_ENABLE,
+                                     statConfigurationWriteObject.isSystem_statEnable(), registry);
             } else {
-
-                String userName = getConfigurationProperty(ConfigConstants.USER_NAME,registry);
-                String password = getConfigurationProperty(ConfigConstants.PASSWORD,registry);
-                String url = getConfigurationProperty(ConfigConstants.URL,registry);
-                String mbStatEnable = getConfigurationProperty(ConfigConstants.MB_STAT_ENABLE,registry);
-                String messageStatEnable = getConfigurationProperty(ConfigConstants.MESSAGE_STAT_ENABLE,registry);
-                String systemStatEnable = getConfigurationProperty(ConfigConstants.SYSTEM_STAT_ENABLE,registry);
+                String userName =
+                        getConfigurationProperty(StatConfigurationConstants.USER_NAME, registry);
+                String password =
+                        getConfigurationProperty(StatConfigurationConstants.PASSWORD, registry);
+                String url =
+                        getConfigurationProperty(StatConfigurationConstants.URL, registry);
+                String mbStatEnable =
+                        getConfigurationProperty(StatConfigurationConstants.MB_STAT_ENABLE, registry);
+                String messageStatEnable =
+                        getConfigurationProperty(StatConfigurationConstants.MESSAGE_STAT_ENABLE, registry);
+                String systemStatEnable =
+                        getConfigurationProperty(StatConfigurationConstants.SYSTEM_STAT_ENABLE, registry);
 
                 if (StringUtils.isEmpty(url) && StringUtils.isEmpty(userName) && StringUtils.isEmpty(password)) {
-
                     statConfigurationWriteObject.setURL(url);
                     statConfigurationWriteObject.setUsername(userName);
                     statConfigurationWriteObject.setPassword(password);
-
                     statConfigurationWriteObject.setMB_statEnable(Boolean.parseBoolean(mbStatEnable));
                     statConfigurationWriteObject.setMessage_statEnable(Boolean.parseBoolean(messageStatEnable));
                     statConfigurationWriteObject.setSystem_statEnable(Boolean.parseBoolean(systemStatEnable));
                 }
-
-                updateConfigProperty(ConfigConstants.ENABLE_STAT_PUBLISHER,
-                        statConfigurationWriteObject.isEnableStatPublisher(), registry);
-
+                updateConfigProperty(StatConfigurationConstants.ENABLE_STAT_PUBLISHER,
+                                     statConfigurationWriteObject.isEnableStatPublisher(), registry);
             }
-        } catch (Exception e) {
-            throw new StatPublisherException("Could not update registry",e);
+        } catch (RegistryException e) {
+            throw new StatPublisherException("Could not update registry", e);
         }
-
     }
 
     /**
      * Update the properties
      *
-     * @param propertyName - resource Name
-     * @param value - Value to store
-     * @param registry - load registry
+     * @param propertyName - resource name
+     * @param value        - value to store
+     * @param registry     - load registry
      * @throws RegistryException
      * @throws StatPublisherException
      */
     public void updateConfigProperty(String propertyName, Object value, Registry registry)
             throws RegistryException, StatPublisherException {
-        String resourcePath = ConfigConstants.MEDIATION_STATISTICS_REG_PATH + propertyName;
+        String resourcePath = StatConfigurationConstants.MEDIATION_STATISTICS_REG_PATH + propertyName;
         Resource resource;
         if (registry != null) {
             try {
@@ -104,13 +104,11 @@ public class StatConfigurationDTO {
         }
     }
 
-
     /**
-     * Loads configuration from Registry.
+     * Load configuration from Registry.
      *
-     * @return  statConfigurationReadObject
      * @param tenantId - get tenantID
-     *
+     * @return statConfigurationReadObject
      */
     public StatConfiguration LoadConfigurationData(int tenantId) throws StatPublisherException {
 
@@ -129,30 +127,31 @@ public class StatConfigurationDTO {
         try {
             Registry registry = registryService.getConfigSystemRegistry(tenantId);
 
-            String enableStatPublisher = getConfigurationProperty(ConfigConstants.ENABLE_STAT_PUBLISHER, registry);
-            String userName = getConfigurationProperty(ConfigConstants.USER_NAME,registry);
-            String password = getConfigurationProperty(ConfigConstants.PASSWORD,registry);
-            String url = getConfigurationProperty(ConfigConstants.URL,registry);
-            String mbStatEnable = getConfigurationProperty(ConfigConstants.MB_STAT_ENABLE,registry);
-            String messageStatEnable = getConfigurationProperty(ConfigConstants.MESSAGE_STAT_ENABLE,registry);
-            String systemStatEnable = getConfigurationProperty(ConfigConstants.SYSTEM_STAT_ENABLE,registry);
-
-            if (url != null) {
-
+            String enableStatPublisher =
+                    getConfigurationProperty(StatConfigurationConstants.ENABLE_STAT_PUBLISHER, registry);
+            String userName =
+                    getConfigurationProperty(StatConfigurationConstants.USER_NAME, registry);
+            String password =
+                    getConfigurationProperty(StatConfigurationConstants.PASSWORD, registry);
+            String url =
+                    getConfigurationProperty(StatConfigurationConstants.URL, registry);
+            String mbStatEnable =
+                    getConfigurationProperty(StatConfigurationConstants.MB_STAT_ENABLE, registry);
+            String messageStatEnable =
+                    getConfigurationProperty(StatConfigurationConstants.MESSAGE_STAT_ENABLE, registry);
+            String systemStatEnable =
+                    getConfigurationProperty(StatConfigurationConstants.SYSTEM_STAT_ENABLE, registry);
+            if (StringUtils.isEmpty(url)) {
                 statConfigurationReadObject.setEnableStatPublisher(Boolean.parseBoolean(enableStatPublisher));
                 statConfigurationReadObject.setURL(url);
                 statConfigurationReadObject.setUsername(userName);
                 statConfigurationReadObject.setPassword(password);
-
                 statConfigurationReadObject.setMB_statEnable(Boolean.parseBoolean(mbStatEnable));
                 statConfigurationReadObject.setMessage_statEnable(Boolean.parseBoolean(messageStatEnable));
                 statConfigurationReadObject.setSystem_statEnable(Boolean.parseBoolean(systemStatEnable));
-
             }
-
         } catch (Exception e) {
             throw new StatPublisherException("Could not load values from registry", e);
-
         }
         return statConfigurationReadObject;
     }
@@ -161,12 +160,11 @@ public class StatConfigurationDTO {
      * Read the resource from registry
      *
      * @param propertyName - get resource name
-     * @param registry - load registry
-     *
+     * @param registry     - load registry
      */
     public String getConfigurationProperty(String propertyName, Registry registry)
             throws RegistryException, StatPublisherException {
-        String resourcePath = ConfigConstants.MEDIATION_STATISTICS_REG_PATH + propertyName;
+        String resourcePath = StatConfigurationConstants.MEDIATION_STATISTICS_REG_PATH + propertyName;
         String value = null;
         if (registry != null) {
             try {

@@ -39,11 +39,25 @@ public class StatisticComponent {
         try {
             StatPublisherService Service = StatPublisherBuilder.createMediationService();
             context.getBundleContext().registerService(StatPublisherService.class.getName(),
-                    Service, null);
+                                                       Service, null);
+            statConfigurationDTOObject = new StatConfigurationDTO();
+            statConfigurationInstance =
+                    statConfigurationDTOObject.LoadConfigurationData(CarbonContext.getThreadLocalCarbonContext().getTenantId());
+            PublisherObserver.statConfigurationInstance = statConfigurationInstance;
+            PublisherObserver.timerFlag = false;
+
+            if ((statConfigurationInstance.isSystem_statEnable() || statConfigurationInstance.isMB_statEnable()) &&
+                statConfigurationInstance.isEnableStatPublisher()) {
+                PublisherObserver publisherObserverInstance = new PublisherObserver();
+                publisherObserverInstance.statPublisherTimerTask();
+                PublisherObserver.timerFlag = true;
+            }
             logger.info("Successfully created the stat publisher service");
         } catch (RuntimeException e) {
+            //TODO log and return
             throw new StatPublisherException("Can not create stat publisher service", e);
         }
+<<<<<<< HEAD
 
         statConfigurationDTOObject = new StatConfigurationDTO();
         statConfigurationInstance =
@@ -59,6 +73,8 @@ public class StatisticComponent {
 
         }
 
+=======
+>>>>>>> 9ae5a2bd927f045014c2c5dd96b111216744bdd4
     }
 
     protected void deactivate(ComponentContext context) {
@@ -76,10 +92,11 @@ public class StatisticComponent {
 
     protected void unsetConfigurationContextService(
             ConfigurationContextService configurationContextService) {
-       ServiceValueHolder.getInstance().setConfigurationContextService(null);
+        ServiceValueHolder.getInstance().setConfigurationContextService(null);
     }
 
-    protected void setRegistryService(RegistryService registryService) throws StatPublisherException {
+    protected void setRegistryService(RegistryService registryService)
+            throws StatPublisherException {
         try {
             StatConfigurationDTO.setRegistryService(registryService);
         } catch (Exception e) {
@@ -87,7 +104,7 @@ public class StatisticComponent {
         }
     }
 
-    protected void unsetRegistryService(RegistryService registryService) {
+    protected void unsetRegistryService() {
         StatConfigurationDTO.setRegistryService(null);
     }
 
@@ -99,7 +116,7 @@ public class StatisticComponent {
         }
     }
 
-    protected void unsetRealmService(RealmService realmService) {
+    protected void unsetRealmService() {
         DataAgent.setRealmService(null);
     }
 

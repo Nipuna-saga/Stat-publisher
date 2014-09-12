@@ -2,32 +2,31 @@ package org.wso2.carbon.stat.publisher.internal.conf;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.wso2.carbon.stat.publisher.internal.util.StatPublisherException;
 import org.xml.sax.SAXException;
-
-import org.w3c.dom.*;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 
-public class ReadJMXConfig {
+public class ReadJMXConfiguration {
 
-    private static Logger logger = Logger.getLogger(ReadJMXConfig.class);
+    private static Logger logger = Logger.getLogger(ReadJMXConfiguration.class);
     private boolean StartRMIServer;
     private String HostName;
     private String RMIRegistryPort;
     private String RMIServerPort;
     private String offSet;
 
-    public ReadJMXConfig() throws StatPublisherException {
+    public ReadJMXConfiguration() throws StatPublisherException {
 
         final String emptyString = "";
 
         try {
-            String filePath_JMX = ConfConstants.JMX_FILE_PATH;
+            String filePathJMX = XMLConfigurationConstants.JMX_FILE_PATH;
 
             /**
              * Loads jmx.xml file
@@ -36,14 +35,14 @@ public class ReadJMXConfig {
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
             Document doc;
 
-            File jmx_file = new File(filePath_JMX);
+            File jmxFilePath= new File(filePathJMX);
 
-            if (!jmx_file.exists()) {
+            if (!jmxFilePath.exists()) {
 
                 logger.error("jmx.xml doesn't exists!!!");
 
             } else {
-                doc = docBuilder.parse(filePath_JMX);
+                doc = docBuilder.parse(filePathJMX);
                 doc.getDocumentElement().normalize();
 
                 String rootNode = doc.getDocumentElement().getNodeName();
@@ -51,7 +50,7 @@ public class ReadJMXConfig {
 
                 String StartRMIServerValue =
                         (String) ((Element) dataList.item(0)).getElementsByTagName("StartRMIServer").
-                        item(0).getChildNodes().item(0).getTextContent();
+                                item(0).getChildNodes().item(0).getTextContent();
 
                 if (StartRMIServerValue.equals(emptyString)) {
                     StartRMIServer = false;
@@ -62,20 +61,20 @@ public class ReadJMXConfig {
 
                 String HostNameValue =
                         (String) ((Element) dataList.item(0)).getElementsByTagName("HostName").
-                        item(0).getChildNodes().item(0).getTextContent();
+                                item(0).getChildNodes().item(0).getTextContent();
                 this.HostName = HostNameValue.trim();
             }
         } catch (ParserConfigurationException parserException) {
-           throw new StatPublisherException("ParserConfigurationException", parserException);
+            throw new StatPublisherException("ParserConfigurationException", parserException);
         } catch (SAXException saxException) {
             throw new StatPublisherException("SAXException", saxException);
         } catch (IOException ioException) {
             throw new StatPublisherException("IOException", ioException);
         }
 
-        try{
+        try {
 
-            String filePath_Carbon = ConfConstants.CARBON_FILE_PATH;
+            String filePathCarbon = XMLConfigurationConstants.CARBON_FILE_PATH;
 
             /**
              * Loads carbon.xml file
@@ -84,14 +83,14 @@ public class ReadJMXConfig {
             DocumentBuilder docBuilder_carbon = docBuilderFactory_carbon.newDocumentBuilder();
             Document document;
 
-            File carbon_file = new File(filePath_Carbon);
+            File carbonFile = new File(filePathCarbon);
 
-            if (!carbon_file.exists()) {
+            if (!carbonFile.exists()) {
 
                 logger.error("carbon.xml doesn't exists!!!");
 
             } else {
-                document = docBuilder_carbon.parse(filePath_Carbon);
+                document = docBuilder_carbon.parse(filePathCarbon);
                 document.getDocumentElement().normalize();
 
                 String rootNode = document.getDocumentElement().getNodeName();
@@ -99,28 +98,27 @@ public class ReadJMXConfig {
 
                 String RMIRegistryPortValue =
                         (String) ((Element) dataList.item(0)).getElementsByTagName("RMIRegistryPort").
-                        item(0).getChildNodes().item(0).getTextContent();
+                                item(0).getChildNodes().item(0).getTextContent();
                 this.RMIRegistryPort = RMIRegistryPortValue.trim();
 
                 String RMIServerPortValue =
                         (String) ((Element) dataList.item(0)).getElementsByTagName("RMIServerPort").
-                        item(0).getChildNodes().item(0).getTextContent();
+                                item(0).getChildNodes().item(0).getTextContent();
                 this.RMIServerPort = RMIServerPortValue.trim();
 
                 String offSetValue =
                         (String) ((Element) dataList.item(0)).getElementsByTagName("Offset").
-                        item(0).getChildNodes().item(0).getTextContent();
+                                item(0).getChildNodes().item(0).getTextContent();
                 this.offSet = offSetValue.trim();
             }
-        }
-        catch (ParserConfigurationException parserException) {
+        } catch (ParserConfigurationException parserException) {
             throw new StatPublisherException("ParserConfigurationException", parserException);
-    } catch (SAXException saxException) {
+        } catch (SAXException saxException) {
             throw new StatPublisherException("SAXException", saxException);
-    } catch (IOException ioException) {
+        } catch (IOException ioException) {
             throw new StatPublisherException("IOException", ioException);
+        }
     }
-}
 
     public boolean isStartRMIServer() {
         return StartRMIServer;
@@ -138,6 +136,8 @@ public class ReadJMXConfig {
         return RMIRegistryPort;
     }
 
-    public String getOffSet() { return offSet;}
+    public String getOffSet() {
+        return offSet;
+    }
 
 }

@@ -13,12 +13,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * Created by dilshani on 9/9/14.
- */
-public class ReadConfValues {
-
-    private static Logger logger = Logger.getLogger(ReadConfValues.class);
+public class ReadStreamConfiguration {
+    private static Logger logger = Logger.getLogger(ReadStreamConfiguration.class);
     private String versionMessage;
     private String versionAck;
     private String forwardSlash;
@@ -26,12 +22,10 @@ public class ReadConfValues {
     private String versionSystemStatistic;
     private String versionMBStatistic;
 
-    public ReadConfValues() throws StatPublisherException {
-
-        final String emptyString = "";
+    public ReadStreamConfiguration() throws StatPublisherException {
 
         try {
-            String filePath= ConfConstants.CONF_DATA_FILE_PATH;
+            String filePath = XMLConfigurationConstants.CONF_DATA_FILE_PATH;
 
             /**
              * Loads configurationData.xml file
@@ -55,32 +49,32 @@ public class ReadConfValues {
 
                 String versionMessageValue =
                         (String) ((Element) dataList.item(0)).getElementsByTagName("versionMessage").
-                        item(0).getChildNodes().item(0).getTextContent();
+                                item(0).getChildNodes().item(0).getTextContent();
                 this.versionMessage = versionMessageValue.trim();
 
                 String versionAckValue =
                         (String) ((Element) dataList.item(0)).getElementsByTagName("versionAck").
-                        item(0).getChildNodes().item(0).getTextContent();
+                                item(0).getChildNodes().item(0).getTextContent();
                 this.versionAck = versionAckValue.trim();
 
                 String forwardSlashValue =
                         (String) ((Element) dataList.item(0)).getElementsByTagName("forwardSlash").
-                        item(0).getChildNodes().item(0).getTextContent();
+                                item(0).getChildNodes().item(0).getTextContent();
                 this.forwardSlash = forwardSlashValue.trim();
 
                 String trustStorePasswordValue =
                         (String) ((Element) dataList.item(0)).getElementsByTagName("trustStorePassword").
-                        item(0).getChildNodes().item(0).getTextContent();
+                                item(0).getChildNodes().item(0).getTextContent();
                 this.trustStorePassword = trustStorePasswordValue.trim();
 
                 String versionSystemStatisticValue =
                         (String) ((Element) dataList.item(0)).getElementsByTagName("versionSystemStatistic").
-                        item(0).getChildNodes().item(0).getTextContent();
+                                item(0).getChildNodes().item(0).getTextContent();
                 this.versionSystemStatistic = versionSystemStatisticValue.trim();
 
                 String versionMBStatisticValue =
                         (String) ((Element) dataList.item(0)).getElementsByTagName("versionMBStatistic").
-                        item(0).getChildNodes().item(0).getTextContent();
+                                item(0).getChildNodes().item(0).getTextContent();
                 this.versionMBStatistic = versionMBStatisticValue.trim();
 
             }
@@ -113,5 +107,7 @@ public class ReadConfValues {
         return versionSystemStatistic;
     }
 
-    public String getVersionMBStatistic() { return versionMBStatistic; }
+    public String getVersionMBStatistic() {
+        return versionMBStatistic;
+    }
 }
