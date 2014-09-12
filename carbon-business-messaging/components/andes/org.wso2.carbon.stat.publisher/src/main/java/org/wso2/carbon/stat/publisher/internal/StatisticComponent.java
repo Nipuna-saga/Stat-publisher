@@ -1,3 +1,21 @@
+/*
+*  Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*
+*  WSO2 Inc. licenses this file to you under the Apache License,
+*  Version 2.0 (the "License"); you may not use this file except
+*  in compliance with the License.
+*  You may obtain a copy of the License at
+*
+*    http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing,
+* software distributed under the License is distributed on an
+* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+* KIND, either express or implied.  See the License for the
+* specific language governing permissions and limitations
+* under the License.
+*/
+
 package org.wso2.carbon.stat.publisher.internal;
 
 import org.apache.log4j.Logger;
@@ -42,7 +60,7 @@ public class StatisticComponent {
                                                        Service, null);
             statConfigurationDTOObject = new StatConfigurationDTO();
             statConfigurationInstance =
-                    statConfigurationDTOObject.LoadConfigurationData(CarbonContext.getThreadLocalCarbonContext().getTenantId());
+                    statConfigurationDTOObject.loadConfigurationData(CarbonContext.getThreadLocalCarbonContext().getTenantId());
             PublisherObserver.statConfigurationInstance = statConfigurationInstance;
             PublisherObserver.timerFlag = false;
 
@@ -57,24 +75,6 @@ public class StatisticComponent {
             //TODO log and return
             throw new StatPublisherException("Can not create stat publisher service", e);
         }
-<<<<<<< HEAD
-
-        statConfigurationDTOObject = new StatConfigurationDTO();
-        statConfigurationInstance =
-                statConfigurationDTOObject.LoadConfigurationData(CarbonContext.getThreadLocalCarbonContext().getTenantId());
-        PublisherObserver.statConfigurationInstance = statConfigurationInstance;
-        PublisherObserver.timerFlag = false;
-
-        if ((statConfigurationInstance.isSystem_statEnable() || statConfigurationInstance.isMB_statEnable()) &&
-                statConfigurationInstance.isEnableStatPublisher()) {
-            PublisherObserver publisherObserverInstance = new PublisherObserver();
-            publisherObserverInstance.statPublisherTimerTask();
-            PublisherObserver.timerFlag = true;
-
-        }
-
-=======
->>>>>>> 9ae5a2bd927f045014c2c5dd96b111216744bdd4
     }
 
     protected void deactivate(ComponentContext context) {
@@ -104,7 +104,7 @@ public class StatisticComponent {
         }
     }
 
-    protected void unsetRegistryService() {
+    protected void unsetRegistryService(RegistryService registryService) {
         StatConfigurationDTO.setRegistryService(null);
     }
 
@@ -116,7 +116,7 @@ public class StatisticComponent {
         }
     }
 
-    protected void unsetRealmService() {
+    protected void unsetRealmService(RealmService realmService) {
         DataAgent.setRealmService(null);
     }
 

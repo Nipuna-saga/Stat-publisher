@@ -1,3 +1,21 @@
+/*
+*  Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*
+*  WSO2 Inc. licenses this file to you under the Apache License,
+*  Version 2.0 (the "License"); you may not use this file except
+*  in compliance with the License.
+*  You may obtain a copy of the License at
+*
+*    http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing,
+* software distributed under the License is distributed on an
+* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+* KIND, either express or implied.  See the License for the
+* specific language governing permissions and limitations
+* under the License.
+*/
+
 package org.wso2.carbon.stat.publisher.DTO;
 
 import org.wso2.carbon.registry.core.Registry;
@@ -8,18 +26,24 @@ import org.wso2.carbon.stat.publisher.data.StatConfiguration;
 import org.wso2.carbon.stat.publisher.util.StatPublisherException;
 import org.wso2.carbon.utils.xml.StringUtils;
 
+/**
+ * Handle Registry while store and retrieve data sent from User Interface
+ */
 public class StatConfigurationDTO {
 
     public static final String EMPTY_STRING = "";
     private static RegistryService registryService;
 
+    /**
+     * Initialize registry service
+     * @param registryServiceParam - registry service
+     */
     public static void setRegistryService(RegistryService registryServiceParam) {
         registryService = registryServiceParam;
     }
 
     /**
-     * Updates the Registry with given config data.
-     *
+     * Updates the Registry with given configuration data.
      * @param statConfigurationWriteObject - eventing configuration data
      * @param tenantId                     - get tenantID
      */
@@ -27,9 +51,7 @@ public class StatConfigurationDTO {
             throws StatPublisherException {
         try {
             Registry registry = registryService.getConfigSystemRegistry(tenantId);
-
             if (statConfigurationWriteObject.isEnableStatPublisher()) {
-
                 updateConfigProperty(StatConfigurationConstants.ENABLE_STAT_PUBLISHER,
                                      statConfigurationWriteObject.isEnableStatPublisher(), registry);
                 updateConfigProperty(StatConfigurationConstants.USER_NAME,
@@ -58,7 +80,7 @@ public class StatConfigurationDTO {
                 String systemStatEnable =
                         getConfigurationProperty(StatConfigurationConstants.SYSTEM_STAT_ENABLE, registry);
 
-                if (StringUtils.isEmpty(url) && StringUtils.isEmpty(userName) && StringUtils.isEmpty(password)) {
+                if (!StringUtils.isEmpty(url) && !StringUtils.isEmpty(userName) && !StringUtils.isEmpty(password)) {
                     statConfigurationWriteObject.setURL(url);
                     statConfigurationWriteObject.setUsername(userName);
                     statConfigurationWriteObject.setPassword(password);
@@ -76,15 +98,13 @@ public class StatConfigurationDTO {
 
     /**
      * Update the properties
-     *
-     * @param propertyName - resource name
+     * @param propertyName - registry property name which store value
      * @param value        - value to store
      * @param registry     - load registry
-     * @throws RegistryException
      * @throws StatPublisherException
      */
     public void updateConfigProperty(String propertyName, Object value, Registry registry)
-            throws RegistryException, StatPublisherException {
+            throws StatPublisherException {
         String resourcePath = StatConfigurationConstants.MEDIATION_STATISTICS_REG_PATH + propertyName;
         Resource resource;
         if (registry != null) {
@@ -98,19 +118,19 @@ public class StatConfigurationDTO {
                     resource.setProperty(propertyName, value.toString());
                     registry.put(resourcePath, resource);
                 }
-            } catch (Exception e) {
-                throw new StatPublisherException("Error while accessing registry", e);
+            } catch (RegistryException e) {
+                throw new StatPublisherException("Could not update property in registry!",e);
             }
         }
     }
 
     /**
      * Load configuration from Registry.
-     *
      * @param tenantId - get tenantID
-     * @return statConfigurationReadObject
+     * @return statConfigurationObject - statConfiguration class object with retrieved values from
+     *                                   registry
      */
-    public StatConfiguration LoadConfigurationData(int tenantId) throws StatPublisherException {
+    public StatConfiguration loadConfigurationData(int tenantId) throws StatPublisherException {
 
         StatConfiguration statConfigurationReadObject = new StatConfiguration();
 
@@ -123,10 +143,9 @@ public class StatConfigurationDTO {
         statConfigurationReadObject.setMessage_statEnable(false);
         statConfigurationReadObject.setSystem_statEnable(false);
 
-        // then load it from registry
+        // Then load values from registry
         try {
             Registry registry = registryService.getConfigSystemRegistry(tenantId);
-
             String enableStatPublisher =
                     getConfigurationProperty(StatConfigurationConstants.ENABLE_STAT_PUBLISHER, registry);
             String userName =
@@ -141,7 +160,7 @@ public class StatConfigurationDTO {
                     getConfigurationProperty(StatConfigurationConstants.MESSAGE_STAT_ENABLE, registry);
             String systemStatEnable =
                     getConfigurationProperty(StatConfigurationConstants.SYSTEM_STAT_ENABLE, registry);
-            if (StringUtils.isEmpty(url)) {
+            if (!StringUtils.isEmpty(url) && !StringUtils.isEmpty(userName) && !StringUtils.isEmpty(password)) {
                 statConfigurationReadObject.setEnableStatPublisher(Boolean.parseBoolean(enableStatPublisher));
                 statConfigurationReadObject.setURL(url);
                 statConfigurationReadObject.setUsername(userName);
@@ -150,7 +169,7 @@ public class StatConfigurationDTO {
                 statConfigurationReadObject.setMessage_statEnable(Boolean.parseBoolean(messageStatEnable));
                 statConfigurationReadObject.setSystem_statEnable(Boolean.parseBoolean(systemStatEnable));
             }
-        } catch (Exception e) {
+        } catch (RegistryException e) {
             throw new StatPublisherException("Could not load values from registry", e);
         }
         return statConfigurationReadObject;
@@ -158,12 +177,13 @@ public class StatConfigurationDTO {
 
     /**
      * Read the resource from registry
-     *
      * @param propertyName - get resource name
      * @param registry     - load registry
+     * @return value       - stored value in registry
+     * @throws StatPublisherException
      */
     public String getConfigurationProperty(String propertyName, Registry registry)
-            throws RegistryException, StatPublisherException {
+            throws StatPublisherException {
         String resourcePath = StatConfigurationConstants.MEDIATION_STATISTICS_REG_PATH + propertyName;
         String value = null;
         if (registry != null) {
@@ -172,8 +192,8 @@ public class StatConfigurationDTO {
                     Resource resource = registry.get(resourcePath);
                     value = resource.getProperty(propertyName);
                 }
-            } catch (Exception e) {
-                throw new StatPublisherException("Error while accessing registry", e);
+            } catch (RegistryException e) {
+                throw new StatPublisherException("Error in retrieving property from registry", e);
             }
         }
         return value;
