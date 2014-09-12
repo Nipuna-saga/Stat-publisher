@@ -1,5 +1,5 @@
 
-package org.wso2.carbon.stat.publisher.internal.util;
+package org.wso2.carbon.stat.publisher.util;
 
 public class StatPublisherException extends Exception {
 

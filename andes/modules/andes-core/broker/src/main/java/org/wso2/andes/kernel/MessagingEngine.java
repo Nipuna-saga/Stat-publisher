@@ -35,8 +35,8 @@ import org.wso2.andes.subscription.ClusterwideSubscriptionChangeNotifier;
 import org.wso2.andes.subscription.OrphanedMessagesDueToUnsubscriptionHandler;
 import org.wso2.andes.tools.utils.DisruptorBasedExecutor;
 
-import org.wso2.carbon.stat.publisher.internal.publisher.PublisherObserver;
-import org.wso2.carbon.stat.publisher.internal.util.StatPublisherException;
+import org.wso2.carbon.stat.publisher.publisher.PublisherObserver;
+import org.wso2.carbon.stat.publisher.util.StatPublisherException;
 
 import java.nio.ByteBuffer;
 import java.util.*;

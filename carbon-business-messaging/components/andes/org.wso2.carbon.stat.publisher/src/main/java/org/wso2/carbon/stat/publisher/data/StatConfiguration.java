@@ -16,7 +16,7 @@
 * under the License.
 */
 
-package org.wso2.carbon.stat.publisher.internal.data;
+package org.wso2.carbon.stat.publisher.data;
 
 public class StatConfiguration {
 

@@ -1,10 +1,10 @@
-package org.wso2.carbon.stat.publisher.internal.conf;
+package org.wso2.carbon.stat.publisher.conf;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.wso2.carbon.stat.publisher.internal.util.StatPublisherException;
+import org.wso2.carbon.stat.publisher.util.StatPublisherException;
 import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;

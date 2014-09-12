@@ -16,16 +16,16 @@
 * under the License.
 */
 
-package org.wso2.carbon.stat.publisher.internal.publisher;
+package org.wso2.carbon.stat.publisher.publisher;
 
 import org.apache.log4j.Logger;
 import org.wso2.andes.kernel.AndesAckData;
 import org.wso2.andes.kernel.AndesMessageMetadata;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
-import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
-import org.wso2.carbon.stat.publisher.internal.util.StatPublisherException;
-import org.wso2.carbon.stat.publisher.internal.util.URLOperations;
+import org.wso2.carbon.stat.publisher.data.StatConfiguration;
+import org.wso2.carbon.stat.publisher.util.StatPublisherException;
+import org.wso2.carbon.stat.publisher.util.URLOperations;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;

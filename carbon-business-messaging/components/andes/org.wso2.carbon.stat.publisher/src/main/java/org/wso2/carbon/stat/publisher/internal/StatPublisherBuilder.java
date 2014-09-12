@@ -1,4 +1,4 @@
-package org.wso2.carbon.stat.publisher.internal.internal;
+package org.wso2.carbon.stat.publisher.internal;
 
 import org.wso2.carbon.stat.publisher.StatPublisherService;
 

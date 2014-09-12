@@ -1,4 +1,4 @@
-package org.wso2.carbon.stat.publisher.internal.internal;
+package org.wso2.carbon.stat.publisher.internal;
 
 import org.apache.log4j.Logger;
 import org.osgi.framework.ServiceRegistration;
@@ -6,11 +6,11 @@ import org.osgi.service.component.ComponentContext;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.stat.publisher.StatPublisherService;
-import org.wso2.carbon.stat.publisher.internal.DTO.StatConfigurationDTO;
-import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
-import org.wso2.carbon.stat.publisher.internal.publisher.DataAgent;
-import org.wso2.carbon.stat.publisher.internal.publisher.PublisherObserver;
-import org.wso2.carbon.stat.publisher.internal.util.StatPublisherException;
+import org.wso2.carbon.stat.publisher.DTO.StatConfigurationDTO;
+import org.wso2.carbon.stat.publisher.data.StatConfiguration;
+import org.wso2.carbon.stat.publisher.publisher.DataAgent;
+import org.wso2.carbon.stat.publisher.publisher.PublisherObserver;
+import org.wso2.carbon.stat.publisher.util.StatPublisherException;
 import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.utils.ConfigurationContextService;
 

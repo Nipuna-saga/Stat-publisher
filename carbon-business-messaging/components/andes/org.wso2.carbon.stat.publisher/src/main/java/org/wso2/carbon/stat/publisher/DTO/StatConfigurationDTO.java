@@ -1,11 +1,11 @@
-package org.wso2.carbon.stat.publisher.internal.DTO;
+package org.wso2.carbon.stat.publisher.DTO;
 
 import org.wso2.carbon.registry.core.Registry;
 import org.wso2.carbon.registry.core.Resource;
 import org.wso2.carbon.registry.core.exceptions.RegistryException;
 import org.wso2.carbon.registry.core.service.RegistryService;
-import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
-import org.wso2.carbon.stat.publisher.internal.util.StatPublisherException;
+import org.wso2.carbon.stat.publisher.data.StatConfiguration;
+import org.wso2.carbon.stat.publisher.util.StatPublisherException;
 import org.wso2.carbon.utils.xml.StringUtils;
 
 public class StatConfigurationDTO {

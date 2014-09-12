@@ -16,7 +16,7 @@
 * under the License.
 */
 
-package org.wso2.carbon.stat.publisher.internal.publisher;
+package org.wso2.carbon.stat.publisher.publisher;
 
 import org.apache.log4j.Logger;
 import org.wso2.andes.kernel.AndesAckData;
@@ -29,11 +29,11 @@ import org.wso2.carbon.databridge.agent.thrift.AsyncDataPublisher;
 import org.wso2.carbon.databridge.agent.thrift.conf.AgentConfiguration;
 import org.wso2.carbon.databridge.agent.thrift.exception.AgentException;
 import org.wso2.carbon.databridge.commons.Event;
-import org.wso2.carbon.stat.publisher.internal.conf.ReadJMXConfiguration;
-import org.wso2.carbon.stat.publisher.internal.conf.ReadStreamConfiguration;
-import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
-import org.wso2.carbon.stat.publisher.internal.serverStats.MbeansStats;
-import org.wso2.carbon.stat.publisher.internal.util.StatPublisherException;
+import org.wso2.carbon.stat.publisher.conf.ReadJMXConfiguration;
+import org.wso2.carbon.stat.publisher.conf.ReadStreamConfiguration;
+import org.wso2.carbon.stat.publisher.data.StatConfiguration;
+import org.wso2.carbon.stat.publisher.serverStats.MbeansStats;
+import org.wso2.carbon.stat.publisher.util.StatPublisherException;
 import org.wso2.carbon.user.core.UserRealm;
 import org.wso2.carbon.user.core.UserStoreException;
 import org.wso2.carbon.user.core.service.RealmService;

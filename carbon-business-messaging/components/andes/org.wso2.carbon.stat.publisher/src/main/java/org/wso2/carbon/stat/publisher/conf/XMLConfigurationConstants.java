@@ -1,4 +1,4 @@
-package org.wso2.carbon.stat.publisher.internal.conf;
+package org.wso2.carbon.stat.publisher.conf;
 
 public class XMLConfigurationConstants {
     public static final String JMX_FILE_PATH = "repository/conf/etc/jmx.xml";

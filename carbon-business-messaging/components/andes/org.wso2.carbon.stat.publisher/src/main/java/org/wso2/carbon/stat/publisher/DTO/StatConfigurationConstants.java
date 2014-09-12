@@ -1,4 +1,4 @@
-package org.wso2.carbon.stat.publisher.internal.DTO;
+package org.wso2.carbon.stat.publisher.DTO;
 
 import org.wso2.carbon.core.RegistryResources;
 

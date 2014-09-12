@@ -1,4 +1,4 @@
-package org.wso2.carbon.stat.publisher.internal.serverStats;
+package org.wso2.carbon.stat.publisher.serverStats;
 
 import org.wso2.andes.management.common.JMXConnnectionFactory;
 

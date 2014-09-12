@@ -20,10 +20,10 @@ package org.wso2.carbon.stat.publisher;
 
 import org.apache.log4j.Logger;
 import org.wso2.carbon.context.CarbonContext;
-import org.wso2.carbon.stat.publisher.internal.DTO.StatConfigurationDTO;
-import org.wso2.carbon.stat.publisher.internal.data.StatConfiguration;
-import org.wso2.carbon.stat.publisher.internal.publisher.PublisherObserver;
-import org.wso2.carbon.stat.publisher.internal.util.StatPublisherException;
+import org.wso2.carbon.stat.publisher.DTO.StatConfigurationDTO;
+import org.wso2.carbon.stat.publisher.data.StatConfiguration;
+import org.wso2.carbon.stat.publisher.publisher.PublisherObserver;
+import org.wso2.carbon.stat.publisher.util.StatPublisherException;
 
 public class StatPublisherService {
 
