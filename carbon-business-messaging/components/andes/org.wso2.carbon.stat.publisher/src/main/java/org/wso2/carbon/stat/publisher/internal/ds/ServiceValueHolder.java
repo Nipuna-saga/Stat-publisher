@@ -16,7 +16,7 @@
 * under the License.
 */
 
-package org.wso2.carbon.stat.publisher.internal;
+package org.wso2.carbon.stat.publisher.internal.ds;
 
 import org.wso2.carbon.utils.ConfigurationContextService;
 
@@ -24,6 +24,9 @@ import org.wso2.carbon.utils.ConfigurationContextService;
  * Keep values required for component service
  */
 public class ServiceValueHolder {
+    private ServiceValueHolder() {
+    }
+
     private static ServiceValueHolder instance = new ServiceValueHolder();
     private ConfigurationContextService configurationContextService;
 

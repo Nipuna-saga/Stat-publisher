@@ -16,7 +16,7 @@
 * under the License.
 */
 
-package org.wso2.carbon.stat.publisher.internal;
+package org.wso2.carbon.stat.publisher.internal.ds;
 
 import org.apache.log4j.Logger;
 import org.osgi.framework.ServiceRegistration;
@@ -25,10 +25,10 @@ import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.stat.publisher.StatPublisherService;
 import org.wso2.carbon.stat.publisher.DTO.StatConfigurationDTO;
-import org.wso2.carbon.stat.publisher.data.StatConfiguration;
+import org.wso2.carbon.stat.publisher.conf.StatConfiguration;
+import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.wso2.carbon.stat.publisher.publisher.DataAgent;
 import org.wso2.carbon.stat.publisher.publisher.PublisherObserver;
-import org.wso2.carbon.stat.publisher.util.StatPublisherException;
 import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
@@ -46,13 +46,15 @@ import org.wso2.carbon.utils.ConfigurationContextService;
 
 public class StatisticComponent {
 
+    //TODO change name- StatPublisherDS
+
     private static Logger logger = Logger.getLogger(StatisticComponent.class);
     public StatConfigurationDTO statConfigurationDTOObject;
     public StatConfiguration statConfigurationInstance;
 
     private ServiceRegistration statAdminServiceRegistration;
 
-    protected void activate(ComponentContext context) throws StatPublisherException {
+    protected void activate(ComponentContext context) throws StatPublisherConfigurationException {
 
         try {
             StatPublisherService Service = StatPublisherBuilder.createMediationService();
@@ -70,18 +72,14 @@ public class StatisticComponent {
                 publisherObserverInstance.statPublisherTimerTask();
                 PublisherObserver.timerFlag = true;
             }
-            logger.info("Successfully created the stat publisher service");
+            logger.info("Successfully created the MB statistic publisher service");
         } catch (RuntimeException e) {
-            //TODO log and return
-            throw new StatPublisherException("Can not create stat publisher service", e);
-        }
-<<<<<<< HEAD
+            logger.error("Error in creating MB statistic publisher service",e);
 
         }
 
-=======
-    }
->>>>>>> 6c08b1c3c36da4892f91abe2a4d7f84ecb922b3e
+        }
+
 
     protected void deactivate(ComponentContext context) {
         // unregistered MBStatsPublisherAdmin service from the OSGi Service Register.
@@ -101,26 +99,16 @@ public class StatisticComponent {
         ServiceValueHolder.getInstance().setConfigurationContextService(null);
     }
 
-    protected void setRegistryService(RegistryService registryService)
-
-            throws StatPublisherException {
-        try {
+    protected void setRegistryService(RegistryService registryService){
             StatConfigurationDTO.setRegistryService(registryService);
-        } catch (Exception e) {
-            throw new StatPublisherException("Cannot retrieve System Registry", e);
-        }
     }
 
     protected void unsetRegistryService(RegistryService registryService) {
-        StatConfigurationDTO.setRegistryService(null);
+        StatConfigurationDTO.setRegistryService(null); //TODO set all to ServiceValueHolder
     }
 
-    protected void setRealmService(RealmService realmService) throws StatPublisherException {
-        try {
+    protected void setRealmService(RealmService realmService){
             DataAgent.setRealmService(realmService);
-        } catch (Exception e) {
-            throw new StatPublisherException("Cannot retrieve Realm Service", e);
-        }
     }
 
     protected void unsetRealmService(RealmService realmService) {

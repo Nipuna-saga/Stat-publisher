@@ -21,17 +21,19 @@ package org.wso2.carbon.stat.publisher;
 import org.apache.log4j.Logger;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.stat.publisher.DTO.StatConfigurationDTO;
-import org.wso2.carbon.stat.publisher.data.StatConfiguration;
+import org.wso2.carbon.stat.publisher.conf.StatConfiguration;
+import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.wso2.carbon.stat.publisher.publisher.PublisherObserver;
-import org.wso2.carbon.stat.publisher.util.StatPublisherException;
 
 public class StatPublisherService {
+
+//TODO statPublisherConfiguration (name change)
 
     private static Logger logger = Logger.getLogger(StatPublisherService.class);
     private StatConfigurationDTO StatConfigurationDTOObject;
 
     //StatConfiguration details get method
-    public StatConfiguration getStatConfiguration() throws StatPublisherException {
+    public StatConfiguration getStatConfiguration() throws StatPublisherConfigurationException {
         int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
 
         StatConfigurationDTOObject = new StatConfigurationDTO();
@@ -71,7 +73,7 @@ public class StatPublisherService {
         }
         try {
             StatConfigurationDTOObject.storeConfigurationData(StatConfigurationData, tenantID);
-        } catch (StatPublisherException e) {
+        } catch (StatPublisherConfigurationException e) {
             e.printStackTrace();
         }
 

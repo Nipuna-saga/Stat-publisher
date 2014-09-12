@@ -16,14 +16,15 @@
 * under the License.
 */
 
-package org.wso2.carbon.stat.publisher.data;
+package org.wso2.carbon.stat.publisher.conf;
 
 public class StatConfiguration {
-
+//TODO StatPublisherConfiguration
     //enable stat publisher
     private boolean enableStatPublisher;
 
     //credential details
+    //TODO add default values
     private String username;
     private String password;
     private String URL;
@@ -34,6 +35,8 @@ public class StatConfiguration {
     private boolean message_statEnable;
     private boolean system_statEnable;
     private boolean MB_statEnable;
+
+    //TODO camelcase
 
     public String getUsername() {
         return username;
