@@ -36,7 +36,7 @@ public class StatPublisherService {
 
         StatConfigurationDTOObject = new StatConfigurationDTO();
 
-        return StatConfigurationDTOObject.LoadConfigurationData(tenantID);
+        return StatConfigurationDTOObject.loadConfigurationData(tenantID);
 
     }
 

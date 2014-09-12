@@ -1,3 +1,21 @@
+/*
+*  Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*
+*  WSO2 Inc. licenses this file to you under the Apache License,
+*  Version 2.0 (the "License"); you may not use this file except
+*  in compliance with the License.
+*  You may obtain a copy of the License at
+*
+*    http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing,
+* software distributed under the License is distributed on an
+* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+* KIND, either express or implied.  See the License for the
+* specific language governing permissions and limitations
+* under the License.
+*/
+
 package org.wso2.carbon.stat.publisher.conf;
 
 import org.apache.log4j.Logger;
@@ -12,6 +30,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Read configuration values from jmx and carbon xml files.
+ */
 public class ReadJMXConfiguration {
 
     private static Logger logger = Logger.getLogger(ReadJMXConfiguration.class);
@@ -21,121 +42,116 @@ public class ReadJMXConfiguration {
     private String RMIServerPort;
     private String offSet;
 
+    /**
+     * ReadJMXConfiguration Class constructor load xml files and read values
+     */
     public ReadJMXConfiguration() throws StatPublisherException {
 
-        final String emptyString = "";
-
         try {
-            String filePathJMX = XMLConfigurationConstants.JMX_FILE_PATH;
-
             /**
-             * Loads jmx.xml file
+             * Load jmx.xml file
              */
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-            Document doc;
+            Document jmxDocument;
+            String JMXFilePath = XMLConfigurationConstants.JMX_FILE_PATH;
 
-            File jmxFilePath= new File(filePathJMX);
-
+            File jmxFilePath= new File(JMXFilePath);
             if (!jmxFilePath.exists()) {
-
                 logger.error("jmx.xml doesn't exists!!!");
-
             } else {
-                doc = docBuilder.parse(filePathJMX);
-                doc.getDocumentElement().normalize();
-
-                String rootNode = doc.getDocumentElement().getNodeName();
-                NodeList dataList = doc.getElementsByTagName(rootNode);
+                jmxDocument = docBuilder.parse(JMXFilePath);
+                jmxDocument.getDocumentElement().normalize();
+                String jmxRootNode = jmxDocument.getDocumentElement().getNodeName();
+                NodeList jmxDataList = jmxDocument.getElementsByTagName(jmxRootNode);
 
                 String StartRMIServerValue =
-                        (String) ((Element) dataList.item(0)).getElementsByTagName("StartRMIServer").
+                         ((Element) jmxDataList.item(0)).getElementsByTagName("StartRMIServer").
                                 item(0).getChildNodes().item(0).getTextContent();
-
-                if (StartRMIServerValue.equals(emptyString)) {
-                    StartRMIServer = false;
-                } else {
-                    String nodeValue = StartRMIServerValue.trim();
-                    StartRMIServer = Boolean.parseBoolean(nodeValue);
-                }
+                String nodeValue = StartRMIServerValue.trim();
+                this.StartRMIServer = Boolean.parseBoolean(nodeValue);
 
                 String HostNameValue =
-                        (String) ((Element) dataList.item(0)).getElementsByTagName("HostName").
+                        ((Element) jmxDataList.item(0)).getElementsByTagName("HostName").
                                 item(0).getChildNodes().item(0).getTextContent();
                 this.HostName = HostNameValue.trim();
+
+                /**
+                 * Load carbon.xml file
+                 */
+                Document carbonDocument;
+                String carbonFilePath = XMLConfigurationConstants.CARBON_FILE_PATH;
+
+                File carbonFile = new File(carbonFilePath);
+                if (!carbonFile.exists()) {
+                    logger.error("carbon.xml doesn't exists!!!");
+                } else {
+                    carbonDocument = docBuilder.parse(carbonFilePath);
+                    carbonDocument.getDocumentElement().normalize();
+                    String carbonRootNode = carbonDocument.getDocumentElement().getNodeName();
+                    NodeList carbonDataList = carbonDocument.getElementsByTagName(carbonRootNode);
+
+                    String RMIRegistryPortValue =
+                            ((Element) carbonDataList.item(0)).getElementsByTagName("RMIRegistryPort").
+                                    item(0).getChildNodes().item(0).getTextContent();
+                    this.RMIRegistryPort = RMIRegistryPortValue.trim();
+
+                    String RMIServerPortValue =
+                            ((Element) carbonDataList.item(0)).getElementsByTagName("RMIServerPort").
+                                    item(0).getChildNodes().item(0).getTextContent();
+                    this.RMIServerPort = RMIServerPortValue.trim();
+
+                    String offSetValue =
+                            ((Element) carbonDataList.item(0)).getElementsByTagName("Offset").
+                                    item(0).getChildNodes().item(0).getTextContent();
+                    this.offSet = offSetValue.trim();
+                }
             }
-        } catch (ParserConfigurationException parserException) {
-            throw new StatPublisherException("ParserConfigurationException", parserException);
-        } catch (SAXException saxException) {
-            throw new StatPublisherException("SAXException", saxException);
-        } catch (IOException ioException) {
-            throw new StatPublisherException("IOException", ioException);
-        }
-
-        try {
-
-            String filePathCarbon = XMLConfigurationConstants.CARBON_FILE_PATH;
-
-            /**
-             * Loads carbon.xml file
-             */
-            DocumentBuilderFactory docBuilderFactory_carbon = DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder_carbon = docBuilderFactory_carbon.newDocumentBuilder();
-            Document document;
-
-            File carbonFile = new File(filePathCarbon);
-
-            if (!carbonFile.exists()) {
-
-                logger.error("carbon.xml doesn't exists!!!");
-
-            } else {
-                document = docBuilder_carbon.parse(filePathCarbon);
-                document.getDocumentElement().normalize();
-
-                String rootNode = document.getDocumentElement().getNodeName();
-                NodeList dataList = document.getElementsByTagName(rootNode);
-
-                String RMIRegistryPortValue =
-                        (String) ((Element) dataList.item(0)).getElementsByTagName("RMIRegistryPort").
-                                item(0).getChildNodes().item(0).getTextContent();
-                this.RMIRegistryPort = RMIRegistryPortValue.trim();
-
-                String RMIServerPortValue =
-                        (String) ((Element) dataList.item(0)).getElementsByTagName("RMIServerPort").
-                                item(0).getChildNodes().item(0).getTextContent();
-                this.RMIServerPort = RMIServerPortValue.trim();
-
-                String offSetValue =
-                        (String) ((Element) dataList.item(0)).getElementsByTagName("Offset").
-                                item(0).getChildNodes().item(0).getTextContent();
-                this.offSet = offSetValue.trim();
-            }
-        } catch (ParserConfigurationException parserException) {
-            throw new StatPublisherException("ParserConfigurationException", parserException);
-        } catch (SAXException saxException) {
-            throw new StatPublisherException("SAXException", saxException);
-        } catch (IOException ioException) {
-            throw new StatPublisherException("IOException", ioException);
+        } catch (ParserConfigurationException e) {
+            throw new StatPublisherException("Indicate configuration error!", e);
+        } catch (SAXException e) {
+            throw new StatPublisherException("Indicate a general SAX error or warning!", e);
+        } catch (IOException e) {
+            throw new StatPublisherException("Indicate file loading error!", e);
         }
     }
 
+    /**
+     * Get value of StartRMIServer
+     * @return StartRMIServer Value
+     */
     public boolean isStartRMIServer() {
         return StartRMIServer;
     }
 
+    /**
+     * Get value of RMIServerPort
+     * @return RMIServerPort
+     */
     public String getRMIServerPort() {
         return RMIServerPort;
     }
 
+    /**
+     * Get value of HostName
+     * @return HostName
+     */
     public String getHostName() {
         return HostName;
     }
 
+    /**
+     * Get value of RMIRegistryPort
+     * @return RMIRegistryPort
+     */
     public String getRMIRegistryPort() {
         return RMIRegistryPort;
     }
 
+    /**
+     * Get value of offSet
+     * @return offSet
+     */
     public String getOffSet() {
         return offSet;
     }

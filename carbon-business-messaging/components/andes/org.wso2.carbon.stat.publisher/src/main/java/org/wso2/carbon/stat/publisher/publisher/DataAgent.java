@@ -45,12 +45,21 @@ public class DataAgent {
     private static Logger logger = Logger.getLogger(DataAgent.class);
     private static DataAgent instance = null;
     private static RealmService realmService;
+<<<<<<< HEAD
     private  String VERSION_MESSAGE;
     private  String VERSION_ACK;
     private  String VERSION_SYSTEM_STATISTICS;
     private  String VERSION_MB_STATISTICS = "1.0.0";
     private  String FORWARD_SLASH;
     private  String trustStorePassword;
+=======
+    private String VERSION_MESSAGE;
+    private String VERSION_ACK;
+    private  String VERSION_SYSTEM_STATISTICS;
+    private  String VERSION_MB_STATISTICS = "1.0.0";
+    private  String FORWARD_SLASH;
+    private String trustStorePassword;
+>>>>>>> 6c08b1c3c36da4892f91abe2a4d7f84ecb922b3e
     long timeStamp;
     AsyncDataPublisher asyncDataPublisherSystemStats = null;
     AsyncDataPublisher asyncDataPublisherMBStatistics = null;
@@ -66,6 +75,7 @@ public class DataAgent {
     private int totalSubscribers;
     private String JMSConfiguration[];
 
+<<<<<<< HEAD
 
 
     private DataAgent() throws StatPublisherException { //private constructor
@@ -76,6 +86,10 @@ public class DataAgent {
         AgentConfiguration agentConfiguration = new AgentConfiguration();
 
 
+=======
+    private DataAgent() throws StatPublisherException { //private constructor
+
+>>>>>>> 6c08b1c3c36da4892f91abe2a4d7f84ecb922b3e
         ReadStreamConfiguration readStreamConfiguration = new ReadStreamConfiguration();
 
         FORWARD_SLASH = readStreamConfiguration.getForwardSlash();
@@ -88,6 +102,10 @@ public class DataAgent {
         agentConfiguration = new AgentConfiguration();
         System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonHome() + FORWARD_SLASH + "repository" + FORWARD_SLASH + "resources" + FORWARD_SLASH + "security" + FORWARD_SLASH + "client-truststore.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", "wso2carbon");
+<<<<<<< HEAD
+=======
+        System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonHome() + FORWARD_SLASH + "repository" + FORWARD_SLASH + "resources" + FORWARD_SLASH + "security" + FORWARD_SLASH + "client-truststore.jks");
+>>>>>>> 6c08b1c3c36da4892f91abe2a4d7f84ecb922b3e
 
         System.setProperty("javax.net.ssl.trustStorePassword", trustStorePassword);
 
@@ -103,6 +121,10 @@ public class DataAgent {
         return instance;
     }
 
+    /**
+     * Initialize realm service
+     * @param realmServiceParam - Realm Service
+     */
     public static void setRealmService(RealmService realmServiceParam) {
         realmService = realmServiceParam;
     }
@@ -186,6 +208,10 @@ public class DataAgent {
                 "}";
         asyncDataPublisherMBStatistics.addStreamDefinition(messageStreamDefinition, "MB_STATISTICS",
                 VERSION_MB_STATISTICS);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6c08b1c3c36da4892f91abe2a4d7f84ecb922b3e
 
         timeStamp = getTimeStamp();
 
@@ -339,9 +365,12 @@ public class DataAgent {
         ReadJMXConfiguration readJMXConfiguration = new ReadJMXConfiguration();
 
 
+<<<<<<< HEAD
 
         logger.info("=================port===================================================: " +
                 readJMXConfiguration.getRMIServerPort());
+=======
+>>>>>>> 6c08b1c3c36da4892f91abe2a4d7f84ecb922b3e
 
 
         String JMSConfig[] = {readJMXConfiguration.getHostName(), "10000", "admin", "admin"};
