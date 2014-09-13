@@ -22,14 +22,16 @@ import org.wso2.carbon.registry.core.Registry;
 import org.wso2.carbon.registry.core.Resource;
 import org.wso2.carbon.registry.core.exceptions.RegistryException;
 import org.wso2.carbon.registry.core.service.RegistryService;
-import org.wso2.carbon.stat.publisher.data.StatConfiguration;
-import org.wso2.carbon.stat.publisher.util.StatPublisherException;
+import org.wso2.carbon.stat.publisher.conf.StatConfiguration;
+import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.wso2.carbon.utils.xml.StringUtils;
 
 /**
  * Handle Registry while store and retrieve data sent from User Interface
  */
 public class StatConfigurationDTO {
+
+    //TODO RegistryPersistanceManager (change name)
 
     public static final String EMPTY_STRING = "";
     private static RegistryService registryService;
@@ -48,7 +50,7 @@ public class StatConfigurationDTO {
      * @param tenantId                     - get tenantID
      */
     public void storeConfigurationData(StatConfiguration statConfigurationWriteObject, int tenantId)
-            throws StatPublisherException {
+            throws StatPublisherConfigurationException {
         try {
             Registry registry = registryService.getConfigSystemRegistry(tenantId);
             if (statConfigurationWriteObject.isEnableStatPublisher()) {
@@ -93,7 +95,7 @@ public class StatConfigurationDTO {
 
 
         } catch (RegistryException e) {
-            throw new StatPublisherException("Could not update registry", e);
+            throw new StatPublisherConfigurationException("Could not update registry", e);
         }
     }
 
@@ -102,10 +104,10 @@ public class StatConfigurationDTO {
      * @param propertyName - registry property name which store value
      * @param value        - value to store
      * @param registry     - load registry
-     * @throws StatPublisherException
+     * @throws org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException
      */
     public void updateConfigProperty(String propertyName, Object value, Registry registry)
-            throws StatPublisherException {
+            throws StatPublisherConfigurationException {
         String resourcePath = StatConfigurationConstants.MEDIATION_STATISTICS_REG_PATH + propertyName;
         Resource resource;
         if (registry != null) {
@@ -120,7 +122,7 @@ public class StatConfigurationDTO {
                     registry.put(resourcePath, resource);
                 }
             } catch (RegistryException e) {
-                throw new StatPublisherException("Could not update property in registry!",e);
+                throw new StatPublisherConfigurationException("Could not update property in registry!",e);
             }
         }
     }
@@ -131,7 +133,8 @@ public class StatConfigurationDTO {
      * @return statConfigurationObject - statConfiguration class object with retrieved values from
      *                                   registry
      */
-    public StatConfiguration loadConfigurationData(int tenantId) throws StatPublisherException {
+    public StatConfiguration loadConfigurationData(int tenantId) throws
+                                                                 StatPublisherConfigurationException {
 
         StatConfiguration statConfigurationReadObject = new StatConfiguration();
 
@@ -173,7 +176,7 @@ public class StatConfigurationDTO {
                 statConfigurationReadObject.setSystem_statEnable(Boolean.parseBoolean(systemStatEnable));
             }
         } catch (RegistryException e) {
-            throw new StatPublisherException("Could not load values from registry", e);
+            throw new StatPublisherConfigurationException("Could not load values from registry", e);
         }
         return statConfigurationReadObject;
     }
@@ -183,20 +186,20 @@ public class StatConfigurationDTO {
      * @param propertyName - get resource name
      * @param registry     - load registry
      * @return value       - stored value in registry
-     * @throws StatPublisherException
+     * @throws org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException
      */
     public String getConfigurationProperty(String propertyName, Registry registry)
-            throws StatPublisherException {
+            throws StatPublisherConfigurationException {
         String resourcePath = StatConfigurationConstants.MEDIATION_STATISTICS_REG_PATH + propertyName;
         String value = null;
         if (registry != null) {
             try {
                 if (registry.resourceExists(resourcePath)) {
-                    Resource resource = registry.get(resourcePath);
+                    Resource resource = registry.get(resourcePath); //TODO StatisticConfiguration (resource name)
                     value = resource.getProperty(propertyName);
                 }
             } catch (RegistryException e) {
-                throw new StatPublisherException("Error in retrieving property from registry", e);
+                throw new StatPublisherConfigurationException("Error in retrieving property from registry", e);
             }
         }
         return value;
