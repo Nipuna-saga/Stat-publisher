@@ -15,7 +15,6 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-
 package org.wso2.carbon.stat.publisher.publisher;
 
 import org.apache.log4j.Logger;
@@ -26,10 +25,10 @@ import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.stat.publisher.data.StatConfiguration;
 import org.wso2.carbon.stat.publisher.util.StatPublisherException;
 import org.wso2.carbon.stat.publisher.util.URLOperations;
+
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ExecutorService;
 
 
 public class PublisherObserver {
@@ -40,11 +39,6 @@ public class PublisherObserver {
     public static StatConfiguration statConfigurationInstance;
 
     private static Logger logger = Logger.getLogger(PublisherObserver.class);
-<<<<<<< HEAD
-
-=======
-    private ExecutorService executor;
->>>>>>> 6c08b1c3c36da4892f91abe2a4d7f84ecb922b3e
     private DataAgent dataAgentInstance;
     private int tenantID;
 
@@ -77,20 +71,22 @@ public class PublisherObserver {
                         // String URLList = "tcp://localhost:7611";
                         URLOperations urlOperations = new URLOperations();
                         String URLArray[] = urlOperations.URLSplitter(URLList);
-                        String[] credentials = {statConfigurationInstance.getUsername(), statConfigurationInstance.getPassword()};
+                        String[] credentials =
+                                {statConfigurationInstance.getUsername(), statConfigurationInstance.getPassword()};
                         for (String URL : URLArray) {
-                            if (statConfigurationInstance.isSystem_statEnable()) {//check system stat enable configuration
+                            if (statConfigurationInstance.isSystem_statEnable()) {
+                                //check system stat enable configuration
 
 
                                 dataAgentInstance.sendSystemStats(URL, credentials);
-                                //       logger.info("System stat Publishing activated " + Thread.currentThread().getName());
+                                //logger.info("System stat Publishing activated " + Thread.currentThread().getName());
 
                             }
                             if (statConfigurationInstance.isMB_statEnable()) {//check MB stat enable configuration
 
                                 dataAgentInstance.sendMBStatistics(URL, credentials);
 
-                                //       logger.info("MB stat Publishing activated " + Thread.currentThread().getName());
+                                // logger.info("MB stat Publishing activated " + Thread.currentThread().getName());
 
                             }
                         }
@@ -131,7 +127,8 @@ public class PublisherObserver {
 
                 URLOperations urlOperations = new URLOperations();
                 String URLArray[] = urlOperations.URLSplitter(URLList);
-                String[] credentials = {statConfigurationInstance.getUsername(), statConfigurationInstance.getPassword()};
+                String[] credentials =
+                        {statConfigurationInstance.getUsername(), statConfigurationInstance.getPassword()};
 
                 for (String URL : URLArray) {
 
@@ -156,7 +153,8 @@ public class PublisherObserver {
 
                 URLOperations urlOperations = new URLOperations();
                 String URLArray[] = urlOperations.URLSplitter(URLList);
-                String[] credentials = {statConfigurationInstance.getUsername(), statConfigurationInstance.getPassword()};
+                String[] credentials =
+                        {statConfigurationInstance.getUsername(), statConfigurationInstance.getPassword()};
 
                 for (String URL : URLArray) {
 

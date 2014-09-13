@@ -57,7 +57,7 @@ public class StatisticComponent {
         try {
             StatPublisherService Service = StatPublisherBuilder.createMediationService();
             context.getBundleContext().registerService(StatPublisherService.class.getName(),
-                                                       Service, null);
+                    Service, null);
             statConfigurationDTOObject = new StatConfigurationDTO();
             statConfigurationInstance =
                     statConfigurationDTOObject.loadConfigurationData(CarbonContext.getThreadLocalCarbonContext().getTenantId());
@@ -65,7 +65,7 @@ public class StatisticComponent {
             PublisherObserver.timerFlag = false;
 
             if ((statConfigurationInstance.isSystem_statEnable() || statConfigurationInstance.isMB_statEnable()) &&
-                statConfigurationInstance.isEnableStatPublisher()) {
+                    statConfigurationInstance.isEnableStatPublisher()) {
                 PublisherObserver publisherObserverInstance = new PublisherObserver();
                 publisherObserverInstance.statPublisherTimerTask();
                 PublisherObserver.timerFlag = true;
@@ -75,13 +75,10 @@ public class StatisticComponent {
             //TODO log and return
             throw new StatPublisherException("Can not create stat publisher service", e);
         }
-<<<<<<< HEAD
 
-        }
 
-=======
     }
->>>>>>> 6c08b1c3c36da4892f91abe2a4d7f84ecb922b3e
+
 
     protected void deactivate(ComponentContext context) {
         // unregistered MBStatsPublisherAdmin service from the OSGi Service Register.
