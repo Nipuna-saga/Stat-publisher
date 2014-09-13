@@ -20,8 +20,8 @@ package org.wso2.carbon.stat.publisher;
 
 import org.apache.log4j.Logger;
 import org.wso2.carbon.context.CarbonContext;
-import org.wso2.carbon.stat.publisher.DTO.StatConfigurationDTO;
-import org.wso2.carbon.stat.publisher.conf.StatConfiguration;
+import org.wso2.carbon.stat.publisher.Registry.RegistryPersistenceManager;
+import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.wso2.carbon.stat.publisher.publisher.PublisherObserver;
 
@@ -30,29 +30,29 @@ public class StatPublisherService {
 //TODO statPublisherConfiguration (name change)
 
     private static Logger logger = Logger.getLogger(StatPublisherService.class);
-    private StatConfigurationDTO StatConfigurationDTOObject;
+    private RegistryPersistenceManager registryPersistenceManagerObject;
 
-    //StatConfiguration details get method
-    public StatConfiguration getStatConfiguration() throws StatPublisherConfigurationException {
+    //StatPublisherConfiguration details get method
+    public StatPublisherConfiguration getStatConfiguration() throws StatPublisherConfigurationException {
         int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
 
-        StatConfigurationDTOObject = new StatConfigurationDTO();
+        registryPersistenceManagerObject = new RegistryPersistenceManager();
 
-        return StatConfigurationDTOObject.loadConfigurationData(tenantID);
+        return registryPersistenceManagerObject.loadConfigurationData(tenantID);
 
     }
 
-    //StatConfiguration details set method
-    public void setStatConfiguration(StatConfiguration StatConfigurationData) {
+    //StatPublisherConfiguration details set method
+    public void setStatConfiguration(StatPublisherConfiguration statPublisherConfigurationData) {
         int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
-        StatConfigurationDTOObject = new StatConfigurationDTO();
+        registryPersistenceManagerObject = new RegistryPersistenceManager();
 
-        PublisherObserver.statConfigurationInstance = StatConfigurationData;
-        System.out.println(StatConfigurationData.getNodeURL());
+        PublisherObserver.statPublisherConfigurationInstance = statPublisherConfigurationData;
+        System.out.println(statPublisherConfigurationData.getNodeURL());
 
         //check SystemStat,MessageBrokerStat and Stat Publisher enable or not
-        if ((StatConfigurationData.isSystem_statEnable() || StatConfigurationData.isMB_statEnable()) &&
-                StatConfigurationData.isEnableStatPublisher()) {
+        if ((statPublisherConfigurationData.isSystemStatEnable() || statPublisherConfigurationData.isMBStatEnable()) &&
+                statPublisherConfigurationData.isEnableStatPublisher()) {
 
             //check timer task already initialized
             if (!PublisherObserver.timerFlag) {
@@ -72,7 +72,7 @@ public class StatPublisherService {
             }
         }
         try {
-            StatConfigurationDTOObject.storeConfigurationData(StatConfigurationData, tenantID);
+            registryPersistenceManagerObject.storeConfigurationData(statPublisherConfigurationData, tenantID);
         } catch (StatPublisherConfigurationException e) {
             e.printStackTrace();
         }

@@ -23,7 +23,7 @@ import org.wso2.andes.kernel.AndesAckData;
 import org.wso2.andes.kernel.AndesMessageMetadata;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
-import org.wso2.carbon.stat.publisher.conf.StatConfiguration;
+import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.wso2.carbon.stat.publisher.util.URLOperations;
 import java.util.Date;
@@ -38,14 +38,10 @@ public class PublisherObserver {
 
     public static Timer timer;
     public static boolean timerFlag = true;
-    public static StatConfiguration statConfigurationInstance;
+    public static StatPublisherConfiguration statPublisherConfigurationInstance;
 
     private static Logger logger = Logger.getLogger(PublisherObserver.class);
-<<<<<<< HEAD
 
-=======
-    private ExecutorService executor;
->>>>>>> 6c08b1c3c36da4892f91abe2a4d7f84ecb922b3e
     private DataAgent dataAgentInstance;
     private int tenantID;
 
@@ -70,27 +66,27 @@ public class PublisherObserver {
                     PrivilegedCarbonContext.getThreadLocalCarbonContext().setTenantId(tenantID, true);
 
 
-                    if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
+                    if (statPublisherConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
 
                         dataAgentInstance = DataAgent.getObjectDataAgent();
 
 
-                        String URLList = statConfigurationInstance.getURL();
+                        String URLList = statPublisherConfigurationInstance.getUrl();
 
 //todo tenant loading  update when change tenant conf: not now :) future
                         // String URLList = "tcp://localhost:7611";
                         URLOperations urlOperations = new URLOperations();
                         String URLArray[] = urlOperations.URLSplitter(URLList);
-                        String[] credentials = {statConfigurationInstance.getUsername(), statConfigurationInstance.getPassword()};
+                        String[] credentials = {statPublisherConfigurationInstance.getUsername(), statPublisherConfigurationInstance.getPassword()};
                         for (String URL : URLArray) {
-                            if (statConfigurationInstance.isSystem_statEnable()) {//check system stat enable configuration
+                            if (statPublisherConfigurationInstance.isSystemStatEnable()) {//check system stat enable configuration
 
 
                                 dataAgentInstance.sendSystemStats(URL, credentials);
                                 //       logger.info("System stat Publishing activated " + Thread.currentThread().getName());
 
                             }
-                            if (statConfigurationInstance.isMB_statEnable()) {//check MB stat enable configuration
+                            if (statPublisherConfigurationInstance.isMBStatEnable()) {//check MB stat enable configuration
 
                                 dataAgentInstance.sendMBStatistics(URL, credentials);
 
@@ -124,18 +120,18 @@ public class PublisherObserver {
             throws StatPublisherConfigurationException {
 
 
-        if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
+        if (statPublisherConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
 
-            if (statConfigurationInstance.isMessage_statEnable()) { //check message stat enable configuration
+            if (statPublisherConfigurationInstance.isMessageStatEnable()) { //check message stat enable configuration
 
                 logger.info("Message stat Publishing activated");
 
 
-                String URLList = statConfigurationInstance.getURL();
+                String URLList = statPublisherConfigurationInstance.getUrl();
 
                 URLOperations urlOperations = new URLOperations();
                 String URLArray[] = urlOperations.URLSplitter(URLList);
-                String[] credentials = {statConfigurationInstance.getUsername(), statConfigurationInstance.getPassword()};
+                String[] credentials = {statPublisherConfigurationInstance.getUsername(), statPublisherConfigurationInstance.getPassword()};
 
                 for (String URL : URLArray) {
 
@@ -153,15 +149,15 @@ public class PublisherObserver {
     public void messageAckStatPublisherTask(AndesAckData ack) throws
                                                               StatPublisherConfigurationException {
 
-        if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
+        if (statPublisherConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
 
-            if (statConfigurationInstance.isMessage_statEnable()) { //check message stat enable configuration
+            if (statPublisherConfigurationInstance.isMessageStatEnable()) { //check message stat enable configuration
 
-                String URLList = statConfigurationInstance.getURL();
+                String URLList = statPublisherConfigurationInstance.getUrl();
 
                 URLOperations urlOperations = new URLOperations();
                 String URLArray[] = urlOperations.URLSplitter(URLList);
-                String[] credentials = {statConfigurationInstance.getUsername(), statConfigurationInstance.getPassword()};
+                String[] credentials = {statPublisherConfigurationInstance.getUsername(), statPublisherConfigurationInstance.getPassword()};
 
                 for (String URL : URLArray) {
 
