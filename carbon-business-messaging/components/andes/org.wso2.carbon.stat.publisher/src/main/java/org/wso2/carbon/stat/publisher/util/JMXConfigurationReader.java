@@ -1,25 +1,12 @@
 package org.wso2.carbon.stat.publisher.util;
 
-import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
-import org.wso2.carbon.stat.publisher.conf.XMLConfigurationConstants;
-import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
-
 public class JMXConfigurationReader {
+    /*
     private static Logger logger = Logger.getLogger(JMXConfigurationReader.class);
     /**
      * JMXConfiguration Class constructor load xml files and read values
      */
+   /*
     public static JMXConfiguration readJMXConfiguration() throws StatPublisherConfigurationException {
 
         JMXConfiguration jmxConfiguration=new JMXConfiguration();
@@ -50,10 +37,11 @@ public class JMXConfigurationReader {
                         ((Element) jmxDataList.item(0)).getElementsByTagName("HostName").
                                 item(0).getChildNodes().item(0).getTextContent();
                 this.hostName = HostNameValue.trim();
-
+*/
                 /**
                  * Load carbon.xml file
                  */
+                /*
                 Document carbonDocument;
                 String carbonFilePath = XMLConfigurationConstants.CARBON_FILE_PATH;
 
@@ -93,5 +81,5 @@ public class JMXConfigurationReader {
 
         return jmxConfiguration;
     }
-
+*/
 }

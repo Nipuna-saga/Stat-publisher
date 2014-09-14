@@ -23,12 +23,11 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentContext;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.registry.core.service.RegistryService;
-import org.wso2.carbon.stat.publisher.StatPublisherService;
 import org.wso2.carbon.stat.publisher.DTO.StatConfigurationDTO;
 import org.wso2.carbon.stat.publisher.conf.StatConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.wso2.carbon.stat.publisher.publisher.DataAgent;
-import org.wso2.carbon.stat.publisher.publisher.PublisherObserver;
+import org.wso2.carbon.stat.publisher.publisher.StatPublisherManager;
 import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
@@ -56,18 +55,20 @@ public class StatisticComponent {
 
     protected void activate(ComponentContext context) throws StatPublisherConfigurationException {
 
+
+        StatPublisherManager statPublisherManager=new StatPublisherManager();
+        statPublisherManager.onStart(CarbonContext.getThreadLocalCarbonContext().getTenantId());
+/*
         try {
-            StatPublisherService Service = StatPublisherBuilder.createMediationService();
-            context.getBundleContext().registerService(StatPublisherService.class.getName(),
-                    Service, null);
+
+
             statConfigurationDTOObject = new StatConfigurationDTO();
             statConfigurationInstance =
                     statConfigurationDTOObject.loadConfigurationData(CarbonContext.getThreadLocalCarbonContext().getTenantId());
             PublisherObserver.statConfigurationInstance = statConfigurationInstance;
             PublisherObserver.timerFlag = false;
 
-            if ((statConfigurationInstance.isSystem_statEnable() || statConfigurationInstance.isMB_statEnable()) &&
-                    statConfigurationInstance.isEnableStatPublisher()) {
+            if ((statConfigurationInstance.isSystem_statEnable() || statConfigurationInstance.isMB_statEnable())) {
                 PublisherObserver publisherObserverInstance = new PublisherObserver();
                 publisherObserverInstance.statPublisherTimerTask();
                 PublisherObserver.timerFlag = true;
@@ -77,13 +78,11 @@ public class StatisticComponent {
             logger.error("Error in creating MB statistic publisher service",e);
 
         }
+*/
 
-
-<<<<<<< HEAD:carbon-business-messaging/components/andes/org.wso2.carbon.stat.publisher/src/main/java/org/wso2/carbon/stat/publisher/internal/StatisticComponent.java
     }
 
-=======
->>>>>>> 430946ddce08586d1b68b0a814d6d86acbc84d5a:carbon-business-messaging/components/andes/org.wso2.carbon.stat.publisher/src/main/java/org/wso2/carbon/stat/publisher/internal/ds/StatisticComponent.java
+
 
     protected void deactivate(ComponentContext context) {
         // unregistered MBStatsPublisherAdmin service from the OSGi Service Register.

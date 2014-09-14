@@ -51,7 +51,7 @@ public class PublisherObserver {
         tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
     }
 
-    ////Timer task to publish system and MB stats
+    //Timer task to publish system and MB stats
     public void statPublisherTimerTask() {
 
 
@@ -66,7 +66,7 @@ public class PublisherObserver {
 
                     if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
 
-                        dataAgentInstance = DataAgent.getObjectDataAgent();
+                     //   dataAgentInstance = DataAgent.getObjectDataAgent();
 
 
                         String URLList = statConfigurationInstance.getURL();
@@ -82,15 +82,15 @@ public class PublisherObserver {
                                 //check system stat enable configuration
 
 
-                                dataAgentInstance.sendSystemStats(URL, credentials);
-                                //logger.info("System stat Publishing activated " + Thread.currentThread().getName());
+                           ////     dataAgentInstance.sendSystemStats(URL, credentials);
+                                logger.info("System stat Publishing activated 1 " + Thread.currentThread().getName());
 
                             }
                             if (statConfigurationInstance.isMB_statEnable()) {//check MB stat enable configuration
 
-                                dataAgentInstance.sendMBStatistics(URL, credentials);
+                             //   dataAgentInstance.sendMBStatistics(URL, credentials);
 
-                                // logger.info("MB stat Publishing activated " + Thread.currentThread().getName());
+                                 logger.info("MB stat Publishing activated " + Thread.currentThread().getName());
 
                             }
                         }

@@ -23,7 +23,7 @@ import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.stat.publisher.DTO.StatConfigurationDTO;
 import org.wso2.carbon.stat.publisher.conf.StatConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
-import org.wso2.carbon.stat.publisher.publisher.PublisherObserver;
+import org.wso2.carbon.stat.publisher.publisher.StatPublisherManager;
 
 public class StatPublisherService {
 
@@ -43,16 +43,15 @@ public class StatPublisherService {
     }
 
     //StatConfiguration details set method
-    public void setStatConfiguration(StatConfiguration StatConfigurationData) {
+    public void setStatConfiguration(StatConfiguration StatConfigurationData) throws StatPublisherConfigurationException {
         int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
         StatConfigurationDTOObject = new StatConfigurationDTO();
-
+/*
         PublisherObserver.statConfigurationInstance = StatConfigurationData;
-        System.out.println(StatConfigurationData.getNodeURL());
+       // System.out.println(StatConfigurationData.getNodeURL());
 
-        //check SystemStat,MessageBrokerStat and Stat Publisher enable or not
-        if ((StatConfigurationData.isSystem_statEnable() || StatConfigurationData.isMB_statEnable()) &&
-                StatConfigurationData.isEnableStatPublisher()) {
+        ////check SystemStat,MessageBrokerStat and Stat Publisher enable or not
+        if ((StatConfigurationData.isSystem_statEnable() || StatConfigurationData.isMB_statEnable())) {
 
             //check timer task already initialized
             if (!PublisherObserver.timerFlag) {
@@ -71,12 +70,16 @@ public class StatPublisherService {
                 logger.info("==================Stat Publishing Deactivated==================");
             }
         }
+
+        */
+        StatPublisherManager statPublisherManager=new StatPublisherManager();
+        statPublisherManager.onStop(tenantID);
         try {
             StatConfigurationDTOObject.storeConfigurationData(StatConfigurationData, tenantID);
         } catch (StatPublisherConfigurationException e) {
             e.printStackTrace();
         }
-
+        statPublisherManager.onStart(tenantID);
 
     }
 

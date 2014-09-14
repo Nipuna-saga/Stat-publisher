@@ -19,15 +19,12 @@
 package org.wso2.carbon.stat.publisher.publisher;
 
 import org.apache.log4j.Logger;
-import org.wso2.andes.kernel.AndesAckData;
-import org.wso2.andes.kernel.AndesMessageMetadata;
-import org.wso2.andes.kernel.MessagingEngine;
-import org.wso2.andes.kernel.SubscriptionStore;
-import org.wso2.andes.kernel.Subscrption;
+import org.wso2.andes.kernel.*;
 import org.wso2.carbon.databridge.agent.thrift.Agent;
 import org.wso2.carbon.databridge.agent.thrift.AsyncDataPublisher;
 import org.wso2.carbon.databridge.agent.thrift.conf.AgentConfiguration;
 import org.wso2.carbon.databridge.agent.thrift.exception.AgentException;
+import org.wso2.carbon.databridge.agent.thrift.lb.LoadBalancingDataPublisher;
 import org.wso2.carbon.databridge.commons.Event;
 import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
 import org.wso2.carbon.stat.publisher.conf.ReadStreamConfiguration;
@@ -38,6 +35,7 @@ import org.wso2.carbon.user.core.UserRealm;
 import org.wso2.carbon.user.core.UserStoreException;
 import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.utils.CarbonUtils;
+
 import java.util.List;
 
 public class DataAgent {
@@ -58,6 +56,9 @@ public class DataAgent {
     AsyncDataPublisher asyncDataPublisherMBStatistics = null;
     AsyncDataPublisher asyncDataPublisherMessageStatistics = null;
     AsyncDataPublisher asyncDataPublisherACKStatistics = null;
+
+    LoadBalancingDataPublisher kk;
+
 
     private Agent agent;
 
@@ -86,7 +87,7 @@ public class DataAgent {
         trustStorePassword = readStreamConfiguration.getTrustStorePassword();
 
 
-        agentConfiguration = new AgentConfiguration();
+        AgentConfiguration agentConfiguration = new AgentConfiguration();
         System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonHome() + FORWARD_SLASH + "repository" + FORWARD_SLASH + "resources" + FORWARD_SLASH + "security" + FORWARD_SLASH + "client-truststore.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", "wso2carbon");
 //TODO remove trustStorepassword
@@ -193,10 +194,7 @@ public class DataAgent {
                 "}";
         asyncDataPublisherMBStatistics.addStreamDefinition(messageStreamDefinition, "MB_STATISTICS",
                 VERSION_MB_STATISTICS);
-<<<<<<< HEAD
-=======
 
->>>>>>> 6c08b1c3c36da4892f91abe2a4d7f84ecb922b3e
 
         timeStamp = getTimeStamp();
 
