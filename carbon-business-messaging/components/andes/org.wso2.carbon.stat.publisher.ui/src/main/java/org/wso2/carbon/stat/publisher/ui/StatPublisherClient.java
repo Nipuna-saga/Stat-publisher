@@ -21,7 +21,7 @@ package org.wso2.carbon.stat.publisher.ui;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.client.ServiceClient;
 import org.apache.axis2.context.ConfigurationContext;
-import org.wso2.carbon.stat.publisher.conf.xsd.StatConfiguration;
+import org.wso2.carbon.stat.publisher.conf.xsd.StatPublisherConfiguration;
 
 import java.rmi.RemoteException;
 
@@ -51,26 +51,28 @@ public class StatPublisherClient {
     }
 
     //get statistic configuration from StatPublisher service
-    public StatConfiguration getStatConfiguration() throws StatPublisherServiceStatPublisherConfigurationExceptionException {
+    public StatPublisherConfiguration getStatConfiguration() throws StatPublisherServiceStatPublisherConfigurationExceptionException {
 
-        StatConfiguration statConfigurationInstance;
+        StatPublisherConfiguration statConfigurationInstance;
         try {
             statConfigurationInstance = stub.getStatConfiguration();
         } catch (RemoteException e) {
-            statConfigurationInstance = new StatConfiguration();
+            statConfigurationInstance = new StatPublisherConfiguration();
         }
 
         return statConfigurationInstance;
     }
 
     //send statistic configuration from StatPublisher service
-    public String setStatConfiguration(StatConfiguration statConfigurationObject){
+    public String setStatConfiguration(StatPublisherConfiguration statPublisherConfiguration){
         String response;
 
         try {
-            stub.setStatConfiguration(statConfigurationObject);
+            stub.setStatConfiguration(statPublisherConfiguration);
             response = "Configuration Saved Successfully";
         } catch (RemoteException e) {
+            return e + "";
+        } catch (StatPublisherServiceStatPublisherConfigurationExceptionException e) {
             return e + "";
         }
 

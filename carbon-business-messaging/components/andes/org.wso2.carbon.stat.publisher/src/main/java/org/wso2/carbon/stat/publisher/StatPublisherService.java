@@ -37,10 +37,10 @@ public class StatPublisherService {
     //StatPublisherConfiguration details get method
     public StatPublisherConfiguration getStatConfiguration() throws StatPublisherConfigurationException {
         int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
-
+        statConfigurationDTO = new StatConfigurationDTO();
         registryPersistenceManagerObject = new RegistryPersistenceManager();
 
-        return registryPersistenceManagerObject.loadConfigurationData(tenantID);
+        return statConfigurationDTO.loadConfigurationData(tenantID);
 
     }
 

@@ -19,7 +19,6 @@
 package org.wso2.carbon.stat.publisher.internal.ds;
 
 import org.apache.log4j.Logger;
-import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentContext;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.registry.core.service.RegistryService;
@@ -27,6 +26,7 @@ import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.wso2.carbon.stat.publisher.publisher.StatPublisherManager;
 import org.wso2.carbon.stat.publisher.registry.RegistryPersistenceManager;
+import org.wso2.carbon.stat.publisher.registry.StatConfigurationDTO;
 import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
@@ -48,17 +48,15 @@ public class StatPublisherDS {
     public RegistryPersistenceManager registryPersistenceManagerObject;
     public StatPublisherConfiguration statPublisherConfigurationInstance;
 
-    private ServiceRegistration statAdminServiceRegistration;
 
     protected void activate(ComponentContext context) throws StatPublisherConfigurationException {
 
 
-        StatPublisherManager statPublisherManager=new StatPublisherManager();
+        StatPublisherManager statPublisherManager = new StatPublisherManager();
         statPublisherManager.onStart(CarbonContext.getThreadLocalCarbonContext().getTenantId());
 
 
     }
-
 
 
     protected void deactivate(ComponentContext context) {
@@ -74,7 +72,8 @@ public class StatPublisherDS {
         ServiceValueHolder.getInstance().setConfigurationContextService(null);
     }
 
-    protected void setRegistryService(RegistryService registryService){
+    protected void setRegistryService(RegistryService registryService) {
+        StatConfigurationDTO.setRegistryService(registryService);
         ServiceValueHolder.getInstance().setRegistryService(registryService);
     }
 
@@ -82,7 +81,7 @@ public class StatPublisherDS {
         ServiceValueHolder.getInstance().setRegistryService(null);
     }
 
-    protected void setRealmService(RealmService realmService){
+    protected void setRealmService(RealmService realmService) {
         ServiceValueHolder.getInstance().setRealmService(realmService);
     }
 

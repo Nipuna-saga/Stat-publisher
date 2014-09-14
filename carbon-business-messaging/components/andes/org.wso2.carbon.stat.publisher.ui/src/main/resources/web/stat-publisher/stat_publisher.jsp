@@ -19,7 +19,7 @@
 <%@ page import="org.apache.axis2.context.ConfigurationContext" %>
 <%@ page import="org.wso2.carbon.CarbonConstants" %>
 <%@ page import="org.wso2.carbon.andes.ui.Constants" %>
-<%@ page import="org.wso2.carbon.stat.publisher.conf.xsd.StatConfiguration" %>
+<%@ page import="org.wso2.carbon.stat.publisher.conf.xsd.StatPublisherConfiguration" %>
 <%@ page import="org.wso2.carbon.stat.publisher.ui.StatPublisherClient" %>
 <%@ page import="org.wso2.carbon.ui.CarbonUIMessage" %>
 <%@ page import="org.wso2.carbon.ui.CarbonUIUtil" %>
@@ -40,12 +40,12 @@
     String cookie = (String) session.getAttribute(ServerConstants.ADMIN_SERVICE_COOKIE);
 
     StatPublisherClient client;
-    StatConfiguration statConfigurationInstance;
+    StatPublisherConfiguration statPublisherConfiguration;
 
 
     try {
         client = new StatPublisherClient(configContext, serverURL, cookie);
-        statConfigurationInstance = client.getStatConfiguration();
+        statPublisherConfiguration = client.getStatConfiguration();
 
     } catch (Exception e) {
         CarbonUIMessage.sendCarbonUIMessage(e.getMessage(), CarbonUIMessage.ERROR, request, e);
@@ -79,43 +79,43 @@
 
 
     if (setConfig != null) {    // form submitted request to set eventing config
-        statConfigurationInstance = new StatConfiguration();
+        statPublisherConfiguration = new StatPublisherConfiguration();
 
         if (enable_checked_value != null) {
-            statConfigurationInstance.setEnableStatPublisher(true);
+            statPublisherConfiguration.setEnableStatPublisher(true);
         } else {
-            statConfigurationInstance.setEnableStatPublisher(false);
+            statPublisherConfiguration.setEnableStatPublisher(false);
         }
         if (message_stat_check_value != null) {
-            statConfigurationInstance.setMessage_statEnable(true);
+            statPublisherConfiguration.setMessageStatEnable(true);
         } else {
-            statConfigurationInstance.setMessage_statEnable(false);
+            statPublisherConfiguration.setMessageStatEnable(false);
         }
         if (system_stat_check_value != null) {
-            statConfigurationInstance.setSystem_statEnable(true);
+            statPublisherConfiguration.setSystemStatEnable(true);
         } else {
-            statConfigurationInstance.setSystem_statEnable(false);
+            statPublisherConfiguration.setSystemStatEnable(false);
         }
         if (MB_stat_check_value != null) {
-            statConfigurationInstance.setMB_statEnable(true);
+            statPublisherConfiguration.setMBStatEnable(true);
         } else {
-            statConfigurationInstance.setMB_statEnable(false);
+            statPublisherConfiguration.setMBStatEnable(false);
         }
         if (get_URL_value != null) {
-            statConfigurationInstance.setURL(get_URL_value);
+            statPublisherConfiguration.setUrl(get_URL_value);
         }
         if (get_username_value != null) {
-            statConfigurationInstance.setUsername(get_username_value);
+            statPublisherConfiguration.setUsername(get_username_value);
         }
         if (get_password_value != null) {
-            statConfigurationInstance.setPassword(get_password_value);
+            statPublisherConfiguration.setPassword(get_password_value);
         }
         if (get_node_URL != null) {
-            statConfigurationInstance.setNodeURL(get_node_URL);
+            statPublisherConfiguration.setNodeURL(get_node_URL);
         }
 
         try {
-            client.setStatConfiguration(statConfigurationInstance);
+            client.setStatConfiguration(statPublisherConfiguration);
 
 %>
 <script type="text/javascript">
@@ -140,7 +140,7 @@
     }
 } else {
     try {
-        statConfigurationInstance = client.getStatConfiguration();
+        statPublisherConfiguration = client.getStatConfiguration();
     } catch (Exception e) {
         if (!e.getCause().getMessage().toLowerCase().contains("you are not authorized")) {
             response.setStatus(500);
@@ -154,28 +154,28 @@
     }
 
 
-    if (statConfigurationInstance != null) {
+    if (statPublisherConfiguration != null) {
 
 
-        if (statConfigurationInstance.getEnableStatPublisher()) {
+        if (statPublisherConfiguration.getEnableStatPublisher()) {
             enable_checked_value = "checked";
         }
 
-        get_username_value = statConfigurationInstance.getUsername();
-        get_password_value = statConfigurationInstance.getPassword();
-        get_URL_value = statConfigurationInstance.getURL();
+        get_username_value = statPublisherConfiguration.getUsername();
+        get_password_value = statPublisherConfiguration.getPassword();
+        get_URL_value = statPublisherConfiguration.getUrl();
 
 
-        if (statConfigurationInstance.getMB_statEnable()) {
+        if (statPublisherConfiguration.getMBStatEnable()) {
             MB_stat_check_value = "checked";
 
         }
 
-        if (statConfigurationInstance.getMessage_statEnable()) {
+        if (statPublisherConfiguration.getMessageStatEnable()) {
             message_stat_check_value = "checked";
 
         }
-        if (statConfigurationInstance.getSystem_statEnable()) {
+        if (statPublisherConfiguration.getSystemStatEnable()) {
             system_stat_check_value = "checked";
 
         }
