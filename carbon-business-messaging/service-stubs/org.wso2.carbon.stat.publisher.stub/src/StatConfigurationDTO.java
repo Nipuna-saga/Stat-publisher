@@ -27,7 +27,7 @@ import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationExcept
 import org.wso2.carbon.utils.xml.StringUtils;
 
 /**
- * Handle Registry while store and retrieve data sent from User Interface
+ * Handle registry while store and retrieve data sent from User Interface
  */
 public class StatConfigurationDTO {
 
@@ -45,7 +45,7 @@ public class StatConfigurationDTO {
     }
 
     /**
-     * Updates the Registry with given configuration data.
+     * Updates the registry with given configuration data.
      * @param statConfigurationWriteObject - eventing configuration data
      * @param tenantId                     - get tenantID
      */
@@ -128,7 +128,7 @@ public class StatConfigurationDTO {
     }
 
     /**
-     * Load configuration from Registry.
+     * Load configuration from registry.
      * @param tenantId - get tenantID
      * @return statConfigurationObject - statConfiguration class object with retrieved values from
      *                                   registry

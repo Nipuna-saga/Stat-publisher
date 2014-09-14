@@ -1,7 +1,7 @@
 package org.wso2.carbon.stat.publisher.publisher;
 
 import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
-import org.wso2.carbon.stat.publisher.conf.ReadStreamConfiguration;
+import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class StatPublisherManager {
 
     private JMXConfiguration jmxConfiguration;
-    private ReadStreamConfiguration readStreamConfiguration;
+    private StreamConfiguration readStreamConfiguration;
 
     private StatPublisherObserver statPublisherObserver;
     private static HashMap<Integer, StatPublisherObserver> statPublisherObserverHashMap =new HashMap<Integer, StatPublisherObserver>();;

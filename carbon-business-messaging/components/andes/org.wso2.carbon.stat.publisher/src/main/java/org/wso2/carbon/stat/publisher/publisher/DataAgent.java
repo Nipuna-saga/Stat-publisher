@@ -22,13 +22,12 @@ import org.apache.log4j.Logger;
 import org.wso2.andes.kernel.*;
 import org.wso2.carbon.databridge.agent.thrift.Agent;
 import org.wso2.carbon.databridge.agent.thrift.AsyncDataPublisher;
-import org.wso2.carbon.databridge.agent.thrift.conf.AgentConfiguration;
 import org.wso2.carbon.databridge.agent.thrift.exception.AgentException;
 import org.wso2.carbon.databridge.agent.thrift.lb.LoadBalancingDataPublisher;
 import org.wso2.carbon.databridge.commons.Event;
 import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
-import org.wso2.carbon.stat.publisher.conf.ReadStreamConfiguration;
-import org.wso2.carbon.stat.publisher.conf.StatConfiguration;
+import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
+import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.wso2.carbon.stat.publisher.serverStats.MbeansStats;
 import org.wso2.carbon.user.core.UserRealm;
@@ -78,16 +77,15 @@ public class DataAgent {
 //TODO rename DataPublisher
 
 
-        ReadStreamConfiguration readStreamConfiguration = new ReadStreamConfiguration();
+        StreamConfiguration streamConfiguration = new StreamConfiguration();
 
-        FORWARD_SLASH = readStreamConfiguration.getForwardSlash();
-        VERSION_MESSAGE = readStreamConfiguration.getVersionMessage();
-        VERSION_ACK = readStreamConfiguration.getVersionAck();
-        VERSION_SYSTEM_STATISTICS = readStreamConfiguration.getVersionSystemStatistic();
-        trustStorePassword = readStreamConfiguration.getTrustStorePassword();
+        FORWARD_SLASH = streamConfiguration.getForwardSlash();
+        VERSION_MESSAGE = streamConfiguration.getVersionMessage();
+        VERSION_ACK = streamConfiguration.getVersionAck();
+        VERSION_SYSTEM_STATISTICS = streamConfiguration.getVersionSystemStatistic();
+        trustStorePassword = streamConfiguration.getTrustStorePassword();
 
 
-        AgentConfiguration agentConfiguration = new AgentConfiguration();
         System.setProperty("javax.net.ssl.trustStore", CarbonUtils.getCarbonHome() + FORWARD_SLASH + "repository" + FORWARD_SLASH + "resources" + FORWARD_SLASH + "security" + FORWARD_SLASH + "client-truststore.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", "wso2carbon");
 //TODO remove trustStorepassword
@@ -107,13 +105,6 @@ public class DataAgent {
         return instance;
     }
 
-    /**
-     * Initialize realm service
-     * @param realmServiceParam - Realm Service
-     */
-    public static void setRealmService(RealmService realmServiceParam) {
-        realmService = realmServiceParam;
-    }
 
     public void sendSystemStats(String URL, String[] credentials) {
 
@@ -335,7 +326,7 @@ public class DataAgent {
         String userName = null;
         String password = null;
         try {
-            StatConfiguration statConfiguration = new StatConfiguration();
+            StatPublisherConfiguration statPublisherConfiguration = new StatPublisherConfiguration();
             UserRealm realm = realmService.getBootstrapRealm();
             userName = realm.getRealmConfiguration().getAdminUserName();
             password = realm.getRealmConfiguration().getAdminPassword();

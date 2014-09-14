@@ -1,10 +1,10 @@
 package org.wso2.carbon.stat.publisher.publisher;
 
 import org.apache.log4j.Logger;
-import org.wso2.carbon.stat.publisher.DTO.StatConfigurationDTO;
+import org.wso2.carbon.stat.publisher.registry.StatConfigurationDTO;
 import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
-import org.wso2.carbon.stat.publisher.conf.ReadStreamConfiguration;
-import org.wso2.carbon.stat.publisher.conf.StatConfiguration;
+import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
+import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 
 import java.util.Date;
@@ -21,21 +21,21 @@ public class StatPublisherObserver {
     private static Logger logger = Logger.getLogger(StatPublisherObserver.class);
 
     private JMXConfiguration jmxConfiguration;
-    private ReadStreamConfiguration readStreamConfiguration;
-    private StatConfiguration statConfiguration;
+    private StreamConfiguration streamConfiguration;
+    private StatPublisherConfiguration statPublisherConfiguration;
     private StatConfigurationDTO statConfigurationDTO;
     private StatPublisherDataAgent statPublisherDataAgent;
     private Timer timer;
 
 
-    public StatPublisherObserver(JMXConfiguration jmxConfiguration, ReadStreamConfiguration readStreamConfiguration,
+    public StatPublisherObserver(JMXConfiguration jmxConfiguration, StreamConfiguration readStreamConfiguration,
                                  int tenantID) throws StatPublisherConfigurationException {
 
         statConfigurationDTO = new StatConfigurationDTO();
         this.jmxConfiguration = jmxConfiguration;
-        this.readStreamConfiguration = readStreamConfiguration;
-        this.statConfiguration = statConfigurationDTO.loadConfigurationData(tenantID);
-        statPublisherDataAgent = new StatPublisherDataAgent(jmxConfiguration, readStreamConfiguration, statConfiguration);
+        this.streamConfiguration = readStreamConfiguration;
+        this.statPublisherConfiguration = statConfigurationDTO.loadConfigurationData(tenantID);
+        statPublisherDataAgent = new StatPublisherDataAgent(jmxConfiguration, streamConfiguration, statPublisherConfiguration);
 
 
     }
@@ -49,7 +49,7 @@ public class StatPublisherObserver {
     public void startMonitor() {
 
         //Checking  System or MB stat enable or not
-        if (statConfiguration.isSystem_statEnable() || statConfiguration.isMB_statEnable()) {
+        if (statPublisherConfiguration.isSystemStatEnable() || statPublisherConfiguration.isMBStatEnable()) {
 
 
             TimerTask taskPublishStat = new TimerTask() {
@@ -57,14 +57,14 @@ public class StatPublisherObserver {
                 public void run() {
 
 
-                    if (statConfiguration.isSystem_statEnable()) {//check system stat enable configuration
+                    if (statPublisherConfiguration.isSystemStatEnable()) {//check system stat enable configuration
 
                         //System stat publishing activated
                         //dataAgentInstance.sendSystemStats(URL, credentials);
                         logger.info("System stat Publishing activated ");
 
                     }
-                    if (statConfiguration.isMB_statEnable()) {//check MB stat enable configuration
+                    if (statPublisherConfiguration.isMBStatEnable()) {//check MB stat enable configuration
 
                         // dataAgentInstance.sendMBStatistics(URL, credentials);
                         //MB stat publishing activated

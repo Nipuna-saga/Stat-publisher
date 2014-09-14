@@ -18,8 +18,6 @@
 
 package org.wso2.carbon.stat.publisher.conf;
 
-import org.apache.log4j.Logger;
-
 /**
  * Read configuration values from jmx and carbon xml files.
  */
@@ -30,7 +28,6 @@ public class JMXConfiguration {
     private String rmiRegistryPort;
     private String rmiServerPort;
     private String offSet;
-
 
     public void setStartRMIServer(boolean startRMIServer) {
         this.startRMIServer = startRMIServer;

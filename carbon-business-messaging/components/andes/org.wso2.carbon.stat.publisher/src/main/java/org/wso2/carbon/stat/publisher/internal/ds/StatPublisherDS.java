@@ -23,11 +23,10 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentContext;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.registry.core.service.RegistryService;
-import org.wso2.carbon.stat.publisher.DTO.StatConfigurationDTO;
-import org.wso2.carbon.stat.publisher.conf.StatConfiguration;
+import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
-import org.wso2.carbon.stat.publisher.publisher.DataAgent;
 import org.wso2.carbon.stat.publisher.publisher.StatPublisherManager;
+import org.wso2.carbon.stat.publisher.registry.RegistryPersistenceManager;
 import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
@@ -43,13 +42,11 @@ import org.wso2.carbon.utils.ConfigurationContextService;
  * cardinality="1..1" policy="dynamic" bind="setRealmService" unbind="unsetRealmService"
  */
 
-public class StatisticComponent {
+public class StatPublisherDS {
 
-    //TODO change name- StatPublisherDS
-
-    private static Logger logger = Logger.getLogger(StatisticComponent.class);
-    public StatConfigurationDTO statConfigurationDTOObject;
-    public StatConfiguration statConfigurationInstance;
+    private static Logger logger = Logger.getLogger(StatPublisherDS.class);
+    public RegistryPersistenceManager registryPersistenceManagerObject;
+    public StatPublisherConfiguration statPublisherConfigurationInstance;
 
     private ServiceRegistration statAdminServiceRegistration;
 
@@ -58,38 +55,13 @@ public class StatisticComponent {
 
         StatPublisherManager statPublisherManager=new StatPublisherManager();
         statPublisherManager.onStart(CarbonContext.getThreadLocalCarbonContext().getTenantId());
-/*
-        try {
 
-
-            statConfigurationDTOObject = new StatConfigurationDTO();
-            statConfigurationInstance =
-                    statConfigurationDTOObject.loadConfigurationData(CarbonContext.getThreadLocalCarbonContext().getTenantId());
-            PublisherObserver.statConfigurationInstance = statConfigurationInstance;
-            PublisherObserver.timerFlag = false;
-
-            if ((statConfigurationInstance.isSystem_statEnable() || statConfigurationInstance.isMB_statEnable())) {
-                PublisherObserver publisherObserverInstance = new PublisherObserver();
-                publisherObserverInstance.statPublisherTimerTask();
-                PublisherObserver.timerFlag = true;
-            }
-            logger.info("Successfully created the MB statistic publisher service");
-        } catch (RuntimeException e) {
-            logger.error("Error in creating MB statistic publisher service",e);
-
-        }
-*/
 
     }
 
 
 
     protected void deactivate(ComponentContext context) {
-        // unregistered MBStatsPublisherAdmin service from the OSGi Service Register.
-        statAdminServiceRegistration.unregister();
-        if (logger.isDebugEnabled()) {
-            logger.debug("MB statistics publisher bundle is deactivated");
-        }
     }
 
     protected void setConfigurationContextService(
@@ -103,19 +75,19 @@ public class StatisticComponent {
     }
 
     protected void setRegistryService(RegistryService registryService){
-            StatConfigurationDTO.setRegistryService(registryService);
+        ServiceValueHolder.getInstance().setRegistryService(registryService);
     }
 
     protected void unsetRegistryService(RegistryService registryService) {
-        StatConfigurationDTO.setRegistryService(null); //TODO set all to ServiceValueHolder
+        ServiceValueHolder.getInstance().setRegistryService(null);
     }
 
     protected void setRealmService(RealmService realmService){
-            DataAgent.setRealmService(realmService);
+        ServiceValueHolder.getInstance().setRealmService(realmService);
     }
 
     protected void unsetRealmService(RealmService realmService) {
-        DataAgent.setRealmService(null);
+        ServiceValueHolder.getInstance().setRealmService(null);
     }
 
 }

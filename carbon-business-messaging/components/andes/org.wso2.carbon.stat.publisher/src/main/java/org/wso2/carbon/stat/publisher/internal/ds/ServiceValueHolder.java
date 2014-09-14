@@ -18,15 +18,20 @@
 
 package org.wso2.carbon.stat.publisher.internal.ds;
 
+import org.wso2.carbon.registry.core.Registry;
+import org.wso2.carbon.registry.core.service.RegistryService;
+import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
 /**
  * Keep values required for component service
  */
 public class ServiceValueHolder {
+
+    private RegistryService registryService;
+    private RealmService realmService;
     private ServiceValueHolder() {
     }
-
     private static ServiceValueHolder instance = new ServiceValueHolder();
     private ConfigurationContextService configurationContextService;
 
@@ -53,4 +58,29 @@ public class ServiceValueHolder {
             ConfigurationContextService configurationContextService) {
         this.configurationContextService = configurationContextService;
     }
+    /**
+     * Initialize registry service
+     * @param registryServiceParam - registry service
+     */
+    public void setRegistryService(RegistryService registryServiceParam) {
+        this.registryService = registryServiceParam;
+    }
+
+    public RegistryService getRegistryService() {
+        return registryService;
+    }
+
+    /**
+     * Initialize realm service
+     * @param realmServiceParam - Realm Service
+     */
+    public void setRealmService(RealmService realmServiceParam) {
+        this.realmService = realmServiceParam;
+    }
+
+    public RealmService getRealmService() {
+        return realmService;
+    }
+
+
 }

@@ -1,22 +1,22 @@
 package org.wso2.carbon.stat.publisher.publisher;
 
 import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
-import org.wso2.carbon.stat.publisher.conf.ReadStreamConfiguration;
-import org.wso2.carbon.stat.publisher.conf.StatConfiguration;
+import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
+import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 
 
 public class StatPublisherDataAgent {
 
     private JMXConfiguration jmxConfiguration;
-    private ReadStreamConfiguration readStreamConfiguration;
-    private StatConfiguration statConfiguration;
+    private StreamConfiguration streamConfiguration;
+    private StatPublisherConfiguration statPublisherConfiguration;
 
     public StatPublisherDataAgent(JMXConfiguration jmxConfiguration,
-                                  ReadStreamConfiguration readStreamConfiguration, StatConfiguration statConfiguration) {
+                                  StreamConfiguration streamConfiguration, StatPublisherConfiguration statPublisherConfiguration) {
 
         this.jmxConfiguration = jmxConfiguration;
-        this.readStreamConfiguration = readStreamConfiguration;
-        this.statConfiguration = statConfiguration;
+        this.streamConfiguration = streamConfiguration;
+        this.statPublisherConfiguration = statPublisherConfiguration;
 
 
     }

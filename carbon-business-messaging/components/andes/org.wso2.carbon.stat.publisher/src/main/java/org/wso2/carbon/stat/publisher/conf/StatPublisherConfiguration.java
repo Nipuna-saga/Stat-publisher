@@ -18,25 +18,22 @@
 
 package org.wso2.carbon.stat.publisher.conf;
 
-public class StatConfiguration {
-//TODO StatPublisherConfiguration
+public class StatPublisherConfiguration {
+
     //enable stat publisher
     private boolean enableStatPublisher;
 
     //credential details
-    //TODO add default values
-    private String username;
-    private String password;
-    private String URL;
+    private String username="";
+    private String password="";
+    private String url="";
     private int tenantID;
     private String nodeURL;
 
     //enable Stat publisher features (message,system and message broker)
-    private boolean message_statEnable;
-    private boolean system_statEnable;
-    private boolean MB_statEnable;
-
-    //TODO camelcase
+    private boolean messageStatEnable=false;
+    private boolean systemStatEnable=false;
+    private boolean MBStatEnable=false;
 
     public String getUsername() {
         return username;
@@ -54,12 +51,12 @@ public class StatConfiguration {
         this.password = password;
     }
 
-    public String getURL() {
-        return URL;
+    public String getUrl() {
+        return url;
     }
 
-    public void setURL(String URL) {
-        this.URL = URL;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public boolean isEnableStatPublisher() {
@@ -70,28 +67,28 @@ public class StatConfiguration {
         this.enableStatPublisher = enableStatPublisher;
     }
 
-    public boolean isMessage_statEnable() {
-        return message_statEnable;
+    public boolean isMessageStatEnable() {
+        return messageStatEnable;
     }
 
-    public void setMessage_statEnable(boolean message_statEnable) {
-        this.message_statEnable = message_statEnable;
+    public void setMessageStatEnable(boolean messageStatEnable) {
+        this.messageStatEnable = messageStatEnable;
     }
 
-    public boolean isSystem_statEnable() {
-        return system_statEnable;
+    public boolean isSystemStatEnable() {
+        return systemStatEnable;
     }
 
-    public void setSystem_statEnable(boolean system_statEnable) {
-        this.system_statEnable = system_statEnable;
+    public void setSystemStatEnable(boolean systemStatEnable) {
+        this.systemStatEnable = systemStatEnable;
     }
 
-    public boolean isMB_statEnable() {
-        return MB_statEnable;
+    public boolean isMBStatEnable() {
+        return MBStatEnable;
     }
 
-    public void setMB_statEnable(boolean MB_statEnable) {
-        this.MB_statEnable = MB_statEnable;
+    public void setMBStatEnable(boolean MBStatEnable) {
+        this.MBStatEnable = MBStatEnable;
     }
 
     public int getTenantID() {
