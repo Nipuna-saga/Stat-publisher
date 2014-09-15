@@ -64,6 +64,7 @@ public class StatPublisherObserver {
                         // dataAgentInstance.sendMBStatistics(URL, credentials);
                         LOGGER.info("MB stat Publishing activated ");
                     }
+
                 }
 
 
