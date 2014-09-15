@@ -19,15 +19,12 @@
 package org.wso2.carbon.stat.publisher.serverStats;
 
 import org.wso2.andes.management.common.JMXConnnectionFactory;
+import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
+import org.wso2.carbon.stat.publisher.internal.ds.ServiceValueHolder;
+import org.wso2.carbon.stat.publisher.serverStats.data.MbeansStatsData;
+import org.wso2.carbon.user.core.UserRealm;
 
-import javax.management.AttributeNotFoundException;
-import javax.management.InstanceNotFoundException;
-import javax.management.MBeanException;
-import javax.management.MBeanServerConnection;
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectInstance;
-import javax.management.ObjectName;
-import javax.management.ReflectionException;
+import javax.management.*;
 import javax.management.openmbean.CompositeData;
 import javax.management.remote.JMXConnector;
 import java.io.IOException;
@@ -40,102 +37,71 @@ import java.util.Set;
 
 public class MbeansStats {
 
-    private String heapMemoryUsage = null;
-    private String nonHeapMemoryUsage = null;
-    private String CPULoadAverage;
-    private JMXConnector jmxc;
+
+    private JMXConnector jmxConnector;
     private MBeanServerConnection connection;
     private long timeout = 100000;
+    private MbeansStatsData mbeansStatsData;
 
 
-    public MbeansStats(String host, int port, String username, String password) throws Exception {
+    public MbeansStats(JMXConfiguration jmxConfiguration) throws Exception {
 
+        mbeansStatsData = new MbeansStatsData();
 
-        jmxc = JMXConnnectionFactory.getJMXConnection(timeout, host, port, username, password);
+        //get MB username and password
+        UserRealm realm = ServiceValueHolder.getInstance().getRealmService().getBootstrapRealm();
+        String userName = realm.getRealmConfiguration().getAdminUserName();
+        String password = realm.getRealmConfiguration().getAdminPassword();
 
+        //get JMX port
+        int jmxPort = Integer.parseInt(jmxConfiguration.getRmiRegistryPort()) + Integer.parseInt(jmxConfiguration.getOffSet());
 
-        connection = jmxc.getMBeanServerConnection();
-
-        setHeapMemoryUsageAndNonHeapMemUsage();
-        setCPUUsage();
-
-
+        //create JMX connection
+        jmxConnector = JMXConnnectionFactory.getJMXConnection(timeout, jmxConfiguration.getHostName(), jmxPort, userName, password);
+        connection = jmxConnector.getMBeanServerConnection();
     }
 
-
-    public void setHeapMemoryUsageAndNonHeapMemUsage()
-            throws MalformedObjectNameException, IOException, AttributeNotFoundException,
-                   MBeanException, ReflectionException, InstanceNotFoundException {
-
+    public String HeapMemoryUsage() throws MalformedObjectNameException, IOException, AttributeNotFoundException,
+            MBeanException, ReflectionException, InstanceNotFoundException {
 
         Set<ObjectInstance> set = connection.queryMBeans(new ObjectName("java.lang:type=Memory"), null);
         ObjectInstance oi = set.iterator().next();
-        // replace "HeapMemoryUsage" with "NonHeapMemoryUsage" to get non-heap mem
         Object attrValue = connection.getAttribute(oi.getObjectName(), "HeapMemoryUsage");
-    /*    if( !( attrValue instanceof CompositeData ) ) {
-            System.out.println( "attribute value is instanceof [" + attrValue.getClass().getName() +
-                    ", exitting -- must be CompositeData." );
-            return;
-        }*/
-
-
-        // replace "used" with "max" to get max
-        heapMemoryUsage = ((CompositeData) attrValue).get("used").toString();
-
-        Object attrValue_nonHeapMem = connection.getAttribute(oi.getObjectName(), "NonHeapMemoryUsage");
-        nonHeapMemoryUsage = ((CompositeData) attrValue_nonHeapMem).get("used").toString();
+        return ((CompositeData) attrValue).get("used").toString();
 
 
     }
 
-    public void setCPUUsage()
-            throws MalformedObjectNameException, IOException, AttributeNotFoundException,
-                   MBeanException, ReflectionException, InstanceNotFoundException {
+    public String NonHeapMemoryUsage() throws MalformedObjectNameException, IOException, AttributeNotFoundException,
+            MBeanException, ReflectionException, InstanceNotFoundException {
 
-
-     /*   Set<ObjectInstance> set = connection.queryMBeans(new ObjectName("java.lang:type=OperatingSystem"), null);
+        Set<ObjectInstance> set = connection.queryMBeans(new ObjectName("java.lang:type=Memory"), null);
         ObjectInstance oi = set.iterator().next();
+        Object attrValue_nonHeapMem = connection.getAttribute(oi.getObjectName(), "NonHeapMemoryUsage");
+        return ((CompositeData) attrValue_nonHeapMem).get("used").toString();
 
 
-        Object attrValue = connection.getAttribute(oi.getObjectName(), "SystemLoadAverage");
+    }
 
-        System.out.println("CPU LOAD::::::::::::"+attrValue.toString());
-        */
-
+    public String CPUUsage(){
 
         OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
-// What % CPU load this current JVM is taking, from 0.0-1.0
-
-
-        CPULoadAverage = Double.toString(osBean.getSystemLoadAverage());
-
-// What % load the overall system is at, from 0.0-1.0
-        // System.out.println(osBean.getSystemCpuLoad());
-
-
-
-/*
-        ObjectName name = new ObjectName("oracle.jrockit.management:type=Runtime");
-        Double jvmCpuLoad =(Double)connection.getAttribute(name, "VMGeneratedCPULoad");
-
-        System.out.println("Cpu load::::::::::::::::::::::::::: " + jvmCpuLoad);
-*/
+        return Double.toString(osBean.getSystemLoadAverage());
 
 
     }
 
-    public String getHeapMemoryUsage() {
 
-        return heapMemoryUsage;
+    public MbeansStatsData getMbeansStatsData() throws MalformedObjectNameException, InstanceNotFoundException, IOException, ReflectionException, AttributeNotFoundException, MBeanException {
+
+        mbeansStatsData.setHeapMemoryUsage(HeapMemoryUsage());
+        mbeansStatsData.setNonHeapMemoryUsage(NonHeapMemoryUsage());
+        mbeansStatsData.setCPULoadAverage(CPUUsage());
+
+        return mbeansStatsData;
+
 
     }
 
-    public String getNonHeapMemoryUsage() {
 
-        return nonHeapMemoryUsage;
-    }
-
-    public String getCPULoadAverage() {
-        return CPULoadAverage;
-    }
 }
