@@ -27,7 +27,7 @@ import org.wso2.carbon.stat.publisher.StatPublisherService;
 import org.wso2.carbon.stat.publisher.DTO.StatConfigurationDTO;
 import org.wso2.carbon.stat.publisher.conf.StatConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
-import org.wso2.carbon.stat.publisher.publisher.DataAgent;
+import org.wso2.carbon.stat.publisher.publisher.DataAgent_old;
 import org.wso2.carbon.stat.publisher.publisher.PublisherObserver;
 import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.utils.ConfigurationContextService;
@@ -112,11 +112,11 @@ public class StatisticComponent {
     }
 
     protected void setRealmService(RealmService realmService){
-            DataAgent.setRealmService(realmService);
+            DataAgent_old.setRealmService(realmService);
     }
 
     protected void unsetRealmService(RealmService realmService) {
-        DataAgent.setRealmService(null);
+        DataAgent_old.setRealmService(null);
     }
 
 }

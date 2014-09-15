@@ -40,7 +40,7 @@ public class PublisherObserver {
     public static StatConfiguration statConfigurationInstance;
 
     private static Logger logger = Logger.getLogger(PublisherObserver.class);
-    private DataAgent dataAgentInstance;
+    private DataAgent_old dataAgentInstance;
     private int tenantID;
 
     //TODO startMonitoring method
@@ -66,7 +66,7 @@ public class PublisherObserver {
 
                     if (statConfigurationInstance.isEnableStatPublisher()) { //check Stat publisher Enable
 
-                        dataAgentInstance = DataAgent.getObjectDataAgent();
+                        dataAgentInstance = DataAgent_old.getObjectDataAgent();
 
 
                         String URLList = statConfigurationInstance.getURL();
@@ -137,7 +137,7 @@ public class PublisherObserver {
                 for (String URL : URLArray) {
 
 
-                    dataAgentInstance = DataAgent.getObjectDataAgent();
+                    dataAgentInstance = DataAgent_old.getObjectDataAgent();
                     dataAgentInstance.sendMessageStatistics(URL, credentials, message, subscribers);
 
 
@@ -164,7 +164,7 @@ public class PublisherObserver {
                 for (String URL : URLArray) {
 
                     logger.info("Message ack stat Publishing activated");
-                    dataAgentInstance = DataAgent.getObjectDataAgent();
+                    dataAgentInstance = DataAgent_old.getObjectDataAgent();
                     dataAgentInstance.sendACKStatistics(URL, credentials, ack);
 
                 }
