@@ -16,7 +16,7 @@
 * under the License.
 */
 
-package org.wso2.carbon.stat.publisher.Registry;
+package org.wso2.carbon.stat.publisher.registry;
 
 import org.wso2.carbon.registry.core.Registry;
 import org.wso2.carbon.registry.core.Resource;
@@ -28,12 +28,12 @@ import org.wso2.carbon.stat.publisher.util.StatPublisherConstants;
 import org.wso2.carbon.utils.xml.StringUtils;
 
 /**
- * Handle Registry while store and retrieve data sent from User Interface
+ * Handle registry while store and retrieve data sent from User Interface
  */
 public class RegistryPersistenceManager {
 
     /**
-     * Updates the Registry with given configuration data.
+     * Updates the registry with given configuration data.
      * @param statPublisherConfigurationWriteObject - eventing configuration data
      * @param tenantId                     - get tenantID
      */
@@ -119,7 +119,7 @@ public class RegistryPersistenceManager {
 
 
     /**
-     * Load configuration from Registry.
+     * Load configuration from registry.
      * @param tenantId - get tenantID
      * @return statConfigurationObject - statConfiguration class object with retrieved values from
      *                                   registry

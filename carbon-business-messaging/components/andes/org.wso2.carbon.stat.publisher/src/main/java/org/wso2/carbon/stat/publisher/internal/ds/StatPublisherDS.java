@@ -19,14 +19,14 @@
 package org.wso2.carbon.stat.publisher.internal.ds;
 
 import org.apache.log4j.Logger;
-import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentContext;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.registry.core.service.RegistryService;
-import org.wso2.carbon.stat.publisher.Registry.RegistryPersistenceManager;
 import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
-import org.wso2.carbon.stat.publisher.publisher.PublisherObserver;
+import org.wso2.carbon.stat.publisher.publisher.StatPublisherManager;
+import org.wso2.carbon.stat.publisher.registry.RegistryPersistenceManager;
+import org.wso2.carbon.stat.publisher.registry.StatConfigurationDTO;
 import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
@@ -48,29 +48,15 @@ public class StatPublisherDS {
     public RegistryPersistenceManager registryPersistenceManagerObject;
     public StatPublisherConfiguration statPublisherConfigurationInstance;
 
-    private ServiceRegistration statAdminServiceRegistration;
 
     protected void activate(ComponentContext context) throws StatPublisherConfigurationException {
 
-        try {
-            registryPersistenceManagerObject = new RegistryPersistenceManager();
-            statPublisherConfigurationInstance =
-                    registryPersistenceManagerObject.loadConfigurationData(CarbonContext.getThreadLocalCarbonContext().getTenantId());
-            PublisherObserver.statPublisherConfigurationInstance = statPublisherConfigurationInstance;
-            PublisherObserver.timerFlag = false;
 
-            if ((statPublisherConfigurationInstance.isSystemStatEnable() || statPublisherConfigurationInstance.isMBStatEnable()) &&
-                statPublisherConfigurationInstance.isEnableStatPublisher()) {
-                PublisherObserver publisherObserverInstance = new PublisherObserver();
-                publisherObserverInstance.statPublisherTimerTask();
-                PublisherObserver.timerFlag = true;
-            }
-            logger.info("Successfully activated the MB statistic publisher service");
-        } catch (RuntimeException e) {
-            logger.error("Error in activating MB statistic publisher service",e);
-        }
+        StatPublisherManager statPublisherManager = new StatPublisherManager();
+        statPublisherManager.onStart(CarbonContext.getThreadLocalCarbonContext().getTenantId());
 
-        }
+
+    }
 
 
     protected void deactivate(ComponentContext context) {
@@ -86,7 +72,8 @@ public class StatPublisherDS {
         ServiceValueHolder.getInstance().setConfigurationContextService(null);
     }
 
-    protected void setRegistryService(RegistryService registryService){
+    protected void setRegistryService(RegistryService registryService) {
+        StatConfigurationDTO.setRegistryService(registryService);
         ServiceValueHolder.getInstance().setRegistryService(registryService);
     }
 
@@ -94,7 +81,7 @@ public class StatPublisherDS {
         ServiceValueHolder.getInstance().setRegistryService(null);
     }
 
-    protected void setRealmService(RealmService realmService){
+    protected void setRealmService(RealmService realmService) {
         ServiceValueHolder.getInstance().setRealmService(realmService);
     }
 

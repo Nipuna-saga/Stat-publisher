@@ -18,7 +18,7 @@
 
 package org.wso2.carbon.stat.publisher.conf;
 
-import org.wso2.carbon.stat.publisher.Registry.Property;
+import org.wso2.carbon.stat.publisher.registry.Property;
 
 public class StatPublisherConfiguration {
 

@@ -1,4 +1,4 @@
-package org.wso2.carbon.stat.publisher.Registry;
+package org.wso2.carbon.stat.publisher.registry;
 
 public class Property {
     private String key;

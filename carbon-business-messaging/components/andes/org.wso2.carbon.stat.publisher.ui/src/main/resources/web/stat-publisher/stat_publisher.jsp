@@ -19,7 +19,7 @@
 <%@ page import="org.apache.axis2.context.ConfigurationContext" %>
 <%@ page import="org.wso2.carbon.CarbonConstants" %>
 <%@ page import="org.wso2.carbon.andes.ui.Constants" %>
-<%@ page import="org.wso2.carbon.stat.publisher.data.xsd.StatConfiguration" %>
+<%@ page import="org.wso2.carbon.stat.publisher.conf.xsd.StatPublisherConfiguration" %>
 <%@ page import="org.wso2.carbon.stat.publisher.ui.StatPublisherClient" %>
 <%@ page import="org.wso2.carbon.ui.CarbonUIMessage" %>
 <%@ page import="org.wso2.carbon.ui.CarbonUIUtil" %>
@@ -40,12 +40,12 @@
     String cookie = (String) session.getAttribute(ServerConstants.ADMIN_SERVICE_COOKIE);
 
     StatPublisherClient client;
-    StatConfiguration statConfigurationInstance;
+    StatPublisherConfiguration statPublisherConfiguration;
 
 
     try {
         client = new StatPublisherClient(configContext, serverURL, cookie);
-        statConfigurationInstance = client.getStatConfiguration();
+        statPublisherConfiguration = client.getStatConfiguration();
 
     } catch (Exception e) {
         CarbonUIMessage.sendCarbonUIMessage(e.getMessage(), CarbonUIMessage.ERROR, request, e);
@@ -60,62 +60,62 @@
 
 
     String enable_checked_value = request.getParameter("enable_check");
-    ;
+
 
     String get_username_value = request.getParameter("user_name");
-    ;
+
     String get_password_value = request.getParameter("password");
-    ;
+
     String get_URL_value = request.getParameter("url_address");
-    ;
+
 
     String message_stat_check_value = request.getParameter("message_stat_enable_check");
-    ;
+
     String system_stat_check_value = request.getParameter("system_stat_enable_check");
-    ;
+
     String MB_stat_check_value = request.getParameter("mb_stat_enable_check");
-    ;
+
     String get_node_URL = request.getLocalAddr() + ":" + request.getLocalPort();
-    ;
+
 
     if (setConfig != null) {    // form submitted request to set eventing config
-        statConfigurationInstance = new StatConfiguration();
+        statPublisherConfiguration = new StatPublisherConfiguration();
 
         if (enable_checked_value != null) {
-            statConfigurationInstance.setEnableStatPublisher(true);
+            statPublisherConfiguration.setEnableStatPublisher(true);
         } else {
-            statConfigurationInstance.setEnableStatPublisher(false);
+            statPublisherConfiguration.setEnableStatPublisher(false);
         }
         if (message_stat_check_value != null) {
-            statConfigurationInstance.setMessage_statEnable(true);
+            statPublisherConfiguration.setMessageStatEnable(true);
         } else {
-            statConfigurationInstance.setMessage_statEnable(false);
+            statPublisherConfiguration.setMessageStatEnable(false);
         }
         if (system_stat_check_value != null) {
-            statConfigurationInstance.setSystem_statEnable(true);
+            statPublisherConfiguration.setSystemStatEnable(true);
         } else {
-            statConfigurationInstance.setSystem_statEnable(false);
+            statPublisherConfiguration.setSystemStatEnable(false);
         }
         if (MB_stat_check_value != null) {
-            statConfigurationInstance.setMB_statEnable(true);
+            statPublisherConfiguration.setMBStatEnable(true);
         } else {
-            statConfigurationInstance.setMB_statEnable(false);
+            statPublisherConfiguration.setMBStatEnable(false);
         }
         if (get_URL_value != null) {
-            statConfigurationInstance.setURL(get_URL_value);
+            statPublisherConfiguration.setUrl(get_URL_value);
         }
         if (get_username_value != null) {
-            statConfigurationInstance.setUsername(get_username_value);
+            statPublisherConfiguration.setUsername(get_username_value);
         }
         if (get_password_value != null) {
-            statConfigurationInstance.setPassword(get_password_value);
+            statPublisherConfiguration.setPassword(get_password_value);
         }
         if (get_node_URL != null) {
-            statConfigurationInstance.setNodeURL(get_node_URL);
+            statPublisherConfiguration.setNodeURL(get_node_URL);
         }
 
         try {
-            client.setStatConfiguration(statConfigurationInstance);
+            client.setStatConfiguration(statPublisherConfiguration);
 
 %>
 <script type="text/javascript">
@@ -129,7 +129,7 @@
 </script>
 <%
 } catch (Exception e) {
-    if (e.getCause().getMessage().toLowerCase().indexOf("you are not authorized") == -1) {
+    if (!e.getCause().getMessage().toLowerCase().contains("you are not authorized")) {
         response.setStatus(500);
         CarbonUIMessage uiMsg = new CarbonUIMessage(CarbonUIMessage.ERROR, e.getMessage(), e);
         session.setAttribute(CarbonUIMessage.ID, uiMsg);
@@ -140,9 +140,9 @@
     }
 } else {
     try {
-        statConfigurationInstance = client.getStatConfiguration();
+        statPublisherConfiguration = client.getStatConfiguration();
     } catch (Exception e) {
-        if (e.getCause().getMessage().toLowerCase().indexOf("you are not authorized") == -1) {
+        if (!e.getCause().getMessage().toLowerCase().contains("you are not authorized")) {
             response.setStatus(500);
             CarbonUIMessage uiMsg = new CarbonUIMessage(CarbonUIMessage.ERROR, e.getMessage(), e);
             session.setAttribute(CarbonUIMessage.ID, uiMsg);
@@ -154,28 +154,28 @@
     }
 
 
-    if (statConfigurationInstance != null) {
+    if (statPublisherConfiguration != null) {
 
 
-        if (statConfigurationInstance.getEnableStatPublisher()) {
+        if (statPublisherConfiguration.getEnableStatPublisher()) {
             enable_checked_value = "checked";
         }
 
-        get_username_value = statConfigurationInstance.getUsername();
-        get_password_value = statConfigurationInstance.getPassword();
-        get_URL_value = statConfigurationInstance.getURL();
+        get_username_value = statPublisherConfiguration.getUsername();
+        get_password_value = statPublisherConfiguration.getPassword();
+        get_URL_value = statPublisherConfiguration.getUrl();
 
 
-        if (statConfigurationInstance.getMB_statEnable()) {
+        if (statPublisherConfiguration.getMBStatEnable()) {
             MB_stat_check_value = "checked";
 
         }
 
-        if (statConfigurationInstance.getMessage_statEnable()) {
+        if (statPublisherConfiguration.getMessageStatEnable()) {
             message_stat_check_value = "checked";
 
         }
-        if (statConfigurationInstance.getSystem_statEnable()) {
+        if (statPublisherConfiguration.getSystemStatEnable()) {
             system_stat_check_value = "checked";
 
         }
@@ -194,7 +194,7 @@
         <form id="details_form" action="/carbon/stat-publisher/stat_publisher.jsp" method="POST"
               onsubmit="return DoValidation();">
             <input type="hidden" name="setConfig" value="on"/>
-            <table width="100%" class="styledLeft" style="margin-left: 0px;">
+            <table width="100%" class="styledLeft" style="margin-left: 0;">
                 <col width="40%">
                 <thead>
                 <tr>
@@ -203,27 +203,27 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td><input type="checkbox" id="enable_check" name="enable_check" <%=enable_checked_value%>
+                    <td><label for="enable_check"></label><input type="checkbox" id="enable_check" name="enable_check" <%=enable_checked_value%>
                                onclick="toggleTable();"/>&nbsp;&nbsp;&nbsp;&nbsp;
                         <fmt:message key="enable.publisher"/>
                     </td>
                     <td></td>
                 </tr>
                 </tbody>
-                <div id="toggleTable">
+
                     <tbody>
                     <tr>
                         <td>
                             <fmt:message key="username"/>
                         </td>
-                        <td><input type="text" id="user_name" name="user_name" value="<%=get_username_value%>"/></td>
+                        <td><label for="user_name"></label><input type="text" id="user_name" name="user_name" value="<%=get_username_value%>"/></td>
 
                     </tr>
                     <tr>
                         <td>
                             <fmt:message key="password"/>
                         </td>
-                        <td><input type="password" id="password" name="password" value="<%=get_password_value%>"/></td>
+                        <td><label for="password"></label><input type="password" id="password" name="password" value="<%=get_password_value%>"/></td>
 
                     </tr>
 
@@ -231,7 +231,7 @@
                         <td>
                             <fmt:message key="url"/>
                         </td>
-                        <td><input type="text" id="url_address" name="url_address" value="<%=get_URL_value%>"/>
+                        <td><label for="url_address"></label><input type="text" id="url_address" name="url_address" value="<%=get_URL_value%>"/>
                             <input type="button" value="<fmt:message key="test.server"/>" onclick="testServer()"/>
                             &nbsp;&nbsp;&nbsp;&nbsp;<i> eg:- tcp://localhost:7611;tcp://...</i>
                         </td>
@@ -246,7 +246,7 @@
 
                     <tbody>
                     <tr>
-                        <td><input type="checkbox" id="message_stat_enable_check" name="message_stat_enable_check"
+                        <td><label for="message_stat_enable_check"></label><input type="checkbox" id="message_stat_enable_check" name="message_stat_enable_check"
                                 <%=message_stat_check_value%>
                                 />&nbsp;&nbsp;&nbsp;&nbsp;
                             <fmt:message key="publish.message.statistics"/>
@@ -254,7 +254,7 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <td><input type="checkbox" id="system_stat_enable_check" name="system_stat_enable_check"
+                        <td><label for="system_stat_enable_check"></label><input type="checkbox" id="system_stat_enable_check" name="system_stat_enable_check"
                                 <%=system_stat_check_value%>
                                 />&nbsp;&nbsp;&nbsp;&nbsp;
                             <fmt:message key="publish.system.statistics"/>
@@ -263,14 +263,14 @@
                     </tr>
 
                     <tr>
-                        <td><input type="checkbox" id="mb_stat_enable_check" name="mb_stat_enable_check"
+                        <td><label for="mb_stat_enable_check"></label><input type="checkbox" id="mb_stat_enable_check" name="mb_stat_enable_check"
                                 <%=MB_stat_check_value%>
                                 />&nbsp;&nbsp;&nbsp;&nbsp;
                             <fmt:message key="publish.mb.statistics"/>
                         </td>
                         <td></td>
                     </tr>
-                </div>
+
                 <tr>
                     <td><input type="submit" value="<fmt:message key="button.update"/>"/>
 

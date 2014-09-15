@@ -1,4 +1,4 @@
-package org.wso2.carbon.stat.publisher.Registry;
+package org.wso2.carbon.stat.publisher.registry;
 
 import org.wso2.carbon.registry.core.Registry;
 import org.wso2.carbon.registry.core.Resource;
@@ -6,6 +6,7 @@ import org.wso2.carbon.registry.core.exceptions.RegistryException;
 import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.wso2.carbon.stat.publisher.internal.ds.ServiceValueHolder;
+import org.wso2.carbon.stat.publisher.registry.Property;
 import org.wso2.carbon.stat.publisher.util.StatPublisherConstants;
 import java.util.ArrayList;
 import java.util.List;

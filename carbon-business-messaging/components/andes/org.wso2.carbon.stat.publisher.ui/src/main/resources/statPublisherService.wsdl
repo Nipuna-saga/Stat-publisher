@@ -1,35 +1,20 @@
-<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ns="http://publisher.stat.carbon.wso2.org" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:ax2263="http://util.publisher.stat.carbon.wso2.org/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:ax2261="http://data.publisher.stat.carbon.wso2.org/xsd" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://publisher.stat.carbon.wso2.org">
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ns="http://publisher.stat.carbon.wso2.org" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:ax2263="http://conf.publisher.stat.carbon.wso2.org/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:ax2261="http://exception.publisher.stat.carbon.wso2.org/xsd" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://publisher.stat.carbon.wso2.org">
     <wsdl:documentation>StatPublisherService</wsdl:documentation>
     <wsdl:types>
-        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://data.publisher.stat.carbon.wso2.org/xsd">
-            <xs:complexType name="StatConfiguration">
-                <xs:sequence>
-                    <xs:element minOccurs="0" name="MB_statEnable" type="xs:boolean"></xs:element>
-                    <xs:element minOccurs="0" name="URL" nillable="true" type="xs:string"></xs:element>
-                    <xs:element minOccurs="0" name="enableStatPublisher" type="xs:boolean"></xs:element>
-                    <xs:element minOccurs="0" name="message_statEnable" type="xs:boolean"></xs:element>
-                    <xs:element minOccurs="0" name="nodeURL" nillable="true" type="xs:string"></xs:element>
-                    <xs:element minOccurs="0" name="password" nillable="true" type="xs:string"></xs:element>
-                    <xs:element minOccurs="0" name="system_statEnable" type="xs:boolean"></xs:element>
-                    <xs:element minOccurs="0" name="tenantID" type="xs:int"></xs:element>
-                    <xs:element minOccurs="0" name="username" nillable="true" type="xs:string"></xs:element>
-                </xs:sequence>
-            </xs:complexType>
-        </xs:schema>
-        <xs:schema xmlns:ax2264="http://util.publisher.stat.carbon.wso2.org/xsd" xmlns:ax2262="http://data.publisher.stat.carbon.wso2.org/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://publisher.stat.carbon.wso2.org">
-            <xs:import namespace="http://data.publisher.stat.carbon.wso2.org/xsd"></xs:import>
-            <xs:import namespace="http://util.publisher.stat.carbon.wso2.org/xsd"></xs:import>
-            <xs:element name="setStatConfiguration">
+        <xs:schema xmlns:ax2264="http://conf.publisher.stat.carbon.wso2.org/xsd" xmlns:ax2262="http://exception.publisher.stat.carbon.wso2.org/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://publisher.stat.carbon.wso2.org">
+            <xs:import namespace="http://exception.publisher.stat.carbon.wso2.org/xsd"></xs:import>
+            <xs:import namespace="http://conf.publisher.stat.carbon.wso2.org/xsd"></xs:import>
+            <xs:element name="StatPublisherServiceStatPublisherConfigurationException">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element minOccurs="0" name="StatConfigurationData" nillable="true" type="ax2261:StatConfiguration"></xs:element>
+                        <xs:element minOccurs="0" name="StatPublisherConfigurationException" nillable="true" type="ax2261:StatPublisherConfigurationException"></xs:element>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="StatPublisherServiceStatPublisherException">
+            <xs:element name="setStatConfiguration">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element minOccurs="0" name="StatPublisherException" nillable="true" type="ax2263:StatPublisherException"></xs:element>
+                        <xs:element minOccurs="0" name="statPublisherConfiguration" nillable="true" type="ax2263:StatPublisherConfiguration"></xs:element>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -41,19 +26,37 @@
             <xs:element name="getStatConfigurationResponse">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element minOccurs="0" name="return" nillable="true" type="ax2261:StatConfiguration"></xs:element>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax2263:StatPublisherConfiguration"></xs:element>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
         </xs:schema>
-        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://util.publisher.stat.carbon.wso2.org/xsd">
-            <xs:complexType name="StatPublisherException">
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://exception.publisher.stat.carbon.wso2.org/xsd">
+            <xs:complexType name="StatPublisherConfigurationException">
                 <xs:sequence></xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://conf.publisher.stat.carbon.wso2.org/xsd">
+            <xs:complexType name="StatPublisherConfiguration">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="MBStatEnable" type="xs:boolean"></xs:element>
+                    <xs:element minOccurs="0" name="enableStatPublisher" type="xs:boolean"></xs:element>
+                    <xs:element minOccurs="0" name="messageStatEnable" type="xs:boolean"></xs:element>
+                    <xs:element minOccurs="0" name="nodeURL" nillable="true" type="xs:string"></xs:element>
+                    <xs:element minOccurs="0" name="password" nillable="true" type="xs:string"></xs:element>
+                    <xs:element minOccurs="0" name="systemStatEnable" type="xs:boolean"></xs:element>
+                    <xs:element minOccurs="0" name="tenantID" type="xs:int"></xs:element>
+                    <xs:element minOccurs="0" name="url" nillable="true" type="xs:string"></xs:element>
+                    <xs:element minOccurs="0" name="username" nillable="true" type="xs:string"></xs:element>
+                </xs:sequence>
             </xs:complexType>
         </xs:schema>
     </wsdl:types>
     <wsdl:message name="setStatConfigurationRequest">
         <wsdl:part name="parameters" element="ns:setStatConfiguration"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="StatPublisherServiceStatPublisherConfigurationException">
+        <wsdl:part name="parameters" element="ns:StatPublisherServiceStatPublisherConfigurationException"></wsdl:part>
     </wsdl:message>
     <wsdl:message name="getStatConfigurationRequest">
         <wsdl:part name="parameters" element="ns:getStatConfiguration"></wsdl:part>
@@ -61,17 +64,15 @@
     <wsdl:message name="getStatConfigurationResponse">
         <wsdl:part name="parameters" element="ns:getStatConfigurationResponse"></wsdl:part>
     </wsdl:message>
-    <wsdl:message name="StatPublisherServiceStatPublisherException">
-        <wsdl:part name="parameters" element="ns:StatPublisherServiceStatPublisherException"></wsdl:part>
-    </wsdl:message>
     <wsdl:portType name="StatPublisherServicePortType">
         <wsdl:operation name="setStatConfiguration">
             <wsdl:input message="ns:setStatConfigurationRequest" wsaw:Action="urn:setStatConfiguration"></wsdl:input>
+            <wsdl:fault message="ns:StatPublisherServiceStatPublisherConfigurationException" name="StatPublisherServiceStatPublisherConfigurationException" wsaw:Action="urn:setStatConfigurationStatPublisherServiceStatPublisherConfigurationException"></wsdl:fault>
         </wsdl:operation>
         <wsdl:operation name="getStatConfiguration">
             <wsdl:input message="ns:getStatConfigurationRequest" wsaw:Action="urn:getStatConfiguration"></wsdl:input>
             <wsdl:output message="ns:getStatConfigurationResponse" wsaw:Action="urn:getStatConfigurationResponse"></wsdl:output>
-            <wsdl:fault message="ns:StatPublisherServiceStatPublisherException" name="StatPublisherServiceStatPublisherException" wsaw:Action="urn:getStatConfigurationStatPublisherServiceStatPublisherException"></wsdl:fault>
+            <wsdl:fault message="ns:StatPublisherServiceStatPublisherConfigurationException" name="StatPublisherServiceStatPublisherConfigurationException" wsaw:Action="urn:getStatConfigurationStatPublisherServiceStatPublisherConfigurationException"></wsdl:fault>
         </wsdl:operation>
     </wsdl:portType>
     <wsdl:binding name="StatPublisherServiceSoap11Binding" type="ns:StatPublisherServicePortType">
@@ -81,6 +82,9 @@
             <wsdl:input>
                 <soap:body use="literal"></soap:body>
             </wsdl:input>
+            <wsdl:fault name="StatPublisherServiceStatPublisherConfigurationException">
+                <soap:fault use="literal" name="StatPublisherServiceStatPublisherConfigurationException"></soap:fault>
+            </wsdl:fault>
         </wsdl:operation>
         <wsdl:operation name="getStatConfiguration">
             <soap:operation soapAction="urn:getStatConfiguration" style="document"></soap:operation>
@@ -90,8 +94,8 @@
             <wsdl:output>
                 <soap:body use="literal"></soap:body>
             </wsdl:output>
-            <wsdl:fault name="StatPublisherServiceStatPublisherException">
-                <soap:fault use="literal" name="StatPublisherServiceStatPublisherException"></soap:fault>
+            <wsdl:fault name="StatPublisherServiceStatPublisherConfigurationException">
+                <soap:fault use="literal" name="StatPublisherServiceStatPublisherConfigurationException"></soap:fault>
             </wsdl:fault>
         </wsdl:operation>
     </wsdl:binding>
@@ -102,6 +106,9 @@
             <wsdl:input>
                 <soap12:body use="literal"></soap12:body>
             </wsdl:input>
+            <wsdl:fault name="StatPublisherServiceStatPublisherConfigurationException">
+                <soap12:fault use="literal" name="StatPublisherServiceStatPublisherConfigurationException"></soap12:fault>
+            </wsdl:fault>
         </wsdl:operation>
         <wsdl:operation name="getStatConfiguration">
             <soap12:operation soapAction="urn:getStatConfiguration" style="document"></soap12:operation>
@@ -111,8 +118,8 @@
             <wsdl:output>
                 <soap12:body use="literal"></soap12:body>
             </wsdl:output>
-            <wsdl:fault name="StatPublisherServiceStatPublisherException">
-                <soap12:fault use="literal" name="StatPublisherServiceStatPublisherException"></soap12:fault>
+            <wsdl:fault name="StatPublisherServiceStatPublisherConfigurationException">
+                <soap12:fault use="literal" name="StatPublisherServiceStatPublisherConfigurationException"></soap12:fault>
             </wsdl:fault>
         </wsdl:operation>
     </wsdl:binding>
@@ -136,13 +143,13 @@
     </wsdl:binding>
     <wsdl:service name="StatPublisherService">
         <wsdl:port name="StatPublisherServiceHttpsSoap11Endpoint" binding="ns:StatPublisherServiceSoap11Binding">
-            <soap:address location="https://10.100.4.101:9444/services/StatPublisherService.StatPublisherServiceHttpsSoap11Endpoint/"></soap:address>
+            <soap:address location="https://10.219.36.68:9444/services/StatPublisherService.StatPublisherServiceHttpsSoap11Endpoint/"></soap:address>
         </wsdl:port>
         <wsdl:port name="StatPublisherServiceHttpsSoap12Endpoint" binding="ns:StatPublisherServiceSoap12Binding">
-            <soap12:address location="https://10.100.4.101:9444/services/StatPublisherService.StatPublisherServiceHttpsSoap12Endpoint/"></soap12:address>
+            <soap12:address location="https://10.219.36.68:9444/services/StatPublisherService.StatPublisherServiceHttpsSoap12Endpoint/"></soap12:address>
         </wsdl:port>
         <wsdl:port name="StatPublisherServiceHttpsEndpoint" binding="ns:StatPublisherServiceHttpBinding">
-            <http:address location="https://10.100.4.101:9444/services/StatPublisherService.StatPublisherServiceHttpsEndpoint/"></http:address>
+            <http:address location="https://10.219.36.68:9444/services/StatPublisherService.StatPublisherServiceHttpsEndpoint/"></http:address>
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>
