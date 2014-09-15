@@ -41,7 +41,6 @@ public class RegistryPersistenceManager {
             throws StatPublisherConfigurationException {
         try {
             Registry registry = ServiceValueHolder.getInstance().getRegistryService().getConfigSystemRegistry(tenantId);
-            if (statPublisherConfigurationWriteObject.isEnableStatPublisher()) {
                 String resourcePath = StatPublisherConstants.MEDIATION_STATISTICS_REG_PATH + StatPublisherConstants.RESOURCE;
                 Resource resource;
                 if (registry != null) {
@@ -80,37 +79,7 @@ public class RegistryPersistenceManager {
                                                  Boolean.toString(statPublisherConfigurationWriteObject.isMBStatEnable()));
                             registry.put(resourcePath, resource);
                         }
-
                 }
-            }else {
-                String resourcePath = StatPublisherConstants.MEDIATION_STATISTICS_REG_PATH + StatPublisherConstants.RESOURCE;
-                if (registry != null) {
-                    if (registry.resourceExists(resourcePath)) {
-                        Resource resource = registry.get(resourcePath);
-                        resource.setProperty(StatPublisherConstants.ENABLE_STAT_PUBLISHER,
-                                             Boolean.toString(statPublisherConfigurationWriteObject.isEnableStatPublisher()));
-                        String userName = resource.getProperty(StatPublisherConstants.USER_NAME);
-                        String password = resource.getProperty(StatPublisherConstants.PASSWORD);
-                        String url = resource.getProperty(StatPublisherConstants.URL);
-                        String mbStatEnable = resource.getProperty(StatPublisherConstants.MB_STAT_ENABLE);
-                        String messageStatEnable = resource.getProperty(StatPublisherConstants.MESSAGE_STAT_ENABLE);
-                        String systemStatEnable = resource.getProperty(StatPublisherConstants.SYSTEM_STAT_ENABLE);
-
-                        if (!StringUtils.isEmpty(url) && !StringUtils.isEmpty(userName) && !StringUtils.isEmpty(password)) {
-                            statPublisherConfigurationWriteObject.setUrl(url);
-                            statPublisherConfigurationWriteObject.setUsername(userName);
-                            statPublisherConfigurationWriteObject.setPassword(password);
-                            statPublisherConfigurationWriteObject.setMBStatEnable(Boolean.parseBoolean(mbStatEnable));
-                            statPublisherConfigurationWriteObject.setMessageStatEnable(Boolean.parseBoolean(messageStatEnable));
-                            statPublisherConfigurationWriteObject.setSystemStatEnable(Boolean.parseBoolean(systemStatEnable));
-                        }
-                    }else{
-                        Resource resource=registry.newResource();
-                        resource.addProperty(StatPublisherConstants.ENABLE_STAT_PUBLISHER,
-                                             Boolean.toString(statPublisherConfigurationWriteObject.isEnableStatPublisher()));
-                    }
-                }
-            }
         } catch (RegistryException e) {
             throw new StatPublisherConfigurationException("Could not update registry", e);
         }
@@ -135,10 +104,8 @@ public class RegistryPersistenceManager {
                 if (registry.resourceExists(resourcePath)) {
                     Resource resource = registry.get(resourcePath);
                     String enableStatPublisher = resource.getProperty(StatPublisherConstants.ENABLE_STAT_PUBLISHER);
-                    System.out.println("=================="+enableStatPublisher+"=============");
                     String userName = resource.getProperty(StatPublisherConstants.USER_NAME);
                     String password = resource.getProperty(StatPublisherConstants.PASSWORD);
-                    System.out.println("=================="+password+"=============");
                     String url = resource.getProperty(StatPublisherConstants.URL);
                     String mbStatEnable = resource.getProperty(StatPublisherConstants.MB_STAT_ENABLE);
                     String messageStatEnable = resource.getProperty(StatPublisherConstants.MESSAGE_STAT_ENABLE);
@@ -149,8 +116,6 @@ public class RegistryPersistenceManager {
                         statPublisherConfigurationReadObject.setUrl(url);
                         statPublisherConfigurationReadObject.setUsername(userName);
                         statPublisherConfigurationReadObject.setPassword(password);
-                        System.out.println("=================="+statPublisherConfigurationReadObject.getPassword()+"=============");
-
                         statPublisherConfigurationReadObject.setMBStatEnable(Boolean.parseBoolean(mbStatEnable));
                         statPublisherConfigurationReadObject.setMessageStatEnable(Boolean.parseBoolean(messageStatEnable));
                         statPublisherConfigurationReadObject.setSystemStatEnable(Boolean.parseBoolean(systemStatEnable));
