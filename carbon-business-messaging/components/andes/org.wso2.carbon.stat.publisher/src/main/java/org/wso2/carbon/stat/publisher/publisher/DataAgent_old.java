@@ -37,10 +37,10 @@ import org.wso2.carbon.utils.CarbonUtils;
 
 import java.util.List;
 
-public class DataAgent {
+public class DataAgent_old {
 
-    private static Logger logger = Logger.getLogger(DataAgent.class);
-    private static DataAgent instance = null;
+    private static Logger logger = Logger.getLogger(DataAgent_old.class);
+    private static DataAgent_old instance = null;
     private static RealmService realmService;
 
     private String VERSION_MESSAGE;
@@ -70,7 +70,7 @@ public class DataAgent {
 
 
 
-    private DataAgent() throws StatPublisherConfigurationException { //private constructor
+    private DataAgent_old() throws StatPublisherConfigurationException { //private constructor
 
 
 
@@ -98,9 +98,9 @@ public class DataAgent {
 
     }
 
-    public static DataAgent getObjectDataAgent() throws StatPublisherConfigurationException {
+    public static DataAgent_old getObjectDataAgent() throws StatPublisherConfigurationException {
         if (instance == null) {
-            instance = new DataAgent();
+            instance = new DataAgent_old();
         }
         return instance;
     }
