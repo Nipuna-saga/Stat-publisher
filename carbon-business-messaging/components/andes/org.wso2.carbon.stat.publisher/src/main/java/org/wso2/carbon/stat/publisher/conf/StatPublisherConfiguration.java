@@ -18,8 +18,6 @@
 
 package org.wso2.carbon.stat.publisher.conf;
 
-import org.wso2.carbon.stat.publisher.registry.Property;
-
 public class StatPublisherConfiguration {
 
     //enable stat publisher
@@ -31,7 +29,7 @@ public class StatPublisherConfiguration {
     private String url="";
     private int tenantID;
     private String nodeURL;
-    private Property[] properties;
+
 
     //enable Stat publisher features (message,system and message broker)
     private boolean messageStatEnable=false;
@@ -110,12 +108,6 @@ public class StatPublisherConfiguration {
         this.nodeURL = nodeURL;
     }
 
-    public Property[] getProperties() {
-        return properties;
-    }
 
-    public void setProperties(Property[] properties) {
-        this.properties = properties;
-    }
 
 }

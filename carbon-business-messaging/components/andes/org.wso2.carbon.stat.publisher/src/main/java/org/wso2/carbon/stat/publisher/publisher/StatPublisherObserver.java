@@ -1,7 +1,7 @@
 package org.wso2.carbon.stat.publisher.publisher;
 
 import org.apache.log4j.Logger;
-import org.wso2.carbon.stat.publisher.registry.StatConfigurationDTO;
+import org.wso2.carbon.stat.publisher.registry.RegistryPersistenceManager;
 import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
@@ -23,7 +23,7 @@ public class StatPublisherObserver {
     private JMXConfiguration jmxConfiguration;
     private StreamConfiguration streamConfiguration;
     private StatPublisherConfiguration statPublisherConfiguration;
-    private StatConfigurationDTO statConfigurationDTO;
+    private RegistryPersistenceManager registryPersistenceManager;
     private StatPublisherDataAgent statPublisherDataAgent;
     private Timer timer;
     private TimerTask statPublisherTimerTask;
@@ -32,10 +32,10 @@ public class StatPublisherObserver {
     public StatPublisherObserver(JMXConfiguration jmxConfiguration, StreamConfiguration readStreamConfiguration,
                                  int tenantID) throws StatPublisherConfigurationException {
 
-        statConfigurationDTO = new StatConfigurationDTO();
+        registryPersistenceManager = new RegistryPersistenceManager();
         this.jmxConfiguration = jmxConfiguration;
         this.streamConfiguration = readStreamConfiguration;
-        this.statPublisherConfiguration = statConfigurationDTO.loadConfigurationData(tenantID);
+        this.statPublisherConfiguration = registryPersistenceManager.loadConfigurationData(tenantID);
         statPublisherDataAgent = new StatPublisherDataAgent(jmxConfiguration, streamConfiguration, statPublisherConfiguration);
 
 
@@ -77,8 +77,6 @@ public class StatPublisherObserver {
             long timeInterval = 5000;
             timer.scheduleAtFixedRate(statPublisherTimerTask, new Date(), timeInterval);
         }
-
-
     }
 
 
