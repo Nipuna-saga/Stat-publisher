@@ -18,27 +18,8 @@
 
 package org.wso2.carbon.stat.publisher.publisher;
 
-import org.apache.log4j.Logger;
-import org.wso2.andes.kernel.*;
-import org.wso2.carbon.databridge.agent.thrift.Agent;
-import org.wso2.carbon.databridge.agent.thrift.AsyncDataPublisher;
-import org.wso2.carbon.databridge.agent.thrift.exception.AgentException;
-import org.wso2.carbon.databridge.agent.thrift.lb.LoadBalancingDataPublisher;
-import org.wso2.carbon.databridge.commons.Event;
-import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
-import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
-import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
-import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
-import org.wso2.carbon.stat.publisher.serverStats.MbeansStats;
-import org.wso2.carbon.user.core.UserRealm;
-import org.wso2.carbon.user.core.UserStoreException;
-import org.wso2.carbon.user.core.service.RealmService;
-import org.wso2.carbon.utils.CarbonUtils;
-
-import java.util.List;
-
 public class DataAgent_old {
-
+/*
     private static Logger logger = Logger.getLogger(DataAgent_old.class);
     private static DataAgent_old instance = null;
     private static RealmService realmService;
@@ -326,7 +307,7 @@ public class DataAgent_old {
         String userName = null;
         String password = null;
         try {
-            StatPublisherConfiguration statPublisherConfiguration = new StatPublisherConfiguration();
+            //StatPublisherConfiguration statPublisherConfiguration = new StatPublisherConfiguration();
             UserRealm realm = realmService.getBootstrapRealm();
             userName = realm.getRealmConfiguration().getAdminUserName();
             password = realm.getRealmConfiguration().getAdminPassword();
@@ -365,5 +346,5 @@ public class DataAgent_old {
 
     }
 
-
+*/
 }
