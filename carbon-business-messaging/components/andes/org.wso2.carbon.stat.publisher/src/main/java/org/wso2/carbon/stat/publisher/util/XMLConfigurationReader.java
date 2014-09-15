@@ -16,12 +16,11 @@ import java.io.File;
 import java.io.IOException;
 
 public class XMLConfigurationReader {
-    private static Logger logger = Logger.getLogger(XMLConfigurationReader.class);
 
     /**
      *Load xml files and read values
      */
-    public static JMXConfiguration readJMXConfiguration() throws StatPublisherConfigurationException {
+    public JMXConfiguration readJMXConfiguration() throws StatPublisherConfigurationException {
 
         JMXConfiguration jmxConfiguration=new JMXConfiguration();
         try {
@@ -108,7 +107,8 @@ public class XMLConfigurationReader {
             File file = new File(filePath);
 
             if (!file.exists()) {
-                logger.error("mbStatConfiguration.xml doesn't exists!!");
+                throw new StatPublisherConfigurationException("mbStatConfiguration.xml does not exists in "+
+                                                              file.getPath());
             } else {
                 document = docBuilder.parse(filePath);
                 document.getDocumentElement().normalize();
