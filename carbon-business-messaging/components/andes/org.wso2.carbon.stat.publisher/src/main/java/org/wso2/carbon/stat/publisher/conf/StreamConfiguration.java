@@ -18,8 +18,6 @@
 
 package org.wso2.carbon.stat.publisher.conf;
 
-import org.apache.log4j.Logger;
-
 /**
  * Read stream configuration values from mbStatConfiguration.xml file.
  */
@@ -58,6 +56,7 @@ public class StreamConfiguration {
 
     /**
      * Get message version
+     *
      * @return versionMessage
      */
     public String getVersionMessage() {
@@ -66,6 +65,7 @@ public class StreamConfiguration {
 
     /**
      * Get acknowledge packet version
+     *
      * @return versionMessage
      */
     public String getVersionAck() {
@@ -74,6 +74,7 @@ public class StreamConfiguration {
 
     /**
      * Get forward slash
+     *
      * @return forwardSlash
      */
     public String getForwardSlash() {
@@ -82,6 +83,7 @@ public class StreamConfiguration {
 
     /**
      * Get trustStore password
+     *
      * @return trustStorePassword
      */
     public String getTrustStorePassword() {
@@ -90,6 +92,7 @@ public class StreamConfiguration {
 
     /**
      * Get system statistic version
+     *
      * @return versionSystemStatistic
      */
     public String getVersionSystemStatistic() {
@@ -98,6 +101,7 @@ public class StreamConfiguration {
 
     /**
      * Get message broker statistic version
+     *
      * @return versionMBStatistic
      */
     public String getVersionMBStatistic() {

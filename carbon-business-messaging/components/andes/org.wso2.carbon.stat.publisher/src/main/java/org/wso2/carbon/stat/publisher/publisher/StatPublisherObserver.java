@@ -18,7 +18,7 @@ import java.util.TimerTask;
 
 public class StatPublisherObserver {
 
-    private static Logger logger = Logger.getLogger(StatPublisherObserver.class);
+    private static final Logger LOGGER = Logger.getLogger(StatPublisherObserver.class);
 
     private JMXConfiguration jmxConfiguration;
     private StreamConfiguration streamConfiguration;
@@ -26,6 +26,7 @@ public class StatPublisherObserver {
     private StatConfigurationDTO statConfigurationDTO;
     private StatPublisherDataAgent statPublisherDataAgent;
     private Timer timer;
+    private TimerTask statPublisherTimerTask;
 
 
     public StatPublisherObserver(JMXConfiguration jmxConfiguration, StreamConfiguration readStreamConfiguration,
@@ -52,27 +53,21 @@ public class StatPublisherObserver {
         if (statPublisherConfiguration.isSystemStatEnable() || statPublisherConfiguration.isMBStatEnable()) {
 
 
-            TimerTask taskPublishStat = new TimerTask() {
+            statPublisherTimerTask = new TimerTask() {
                 @Override
                 public void run() {
-
-
-                    if (statPublisherConfiguration.isSystemStatEnable()) {//check system stat enable configuration
-
+                    //check system stat enable configuration
+                    if (statPublisherConfiguration.isSystemStatEnable()) {
                         //System stat publishing activated
                         //dataAgentInstance.sendSystemStats(URL, credentials);
-                        logger.info("System stat Publishing activated ");
-
+                        LOGGER.info("System stat Publishing activated ");
                     }
-                    if (statPublisherConfiguration.isMBStatEnable()) {//check MB stat enable configuration
-
-                        // dataAgentInstance.sendMBStatistics(URL, credentials);
+                    //check MB stat enable configuration
+                    if (statPublisherConfiguration.isMBStatEnable()) {
                         //MB stat publishing activated
-                        logger.info("MB stat Publishing activated ");
-
+                        // dataAgentInstance.sendMBStatistics(URL, credentials);
+                        LOGGER.info("MB stat Publishing activated ");
                     }
-
-
                 }
 
 
@@ -80,7 +75,7 @@ public class StatPublisherObserver {
             timer = new Timer();
             // scheduling the task at fixed rate
             long timeInterval = 5000;
-            timer.scheduleAtFixedRate(taskPublishStat, new Date(), timeInterval);
+            timer.scheduleAtFixedRate(statPublisherTimerTask, new Date(), timeInterval);
         }
 
 

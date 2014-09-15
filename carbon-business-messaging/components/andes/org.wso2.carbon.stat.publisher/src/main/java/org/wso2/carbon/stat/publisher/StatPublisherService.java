@@ -20,22 +20,23 @@ package org.wso2.carbon.stat.publisher;
 
 import org.apache.log4j.Logger;
 import org.wso2.carbon.context.CarbonContext;
-import org.wso2.carbon.stat.publisher.registry.RegistryPersistenceManager;
 import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.wso2.carbon.stat.publisher.publisher.StatPublisherManager;
+import org.wso2.carbon.stat.publisher.registry.RegistryPersistenceManager;
 import org.wso2.carbon.stat.publisher.registry.StatConfigurationDTO;
 
 public class StatPublisherService {
 
-//TODO statPublisherConfiguration (name change)
+    //TODO statPublisherConfiguration (name change)
+    private static Logger logger;
 
-    private static Logger logger = Logger.getLogger(StatPublisherService.class);
     private RegistryPersistenceManager registryPersistenceManagerObject;
     private StatConfigurationDTO statConfigurationDTO;
 
     //StatPublisherConfiguration details get method
     public StatPublisherConfiguration getStatConfiguration() throws StatPublisherConfigurationException {
+        logger = Logger.getLogger(StatPublisherService.class);
         int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
         statConfigurationDTO = new StatConfigurationDTO();
         registryPersistenceManagerObject = new RegistryPersistenceManager();
@@ -50,12 +51,12 @@ public class StatPublisherService {
         int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
         statConfigurationDTO = new StatConfigurationDTO();
 
-        StatPublisherManager statPublisherManager=new StatPublisherManager();
+        StatPublisherManager statPublisherManager = new StatPublisherManager();
         statPublisherManager.onStop(tenantID);
         try {
             statConfigurationDTO.storeConfigurationData(statPublisherConfiguration, tenantID);
         } catch (StatPublisherConfigurationException e) {
-            e.printStackTrace();
+            logger.error("Error occurs while trying to store configurations values to registry", e);
         }
         statPublisherManager.onStart(tenantID);
 

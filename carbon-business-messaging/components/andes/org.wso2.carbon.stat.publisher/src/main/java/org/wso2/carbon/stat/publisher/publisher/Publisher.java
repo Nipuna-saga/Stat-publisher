@@ -21,7 +21,7 @@ package org.wso2.carbon.stat.publisher.publisher;
 
 
 public class Publisher {
-    private static Log log = LogFactory.getLog(Publisher.class);
+    private static  Log log = LogFactory.getLog(Publisher.class);
     public Publisher() {
     }
     public static final String UNDERSCORE = "_";

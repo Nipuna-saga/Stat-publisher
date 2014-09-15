@@ -16,12 +16,13 @@ public class StatPublisherManager {
     private StreamConfiguration readStreamConfiguration;
 
     private StatPublisherObserver statPublisherObserver;
-    private static HashMap<Integer, StatPublisherObserver> statPublisherObserverHashMap =new HashMap<Integer, StatPublisherObserver>();;
+    private static HashMap<Integer, StatPublisherObserver> statPublisherObserverHashMap =
+            new HashMap<Integer, StatPublisherObserver>();
 
 
     public StatPublisherManager() {
         //TODO get JMX configuration and StreamConfiguration
-    //    statPublisherObserverHashMap = new HashMap<Integer, StatPublisherObserver>();
+
 
     }
 
