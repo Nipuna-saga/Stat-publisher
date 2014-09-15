@@ -26,7 +26,6 @@ import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.wso2.carbon.stat.publisher.publisher.StatPublisherManager;
 import org.wso2.carbon.stat.publisher.registry.RegistryPersistenceManager;
-import org.wso2.carbon.stat.publisher.registry.StatConfigurationDTO;
 import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
@@ -50,11 +49,10 @@ public class StatPublisherDS {
 
 
     protected void activate(ComponentContext context) throws StatPublisherConfigurationException {
-
-
+        System.out.println("=====================Activating bundle=====================");
         StatPublisherManager statPublisherManager = new StatPublisherManager();
         statPublisherManager.onStart(CarbonContext.getThreadLocalCarbonContext().getTenantId());
-
+        System.out.println("=====================Activated bundle=====================");
 
     }
 
@@ -73,7 +71,6 @@ public class StatPublisherDS {
     }
 
     protected void setRegistryService(RegistryService registryService) {
-        StatConfigurationDTO.setRegistryService(registryService);
         ServiceValueHolder.getInstance().setRegistryService(registryService);
     }
 

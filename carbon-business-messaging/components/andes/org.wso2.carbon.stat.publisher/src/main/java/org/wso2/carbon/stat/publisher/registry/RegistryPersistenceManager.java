@@ -116,8 +116,6 @@ public class RegistryPersistenceManager {
         }
     }
 
-
-
     /**
      * Load configuration from registry.
      * @param tenantId - get tenantID
@@ -128,7 +126,7 @@ public class RegistryPersistenceManager {
                                                                  StatPublisherConfigurationException {
 
         StatPublisherConfiguration statPublisherConfigurationReadObject = new StatPublisherConfiguration();
-       
+
         try {
             Registry registry = ServiceValueHolder.getInstance().getRegistryService().getConfigSystemRegistry(tenantId);
             String resourcePath = StatPublisherConstants.MEDIATION_STATISTICS_REG_PATH + StatPublisherConstants.RESOURCE;
@@ -137,8 +135,10 @@ public class RegistryPersistenceManager {
                 if (registry.resourceExists(resourcePath)) {
                     Resource resource = registry.get(resourcePath);
                     String enableStatPublisher = resource.getProperty(StatPublisherConstants.ENABLE_STAT_PUBLISHER);
+                    System.out.println("=================="+enableStatPublisher+"=============");
                     String userName = resource.getProperty(StatPublisherConstants.USER_NAME);
                     String password = resource.getProperty(StatPublisherConstants.PASSWORD);
+                    System.out.println("=================="+password+"=============");
                     String url = resource.getProperty(StatPublisherConstants.URL);
                     String mbStatEnable = resource.getProperty(StatPublisherConstants.MB_STAT_ENABLE);
                     String messageStatEnable = resource.getProperty(StatPublisherConstants.MESSAGE_STAT_ENABLE);
@@ -149,6 +149,8 @@ public class RegistryPersistenceManager {
                         statPublisherConfigurationReadObject.setUrl(url);
                         statPublisherConfigurationReadObject.setUsername(userName);
                         statPublisherConfigurationReadObject.setPassword(password);
+                        System.out.println("=================="+statPublisherConfigurationReadObject.getPassword()+"=============");
+
                         statPublisherConfigurationReadObject.setMBStatEnable(Boolean.parseBoolean(mbStatEnable));
                         statPublisherConfigurationReadObject.setMessageStatEnable(Boolean.parseBoolean(messageStatEnable));
                         statPublisherConfigurationReadObject.setSystemStatEnable(Boolean.parseBoolean(systemStatEnable));
@@ -159,6 +161,7 @@ public class RegistryPersistenceManager {
             throw new StatPublisherConfigurationException("Could not load values from registry", e);
         }
         return statPublisherConfigurationReadObject;
+
     }
 
 
