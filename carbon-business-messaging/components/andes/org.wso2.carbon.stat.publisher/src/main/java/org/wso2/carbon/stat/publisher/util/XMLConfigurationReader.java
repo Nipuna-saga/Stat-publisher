@@ -21,7 +21,7 @@ public class XMLConfigurationReader {
     /**
      *Load xml files and read values
      */
-    public static JMXConfiguration readJMXConfiguration() throws StatPublisherConfigurationException {
+    public JMXConfiguration readJMXConfiguration() throws StatPublisherConfigurationException {
 
         JMXConfiguration jmxConfiguration=new JMXConfiguration();
         try {

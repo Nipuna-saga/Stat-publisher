@@ -40,26 +40,19 @@ public class StatPublisherDataAgent {
         }
 
 
-
     }
 
 
+    public void sendSystemStats() throws MalformedObjectNameException, ReflectionException, IOException,
+            InstanceNotFoundException, AttributeNotFoundException, MBeanException {
 
-    public void sendSystemStats() throws MalformedObjectNameException, ReflectionException, IOException, InstanceNotFoundException, AttributeNotFoundException, MBeanException {
-
-        mbeansStatsData  = mbeansStats.getMbeansStatsData();
+        mbeansStatsData = mbeansStats.getMbeansStatsData();
         System.out.println(mbeansStatsData.getNonHeapMemoryUsage());
         System.out.println(mbeansStatsData.getHeapMemoryUsage());
         System.out.println(mbeansStatsData.getCPULoadAverage());
 
 
-
-
-
-
     }
-
-
 
 
 }

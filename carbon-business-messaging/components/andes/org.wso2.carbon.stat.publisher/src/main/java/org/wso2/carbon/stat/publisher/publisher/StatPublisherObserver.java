@@ -20,23 +20,19 @@ public class StatPublisherObserver {
 
     private static final Logger LOGGER = Logger.getLogger(StatPublisherObserver.class);
 
-    private JMXConfiguration jmxConfiguration;
-    private StreamConfiguration streamConfiguration;
     private StatPublisherConfiguration statPublisherConfiguration;
     private RegistryPersistenceManager registryPersistenceManager;
-    private StatPublisherDataAgent statPublisherDataAgent;
     private Timer timer;
     private TimerTask statPublisherTimerTask;
 
 
-    public StatPublisherObserver(JMXConfiguration jmxConfiguration, StreamConfiguration readStreamConfiguration,
+    public StatPublisherObserver(JMXConfiguration jmxConfiguration, StreamConfiguration streamConfiguration,
                                  int tenantID) throws StatPublisherConfigurationException {
 
         registryPersistenceManager = new RegistryPersistenceManager();
-        this.jmxConfiguration = jmxConfiguration;
-        this.streamConfiguration = readStreamConfiguration;
         this.statPublisherConfiguration = registryPersistenceManager.loadConfigurationData(tenantID);
-        statPublisherDataAgent = new StatPublisherDataAgent(jmxConfiguration, streamConfiguration, statPublisherConfiguration);
+        StatPublisherDataAgent statPublisherDataAgent =
+                new StatPublisherDataAgent(jmxConfiguration, streamConfiguration, statPublisherConfiguration);
 
 
     }

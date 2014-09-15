@@ -3,6 +3,7 @@ package org.wso2.carbon.stat.publisher.publisher;
 import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
+import org.wso2.carbon.stat.publisher.util.XMLConfigurationReader;
 
 import java.util.HashMap;
 
@@ -13,19 +14,19 @@ import java.util.HashMap;
 public class StatPublisherManager {
 
     private JMXConfiguration jmxConfiguration;
-    private StreamConfiguration readStreamConfiguration;
+    private StreamConfiguration streamConfiguration;
+    private XMLConfigurationReader xmlConfigurationReader;
 
     private StatPublisherObserver statPublisherObserver;
     private static HashMap<Integer, StatPublisherObserver> statPublisherObserverHashMap =
             new HashMap<Integer, StatPublisherObserver>();
 
 
-    public StatPublisherManager() {
-        //TODO get JMX configuration and StreamConfiguration
-
+    public StatPublisherManager() throws StatPublisherConfigurationException {
+        jmxConfiguration = xmlConfigurationReader.readJMXConfiguration();
+        streamConfiguration = xmlConfigurationReader.readStreamConfiguration();
 
     }
-
 
 
     /**
@@ -34,7 +35,7 @@ public class StatPublisherManager {
 
     public void onStart(int tenantID) throws StatPublisherConfigurationException {
 
-        statPublisherObserver = new StatPublisherObserver(jmxConfiguration, readStreamConfiguration, tenantID);
+        statPublisherObserver = new StatPublisherObserver(jmxConfiguration, streamConfiguration, tenantID);
         statPublisherObserver.startMonitor();
         statPublisherObserverHashMap.put(tenantID, statPublisherObserver);
 
