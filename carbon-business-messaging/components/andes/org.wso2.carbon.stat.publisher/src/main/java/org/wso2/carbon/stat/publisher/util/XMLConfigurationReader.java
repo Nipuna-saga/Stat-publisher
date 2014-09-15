@@ -1,6 +1,5 @@
 package org.wso2.carbon.stat.publisher.util;
 
-import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
