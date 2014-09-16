@@ -18,7 +18,6 @@
 
 package org.wso2.carbon.stat.publisher.internal.ds;
 
-import org.apache.log4j.Logger;
 import org.osgi.service.component.ComponentContext;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.registry.core.service.RegistryService;
@@ -43,7 +42,6 @@ import org.wso2.carbon.utils.ConfigurationContextService;
 
 public class StatPublisherDS {
 
-    private static Logger logger = Logger.getLogger(StatPublisherDS.class);
     public RegistryPersistenceManager registryPersistenceManagerObject;
     public StatPublisherConfiguration statPublisherConfigurationInstance;
 

@@ -29,22 +29,37 @@ public class JMXConfiguration {
     private String rmiServerPort;
     private String offSet;
 
+    /**
+     * Set value of startRMIServer node
+     */
     public void setStartRMIServer(boolean startRMIServer) {
         this.startRMIServer = startRMIServer;
     }
 
+    /**
+     * Set value of hostName node
+     */
     public void setHostName(String hostName) {
         this.hostName = hostName;
     }
 
+    /**
+     * Set value of rmiRegistryPort node
+     */
     public void setRmiRegistryPort(String rmiRegistryPort) {
         this.rmiRegistryPort = rmiRegistryPort;
     }
 
+    /**
+     * Set value of rmiServerPort node
+     */
     public void setRmiServerPort(String rmiServerPort) {
         this.rmiServerPort = rmiServerPort;
     }
 
+    /**
+     * Set value of offSet node
+     */
     public void setOffSet(String offSet) {
         this.offSet = offSet;
     }

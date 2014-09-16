@@ -27,28 +27,28 @@ public class XMLConfigurationReader {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
             Document jmxDocument;
-            String JMXFilePath = StatPublisherConstants.JMX_DIRECTORY_PATH+StatPublisherConstants.JMX_XML;
+            String jmxFilePath = StatPublisherConstants.JMX_DIRECTORY_PATH+StatPublisherConstants.JMX_XML;
 
-            File jmxFile= new File(JMXFilePath);
+            File jmxFile= new File(jmxFilePath);
             if (!jmxFile.exists()) {
                 throw new StatPublisherConfigurationException("jmx.xml does not exists in "+
                                                               jmxFile.getPath());
             } else {
-                jmxDocument = docBuilder.parse(JMXFilePath);
+                jmxDocument = docBuilder.parse(jmxFilePath);
                 jmxDocument.getDocumentElement().normalize();
                 String jmxRootNode = jmxDocument.getDocumentElement().getNodeName();
                 NodeList jmxDataList = jmxDocument.getElementsByTagName(jmxRootNode);
 
-                String StartRMIServerValue =
+                String startRMIServerValue =
                         ((Element) jmxDataList.item(0)).getElementsByTagName("StartRMIServer").
                                 item(0).getChildNodes().item(0).getTextContent();
-                String nodeValue = StartRMIServerValue.trim();
+                String nodeValue = startRMIServerValue.trim();
                 jmxConfiguration.setStartRMIServer(Boolean.parseBoolean(nodeValue));
 
-                String HostNameValue =
+                String hostNameValue =
                         ((Element) jmxDataList.item(0)).getElementsByTagName("HostName").
                                 item(0).getChildNodes().item(0).getTextContent();
-                jmxConfiguration.setHostName(HostNameValue.trim());
+                jmxConfiguration.setHostName(hostNameValue.trim());
 
                  //Load carbon.xml file
                 Document carbonDocument;
@@ -64,15 +64,15 @@ public class XMLConfigurationReader {
                     String carbonRootNode = carbonDocument.getDocumentElement().getNodeName();
                     NodeList carbonDataList = carbonDocument.getElementsByTagName(carbonRootNode);
 
-                    String RMIRegistryPortValue =
+                    String rmiRegistryPortValue =
                             ((Element) carbonDataList.item(0)).getElementsByTagName("RMIRegistryPort").
                                     item(0).getChildNodes().item(0).getTextContent();
-                    jmxConfiguration.setRmiRegistryPort(RMIRegistryPortValue.trim());
+                    jmxConfiguration.setRmiRegistryPort(rmiRegistryPortValue.trim());
 
-                    String RMIServerPortValue =
+                    String rmiServerPortValue =
                             ((Element) carbonDataList.item(0)).getElementsByTagName("RMIServerPort").
                                     item(0).getChildNodes().item(0).getTextContent();
-                    jmxConfiguration.setRmiServerPort(RMIServerPortValue.trim());
+                    jmxConfiguration.setRmiServerPort(rmiServerPortValue.trim());
 
                     String offSetValue =
                             ((Element) carbonDataList.item(0)).getElementsByTagName("Offset").
@@ -87,7 +87,6 @@ public class XMLConfigurationReader {
         } catch (IOException e) {
             throw new StatPublisherConfigurationException("Indicate file loading error!", e);
         }
-
         return jmxConfiguration;
     }
 
