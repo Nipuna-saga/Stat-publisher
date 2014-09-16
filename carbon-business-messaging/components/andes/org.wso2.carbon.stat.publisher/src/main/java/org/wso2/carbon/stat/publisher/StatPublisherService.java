@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
+import org.wso2.carbon.stat.publisher.internal.ds.ServiceValueHolder;
 import org.wso2.carbon.stat.publisher.publisher.StatPublisherManager;
 import org.wso2.carbon.stat.publisher.registry.RegistryPersistenceManager;
 
@@ -31,21 +32,14 @@ public class StatPublisherService {
     //TODO statPublisherConfiguration (name change)
 
 
-<<<<<<< HEAD
     private static Logger logger = Logger.getLogger(StatPublisherService.class);
 
-=======
-
-    private static Logger logger = Logger.getLogger(StatPublisherService.class);
-
-
->>>>>>> bf3a99005b1d98b051ccb0e9488a198f86a11ba7
 
     //StatPublisherConfiguration details get method
     public StatPublisherConfiguration getStatConfiguration() throws StatPublisherConfigurationException {
         logger = Logger.getLogger(StatPublisherService.class);
         int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
-        RegistryPersistenceManager registryPersistenceManagerObject=new RegistryPersistenceManager();
+        RegistryPersistenceManager registryPersistenceManagerObject = new RegistryPersistenceManager();
 
         return registryPersistenceManagerObject.loadConfigurationData(tenantID);
 
@@ -55,12 +49,12 @@ public class StatPublisherService {
     public void setStatConfiguration(StatPublisherConfiguration statPublisherConfiguration) throws StatPublisherConfigurationException {
         int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
 
-        RegistryPersistenceManager registryPersistenceManagerObject=new RegistryPersistenceManager();
-        StatPublisherManager statPublisherManager=new StatPublisherManager();
+        RegistryPersistenceManager registryPersistenceManagerObject = new RegistryPersistenceManager();
+        StatPublisherManager statPublisherManager = ServiceValueHolder.getInstance().getStatPublisherManagerService();
 
         statPublisherManager.onStop(tenantID);
         try {
-             registryPersistenceManagerObject.storeConfigurationData(statPublisherConfiguration, tenantID);
+            registryPersistenceManagerObject.storeConfigurationData(statPublisherConfiguration, tenantID);
         } catch (StatPublisherConfigurationException e) {
             logger.error("Error occurs while trying to store configurations values to registry", e);
         }
