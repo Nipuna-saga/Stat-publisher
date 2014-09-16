@@ -30,6 +30,9 @@ public class ServiceValueHolder {
 
     private RegistryService registryService;
     private RealmService realmService;
+
+
+
     private StatPublisherManager statPublisherManagerService;
     private ServiceValueHolder() {
     }
@@ -83,5 +86,12 @@ public class ServiceValueHolder {
         return realmService;
     }
 
+    public StatPublisherManager getStatPublisherManagerService() {
+        return statPublisherManagerService;
+    }
+
+    public void setStatPublisherManagerService(StatPublisherManager statPublisherManagerService) {
+        this.statPublisherManagerService = statPublisherManagerService;
+    }
 
 }

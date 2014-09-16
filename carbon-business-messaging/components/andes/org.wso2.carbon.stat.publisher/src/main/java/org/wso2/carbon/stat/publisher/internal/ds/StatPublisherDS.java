@@ -49,7 +49,8 @@ public class StatPublisherDS {
     protected void activate(ComponentContext context) throws StatPublisherConfigurationException {
         System.out.println("=====================Activating bundle=====================");
         StatPublisherManager statPublisherManager = new StatPublisherManager();
-        statPublisherManager.onStart(CarbonContext.getThreadLocalCarbonContext().getTenantId());
+        ServiceValueHolder.getInstance().setStatPublisherManagerService(statPublisherManager);
+        ServiceValueHolder.getInstance().getStatPublisherManagerService().onStart(CarbonContext.getThreadLocalCarbonContext().getTenantId());
         System.out.println("=====================Activated bundle=====================");
 
     }

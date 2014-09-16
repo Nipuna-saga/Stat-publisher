@@ -1,14 +1,12 @@
 package org.wso2.carbon.stat.publisher.publisher;
 
 import org.apache.log4j.Logger;
-import org.wso2.carbon.stat.publisher.registry.RegistryPersistenceManager;
 import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
-import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
+import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
+import org.wso2.carbon.stat.publisher.registry.RegistryPersistenceManager;
 
-import javax.management.*;
-import java.io.IOException;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -35,8 +33,8 @@ public class StatPublisherObserver {
 
         registryPersistenceManager = new RegistryPersistenceManager();
         this.statPublisherConfiguration = registryPersistenceManager.loadConfigurationData(tenantID);
-     statPublisherDataAgent=
-               new StatPublisherDataAgent(jmxConfiguration, streamConfiguration, statPublisherConfiguration);
+  //   statPublisherDataAgent=
+   ///            new StatPublisherDataAgent(jmxConfiguration, streamConfiguration, statPublisherConfiguration);
 
 
     }
@@ -69,7 +67,7 @@ public class StatPublisherObserver {
                         LOGGER.info("MB stat Publishing activated ");
                     }
 
-
+/*
                     try {
                         statPublisherDataAgent.sendSystemStats();
                     } catch (MalformedObjectNameException e) {
@@ -86,7 +84,7 @@ public class StatPublisherObserver {
                         e.printStackTrace();
                     }
 
-
+*/
 
                 }
 

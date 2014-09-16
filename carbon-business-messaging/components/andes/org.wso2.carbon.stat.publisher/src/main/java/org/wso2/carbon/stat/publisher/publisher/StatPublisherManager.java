@@ -18,7 +18,7 @@ public class StatPublisherManager {
     private XMLConfigurationReader xmlConfigurationReader;
 
     private StatPublisherObserver statPublisherObserver;
-    private static HashMap<Integer, StatPublisherObserver> statPublisherObserverHashMap =
+    private  HashMap<Integer, StatPublisherObserver> statPublisherObserverHashMap =
             new HashMap<Integer, StatPublisherObserver>();
 
 //
