@@ -32,7 +32,9 @@ public class StatPublisherService {
     //TODO statPublisherConfiguration (name change)
 
 
+
     private static Logger logger = Logger.getLogger(StatPublisherService.class);
+
 
 
     //StatPublisherConfiguration details get method
