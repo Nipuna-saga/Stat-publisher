@@ -18,20 +18,19 @@ public class StatPublisherManager {
     private XMLConfigurationReader xmlConfigurationReader;
 
     private StatPublisherObserver statPublisherObserver;
-    private  HashMap<Integer, StatPublisherObserver> statPublisherObserverHashMap =
+    private HashMap<Integer, StatPublisherObserver> statPublisherObserverHashMap =
             new HashMap<Integer, StatPublisherObserver>();
 
-//
+    //
     public StatPublisherManager() throws StatPublisherConfigurationException {
 
 
-        xmlConfigurationReader=new XMLConfigurationReader();
+        xmlConfigurationReader = new XMLConfigurationReader();
         jmxConfiguration = xmlConfigurationReader.readJMXConfiguration();
-       streamConfiguration = xmlConfigurationReader.readStreamConfiguration();
+        streamConfiguration = xmlConfigurationReader.readStreamConfiguration();
 
 
     }
-
 
     /**
      * Create new StatPublisherObserver Instance and store it in Hash map by using tenant ID as key value
@@ -45,6 +44,9 @@ public class StatPublisherManager {
 
     }
 
+    /**
+     * Stop monitoring process
+     */
 
     public void onStop(int tenantID) throws StatPublisherConfigurationException {
 
@@ -52,5 +54,17 @@ public class StatPublisherManager {
         statPublisherObserver.stopMonitor();
 
     }
+
+    /**
+     * get Message stat Enable flag
+     */
+
+    public boolean getMessageStatEnableFlag(int tenantID) {
+
+        statPublisherObserver = statPublisherObserverHashMap.get(tenantID);
+        return statPublisherObserver.getEnable();
+
+    }
+
 
 }

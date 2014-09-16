@@ -32,9 +32,7 @@ public class StatPublisherService {
     //TODO statPublisherConfiguration (name change)
 
 
-
     private static Logger logger = Logger.getLogger(StatPublisherService.class);
-
 
 
     //StatPublisherConfiguration details get method
@@ -61,6 +59,7 @@ public class StatPublisherService {
             logger.error("Error occurs while trying to store configurations values to registry", e);
         }
         statPublisherManager.onStart(tenantID);
+        System.out.println(statPublisherManager.getMessageStatEnableFlag(tenantID));
 
     }
 
