@@ -24,6 +24,7 @@ public class StatPublisherObserver {
     private RegistryPersistenceManager registryPersistenceManager;
     private Timer timer;
     private TimerTask statPublisherTimerTask;
+    private boolean enable;
 //
 
     public StatPublisherObserver(JMXConfiguration jmxConfiguration, StreamConfiguration streamConfiguration,
@@ -31,8 +32,8 @@ public class StatPublisherObserver {
 
         registryPersistenceManager = new RegistryPersistenceManager();
         this.statPublisherConfiguration = registryPersistenceManager.loadConfigurationData(tenantID);
-       StatPublisherDataAgent statPublisherDataAgent =
-               new StatPublisherDataAgent(jmxConfiguration, streamConfiguration, statPublisherConfiguration);
+     //  StatPublisherDataAgent statPublisherDataAgent =
+       //        new StatPublisherDataAgent(jmxConfiguration, streamConfiguration, statPublisherConfiguration);
 
 
     }
@@ -86,5 +87,7 @@ public class StatPublisherObserver {
             timer.cancel();
         }
     }
-
+    public boolean getEnable() {
+        return enable;
+    }
 }

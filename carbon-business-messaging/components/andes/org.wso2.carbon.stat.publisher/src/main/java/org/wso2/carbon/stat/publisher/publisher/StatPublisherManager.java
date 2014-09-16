@@ -21,7 +21,7 @@ public class StatPublisherManager {
     private static HashMap<Integer, StatPublisherObserver> statPublisherObserverHashMap =
             new HashMap<Integer, StatPublisherObserver>();
 
-
+//
     public StatPublisherManager() throws StatPublisherConfigurationException {
         xmlConfigurationReader=new XMLConfigurationReader();
         jmxConfiguration = xmlConfigurationReader.readJMXConfiguration();
