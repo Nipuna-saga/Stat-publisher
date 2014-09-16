@@ -30,9 +30,6 @@ public class ServiceValueHolder {
 
     private RegistryService registryService;
     private RealmService realmService;
-
-
-
     private StatPublisherManager statPublisherManagerService;
     private ServiceValueHolder() {
     }
