@@ -18,7 +18,6 @@
 
 package org.wso2.carbon.stat.publisher.internal.ds;
 
-import org.wso2.carbon.registry.core.Registry;
 import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.utils.ConfigurationContextService;

@@ -23,8 +23,8 @@ public class StatPublisherManager {
 
 
     public StatPublisherManager() throws StatPublisherConfigurationException {
-        jmxConfiguration = xmlConfigurationReader.readJMXConfiguration();
-        streamConfiguration = xmlConfigurationReader.readStreamConfiguration();
+
+
 
     }
 

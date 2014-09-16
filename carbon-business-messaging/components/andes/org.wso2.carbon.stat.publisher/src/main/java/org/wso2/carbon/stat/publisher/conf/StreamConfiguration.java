@@ -30,33 +30,50 @@ public class StreamConfiguration {
     private String versionSystemStatistic;
     private String versionMBStatistic;
 
+    /**
+     * Set value of message version
+     */
     public void setVersionMessage(String versionMessage) {
         this.versionMessage = versionMessage;
     }
 
+    /**
+     * Set value of acknowledge packet version
+     */
     public void setVersionAck(String versionAck) {
         this.versionAck = versionAck;
     }
 
+    /**
+     * Set value of acknowledge packet version
+     */
     public void setForwardSlash(String forwardSlash) {
         this.forwardSlash = forwardSlash;
     }
 
+    /**
+     * Set value of acknowledge packet version
+     */
     public void setTrustStorePassword(String trustStorePassword) {
         this.trustStorePassword = trustStorePassword;
     }
 
+    /**
+     * Set value of acknowledge packet version
+     */
     public void setVersionSystemStatistic(String versionSystemStatistic) {
         this.versionSystemStatistic = versionSystemStatistic;
     }
 
+    /**
+     * Set value of version
+     */
     public void setVersionMBStatistic(String versionMBStatistic) {
         this.versionMBStatistic = versionMBStatistic;
     }
 
     /**
      * Get message version
-     *
      * @return versionMessage
      */
     public String getVersionMessage() {
@@ -65,7 +82,6 @@ public class StreamConfiguration {
 
     /**
      * Get acknowledge packet version
-     *
      * @return versionMessage
      */
     public String getVersionAck() {
@@ -74,7 +90,6 @@ public class StreamConfiguration {
 
     /**
      * Get forward slash
-     *
      * @return forwardSlash
      */
     public String getForwardSlash() {
@@ -83,7 +98,6 @@ public class StreamConfiguration {
 
     /**
      * Get trustStore password
-     *
      * @return trustStorePassword
      */
     public String getTrustStorePassword() {
@@ -92,7 +106,6 @@ public class StreamConfiguration {
 
     /**
      * Get system statistic version
-     *
      * @return versionSystemStatistic
      */
     public String getVersionSystemStatistic() {
@@ -101,7 +114,6 @@ public class StreamConfiguration {
 
     /**
      * Get message broker statistic version
-     *
      * @return versionMBStatistic
      */
     public String getVersionMBStatistic() {

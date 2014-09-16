@@ -93,13 +93,10 @@ public class RegistryPersistenceManager {
      */
     public StatPublisherConfiguration loadConfigurationData(int tenantId) throws
                                                                  StatPublisherConfigurationException {
-
         StatPublisherConfiguration statPublisherConfigurationReadObject = new StatPublisherConfiguration();
-
         try {
             Registry registry = ServiceValueHolder.getInstance().getRegistryService().getConfigSystemRegistry(tenantId);
             String resourcePath = StatPublisherConstants.MEDIATION_STATISTICS_REG_PATH + StatPublisherConstants.RESOURCE;
-
             if (registry != null) {
                 if (registry.resourceExists(resourcePath)) {
                     Resource resource = registry.get(resourcePath);
@@ -126,7 +123,6 @@ public class RegistryPersistenceManager {
             throw new StatPublisherConfigurationException("Could not load values from registry", e);
         }
         return statPublisherConfigurationReadObject;
-
     }
 
 

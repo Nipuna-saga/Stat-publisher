@@ -23,24 +23,16 @@ import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.wso2.carbon.stat.publisher.publisher.StatPublisherManager;
-<<<<<<< HEAD
 import org.wso2.carbon.stat.publisher.registry.RegistryPersistenceManager;
-import org.wso2.carbon.stat.publisher.registry.StatConfigurationDTO;
-=======
->>>>>>> a0a35303665ece9e33047e29ae468bd71027c771
+
 
 public class StatPublisherService {
 
     //TODO statPublisherConfiguration (name change)
-    private static Logger logger;
 
-<<<<<<< HEAD
-    private RegistryPersistenceManager registryPersistenceManagerObject;
-    private StatConfigurationDTO statConfigurationDTO;
-=======
+
     private static Logger logger = Logger.getLogger(StatPublisherService.class);
 
->>>>>>> a0a35303665ece9e33047e29ae468bd71027c771
 
     //StatPublisherConfiguration details get method
     public StatPublisherConfiguration getStatConfiguration() throws StatPublisherConfigurationException {
@@ -55,14 +47,10 @@ public class StatPublisherService {
     //StatConfiguration details set method
     public void setStatConfiguration(StatPublisherConfiguration statPublisherConfiguration) throws StatPublisherConfigurationException {
         int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
-<<<<<<< HEAD
-        statConfigurationDTO = new StatConfigurationDTO();
 
-        StatPublisherManager statPublisherManager = new StatPublisherManager();
-=======
         RegistryPersistenceManager registryPersistenceManagerObject=new RegistryPersistenceManager();
         StatPublisherManager statPublisherManager=new StatPublisherManager();
->>>>>>> a0a35303665ece9e33047e29ae468bd71027c771
+
         statPublisherManager.onStop(tenantID);
         try {
              registryPersistenceManagerObject.storeConfigurationData(statPublisherConfiguration, tenantID);
