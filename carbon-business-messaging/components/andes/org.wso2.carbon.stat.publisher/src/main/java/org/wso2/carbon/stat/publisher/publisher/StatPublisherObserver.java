@@ -25,7 +25,9 @@ public class StatPublisherObserver {
     private Timer timer;
     private TimerTask statPublisherTimerTask;
     private boolean enable;
-    StatPublisherDataAgent statPublisherDataAgent;
+    private StatPublisherDataAgent statPublisherDataAgent;
+    private boolean messageStatEnableFlag;
+
 //
 
     public StatPublisherObserver(JMXConfiguration jmxConfiguration, StreamConfiguration streamConfiguration,
@@ -33,8 +35,8 @@ public class StatPublisherObserver {
 
         registryPersistenceManager = new RegistryPersistenceManager();
         this.statPublisherConfiguration = registryPersistenceManager.loadConfigurationData(tenantID);
-  //   statPublisherDataAgent=
-   ///            new StatPublisherDataAgent(jmxConfiguration, streamConfiguration, statPublisherConfiguration);
+        //   statPublisherDataAgent=
+        ///            new StatPublisherDataAgent(jmxConfiguration, streamConfiguration, statPublisherConfiguration);
 
 
     }
@@ -46,6 +48,13 @@ public class StatPublisherObserver {
 
 
     public void startMonitor() {
+
+
+        if (statPublisherConfiguration.isMessageStatEnable()) {
+            messageStatEnableFlag = true;
+
+        }
+
 
         //Checking  System or MB stat enable or not
         if (statPublisherConfiguration.isSystemStatEnable() || statPublisherConfiguration.isMBStatEnable()) {
@@ -66,6 +75,9 @@ public class StatPublisherObserver {
                         // dataAgentInstance.sendMBStatistics(URL, credentials);
                         LOGGER.info("MB stat Publishing activated ");
                     }
+
+
+
 
 /*
                     try {
@@ -107,7 +119,8 @@ public class StatPublisherObserver {
             timer.cancel();
         }
     }
+
     public boolean getEnable() {
-        return enable;
+        return messageStatEnableFlag;
     }
 }

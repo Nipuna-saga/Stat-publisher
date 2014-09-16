@@ -59,6 +59,7 @@ public class StatPublisherService {
             logger.error("Error occurs while trying to store configurations values to registry", e);
         }
         statPublisherManager.onStart(tenantID);
+        System.out.println(statPublisherManager.getMessageStatEnableFlag(tenantID));
 
     }
 
