@@ -53,7 +53,7 @@ public class StatPublisherDS {
         System.out.println("=====================Activated bundle=====================");
 
     }
-
+//
 
     protected void deactivate(ComponentContext context) {
     }

@@ -31,8 +31,15 @@ public class StatPublisherService {
     //TODO statPublisherConfiguration (name change)
 
 
+<<<<<<< HEAD
     private static Logger logger = Logger.getLogger(StatPublisherService.class);
 
+=======
+
+    private static Logger logger = Logger.getLogger(StatPublisherService.class);
+
+
+>>>>>>> bf3a99005b1d98b051ccb0e9488a198f86a11ba7
 
     //StatPublisherConfiguration details get method
     public StatPublisherConfiguration getStatConfiguration() throws StatPublisherConfigurationException {

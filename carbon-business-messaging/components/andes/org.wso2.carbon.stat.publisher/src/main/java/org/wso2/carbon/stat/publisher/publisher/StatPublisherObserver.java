@@ -7,6 +7,8 @@ import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 
+import javax.management.*;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,15 +26,17 @@ public class StatPublisherObserver {
     private RegistryPersistenceManager registryPersistenceManager;
     private Timer timer;
     private TimerTask statPublisherTimerTask;
-
+    private boolean enable;
+    StatPublisherDataAgent statPublisherDataAgent;
+//
 
     public StatPublisherObserver(JMXConfiguration jmxConfiguration, StreamConfiguration streamConfiguration,
                                  int tenantID) throws StatPublisherConfigurationException {
 
         registryPersistenceManager = new RegistryPersistenceManager();
         this.statPublisherConfiguration = registryPersistenceManager.loadConfigurationData(tenantID);
-        StatPublisherDataAgent statPublisherDataAgent =
-                new StatPublisherDataAgent(jmxConfiguration, streamConfiguration, statPublisherConfiguration);
+     statPublisherDataAgent=
+               new StatPublisherDataAgent(jmxConfiguration, streamConfiguration, statPublisherConfiguration);
 
 
     }
@@ -65,6 +69,25 @@ public class StatPublisherObserver {
                         LOGGER.info("MB stat Publishing activated ");
                     }
 
+
+                    try {
+                        statPublisherDataAgent.sendSystemStats();
+                    } catch (MalformedObjectNameException e) {
+                        e.printStackTrace();
+                    } catch (ReflectionException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (InstanceNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (AttributeNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (MBeanException e) {
+                        e.printStackTrace();
+                    }
+
+
+
                 }
 
 
@@ -86,5 +109,7 @@ public class StatPublisherObserver {
             timer.cancel();
         }
     }
-
+    public boolean getEnable() {
+        return enable;
+    }
 }
