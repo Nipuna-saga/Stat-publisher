@@ -7,6 +7,8 @@ import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 
+import javax.management.*;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -72,7 +74,21 @@ public class StatPublisherObserver {
 
                     }
 
-
+                    try {
+                        statPublisherDataAgent.sendSystemStats();
+                    } catch (MalformedObjectNameException e) {
+                        e.printStackTrace();
+                    } catch (ReflectionException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (InstanceNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (AttributeNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (MBeanException e) {
+                        e.printStackTrace();
+                    }
 
 
                 }
