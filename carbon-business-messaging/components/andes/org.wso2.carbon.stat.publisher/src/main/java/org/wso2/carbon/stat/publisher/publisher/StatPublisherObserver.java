@@ -7,6 +7,8 @@ import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.wso2.carbon.stat.publisher.registry.RegistryPersistenceManager;
 
+import javax.management.*;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -35,8 +37,8 @@ public class StatPublisherObserver {
 
         registryPersistenceManager = new RegistryPersistenceManager();
         this.statPublisherConfiguration = registryPersistenceManager.loadConfigurationData(tenantID);
-        //   statPublisherDataAgent=
-        ///            new StatPublisherDataAgent(jmxConfiguration, streamConfiguration, statPublisherConfiguration);
+           statPublisherDataAgent=
+                    new StatPublisherDataAgent(jmxConfiguration, streamConfiguration, statPublisherConfiguration);
 
 
     }
@@ -60,6 +62,7 @@ public class StatPublisherObserver {
         if (statPublisherConfiguration.isSystemStatEnable() || statPublisherConfiguration.isMBStatEnable()) {
 
 
+
             statPublisherTimerTask = new TimerTask() {
                 @Override
                 public void run() {
@@ -79,7 +82,7 @@ public class StatPublisherObserver {
 
 
 
-/*
+
                     try {
                         statPublisherDataAgent.sendSystemStats();
                     } catch (MalformedObjectNameException e) {
@@ -96,7 +99,6 @@ public class StatPublisherObserver {
                         e.printStackTrace();
                     }
 
-*/
 
                 }
 
@@ -104,8 +106,17 @@ public class StatPublisherObserver {
             };
             timer = new Timer();
             // scheduling the task at fixed rate
-            long timeInterval = 5000;
-            timer.scheduleAtFixedRate(statPublisherTimerTask, new Date(), timeInterval);
+
+
+            Thread timerTaskThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    long timeInterval = 5000;
+                    timer.scheduleAtFixedRate(statPublisherTimerTask, new Date(), timeInterval);
+
+                }
+            });
+           timerTaskThread.start();
         }
     }
 
