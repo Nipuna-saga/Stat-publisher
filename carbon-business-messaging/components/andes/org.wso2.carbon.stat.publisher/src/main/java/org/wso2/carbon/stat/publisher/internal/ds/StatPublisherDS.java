@@ -19,14 +19,16 @@
 package org.wso2.carbon.stat.publisher.internal.ds;
 
 import org.osgi.service.component.ComponentContext;
+import org.wso2.andes.kernel.MessagingEngine;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.registry.core.service.RegistryService;
-import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
+import org.wso2.carbon.stat.publisher.publisher.MessageStatPublisher;
 import org.wso2.carbon.stat.publisher.publisher.StatPublisherManager;
-import org.wso2.carbon.stat.publisher.registry.RegistryPersistenceManager;
 import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.utils.ConfigurationContextService;
+
+//import org.wso2.carbon.stat.publisher.internal.ds.StatPublisherInterfaceImplementation;
 
 /**
  * @scr.component name="org.wso2.carbon.stat.publisher" immediate="true"
@@ -42,21 +44,23 @@ import org.wso2.carbon.utils.ConfigurationContextService;
 
 public class StatPublisherDS {
 
-    public RegistryPersistenceManager registryPersistenceManagerObject;
-    public StatPublisherConfiguration statPublisherConfigurationInstance;
 
 
-    protected void activate(ComponentContext context) throws StatPublisherConfigurationException {
+    protected void activate(ComponentContext context) throws StatPublisherConfigurationException, org.wso2.carbon.user.api.UserStoreException {
         System.out.println("=====================Activating bundle=====================");
         StatPublisherManager statPublisherManager = new StatPublisherManager();
         ServiceValueHolder.getInstance().setStatPublisherManagerService(statPublisherManager);
-        ServiceValueHolder.getInstance().getStatPublisherManagerService().onStart(CarbonContext.getThreadLocalCarbonContext().getTenantId());
+        ServiceValueHolder.getInstance().getStatPublisherManagerService().
+                onStart(CarbonContext.getThreadLocalCarbonContext().getTenantId());
         System.out.println("=====================Activated bundle=====================");
 
+        MessagingEngine.getInstance().setStatPublisherGetMessageInterface(MessageStatPublisher.getInstance());
+
+
     }
-//
 
     protected void deactivate(ComponentContext context) {
+
     }
 
     protected void setConfigurationContextService(

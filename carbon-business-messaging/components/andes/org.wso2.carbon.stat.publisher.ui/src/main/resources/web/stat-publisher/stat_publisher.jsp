@@ -58,10 +58,6 @@
 <%
     String setConfig = request.getParameter("setConfig");
 
-
-    String enable_checked_value = request.getParameter("enable_check");
-
-
     String get_username_value = request.getParameter("user_name");
 
     String get_password_value = request.getParameter("password");
@@ -81,11 +77,7 @@
     if (setConfig != null) {    // form submitted request to set eventing config
         statPublisherConfiguration = new StatPublisherConfiguration();
 
-        if (enable_checked_value != null) {
-            statPublisherConfiguration.setEnableStatPublisher(true);
-        } else {
-            statPublisherConfiguration.setEnableStatPublisher(false);
-        }
+
         if (message_stat_check_value != null) {
             statPublisherConfiguration.setMessageStatEnable(true);
         } else {
@@ -156,13 +148,10 @@
 
     if (statPublisherConfiguration != null) {
 
-
-        if (statPublisherConfiguration.getEnableStatPublisher()) {
-            enable_checked_value = "checked";
-        }
-
         get_username_value = statPublisherConfiguration.getUsername();
+
         get_password_value = statPublisherConfiguration.getPassword();
+
         get_URL_value = statPublisherConfiguration.getUrl();
 
 
@@ -201,17 +190,7 @@
                     <th colspan="4"><fmt:message key="connection.configuration"/></th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr>
-                    <td><label for="enable_check"></label><input type="checkbox" id="enable_check" name="enable_check" <%=enable_checked_value%>
-                               onclick="toggleTable();"/>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <fmt:message key="enable.publisher"/>
-                    </td>
-                    <td></td>
-                </tr>
-                </tbody>
-
-                    <tbody>
+                                   <tbody>
                     <tr>
                         <td>
                             <fmt:message key="username"/>

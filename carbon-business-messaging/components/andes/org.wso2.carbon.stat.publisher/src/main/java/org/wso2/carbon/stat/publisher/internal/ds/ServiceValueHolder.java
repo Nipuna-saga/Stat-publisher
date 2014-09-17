@@ -31,13 +31,16 @@ public class ServiceValueHolder {
     private RegistryService registryService;
     private RealmService realmService;
     private StatPublisherManager statPublisherManagerService;
+
     private ServiceValueHolder() {
     }
+
     private static ServiceValueHolder instance = new ServiceValueHolder();
     private ConfigurationContextService configurationContextService;
 
     /**
      * Get the instance of ServiceValueHolder class
+     *
      * @return instance of ServiceValueHolder
      */
     public static ServiceValueHolder getInstance() {
@@ -46,6 +49,7 @@ public class ServiceValueHolder {
 
     /**
      * Get the configuration context of component
+     *
      * @return configuration context service of component
      */
     public ConfigurationContextService getConfigurationContextService() {
@@ -59,8 +63,10 @@ public class ServiceValueHolder {
             ConfigurationContextService configurationContextService) {
         this.configurationContextService = configurationContextService;
     }
+
     /**
      * Initialize registry service
+     *
      * @param registryServiceParam - registry service
      */
     public void setRegistryService(RegistryService registryServiceParam) {
@@ -73,6 +79,7 @@ public class ServiceValueHolder {
 
     /**
      * Initialize realm service
+     *
      * @param realmServiceParam - Realm Service
      */
     public void setRealmService(RealmService realmServiceParam) {
@@ -89,6 +96,8 @@ public class ServiceValueHolder {
 
     public void setStatPublisherManagerService(StatPublisherManager statPublisherManagerService) {
         this.statPublisherManagerService = statPublisherManagerService;
+
+
     }
 
 }
