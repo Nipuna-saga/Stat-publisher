@@ -59,7 +59,7 @@ public class RegistryPersistenceManager {
                             resource.addProperty(StatPublisherConstants.SYSTEM_STAT_ENABLE,
                                                  Boolean.toString(statPublisherConfigurationWriteObject.isSystemStatEnable()));
                             resource.addProperty(StatPublisherConstants.MB_STAT_ENABLE,
-                                                 Boolean.toString(statPublisherConfigurationWriteObject.isMBStatEnable()));
+                                                 Boolean.toString(statPublisherConfigurationWriteObject.isMbStatEnable()));
                             registry.put(resourcePath, resource);
                         } else {
                             resource = registry.get(resourcePath);
@@ -76,7 +76,7 @@ public class RegistryPersistenceManager {
                             resource.setProperty(StatPublisherConstants.SYSTEM_STAT_ENABLE,
                                                  Boolean.toString(statPublisherConfigurationWriteObject.isSystemStatEnable()));
                             resource.setProperty(StatPublisherConstants.MB_STAT_ENABLE,
-                                                 Boolean.toString(statPublisherConfigurationWriteObject.isMBStatEnable()));
+                                                 Boolean.toString(statPublisherConfigurationWriteObject.isMbStatEnable()));
                             registry.put(resourcePath, resource);
                         }
                 }
@@ -113,7 +113,7 @@ public class RegistryPersistenceManager {
                         statPublisherConfigurationReadObject.setUrl(url);
                         statPublisherConfigurationReadObject.setUsername(userName);
                         statPublisherConfigurationReadObject.setPassword(password);
-                        statPublisherConfigurationReadObject.setMBStatEnable(Boolean.parseBoolean(mbStatEnable));
+                        statPublisherConfigurationReadObject.setMbStatEnable(Boolean.parseBoolean(mbStatEnable));
                         statPublisherConfigurationReadObject.setMessageStatEnable(Boolean.parseBoolean(messageStatEnable));
                         statPublisherConfigurationReadObject.setSystemStatEnable(Boolean.parseBoolean(systemStatEnable));
                     }

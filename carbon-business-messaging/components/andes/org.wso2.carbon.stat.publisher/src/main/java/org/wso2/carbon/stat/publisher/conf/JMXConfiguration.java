@@ -19,7 +19,7 @@
 package org.wso2.carbon.stat.publisher.conf;
 
 /**
- * Read configuration values from jmx and carbon xml files.
+ * Configuration values from jmx and carbon xml files.
  */
 public class JMXConfiguration {
 
@@ -31,6 +31,7 @@ public class JMXConfiguration {
 
     /**
      * Set value of startRMIServer node
+     * @param startRMIServer - boolean value
      */
     public void setStartRMIServer(boolean startRMIServer) {
         this.startRMIServer = startRMIServer;
@@ -38,6 +39,7 @@ public class JMXConfiguration {
 
     /**
      * Set value of hostName node
+     * @param hostName - String value
      */
     public void setHostName(String hostName) {
         this.hostName = hostName;
@@ -45,6 +47,7 @@ public class JMXConfiguration {
 
     /**
      * Set value of rmiRegistryPort node
+     * @param rmiRegistryPort - String value
      */
     public void setRmiRegistryPort(String rmiRegistryPort) {
         this.rmiRegistryPort = rmiRegistryPort;
@@ -52,6 +55,7 @@ public class JMXConfiguration {
 
     /**
      * Set value of rmiServerPort node
+     * @param rmiServerPort - String value
      */
     public void setRmiServerPort(String rmiServerPort) {
         this.rmiServerPort = rmiServerPort;
@@ -59,6 +63,7 @@ public class JMXConfiguration {
 
     /**
      * Set value of offSet node
+     * @param offSet - String value
      */
     public void setOffSet(String offSet) {
         this.offSet = offSet;
@@ -66,7 +71,7 @@ public class JMXConfiguration {
 
     /**
      * Get value of startRMIServer
-     * @return startRMIServer Value
+     * @return startRMIServer
      */
     public boolean isStartRMIServer() {
         return startRMIServer;

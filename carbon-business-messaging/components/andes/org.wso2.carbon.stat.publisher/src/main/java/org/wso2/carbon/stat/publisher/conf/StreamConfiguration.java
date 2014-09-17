@@ -32,6 +32,7 @@ public class StreamConfiguration {
 
     /**
      * Set value of message version
+     * @param versionMessage - String value
      */
     public void setVersionMessage(String versionMessage) {
         this.versionMessage = versionMessage;
@@ -39,34 +40,39 @@ public class StreamConfiguration {
 
     /**
      * Set value of acknowledge packet version
+     * @param versionAck - String value
      */
     public void setVersionAck(String versionAck) {
         this.versionAck = versionAck;
     }
 
     /**
-     * Set value of acknowledge packet version
+     * Set value of forward slash
+     * @param forwardSlash - String value
      */
     public void setForwardSlash(String forwardSlash) {
         this.forwardSlash = forwardSlash;
     }
 
     /**
-     * Set value of acknowledge packet version
+     * Set password of trustStore
+     * @param trustStorePassword - String value
      */
     public void setTrustStorePassword(String trustStorePassword) {
         this.trustStorePassword = trustStorePassword;
     }
 
     /**
-     * Set value of acknowledge packet version
+     * Set value of system statistic version
+     * @param versionSystemStatistic - String value
      */
     public void setVersionSystemStatistic(String versionSystemStatistic) {
         this.versionSystemStatistic = versionSystemStatistic;
     }
 
     /**
-     * Set value of version
+     * Set value of message broker statistic version
+     * @param versionMBStatistic - String value
      */
     public void setVersionMBStatistic(String versionMBStatistic) {
         this.versionMBStatistic = versionMBStatistic;
@@ -82,7 +88,7 @@ public class StreamConfiguration {
 
     /**
      * Get acknowledge packet version
-     * @return versionMessage
+     * @return versionAck
      */
     public String getVersionAck() {
         return versionAck;

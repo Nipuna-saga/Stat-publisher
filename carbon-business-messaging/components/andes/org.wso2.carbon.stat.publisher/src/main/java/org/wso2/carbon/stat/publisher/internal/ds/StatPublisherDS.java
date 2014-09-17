@@ -45,7 +45,11 @@ public class StatPublisherDS {
     public RegistryPersistenceManager registryPersistenceManagerObject;
     public StatPublisherConfiguration statPublisherConfigurationInstance;
 
-
+    /**
+     * Activate method in stat publisher bundle
+     * @param context - Component context
+     * @throws StatPublisherConfigurationException
+     */
     protected void activate(ComponentContext context) throws StatPublisherConfigurationException {
         System.out.println("=====================Activating bundle=====================");
         StatPublisherManager statPublisherManager = new StatPublisherManager();
@@ -54,33 +58,60 @@ public class StatPublisherDS {
         System.out.println("=====================Activated bundle=====================");
 
     }
-//
 
+    /**
+     * Deactivate method in stat publisher component
+     * @param context - Component context
+     */
     protected void deactivate(ComponentContext context) {
     }
 
+    /**
+     * Set ConfigurationContextService
+     * @param configurationContextService - ConfigurationContextService
+     */
     protected void setConfigurationContextService(
             ConfigurationContextService configurationContextService) {
         ServiceValueHolder.getInstance().setConfigurationContextService(configurationContextService);
     }
 
+    /**
+     * Remove ConfigurationContextService
+     * @param configurationContextService -ConfigurationContextService
+     */
     protected void unsetConfigurationContextService(
             ConfigurationContextService configurationContextService) {
         ServiceValueHolder.getInstance().setConfigurationContextService(null);
     }
 
+    /**
+     * Set RegistryService
+     * @param registryService - RegistryService
+     */
     protected void setRegistryService(RegistryService registryService) {
         ServiceValueHolder.getInstance().setRegistryService(registryService);
     }
 
+    /**
+     * Remove RegistryService
+     * @param registryService -RegistryService
+     */
     protected void unsetRegistryService(RegistryService registryService) {
         ServiceValueHolder.getInstance().setRegistryService(null);
     }
 
+    /**
+     * Set RealmService
+     * @param realmService - RealmService
+     */
     protected void setRealmService(RealmService realmService) {
         ServiceValueHolder.getInstance().setRealmService(realmService);
     }
 
+    /**
+     * Remove RealmService
+     * @param realmService - RealmService
+     */
     protected void unsetRealmService(RealmService realmService) {
         ServiceValueHolder.getInstance().setRealmService(null);
     }

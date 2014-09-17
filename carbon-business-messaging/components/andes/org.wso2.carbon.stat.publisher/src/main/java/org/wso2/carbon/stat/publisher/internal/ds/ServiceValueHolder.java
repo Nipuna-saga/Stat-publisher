@@ -24,7 +24,7 @@ import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
 /**
- * Keep values required for component service
+ * Keep service values
  */
 public class ServiceValueHolder {
 
@@ -54,6 +54,7 @@ public class ServiceValueHolder {
 
     /**
      * Set the configuration context of component
+     * @param configurationContextService - configuration context of component
      */
     public void setConfigurationContextService(
             ConfigurationContextService configurationContextService) {
@@ -67,6 +68,10 @@ public class ServiceValueHolder {
         this.registryService = registryServiceParam;
     }
 
+    /**
+     * Get registry service
+     * @return registryService
+     */
     public RegistryService getRegistryService() {
         return registryService;
     }
@@ -79,14 +84,26 @@ public class ServiceValueHolder {
         this.realmService = realmServiceParam;
     }
 
+    /**
+     * Get realmService
+     * @return realmService
+     */
     public RealmService getRealmService() {
         return realmService;
     }
 
+    /**
+     * Get StatPublisherManager instance
+     * @return instance of statPublisherManagerService
+     */
     public StatPublisherManager getStatPublisherManagerService() {
         return statPublisherManagerService;
     }
 
+    /**
+     * Set StatPublisherManager Service
+     * @param statPublisherManagerService - StatPublisherManager instance
+     */
     public void setStatPublisherManagerService(StatPublisherManager statPublisherManagerService) {
         this.statPublisherManagerService = statPublisherManagerService;
     }
