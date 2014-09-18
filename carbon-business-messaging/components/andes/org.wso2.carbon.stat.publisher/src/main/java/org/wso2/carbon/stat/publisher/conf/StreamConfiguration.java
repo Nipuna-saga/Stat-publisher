@@ -25,8 +25,6 @@ public class StreamConfiguration {
 
     private String versionMessage;
     private String versionAck;
-    private String forwardSlash;
-    private String trustStorePassword;
     private String versionSystemStatistic;
     private String versionMBStatistic;
 
@@ -44,22 +42,6 @@ public class StreamConfiguration {
      */
     public void setVersionAck(String versionAck) {
         this.versionAck = versionAck;
-    }
-
-    /**
-     * Set value of forward slash
-     * @param forwardSlash - String value
-     */
-    public void setForwardSlash(String forwardSlash) {
-        this.forwardSlash = forwardSlash;
-    }
-
-    /**
-     * Set password of trustStore
-     * @param trustStorePassword - String value
-     */
-    public void setTrustStorePassword(String trustStorePassword) {
-        this.trustStorePassword = trustStorePassword;
     }
 
     /**
@@ -92,22 +74,6 @@ public class StreamConfiguration {
      */
     public String getVersionAck() {
         return versionAck;
-    }
-
-    /**
-     * Get forward slash
-     * @return forwardSlash
-     */
-    public String getForwardSlash() {
-        return forwardSlash;
-    }
-
-    /**
-     * Get trustStore password
-     * @return trustStorePassword
-     */
-    public String getTrustStorePassword() {
-        return trustStorePassword;
     }
 
     /**
