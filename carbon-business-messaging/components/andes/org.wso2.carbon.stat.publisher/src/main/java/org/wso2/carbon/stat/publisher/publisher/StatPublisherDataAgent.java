@@ -43,7 +43,7 @@ public class StatPublisherDataAgent {
         this.statPublisherConfiguration = statPublisherConfiguration;
 
         try {
-            ServerStatsStreamDef = StreamDefCreator.getStreamDef();
+            ServerStatsStreamDef = StreamDefinitionCreator.getServerStatsStreamDef();
         } catch (MalformedStreamDefinitionException e) {
             e.printStackTrace();
         }
