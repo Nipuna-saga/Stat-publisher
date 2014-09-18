@@ -18,11 +18,14 @@
 
 package org.wso2.carbon.stat.publisher.serverStats;
 
+import org.apache.log4j.Logger;
 import org.wso2.andes.management.common.JMXConnnectionFactory;
 import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
+import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
 import org.wso2.carbon.stat.publisher.internal.ds.ServiceValueHolder;
 import org.wso2.carbon.stat.publisher.serverStats.data.MbeansStatsData;
 import org.wso2.carbon.user.core.UserRealm;
+import org.wso2.carbon.user.core.UserStoreException;
 
 import javax.management.*;
 import javax.management.openmbean.CompositeData;
@@ -38,36 +41,78 @@ import java.util.Set;
 public class MbeansStats {
 
 
-    private JMXConnector jmxConnector;
-    private MBeanServerConnection connection;
-    private long timeout = 100000;
+    private static JMXConnector jmxConnector;
+    private static MBeanServerConnection connection = null;
+    private static long timeout = 100000;
     private MbeansStatsData mbeansStatsData;
+    private static MbeansStats mbeansStats = null;
+    private static Logger logger = Logger.getLogger(MbeansStats.class);
 
 
-    public MbeansStats(JMXConfiguration jmxConfiguration) throws Exception {
+    public MbeansStats(JMXConfiguration jmxConfiguration)  {
 
         mbeansStatsData = new MbeansStatsData();
 
         //get MB username and password
-        UserRealm realm = ServiceValueHolder.getInstance().getRealmService().getBootstrapRealm();
-        String userName = realm.getRealmConfiguration().getAdminUserName();
-        String password = realm.getRealmConfiguration().getAdminPassword();
+        UserRealm realm;
+        String userName;
+        String password;
+        try {
+            realm = ServiceValueHolder.getInstance().getRealmService().getBootstrapRealm();
+            userName = realm.getRealmConfiguration().getAdminUserName();
+            password = realm.getRealmConfiguration().getAdminPassword();
+        } catch (UserStoreException e) {
+            throw new StatPublisherRuntimeException("Fail to get admin username or password of MB" , e );
+        }
+        //create jmxConnection
+        createJMXConnection(jmxConfiguration, userName, password);
+
+
+    }
+
+    private static void createJMXConnection(JMXConfiguration jmxConfiguration, String userName, String password){
 
         //get JMX port
-        int jmxPort = Integer.parseInt(jmxConfiguration.getRmiRegistryPort()) + Integer.parseInt(jmxConfiguration.getOffSet());
+        final int jmxPort = Integer.parseInt(jmxConfiguration.getRmiRegistryPort()) +
+                Integer.parseInt(jmxConfiguration.getOffSet());
 
-        //create JMX connection
-        jmxConnector = JMXConnnectionFactory.getJMXConnection(timeout, jmxConfiguration.getHostName(), jmxPort, userName, password);
-        connection = jmxConnector.getMBeanServerConnection();
+
+        try {
+            jmxConnector = JMXConnnectionFactory.getJMXConnection(timeout, jmxConfiguration.getHostName(),
+                    jmxPort, userName, password);
+            connection = jmxConnector.getMBeanServerConnection();
+        } catch (Exception e) {
+
+
+
+                try {
+                    Thread.sleep(2000);
+                    System.out.println("=========retrying ==================");
+                    createJMXConnection(jmxConfiguration , userName , password);
+
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+
+
+        }
+
+
     }
+
+
+
+
+
 
     public String HeapMemoryUsage() throws MalformedObjectNameException, IOException, AttributeNotFoundException,
             MBeanException, ReflectionException, InstanceNotFoundException {
 
-        Set<ObjectInstance> set = connection.queryMBeans(new ObjectName("java.lang:type=Memory"), null);
-        ObjectInstance oi = set.iterator().next();
-        Object attrValue = connection.getAttribute(oi.getObjectName(), "HeapMemoryUsage");
-        return ((CompositeData) attrValue).get("used").toString();
+            Set<ObjectInstance> set = connection.queryMBeans(new ObjectName("java.lang:type=Memory"), null);
+            ObjectInstance oi = set.iterator().next();
+            Object attrValue = connection.getAttribute(oi.getObjectName(), "HeapMemoryUsage");
+            return ((CompositeData) attrValue).get("used").toString();
+
 
 
     }
