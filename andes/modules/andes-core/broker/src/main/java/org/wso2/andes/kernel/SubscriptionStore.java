@@ -1,5 +1,6 @@
 package org.wso2.andes.kernel;
 
+
 import static org.wso2.andes.messageStore.CassandraConstants.EXCHANGE_COLUMN_FAMILY;
 import static org.wso2.andes.messageStore.CassandraConstants.EXCHANGE_ROW;
 import static org.wso2.andes.messageStore.CassandraConstants.KEYSPACE;
@@ -46,7 +47,11 @@ import org.wso2.andes.pool.AndesExecuter;
 
 public class SubscriptionStore {
     private static final String TOPIC_PREFIX = "topic.";
+
+
 	private static final String QUEUE_PREFIX = "queue.";
+
+
 	private static Log log = LogFactory.getLog(SubscriptionStore.class);
 
     //<routing key, List of local subscriptions>
@@ -92,6 +97,7 @@ public class SubscriptionStore {
 		}
     }
 
+    
     public List<Subscrption> getActiveClusterSubscribersForDestination(String destination, boolean isTopic) throws AndesException {
     	List<Subscrption> list =  isTopic? clusterTopicSubscriptionMap.get(destination): clusterQueueSubscriptionMap.get(destination);
         List<Subscrption> subscriptionsHavingExternalsubscriber = new ArrayList<Subscrption>();
@@ -205,6 +211,7 @@ public class SubscriptionStore {
 
     public void removeAllSubscriptionsRepresentingBinding(String destination, String targetQueue) throws AndesException{
         Map<String, LocalSubscription> subscriptionList = getSubscriptionList(destination, true);
+
         //Find all topic subscriptions with this target queue and routing key - we will find only one
         Iterator<LocalSubscription> topicSubscriptionItr = subscriptionList.values().iterator();
         while(topicSubscriptionItr.hasNext()){
@@ -214,6 +221,7 @@ public class SubscriptionStore {
                 break;
             }
         }
+
         //remove any queue subscriptions subscribed to this - we might find more than one
         Map<String, LocalSubscription> queueSubscriptionList = getSubscriptionList(targetQueue, false);
         Iterator<LocalSubscription> queueSubscriptionItr = queueSubscriptionList.values().iterator();
@@ -288,6 +296,7 @@ public class SubscriptionStore {
                         }
                     }
                 }
+
                 if(!hasDurableSubscriptionAlreadyInPlace && type == SubscriptionChange.Disconnected) {
                     //close subscription
                     //createDisconnectOrRemoveLocalSubscription(subscrption, type);
@@ -308,11 +317,13 @@ public class SubscriptionStore {
                         .append(destinationQueue).toString();
                 String subscriptionID = subscrption.getSubscriptionID();
                 CQLDataAccessHelper.addMappingToRaw(KEYSPACE, SUBSCRIPTIONS_COLUMN_FAMILY, destinationStringForCassandra, subscriptionID, subscrption.encodeAsStr(),true);
+
                 if(type == SubscriptionChange.Added) {
                     log.info("New Local Subscription Added " + subscrption);
                 } else {
                     log.info("New Local Subscription Disconnected " + subscrption);
                 }
+
                 //add or update local subscription map
                 if (subscrption.getTargetQueueBoundExchange().equals(AMQPUtils.DIRECT_EXCHANGE_NAME)) {
                     Map<String, LocalSubscription> localSubscriptions = localQueueSubscriptionMap.get(destinationQueue);
