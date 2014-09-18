@@ -209,7 +209,7 @@ public class MessagingEngine {
 
         disruptorBasedExecutor.ackReceived(ack);
         if (statPublisherGetMessage != null) {
-            statPublisherGetMessage.getAckMessageDetails(ack);}
+        statPublisherGetMessage.getAckMessageDetails(ack);}
     }
 
     public void messageReturned(List<AndesAckData> ackList) {
