@@ -18,6 +18,9 @@
 
 package org.wso2.carbon.stat.publisher.conf;
 
+/**
+ * Statistic configuration values manage by user interface
+ */
 public class StatPublisherConfiguration {
 
     //enable stat publisher
@@ -34,76 +37,149 @@ public class StatPublisherConfiguration {
     //enable Stat publisher features (message,system and message broker)
     private boolean messageStatEnable=false;
     private boolean systemStatEnable=false;
-    private boolean MBStatEnable=false;
+    private boolean mbStatEnable =false;
 
+
+    /**
+     * Get Username
+     * @return username
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Set Username
+     * @param username - String value
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * Get password
+     * @return password
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Set password
+     * @param password - String value
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * Get url
+     * @return url
+     */
     public String getUrl() {
         return url;
     }
 
+    /**
+     * Set url
+     * @param url - String value
+     */
     public void setUrl(String url) {
         this.url = url;
     }
 
+    /**
+     * Get value of enableStatPublisher
+     * @return enableStatPublisher
+     */
     public boolean isEnableStatPublisher() {
         return enableStatPublisher;
     }
 
+    /**
+     * Set whether stat publisher enable or not
+     * @param enableStatPublisher - boolean value
+     */
     public void setEnableStatPublisher(boolean enableStatPublisher) {
         this.enableStatPublisher = enableStatPublisher;
     }
 
+    /**
+     * Get value of messageStatEnable
+     * @return messageStatEnable
+     */
     public boolean isMessageStatEnable() {
         return messageStatEnable;
     }
 
+    /**
+     * Set whether message stat publishing enable or not
+     * @param messageStatEnable - boolean value
+     */
     public void setMessageStatEnable(boolean messageStatEnable) {
         this.messageStatEnable = messageStatEnable;
     }
 
+    /**
+     * Get value of systemStatEnable
+     * @return systemStatEnable
+     */
     public boolean isSystemStatEnable() {
         return systemStatEnable;
     }
 
+    /**
+     * Set whether system stat enable or not
+     * @param systemStatEnable - boolean value
+     */
     public void setSystemStatEnable(boolean systemStatEnable) {
         this.systemStatEnable = systemStatEnable;
     }
 
-    public boolean isMBStatEnable() {
-        return MBStatEnable;
+    /**
+     * Get value of mbStatEnable
+     * @return mbStatEnable
+     */
+    public boolean isMbStatEnable() {
+        return mbStatEnable;
     }
 
-    public void setMBStatEnable(boolean MBStatEnable) {
-        this.MBStatEnable = MBStatEnable;
+    /**
+     * Set whether message broker stat enable or not
+     * @param mbStatEnable - boolean value
+     */
+    public void setMbStatEnable(boolean mbStatEnable) {
+        this.mbStatEnable = mbStatEnable;
     }
 
+    /**
+     * Get tenantID
+     * @return tenantID
+     */
     public int getTenantID() {
         return tenantID;
     }
 
+    /**
+     * Set value of tenantID
+     * @param tenantID - integer value
+     */
     public void setTenantID(int tenantID) {
         this.tenantID = tenantID;
     }
 
+    /**
+     * Get nodeURL
+     * @return nodeURL
+     */
     public String getNodeURL() {
         return nodeURL;
     }
 
+    /**
+     * Set value of nodeURL
+     * @param nodeURL - String value
+     */
     public void setNodeURL(String nodeURL) {
         this.nodeURL = nodeURL;
     }

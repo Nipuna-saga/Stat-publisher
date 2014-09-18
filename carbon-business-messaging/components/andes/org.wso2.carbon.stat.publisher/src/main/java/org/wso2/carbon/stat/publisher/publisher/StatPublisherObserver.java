@@ -75,7 +75,7 @@ public class StatPublisherObserver {
 
 
         //Checking  System or MB stat enable or not
-        if (statPublisherConfiguration.isSystemStatEnable() || statPublisherConfiguration.isMBStatEnable()) {
+        if (statPublisherConfiguration.isSystemStatEnable() || statPublisherConfiguration.isMbStatEnable()) {
 
 
             statPublisherTimerTask = new TimerTask() {
@@ -88,7 +88,7 @@ public class StatPublisherObserver {
                         LOGGER.info("System stat Publishing activated ");
                     }
                     //check MB stat enable configuration
-                    if (statPublisherConfiguration.isMBStatEnable()) {
+                    if (statPublisherConfiguration.isMbStatEnable()) {
                         //MB stat publishing activated
                         // dataAgentInstance.sendMBStatistics(URL, credentials);
                         LOGGER.info("MB stat Publishing activated ");
