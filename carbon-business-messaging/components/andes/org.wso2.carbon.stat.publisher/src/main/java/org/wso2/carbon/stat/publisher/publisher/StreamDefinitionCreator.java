@@ -28,7 +28,7 @@ public class StreamDefinitionCreator {
     public static String messageStatsDescription = "Publish Message broker message statistics";
 
 
-    public static StreamDefinition getServerStatsStreamDef(String streamType) throws MalformedStreamDefinitionException {
+    public static StreamDefinition getServerStatsStreamDef() throws MalformedStreamDefinitionException {
 
 
         StreamDefinition streamDefinition = new StreamDefinition(serverStatsStreamName, serverStatsVersion);
