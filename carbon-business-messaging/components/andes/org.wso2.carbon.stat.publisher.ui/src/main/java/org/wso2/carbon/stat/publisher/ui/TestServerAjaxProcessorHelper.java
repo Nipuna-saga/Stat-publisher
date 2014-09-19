@@ -31,7 +31,7 @@ public class TestServerAjaxProcessorHelper {
     public String backendServerExists(String URL) {
        String response = "true";
         Socket serverSocket;
-        String[] URLArray = URL.split(";");
+        String[] URLArray = URL.split(",");
 
 
         for (int count = 0; count < URLArray.length; count++) {

@@ -25,8 +25,6 @@ import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.wso2.carbon.stat.publisher.registry.RegistryPersistenceManager;
 
-import javax.management.*;
-import java.io.IOException;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -99,7 +97,7 @@ public class StatPublisherObserver {
 
 
 
-
+/*
                     try {
                         statPublisherDataAgent.sendSystemStats();
                         statPublisherDataAgent.sendMBStats();
@@ -117,7 +115,7 @@ public class StatPublisherObserver {
                         e.printStackTrace();
                     }
 
-
+*/
                 }
 
 

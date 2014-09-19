@@ -94,7 +94,7 @@
             statPublisherConfiguration.setMbStatEnable(false);
         }
         if (get_URL_value != null) {
-            statPublisherConfiguration.setUrl(get_URL_value);
+            statPublisherConfiguration.setURL(get_URL_value);
         }
         if (get_username_value != null) {
             statPublisherConfiguration.setUsername(get_username_value);
@@ -152,7 +152,7 @@
 
         get_password_value = statPublisherConfiguration.getPassword();
 
-        get_URL_value = statPublisherConfiguration.getUrl();
+        get_URL_value = statPublisherConfiguration.getURL();
 
 
         if (statPublisherConfiguration.getMbStatEnable()) {
@@ -212,7 +212,7 @@
                         </td>
                         <td><label for="url_address"></label><input type="text" id="url_address" name="url_address" value="<%=get_URL_value%>"/>
                             <input type="button" value="<fmt:message key="test.server"/>" onclick="testServer()"/>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<i> eg:- tcp://localhost:7611;tcp://...</i>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<i> eg:- tcp://localhost:7611,tcp://...</i>
                         </td>
 
                     </tr>

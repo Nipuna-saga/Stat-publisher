@@ -18,6 +18,7 @@
 
 package org.wso2.carbon.stat.publisher.internal.ds;
 
+import org.osgi.framework.BundleContext;
 import org.osgi.service.component.ComponentContext;
 import org.wso2.andes.kernel.MessagingEngine;
 import org.wso2.carbon.context.CarbonContext;
@@ -28,6 +29,7 @@ import org.wso2.carbon.stat.publisher.publisher.StatPublisherManager;
 import org.wso2.carbon.stratos.common.listeners.TenantMgtListener;
 import org.wso2.carbon.user.api.UserStoreException;
 import org.wso2.carbon.user.core.service.RealmService;
+import org.wso2.carbon.utils.Axis2ConfigurationContextObserver;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
 //import org.wso2.carbon.stat.publisher.internal.ds.StatPublisherInterfaceImplementation;
@@ -63,11 +65,16 @@ public class StatPublisherDS {
                 onCreate(CarbonContext.getThreadLocalCarbonContext().getTenantId());
 
 
+
+
         System.out.println("=====================Activated bundle=====================");
 
         MessagingEngine.getInstance().setStatPublisherGetMessageInterface(MessageStatPublisher.getInstance());
         TenantMgtListenerImpl tenantMgtListenerImpl = TenantMgtListenerImpl.getTenantMgtListener();
         context.getBundleContext().registerService(TenantMgtListener.class.getName(), tenantMgtListenerImpl, null);
+        BundleContext bundleContext = context.getBundleContext();
+        bundleContext.registerService(Axis2ConfigurationContextObserver.class.getName(),
+                new Axis2ConfigurationContextObserverImpl(), null);
 
     }
 

@@ -66,7 +66,7 @@ public class StatPublisherDataAgent {
         ArrayList<DataPublisherHolder> dataPublisherHolders = new ArrayList<DataPublisherHolder>();
 
 
-        String[] urls = {statPublisherConfiguration.getUrl()};
+        String[] urls = {statPublisherConfiguration.getURL()};
 
         for (String aUrl : urls) {
 
