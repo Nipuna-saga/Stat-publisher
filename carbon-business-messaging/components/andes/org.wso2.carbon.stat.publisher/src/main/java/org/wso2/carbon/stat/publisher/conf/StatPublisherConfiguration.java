@@ -23,9 +23,6 @@ package org.wso2.carbon.stat.publisher.conf;
  */
 public class StatPublisherConfiguration {
 
-    //enable stat publisher
-    private boolean enableStatPublisher;
-
     //credential details
     private String username="";
     private String password="";
@@ -76,7 +73,7 @@ public class StatPublisherConfiguration {
      * Get url
      * @return url
      */
-    public String getUrl() {
+    public String getURL() {
         return url;
     }
 
@@ -84,24 +81,8 @@ public class StatPublisherConfiguration {
      * Set url
      * @param url - String value
      */
-    public void setUrl(String url) {
+    public void setURL(String url) {
         this.url = url;
-    }
-
-    /**
-     * Get value of enableStatPublisher
-     * @return enableStatPublisher
-     */
-    public boolean isEnableStatPublisher() {
-        return enableStatPublisher;
-    }
-
-    /**
-     * Set whether stat publisher enable or not
-     * @param enableStatPublisher - boolean value
-     */
-    public void setEnableStatPublisher(boolean enableStatPublisher) {
-        this.enableStatPublisher = enableStatPublisher;
     }
 
     /**
@@ -183,7 +164,5 @@ public class StatPublisherConfiguration {
     public void setNodeURL(String nodeURL) {
         this.nodeURL = nodeURL;
     }
-
-
 
 }

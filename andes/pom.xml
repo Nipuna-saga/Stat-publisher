@@ -31,7 +31,21 @@
     </distributionManagement>
 
     <dependencyManagement>
+	
         <dependencies>
+		
+		
+		
+	<dependency>
+    <groupId>org.wso2.carbon</groupId> 
+    <artifactId>org.wso2.carbon.databridge.agent.thrift</artifactId> 
+    <version>4.2.0</version>
+</dependency> 
+<dependency>
+    <groupId>org.wso2.carbon</groupId> 
+    <artifactId>org.wso2.carbon.databridge.commons</artifactId> 
+    <version>4.2.0</version> 
+</dependency>
             <dependency>
           <groupId>biz.aQute</groupId>
           <artifactId>bnd</artifactId>

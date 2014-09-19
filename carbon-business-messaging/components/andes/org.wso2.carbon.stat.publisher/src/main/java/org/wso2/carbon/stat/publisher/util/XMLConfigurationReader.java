@@ -18,6 +18,7 @@
 
 package org.wso2.carbon.stat.publisher.util;
 
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -34,6 +35,8 @@ import java.io.IOException;
 
 public class XMLConfigurationReader {
 
+    private static final Logger logger = Logger.getLogger(XMLConfigurationReader.class);
+
     /**
      *Load xml files and read values
      */
@@ -49,6 +52,7 @@ public class XMLConfigurationReader {
 
             File jmxFile= new File(jmxFilePath);
             if (!jmxFile.exists()) {
+                logger.error("jmx.xml does not exists in "+jmxFile.getPath());
                 throw new StatPublisherConfigurationException("jmx.xml does not exists in "+
                                                               jmxFile.getPath());
             } else {
@@ -68,12 +72,13 @@ public class XMLConfigurationReader {
                                 item(0).getChildNodes().item(0).getTextContent();
                 jmxConfiguration.setHostName(hostNameValue.trim());
 
-                 //Load carbon.xml file
+                //Load carbon.xml file
                 Document carbonDocument;
                 String carbonFilePath = StatPublisherConstants.CONF_DIRECTORY_PATH+StatPublisherConstants.CARBON_XML;
 
                 File carbonFile = new File(carbonFilePath);
                 if (!carbonFile.exists()) {
+                    logger.error("carbon.xml does not exists in "+carbonFile.getPath());
                     throw new StatPublisherConfigurationException("carbon.xml does not exists in "+
                                                                   carbonFile.getPath());
                 } else {
@@ -115,7 +120,7 @@ public class XMLConfigurationReader {
 
         StreamConfiguration streamConfiguration=new StreamConfiguration();
         try {
-             //Load mbStatConfiguration.xml file
+            //Load mbStatConfiguration.xml file
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
             Document document;
@@ -123,6 +128,7 @@ public class XMLConfigurationReader {
             File file = new File(filePath);
 
             if (!file.exists()) {
+                logger.error("mbStatConfiguration.xml does not exists in "+file.getPath());
                 throw new StatPublisherConfigurationException("mbStatConfiguration.xml does not exists in "+
                                                               file.getPath());
             } else {
@@ -140,16 +146,6 @@ public class XMLConfigurationReader {
                         ((Element) dataList.item(0)).getElementsByTagName("versionAck").
                                 item(0).getChildNodes().item(0).getTextContent();
                 streamConfiguration.setVersionAck(versionAckValue.trim());
-
-                String forwardSlashValue =
-                        ((Element) dataList.item(0)).getElementsByTagName("forwardSlash").
-                                item(0).getChildNodes().item(0).getTextContent();
-                streamConfiguration.setForwardSlash(forwardSlashValue.trim());
-
-                String trustStorePasswordValue =
-                        ((Element) dataList.item(0)).getElementsByTagName("trustStorePassword").
-                                item(0).getChildNodes().item(0).getTextContent();
-                streamConfiguration.setTrustStorePassword(trustStorePasswordValue.trim());
 
                 String versionSystemStatisticValue =
                         ((Element) dataList.item(0)).getElementsByTagName("versionSystemStatistic").
