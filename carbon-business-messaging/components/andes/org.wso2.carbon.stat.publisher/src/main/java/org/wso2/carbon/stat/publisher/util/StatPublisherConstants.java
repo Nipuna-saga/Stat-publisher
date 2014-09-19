@@ -24,7 +24,7 @@ import java.io.File;
 
 public final class StatPublisherConstants {
     public static final String RESOURCE = "StatisticConfiguration";
-    public static final String ENABLE_STAT_PUBLISHER = "enableStatPublisher";
+    public static final String NODE_URL = "nodeURL";
     public static final String USER_NAME = "username";
     public static final String PASSWORD = "password";
     public static final String URL = "url";
