@@ -25,6 +25,10 @@ public class StreamDefinitionCreator {
     public static String messageStatsNickName = "message stats";
     public static String messageStatsDescription = "Publish Message broker message statistics";
 
+    public static String ackStatsStreamName = "MESSAGE_STATISTICS";
+    public static String ackStatsNickName = "message stats";
+    public static String ackStatsDescription = "Publish Message broker message statistics";
+
 
     public static StreamDefinition getServerStatsStreamDef(StreamConfiguration streamConfiguration) throws MalformedStreamDefinitionException {
 

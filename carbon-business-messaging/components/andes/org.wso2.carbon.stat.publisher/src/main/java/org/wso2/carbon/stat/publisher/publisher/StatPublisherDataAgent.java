@@ -24,9 +24,9 @@ import java.util.List;
 
 public class StatPublisherDataAgent {
 
-    private static JMXConfiguration jmxConfiguration;
-    private static StreamConfiguration streamConfiguration;
-    private static StatPublisherConfiguration statPublisherConfiguration;
+    private  JMXConfiguration jmxConfiguration;
+    private  StreamConfiguration streamConfiguration;
+    private  StatPublisherConfiguration statPublisherConfiguration;
 
     private  MbeansStats mbeansStats = null;
     private MbeansStatsData mbeansStatsData;
@@ -42,10 +42,10 @@ public class StatPublisherDataAgent {
    private List<Object> payLoadData;
 
     private MessagingEngine messagingEngine;
-    private static SubscriptionStore subscriptionStore;
-    static List<Subscrption> subscriptionsList;
+    private  SubscriptionStore subscriptionStore;
+    List<Subscrption> subscriptionsList;
 
-    private static Logger logger = Logger.getLogger(StatPublisherDataAgent.class);
+    private  Logger logger = Logger.getLogger(StatPublisherDataAgent.class);
 
     public StatPublisherDataAgent(JMXConfiguration jmxConfiguration,
                                   StreamConfiguration streamConfiguration,
@@ -145,7 +145,7 @@ public class StatPublisherDataAgent {
         return null;
     }
 
-    public static List<Object> getMetaData() {
+    public  List<Object> getMetaData() {
         List<Object> metaData = new ArrayList<Object>(1);
 
         //todo check whether this value is correct or not
@@ -154,7 +154,7 @@ public class StatPublisherDataAgent {
     }
 
 
-    public static List<Object> getServerStatsPayLoadData(MbeansStatsData mbeansStatsData) {
+    public  List<Object> getServerStatsPayLoadData(MbeansStatsData mbeansStatsData) {
         List<Object> payloadData = new ArrayList<Object>(4);
         payloadData.add(mbeansStatsData.getHeapMemoryUsage());
         payloadData.add(mbeansStatsData.getNonHeapMemoryUsage());
@@ -163,7 +163,7 @@ public class StatPublisherDataAgent {
         return payloadData;
     }
 
-    public static List<Object> getMBStatsPayLoadData() throws Exception {
+    public  List<Object> getMBStatsPayLoadData() throws Exception {
         List<Object> payloadData = new ArrayList<Object>(3);
 
         payloadData.add(getTotalSubscriptions());
@@ -174,13 +174,13 @@ public class StatPublisherDataAgent {
         return payloadData;
     }
 
-    private static long getCurrentTimeStamp(){
+    private  long getCurrentTimeStamp(){
 
         return System.currentTimeMillis();
 
     }
-    static List<String> topics;
-    private static  int getTotalSubscriptions() throws Exception {
+     List<String> topics;
+    private   int getTotalSubscriptions() throws Exception {
 
         int totalSubscribers = 0;
         topics = getTopicList();
@@ -194,10 +194,10 @@ public class StatPublisherDataAgent {
 
     }
 
-    private static List<String> getTopicList() throws Exception {
+    private  List<String> getTopicList() throws Exception {
 
-        MessagingEngine messaginEngine = MessagingEngine.getInstance();
-        subscriptionStore = messaginEngine.getSubscriptionStore();
+        MessagingEngine messagingEngine = MessagingEngine.getInstance();
+        subscriptionStore = messagingEngine.getSubscriptionStore();
         List<String> topics = subscriptionStore.getTopics();
 
         return topics;
