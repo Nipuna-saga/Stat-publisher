@@ -103,6 +103,7 @@ public class StatPublisherObserver {
 
                     try {
                         statPublisherDataAgent.sendSystemStats();
+                        statPublisherDataAgent.sendMBStats();
                     } catch (MalformedObjectNameException e) {
                         e.printStackTrace();
                     } catch (ReflectionException e) {
@@ -129,7 +130,7 @@ public class StatPublisherObserver {
             Thread timerTaskThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    long timeInterval = 5000;
+                    long timeInterval =15000;
                     timer.scheduleAtFixedRate(statPublisherTimerTask, new Date(), timeInterval);
 
                 }
