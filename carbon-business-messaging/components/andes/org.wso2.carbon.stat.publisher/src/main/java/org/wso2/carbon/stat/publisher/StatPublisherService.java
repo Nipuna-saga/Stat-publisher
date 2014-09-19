@@ -29,11 +29,7 @@ import org.wso2.carbon.stat.publisher.registry.RegistryPersistenceManager;
 
 public class StatPublisherService {
 
-    //TODO statPublisherConfiguration (name change)
-
-
     private static Logger logger = Logger.getLogger(StatPublisherService.class);
-
 
     //StatPublisherConfiguration details get method
     public StatPublisherConfiguration getStatConfiguration() throws StatPublisherConfigurationException {
@@ -52,14 +48,13 @@ public class StatPublisherService {
         RegistryPersistenceManager registryPersistenceManagerObject = new RegistryPersistenceManager();
         StatPublisherManager statPublisherManager = ServiceValueHolder.getInstance().getStatPublisherManagerService();
 
-        statPublisherManager.onStop(tenantID);
+        statPublisherManager.onUpdate(tenantID);
         try {
             registryPersistenceManagerObject.storeConfigurationData(statPublisherConfiguration, tenantID);
         } catch (StatPublisherConfigurationException e) {
             logger.error("Error occurs while trying to store configurations values to registry", e);
         }
-        statPublisherManager.onStart(tenantID);
-        System.out.println(statPublisherManager.getMessageStatEnableFlag(tenantID));
+        statPublisherManager.onCreate(tenantID);
 
     }
 

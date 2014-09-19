@@ -24,15 +24,16 @@
 
     String url = request.getParameter("url_address");
     String responseText;
-    System.out.print(url);
+
 %>
 
 <%
-    if(testServerAjaxProcessorHelper.isNotNullOrEmpty(url)){
+    if (testServerAjaxProcessorHelper.isNotNullOrEmpty(url)) {
 
-            responseText = testServerAjaxProcessorHelper.backendServerExists(url);
-            out.write(responseText);
+        responseText = testServerAjaxProcessorHelper.backendServerExists(url);
 
+
+        out.write(responseText);
 
 
     }

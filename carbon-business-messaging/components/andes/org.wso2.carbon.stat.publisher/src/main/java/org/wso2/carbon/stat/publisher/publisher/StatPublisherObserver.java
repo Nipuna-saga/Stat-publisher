@@ -44,7 +44,6 @@ public class StatPublisherObserver {
     private RegistryPersistenceManager registryPersistenceManager;
     private Timer timer;
     private TimerTask statPublisherTimerTask;
-    private boolean enable;
     private StatPublisherDataAgent statPublisherDataAgent;
     private boolean messageStatEnableFlag;
 

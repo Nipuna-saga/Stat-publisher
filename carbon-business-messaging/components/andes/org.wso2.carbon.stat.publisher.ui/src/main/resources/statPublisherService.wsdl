@@ -39,8 +39,8 @@
         <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://conf.publisher.stat.carbon.wso2.org/xsd">
             <xs:complexType name="StatPublisherConfiguration">
                 <xs:sequence>
-                    <xs:element minOccurs="0" name="mbStatEnable" type="xs:boolean"></xs:element>
                     <xs:element minOccurs="0" name="enableStatPublisher" type="xs:boolean"></xs:element>
+                    <xs:element minOccurs="0" name="mbStatEnable" type="xs:boolean"></xs:element>
                     <xs:element minOccurs="0" name="messageStatEnable" type="xs:boolean"></xs:element>
                     <xs:element minOccurs="0" name="nodeURL" nillable="true" type="xs:string"></xs:element>
                     <xs:element minOccurs="0" name="password" nillable="true" type="xs:string"></xs:element>
@@ -143,13 +143,13 @@
     </wsdl:binding>
     <wsdl:service name="StatPublisherService">
         <wsdl:port name="StatPublisherServiceHttpsSoap11Endpoint" binding="ns:StatPublisherServiceSoap11Binding">
-            <soap:address location="https://10.219.36.68:9444/services/StatPublisherService.StatPublisherServiceHttpsSoap11Endpoint/"></soap:address>
+            <soap:address location="https://10.100.4.101:9444/services/StatPublisherService.StatPublisherServiceHttpsSoap11Endpoint/"></soap:address>
         </wsdl:port>
         <wsdl:port name="StatPublisherServiceHttpsSoap12Endpoint" binding="ns:StatPublisherServiceSoap12Binding">
-            <soap12:address location="https://10.219.36.68:9444/services/StatPublisherService.StatPublisherServiceHttpsSoap12Endpoint/"></soap12:address>
+            <soap12:address location="https://10.100.4.101:9444/services/StatPublisherService.StatPublisherServiceHttpsSoap12Endpoint/"></soap12:address>
         </wsdl:port>
         <wsdl:port name="StatPublisherServiceHttpsEndpoint" binding="ns:StatPublisherServiceHttpBinding">
-            <http:address location="https://10.219.36.68:9444/services/StatPublisherService.StatPublisherServiceHttpsEndpoint/"></http:address>
+            <http:address location="https://10.100.4.101:9444/services/StatPublisherService.StatPublisherServiceHttpsEndpoint/"></http:address>
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>

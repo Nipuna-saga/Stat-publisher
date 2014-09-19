@@ -26,6 +26,9 @@ import org.wso2.carbon.stat.publisher.internal.ds.ServiceValueHolder;
 import org.wso2.carbon.user.api.UserStoreException;
 import org.wso2.carbon.user.core.tenant.TenantManager;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * This class will handle message stat publishing all events
  */
@@ -36,6 +39,11 @@ public class MessageStatPublisher implements StatPublisherGetMessage {
     private static MessageStatPublisher messageStatPublisher = new MessageStatPublisher();
     private StatPublisherManager statPublisherManager =
             ServiceValueHolder.getInstance().getStatPublisherManagerService();
+
+    private static final int NumberOfThreads = 5;
+
+    private ExecutorService executor = Executors.newFixedThreadPool(NumberOfThreads);
+
 
     private int tenantID;
 
@@ -51,6 +59,12 @@ public class MessageStatPublisher implements StatPublisherGetMessage {
     @Override
     public void getMessageDetails(AndesMessageMetadata andesMessageMetadata, int noOfSubscribers) {
 
+
+        Runnable worker = new MessageStatPublisherThread(andesMessageMetadata, noOfSubscribers);
+        executor.execute(worker);
+
+
+/*
         String[] messageDestinationParts = andesMessageMetadata.getDestination().split("/");
 
         if (messageDestinationParts.length == 1) {
@@ -58,7 +72,7 @@ public class MessageStatPublisher implements StatPublisherGetMessage {
         } else {
             TenantManager tenantManager = ServiceValueHolder.getInstance().getRealmService().getTenantManager();
             try {
-                tenantID = tenantManager.getTenantId(messageDestinationParts[1]);
+                tenantID = tenantManager.getTenantId(messageDestinationParts[0]);
             } catch (UserStoreException e) {
                 LOGGER.error("Error occurs while try to get tenant ID of " + messageDestinationParts[1]);
             }
@@ -70,12 +84,84 @@ public class MessageStatPublisher implements StatPublisherGetMessage {
 
             System.out.print("*******************" + andesMessageMetadata.getDestination() + noOfSubscribers + "************");
         }
+        */
     }
 
     @Override
     public void getAckMessageDetails(AndesAckData andesAckData) {
-        if (statPublisherManager.getMessageStatEnableFlag(tenantID)) {
-            System.out.print("*******************" + andesAckData.qName + "************");
+        Runnable worker = new MessageAckStatPublisherThread(andesAckData);
+        executor.execute(worker);
+    }
+
+
+    public class MessageStatPublisherThread implements Runnable {
+
+        AndesMessageMetadata andesMessageMetadata;
+        int noOfSubscribers;
+
+        public MessageStatPublisherThread(AndesMessageMetadata andesMessageMetadata, int noOfSubscribers) {
+            this.andesMessageMetadata = andesMessageMetadata;
+            this.noOfSubscribers = noOfSubscribers;
+
+        }
+
+
+        @Override
+        public void run() {
+            String[] messageDestinationParts = andesMessageMetadata.getDestination().split("/");
+
+            if (messageDestinationParts.length == 1) {
+                tenantID = -1234;
+            } else {
+                TenantManager tenantManager = ServiceValueHolder.getInstance().getRealmService().getTenantManager();
+
+                try {
+                    tenantID = tenantManager.getTenantId(messageDestinationParts[0]);
+                } catch (UserStoreException e) {
+                    LOGGER.error("Error occurs while try to get tenant ID of " + messageDestinationParts[0]);
+                }
+            }
+            if (statPublisherManager.getMessageStatEnableFlag(tenantID)) {
+
+                System.out.print("*******************" + andesMessageMetadata.getDestination() + noOfSubscribers + "************");
+            }
+
+
         }
     }
+
+    public class MessageAckStatPublisherThread implements Runnable {
+
+        AndesAckData andesAckData;
+
+
+        public MessageAckStatPublisherThread(AndesAckData andesAckData) {
+            this.andesAckData = andesAckData;
+
+        }
+
+
+        @Override
+        public void run() {
+            String[] messageDestinationParts = andesAckData.qName.split("/");
+
+            if (messageDestinationParts.length == 1) {
+                tenantID = -1234;
+            } else {
+                TenantManager tenantManager = ServiceValueHolder.getInstance().getRealmService().getTenantManager();
+                try {
+                    tenantID = tenantManager.getTenantId(messageDestinationParts[0]);
+                } catch (UserStoreException e) {
+                    LOGGER.error("Error occurs while try to get tenant ID of " + messageDestinationParts[0]);
+                }
+            }
+            if (statPublisherManager.getMessageStatEnableFlag(tenantID)) {
+
+                System.out.print("*******************" + andesAckData.qName + "************");
+            }
+
+
+        }
+    }
+
 }

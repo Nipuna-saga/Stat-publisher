@@ -89,9 +89,9 @@
             statPublisherConfiguration.setSystemStatEnable(false);
         }
         if (MB_stat_check_value != null) {
-            statPublisherConfiguration.setMBStatEnable(true);
+            statPublisherConfiguration.setMbStatEnable(true);
         } else {
-            statPublisherConfiguration.setMBStatEnable(false);
+            statPublisherConfiguration.setMbStatEnable(false);
         }
         if (get_URL_value != null) {
             statPublisherConfiguration.setUrl(get_URL_value);
@@ -155,7 +155,7 @@
         get_URL_value = statPublisherConfiguration.getUrl();
 
 
-        if (statPublisherConfiguration.getMBStatEnable()) {
+        if (statPublisherConfiguration.getMbStatEnable()) {
             MB_stat_check_value = "checked";
 
         }

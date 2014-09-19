@@ -25,7 +25,9 @@ import org.wso2.carbon.stat.publisher.conf.xsd.StatPublisherConfiguration;
 
 import java.rmi.RemoteException;
 
-
+/**
+ * This class will handle client side of UI request and connect that request to server side
+ */
 public class StatPublisherClient {
 
     private StatPublisherServiceStub stub;

@@ -1,24 +1,3 @@
-/**
- * Created by dilshani on 7/20/14.
- */
-
-function toggleTable() {
-    if (document.getElementById("enable_check").checked) {
-        var nodes = document.getElementById("toggleTable").getElementsByTagName('*');
-        for (var i = 0; i < nodes.length; i++) {
-            nodes[i].disabled = false;
-        }
-
-    } else {
-        var nodes = document.getElementById("toggleTable").getElementsByTagName('*');
-        for (var i = 0; i < nodes.length; i++) {
-            nodes[i].disabled = true;
-        }
-    }
-}
-window.onload = toggleTable;
-
-
 function alertMessage(value) {
 
 
@@ -51,7 +30,6 @@ function DoValidation() {
 }
 
 
-
 function testServer() {
 
     var xmlhttp;
@@ -66,13 +44,16 @@ function testServer() {
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             if (xmlhttp.responseText) {
-                alertMessage(xmlhttp.responseText);
 
-                if (xmlhttp.responseText== "false" ) {
+
+                if (xmlhttp.responseText.trim() == "true") {
+
                     alertMessage("Successfully connected to Server");
+
                 } else {
 
                     alertError("Server cannot be connected!");
+
                 }
             } else {
 
