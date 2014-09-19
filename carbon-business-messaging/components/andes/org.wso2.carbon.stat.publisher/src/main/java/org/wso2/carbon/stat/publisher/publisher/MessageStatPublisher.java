@@ -49,6 +49,9 @@ public class MessageStatPublisher implements StatPublisherGetMessage {
 
     //private constructor
     private MessageStatPublisher() {
+
+
+
     }
 
     //get MessageStatPublisher instance
@@ -122,6 +125,8 @@ public class MessageStatPublisher implements StatPublisherGetMessage {
                 }
             }
             if (statPublisherManager.getMessageStatEnableFlag(tenantID)) {
+
+
 
                 System.out.print("*******************" + andesMessageMetadata.getDestination() + noOfSubscribers + "************");
             }

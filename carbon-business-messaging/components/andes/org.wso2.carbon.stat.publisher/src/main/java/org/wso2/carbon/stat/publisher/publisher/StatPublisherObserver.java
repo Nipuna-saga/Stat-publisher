@@ -25,6 +25,8 @@ import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.wso2.carbon.stat.publisher.registry.RegistryPersistenceManager;
 
+import javax.management.*;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -84,38 +86,56 @@ public class StatPublisherObserver {
                     //check system stat enable configuration
                     if (statPublisherConfiguration.isSystemStatEnable()) {
                         //System stat publishing activated
-                        //dataAgentInstance.sendSystemStats(URL, credentials);
+
+                        try {
+                            statPublisherDataAgent.sendSystemStats();
+
+                        } catch (MalformedObjectNameException e) {
+                            e.printStackTrace();
+                        } catch (ReflectionException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (InstanceNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (AttributeNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (MBeanException e) {
+                            e.printStackTrace();
+                        }
+
                         LOGGER.info("System stat Publishing activated ");
                     }
                     //check MB stat enable configuration
                     if (statPublisherConfiguration.isMbStatEnable()) {
                         //MB stat publishing activated
                         // dataAgentInstance.sendMBStatistics(URL, credentials);
+
+                        try {
+
+                            statPublisherDataAgent.sendMBStats();
+                        } catch (MalformedObjectNameException e) {
+                            e.printStackTrace();
+                        } catch (ReflectionException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (InstanceNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (AttributeNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (MBeanException e) {
+                            e.printStackTrace();
+                        }
+
+
+
                         LOGGER.info("MB stat Publishing activated ");
                     }
 
 
 
 
-/*
-                    try {
-                        statPublisherDataAgent.sendSystemStats();
-                        statPublisherDataAgent.sendMBStats();
-                    } catch (MalformedObjectNameException e) {
-                        e.printStackTrace();
-                    } catch (ReflectionException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (InstanceNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (AttributeNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (MBeanException e) {
-                        e.printStackTrace();
-                    }
-
-*/
                 }
 
 

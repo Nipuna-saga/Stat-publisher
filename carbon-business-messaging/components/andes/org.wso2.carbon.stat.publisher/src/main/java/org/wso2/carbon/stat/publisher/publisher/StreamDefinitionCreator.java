@@ -25,6 +25,10 @@ public class StreamDefinitionCreator {
     public static String messageStatsNickName = "message stats";
     public static String messageStatsDescription = "Publish Message broker message statistics";
 
+    public static String ackStatsStreamName = "MESSAGE_STATISTICS";
+    public static String ackStatsNickName = "message stats";
+    public static String ackStatsDescription = "Publish Message broker message statistics";
+
 
     public static StreamDefinition getServerStatsStreamDef(StreamConfiguration streamConfiguration) throws MalformedStreamDefinitionException {
 
@@ -48,6 +52,28 @@ public class StreamDefinitionCreator {
         return streamDefinition;
     }
 
+    public static StreamDefinition getMessageStatsStreamDef(StreamConfiguration streamConfiguration) throws MalformedStreamDefinitionException {
+
+        StreamDefinition streamDefinition = new StreamDefinition(messageStatsStreamName, streamConfiguration.getVersionMessage());
+        streamDefinition.setDescription(messageStatsDescription);
+        streamDefinition.setNickName(messageStatsNickName);
+        streamDefinition.setMetaData(getMetaDefinitions());
+        streamDefinition.setPayloadData(getMessageStatsPayloadDefinition());
+        streamDefinition.setCorrelationData(null);
+        return streamDefinition;
+    }
+
+    public static StreamDefinition getAckStatsStreamDef(StreamConfiguration streamConfiguration) throws MalformedStreamDefinitionException {
+
+        StreamDefinition streamDefinition = new StreamDefinition(ackStatsStreamName, streamConfiguration.getVersionAck());
+        streamDefinition.setDescription(ackStatsDescription);
+        streamDefinition.setNickName(ackStatsNickName);
+        streamDefinition.setMetaData(getMetaDefinitions());
+        streamDefinition.setPayloadData(getAckStatsPayloadDefinition());
+        streamDefinition.setCorrelationData(null);
+        return streamDefinition;
+    }
+
     private static List<Attribute> getMetaDefinitions() {
 
         List<Attribute> metaList = new ArrayList<Attribute>(1);
@@ -61,9 +87,9 @@ public class StreamDefinitionCreator {
 
         List<Attribute> payloadList = new ArrayList<Attribute>(4);
 
-        payloadList.add(new Attribute("HeapMemoryUsage", AttributeType.STRING));
+        payloadList.add(new Attribute("heapMemoryUsage", AttributeType.STRING));
         payloadList.add(new Attribute("nonHeapMemoryUsage", AttributeType.STRING));
-        payloadList.add(new Attribute("CPULoadAverage", AttributeType.STRING));
+        payloadList.add(new Attribute("cpuLoadAverage", AttributeType.STRING));
         payloadList.add(new Attribute("timestamp", AttributeType.LONG));
 
         return payloadList;
@@ -73,12 +99,37 @@ public class StreamDefinitionCreator {
 
         List<Attribute> payloadList = new ArrayList<Attribute>(3);
 
-        payloadList.add(new Attribute("NoOfSubscribers", AttributeType.INT));
-        payloadList.add(new Attribute("NoOfTopics", AttributeType.INT));
+        payloadList.add(new Attribute("noOfSubscribers", AttributeType.INT));
+        payloadList.add(new Attribute("noOfTopics", AttributeType.INT));
         payloadList.add(new Attribute("timestamp", AttributeType.LONG));
 
         return payloadList;
     }
 
 
+
+    private static List<Attribute> getMessageStatsPayloadDefinition() {
+
+        List<Attribute> payloadList = new ArrayList<Attribute>(6);
+
+        payloadList.add(new Attribute("message_id", AttributeType.LONG));
+        payloadList.add(new Attribute("destination", AttributeType.STRING));
+        payloadList.add(new Attribute("messageContentLength", AttributeType.INT));
+        payloadList.add(new Attribute("expirationTime", AttributeType.LONG));
+        payloadList.add(new Attribute("noOfSubscriptions", AttributeType.INT));
+        payloadList.add(new Attribute("timestamp", AttributeType.LONG));
+
+        return payloadList;
+    }
+
+    private static List<Attribute> getAckStatsPayloadDefinition() {
+
+        List<Attribute> payloadList = new ArrayList<Attribute>(3);
+
+        payloadList.add(new Attribute("message_id", AttributeType.LONG));
+        payloadList.add(new Attribute("queueName", AttributeType.STRING));
+        payloadList.add(new Attribute("timestamp", AttributeType.LONG));
+
+        return payloadList;
+    }
 }
