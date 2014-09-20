@@ -19,11 +19,14 @@
 package org.wso2.carbon.stat.publisher.publisher;
 
 import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
+import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.wso2.carbon.stat.publisher.util.XMLConfigurationReader;
+import org.wso2.carbon.user.api.UserStoreException;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * StatPublisherManager manage all statPublisherObservers and store them in Hash map
@@ -39,7 +42,12 @@ public class StatPublisherManager {
     private HashMap<Integer, StatPublisherObserver> statPublisherObserverHashMap =
             new HashMap<Integer, StatPublisherObserver>();
 
-    //
+    public HashSet<String> getMessageStatEnableMap() {
+        return messageStatEnableMap;
+    }
+
+    private HashSet<String> messageStatEnableMap = new HashSet<String>();
+
     public StatPublisherManager() throws StatPublisherConfigurationException {
 
         xmlConfigurationReader = new XMLConfigurationReader();
@@ -55,9 +63,20 @@ public class StatPublisherManager {
     public void onCreate(int tenantID) throws StatPublisherConfigurationException {
 
         statPublisherObserver = new StatPublisherObserver(jmxConfiguration, streamConfiguration, tenantID);
-        statPublisherObserver.startMonitor();
+        try {
+            statPublisherObserver.startMonitor();
+        } catch (UserStoreException e) {
+            e.printStackTrace();
+        }
         statPublisherObserverHashMap.put(tenantID, statPublisherObserver);
-        System.out.println(statPublisherObserverHashMap);
+
+        if (statPublisherObserver.getTenantDomain() != null) {
+            messageStatEnableMap.add(statPublisherObserver.getTenantDomain());
+
+        }
+
+        System.out.println(statPublisherObserverHashMap + "" + messageStatEnableMap);
+
     }
 
     /**
@@ -67,26 +86,38 @@ public class StatPublisherManager {
     public void onUpdate(int tenantID) throws StatPublisherConfigurationException {
 
         statPublisherObserver = statPublisherObserverHashMap.get(tenantID);
+
+
         if (statPublisherObserver != null) {
             statPublisherObserver.stopMonitor();
+            messageStatEnableMap.remove(statPublisherObserver.getTenantDomain());
         }
+
+
     }
 
     /**
      * get Message stat Enable flag value
      */
 
-    public boolean getMessageStatEnableFlag(int tenantID) {
-
-        statPublisherObserver = statPublisherObserverHashMap.get(tenantID);
-        return statPublisherObserver.getEnable();
-
-    }
 
     public void onRemove(int tenantID) throws StatPublisherConfigurationException {
 
-        statPublisherObserverHashMap.remove(tenantID);
+        statPublisherObserver = statPublisherObserverHashMap.get(tenantID);
+        if (statPublisherObserver != null) {
+            messageStatEnableMap.remove(statPublisherObserver.getTenantDomain());
+            statPublisherObserverHashMap.remove(tenantID);
+        }
         System.out.println(statPublisherObserverHashMap);
     }
+
+    public StatPublisherConfiguration getStatPublisherConfiguration(int tenantID) {
+        statPublisherObserver = statPublisherObserverHashMap.get(tenantID);
+
+        return statPublisherObserver.getStatPublisherConfiguration();
+
+
+    }
+
 
 }

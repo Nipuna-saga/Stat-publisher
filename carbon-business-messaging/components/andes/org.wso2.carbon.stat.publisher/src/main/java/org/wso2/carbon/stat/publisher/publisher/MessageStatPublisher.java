@@ -22,12 +22,13 @@ import org.apache.log4j.Logger;
 import org.wso2.andes.kernel.AndesAckData;
 import org.wso2.andes.kernel.AndesMessageMetadata;
 import org.wso2.andes.kernel.StatPublisherGetMessage;
+import org.wso2.carbon.stat.publisher.conf.MessageStat;
 import org.wso2.carbon.stat.publisher.internal.ds.ServiceValueHolder;
-import org.wso2.carbon.user.api.UserStoreException;
-import org.wso2.carbon.user.core.tenant.TenantManager;
 
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * This class will handle message stat publishing all events
@@ -40,16 +41,21 @@ public class MessageStatPublisher implements StatPublisherGetMessage {
     private StatPublisherManager statPublisherManager =
             ServiceValueHolder.getInstance().getStatPublisherManagerService();
 
+    public BlockingQueue<MessageStat> getMessageQueue() {
+        return messageQueue;
+    }
+
+    private BlockingQueue<MessageStat> messageQueue = new LinkedBlockingQueue<MessageStat>(10);
+
     private static final int NumberOfThreads = 5;
+    private static int numberofmsg=0;
 
     private ExecutorService executor = Executors.newFixedThreadPool(NumberOfThreads);
+    MessageStat messageStat = new MessageStat();
 
-
-    private int tenantID;
 
     //private constructor
     private MessageStatPublisher() {
-
 
 
     }
@@ -62,111 +68,41 @@ public class MessageStatPublisher implements StatPublisherGetMessage {
     @Override
     public void getMessageDetails(AndesMessageMetadata andesMessageMetadata, int noOfSubscribers) {
 
+        String domain;
+        if (andesMessageMetadata.getDestination().split("/").length == 1) {
 
-        Runnable worker = new MessageStatPublisherThread(andesMessageMetadata, noOfSubscribers);
-        executor.execute(worker);
+            domain = "carbon.super";
 
-
-/*
-        String[] messageDestinationParts = andesMessageMetadata.getDestination().split("/");
-
-        if (messageDestinationParts.length == 1) {
-            tenantID = -1234;
         } else {
-            TenantManager tenantManager = ServiceValueHolder.getInstance().getRealmService().getTenantManager();
+            domain = andesMessageMetadata.getDestination().split("/")[0];
+        }
+
+        if (ServiceValueHolder.getInstance().getStatPublisherManagerService().getMessageStatEnableMap().contains(domain))
             try {
-                tenantID = tenantManager.getTenantId(messageDestinationParts[0]);
-            } catch (UserStoreException e) {
-                LOGGER.error("Error occurs while try to get tenant ID of " + messageDestinationParts[1]);
+                messageStat.setAndesMessageMetadata(andesMessageMetadata);
+                messageStat.setDomain(domain);
+                messageStat.setNoOfSubscribers(noOfSubscribers);
+
+
+                messageQueue.put(messageStat);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
-        }
+
+        Runnable worker = new AsyncMessageStatPublisher(numberofmsg);
+        executor.execute(worker);
+        numberofmsg++;
 
 
-        if (statPublisherManager.getMessageStatEnableFlag(tenantID)) {
 
-            System.out.print("*******************" + andesMessageMetadata.getDestination() + noOfSubscribers + "************");
-        }
-        */
     }
+
 
     @Override
     public void getAckMessageDetails(AndesAckData andesAckData) {
-        Runnable worker = new MessageAckStatPublisherThread(andesAckData);
-        executor.execute(worker);
+
     }
 
-
-    public class MessageStatPublisherThread implements Runnable {
-
-        AndesMessageMetadata andesMessageMetadata;
-        int noOfSubscribers;
-
-        public MessageStatPublisherThread(AndesMessageMetadata andesMessageMetadata, int noOfSubscribers) {
-            this.andesMessageMetadata = andesMessageMetadata;
-            this.noOfSubscribers = noOfSubscribers;
-
-        }
-
-
-        @Override
-        public void run() {
-            String[] messageDestinationParts = andesMessageMetadata.getDestination().split("/");
-
-            if (messageDestinationParts.length == 1) {
-                tenantID = -1234;
-            } else {
-                TenantManager tenantManager = ServiceValueHolder.getInstance().getRealmService().getTenantManager();
-
-                try {
-                    tenantID = tenantManager.getTenantId(messageDestinationParts[0]);
-                } catch (UserStoreException e) {
-                    LOGGER.error("Error occurs while try to get tenant ID of " + messageDestinationParts[0]);
-                }
-            }
-            if (statPublisherManager.getMessageStatEnableFlag(tenantID)) {
-
-
-
-                System.out.print("*******************" + andesMessageMetadata.getDestination() + noOfSubscribers + "************");
-            }
-
-
-        }
-    }
-
-    public class MessageAckStatPublisherThread implements Runnable {
-
-        AndesAckData andesAckData;
-
-
-        public MessageAckStatPublisherThread(AndesAckData andesAckData) {
-            this.andesAckData = andesAckData;
-
-        }
-
-
-        @Override
-        public void run() {
-            String[] messageDestinationParts = andesAckData.qName.split("/");
-
-            if (messageDestinationParts.length == 1) {
-                tenantID = -1234;
-            } else {
-                TenantManager tenantManager = ServiceValueHolder.getInstance().getRealmService().getTenantManager();
-                try {
-                    tenantID = tenantManager.getTenantId(messageDestinationParts[0]);
-                } catch (UserStoreException e) {
-                    LOGGER.error("Error occurs while try to get tenant ID of " + messageDestinationParts[0]);
-                }
-            }
-            if (statPublisherManager.getMessageStatEnableFlag(tenantID)) {
-
-                System.out.print("*******************" + andesAckData.qName + "************");
-            }
-
-
-        }
-    }
 
 }

@@ -198,7 +198,7 @@ public class MessagingEngine {
         } catch (Exception e) {
             throw new AndesException("Error in storing the message to the store", e);
         }
-
+//
         //Check StatPublisher component activate or not
         if (statPublisherGetMessage != null) {
             statPublisherGetMessage.getMessageDetails(message, noOfSubscribers);

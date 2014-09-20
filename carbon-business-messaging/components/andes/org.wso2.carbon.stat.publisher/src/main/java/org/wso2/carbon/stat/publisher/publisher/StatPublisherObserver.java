@@ -23,7 +23,10 @@ import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
+import org.wso2.carbon.stat.publisher.internal.ds.ServiceValueHolder;
 import org.wso2.carbon.stat.publisher.registry.RegistryPersistenceManager;
+import org.wso2.carbon.user.api.UserStoreException;
+import org.wso2.carbon.user.core.tenant.TenantManager;
 
 import javax.management.*;
 import java.io.IOException;
@@ -39,18 +42,28 @@ import java.util.TimerTask;
 public class StatPublisherObserver {
 
     private static final Logger LOGGER = Logger.getLogger(StatPublisherObserver.class);
+    TenantManager tenantManager = ServiceValueHolder.getInstance().getRealmService().getTenantManager();
+
+
 
     private StatPublisherConfiguration statPublisherConfiguration;
     private RegistryPersistenceManager registryPersistenceManager;
     private Timer timer;
     private TimerTask statPublisherTimerTask;
     private StatPublisherDataAgent statPublisherDataAgent;
-    private boolean messageStatEnableFlag;
+
+
+    public String getTenantDomain() {
+        return tenantDomain;
+    }
+
+    private String tenantDomain = null;
+    private int tenantID;
 
 
     public StatPublisherObserver(JMXConfiguration jmxConfiguration, StreamConfiguration streamConfiguration,
                                  int tenantID) throws StatPublisherConfigurationException {
-
+        this.tenantID = tenantID;
         registryPersistenceManager = new RegistryPersistenceManager();
         this.statPublisherConfiguration = registryPersistenceManager.loadConfigurationData(tenantID);
         if (statPublisherConfiguration.isSystemStatEnable() || statPublisherConfiguration.isMbStatEnable()) {
@@ -66,11 +79,12 @@ public class StatPublisherObserver {
      */
 
 
-    public void startMonitor() {
+    public void startMonitor() throws UserStoreException {
 
 
         if (statPublisherConfiguration.isMessageStatEnable()) {
-            messageStatEnableFlag = true;
+
+            tenantDomain = tenantManager.getDomain(tenantID);
 
         }
 
@@ -163,7 +177,10 @@ public class StatPublisherObserver {
         }
     }
 
-    public boolean getEnable() {
-        return messageStatEnableFlag;
+
+    public StatPublisherConfiguration getStatPublisherConfiguration() {
+        return statPublisherConfiguration;
     }
+
+
 }
