@@ -104,6 +104,7 @@ public class StatPublisherDataAgent {
 
         loadBalancingDataPublisher = new LoadBalancingDataPublisher(allReceiverGroups);
 
+
         //adding Stream definitions to publisher
         loadBalancingDataPublisher.addStreamDefinition(serverStatsStreamDef);
         loadBalancingDataPublisher.addStreamDefinition(mbStatsStreamDef);

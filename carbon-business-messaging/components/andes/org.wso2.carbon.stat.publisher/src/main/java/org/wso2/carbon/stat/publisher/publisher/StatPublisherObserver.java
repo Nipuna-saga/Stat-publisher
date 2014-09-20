@@ -175,6 +175,7 @@ public class StatPublisherObserver {
         if (timer != null) {
             timer.cancel();
         }
+
     }
 
 
