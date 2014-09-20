@@ -64,13 +64,16 @@ public class StatPublisherManager {
 
         statPublisherObserver = new StatPublisherObserver(jmxConfiguration, streamConfiguration, tenantID);
         try {
+            //start monitoring process
             statPublisherObserver.startMonitor();
         } catch (UserStoreException e) {
             e.printStackTrace();
         }
+        //Add observer to Hash map
         statPublisherObserverHashMap.put(tenantID, statPublisherObserver);
 
         if (statPublisherObserver.getTenantDomain() != null) {
+            //if message statPublisher is enable it's relevant tenant domain add to hash map
             messageStatEnableMap.add(statPublisherObserver.getTenantDomain());
 
         }
@@ -89,7 +92,9 @@ public class StatPublisherManager {
 
 
         if (statPublisherObserver != null) {
+            //stop monitoring process
             statPublisherObserver.stopMonitor();
+            //remove tenant domain from hash map
             messageStatEnableMap.remove(statPublisherObserver.getTenantDomain());
         }
 
@@ -105,15 +110,18 @@ public class StatPublisherManager {
 
         statPublisherObserver = statPublisherObserverHashMap.get(tenantID);
         if (statPublisherObserver != null) {
+            //remove tenant domain from hash map
             messageStatEnableMap.remove(statPublisherObserver.getTenantDomain());
+            //remove publisher observer from hash map
             statPublisherObserverHashMap.remove(tenantID);
         }
         System.out.println(statPublisherObserverHashMap);
     }
 
+    //This message use to get statPublisherConfiguration of specific tenant
     public StatPublisherConfiguration getStatPublisherConfiguration(int tenantID) {
         statPublisherObserver = statPublisherObserverHashMap.get(tenantID);
-
+//TODO check sometimes this method will occur null pointer exception
         return statPublisherObserver.getStatPublisherConfiguration();
 
 

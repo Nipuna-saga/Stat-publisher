@@ -60,15 +60,17 @@ public class StatPublisherDS {
         StatPublisherManager statPublisherManager = new StatPublisherManager();
         ServiceValueHolder.getInstance().setStatPublisherManagerService(statPublisherManager);
 
+        //create StatPublisherObserver for super tenant
         ServiceValueHolder.getInstance().getStatPublisherManagerService().
                 onCreate(CarbonContext.getThreadLocalCarbonContext().getTenantId());
 
 
         System.out.println("=====================Activated bundle=====================");
 
+//set interface in andes StatPublisher to MessageStatPublisher for get messages and Ack messages
         MessagingEngine.getInstance().setStatPublisherGetMessageInterface(MessageStatPublisher.getInstance());
 
-
+//get Axis2ConfigurationContext services to get notification about changing configuration contexts
         BundleContext bundleContext = context.getBundleContext();
         bundleContext.registerService(Axis2ConfigurationContextObserver.class.getName(),
                 new Axis2ConfigurationContextObserverImpl(), null);
