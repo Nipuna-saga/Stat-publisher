@@ -112,7 +112,7 @@ public class StreamDefinitionCreator {
 
         List<Attribute> payloadList = new ArrayList<Attribute>(6);
 
-        payloadList.add(new Attribute("message_id", AttributeType.LONG));
+        payloadList.add(new Attribute("messageId", AttributeType.LONG));
         payloadList.add(new Attribute("destination", AttributeType.STRING));
         payloadList.add(new Attribute("messageContentLength", AttributeType.INT));
         payloadList.add(new Attribute("expirationTime", AttributeType.LONG));
@@ -126,7 +126,7 @@ public class StreamDefinitionCreator {
 
         List<Attribute> payloadList = new ArrayList<Attribute>(3);
 
-        payloadList.add(new Attribute("message_id", AttributeType.LONG));
+        payloadList.add(new Attribute("messageId", AttributeType.LONG));
         payloadList.add(new Attribute("queueName", AttributeType.STRING));
         payloadList.add(new Attribute("timestamp", AttributeType.LONG));
 
