@@ -16,7 +16,7 @@
 * under the License.
 */
 
-package org.wso2.carbon.stat.publisher.publisher;
+package org.wso2.carbon.stat.publisher.internal.publisher;
 
 import org.wso2.andes.kernel.AndesAckData;
 import org.wso2.andes.kernel.AndesMessageMetadata;
@@ -25,8 +25,8 @@ import org.wso2.carbon.stat.publisher.conf.MessageStat;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
-import org.wso2.carbon.stat.publisher.internal.ds.ServiceValueHolder;
-import org.wso2.carbon.stat.publisher.util.XMLConfigurationReader;
+import org.wso2.carbon.stat.publisher.internal.ds.StatPublisherValueHolder;
+import org.wso2.carbon.stat.publisher.internal.util.XMLConfigurationReader;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -91,7 +91,7 @@ public class MessageStatPublisher implements StatPublisherGetMessage {
             domain = andesMessageMetadata.getDestination().split("/")[0];
         }
         //check message's tenant  activate or not message stat Publisher by checking MessageStatEnableMap
-        if (ServiceValueHolder.getInstance().getStatPublisherManagerService().getMessageStatEnableMap().contains(domain)) {
+        if (StatPublisherValueHolder.getStatPublisherManager().getMessageStatEnableMap().contains(domain)) {
             try {
                 //if it's enable add message details to message stat object
                 messageStat.setAndesMessageMetadata(andesMessageMetadata);
@@ -125,7 +125,7 @@ public class MessageStatPublisher implements StatPublisherGetMessage {
             domain = andesAckData.qName.split("/")[0];
         }
         //check message's tenant  activate or not message stat Publisher by checking MessageStatEnableMap
-        if (ServiceValueHolder.getInstance().getStatPublisherManagerService().getMessageStatEnableMap().contains(domain)) {
+        if (StatPublisherValueHolder.getStatPublisherManager().getMessageStatEnableMap().contains(domain)) {
             try {
                 //if it's enable add message details to message stat object
                 messageStat.setAndesAckData(andesAckData);

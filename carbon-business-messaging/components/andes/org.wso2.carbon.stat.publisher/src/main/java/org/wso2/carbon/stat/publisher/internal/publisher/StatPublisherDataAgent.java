@@ -16,7 +16,7 @@
 * under the License.
 */
 
-package org.wso2.carbon.stat.publisher.publisher;
+package org.wso2.carbon.stat.publisher.internal.publisher;
 
 import org.wso2.andes.kernel.*;
 import org.wso2.carbon.databridge.agent.thrift.exception.AgentException;
@@ -29,8 +29,8 @@ import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
-import org.wso2.carbon.stat.publisher.serverStats.MbeansStats;
-import org.wso2.carbon.stat.publisher.serverStats.data.MbeansStatsData;
+import org.wso2.carbon.stat.publisher.internal.util.StreamDefinitionCreator;
+import org.wso2.carbon.stat.publisher.internal.util.SystemStatsReader;
 
 import javax.management.*;
 import java.io.IOException;
@@ -48,8 +48,8 @@ public class StatPublisherDataAgent {
     private JMXConfiguration jmxConfiguration;
     private StreamConfiguration streamConfiguration;
     private StatPublisherConfiguration statPublisherConfiguration;
-    private MbeansStats mbeansStats = null;
-    private MbeansStatsData mbeansStatsData;
+    private SystemStatsReader mbeansStats = null;
+    private SystemStatsReader.SystemStatsData systemStatsData;
     private StreamDefinition serverStatsStreamDef;
     private StreamDefinition mbStatsStreamDef;
     private StreamDefinition messageStatsStreamDef;
@@ -69,6 +69,7 @@ public class StatPublisherDataAgent {
         this.jmxConfiguration = jmxConfiguration;
         this.streamConfiguration = streamConfiguration;
         this.statPublisherConfiguration = statPublisherConfiguration;
+
 
         try {
             //creating stream definitions
@@ -106,14 +107,15 @@ public class StatPublisherDataAgent {
     public void sendSystemStats() throws MalformedObjectNameException, ReflectionException, IOException,
             InstanceNotFoundException, AttributeNotFoundException, MBeanException {
 
+        //todo move to constructor and rename as SystemStats
         if (mbeansStats == null) {
-            mbeansStats = new MbeansStats(jmxConfiguration);
+            mbeansStats = new SystemStatsReader(jmxConfiguration);
         }
 
         //get server statistics
-        mbeansStatsData = mbeansStats.getMbeansStatsData();
+        //todo move to constuctor rename to constructMetaData
         metaData = getMetaData();
-        payLoadData = getServerStatsPayLoadData(mbeansStatsData);
+        payLoadData = getServerStatsPayLoadData(mbeansStats.getMbeansStatsData());
 
         try {
             loadBalancingDataPublisher.publish(serverStatsStreamDef.getName(), serverStatsStreamDef.getVersion(),
@@ -166,6 +168,7 @@ public class StatPublisherDataAgent {
             throws MalformedObjectNameException, ReflectionException, IOException,
             InstanceNotFoundException, AttributeNotFoundException, MBeanException {
 
+
         metaData = getMetaData();
         try {
             payLoadData = getAckStatsPayLoadData(message);
@@ -192,7 +195,7 @@ public class StatPublisherDataAgent {
     }
 
 
-
+//todo convert all lists to arrays
     public List<Object> getMetaData() {
         List<Object> metaData = new ArrayList<Object>(1);
 
@@ -203,11 +206,11 @@ public class StatPublisherDataAgent {
 
 
 
-    public List<Object> getServerStatsPayLoadData(MbeansStatsData mbeansStatsData) {
+    public List<Object> getServerStatsPayLoadData(SystemStatsReader.SystemStatsData systemStatsData) {
         List<Object> payloadData = new ArrayList<Object>(4);
-        payloadData.add(mbeansStatsData.getHeapMemoryUsage());
-        payloadData.add(mbeansStatsData.getNonHeapMemoryUsage());
-        payloadData.add(mbeansStatsData.getCPULoadAverage());
+        payloadData.add(systemStatsData.getHeapMemoryUsage());
+        payloadData.add(systemStatsData.getNonHeapMemoryUsage());
+        payloadData.add(systemStatsData.getCPULoadAverage());
         payloadData.add(getCurrentTimeStamp());
 
         return payloadData;

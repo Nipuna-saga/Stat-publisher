@@ -16,13 +16,13 @@
 * under the License.
 */
 
-package org.wso2.carbon.stat.publisher.publisher;
+package org.wso2.carbon.stat.publisher.internal.publisher;
 
 
 import org.wso2.carbon.stat.publisher.conf.MessageStat;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
-import org.wso2.carbon.stat.publisher.internal.ds.ServiceValueHolder;
+import org.wso2.carbon.stat.publisher.internal.ds.StatPublisherValueHolder;
 import org.wso2.carbon.user.api.TenantManager;
 import org.wso2.carbon.user.api.UserStoreException;
 
@@ -50,10 +50,9 @@ public class AsyncMessageStatPublisher implements Runnable {
 
     @Override
     public void run() {
+
         //check message Queue has any object
-
-
-        while (messageQueue.size() > 0) {
+     while (messageQueue.size() > 0) {
             try {
                 //get object from queue
                 messageStat = MessageStatPublisher.getInstance().getMessageQueue().take();
@@ -61,25 +60,17 @@ public class AsyncMessageStatPublisher implements Runnable {
                 throw new StatPublisherRuntimeException(e);
             }
 
-
-            tenantManager = ServiceValueHolder.getInstance().getRealmService().getTenantManager();
+            tenantManager = StatPublisherValueHolder.getRealmService().getTenantManager();
             try {
                 //get tenant ID from tenant domain
                 tenantID = tenantManager.getTenantId(messageStat.getDomain());
             } catch (UserStoreException e) {
                 throw new StatPublisherRuntimeException(e);
             }
-            //get statPublisher Configuration relevant to tenantID
-           // StatPublisherConfiguration statPublisherConfiguration = ServiceValueHolder.
-              //      getInstance().getStatPublisherManagerService().getStatPublisherConfiguration(tenantID);
 
-            statPublisherObserver=ServiceValueHolder.getInstance().getStatPublisherManagerService().getStatPublisherObserver(tenantID);
+            statPublisherObserver= StatPublisherValueHolder.getStatPublisherManager().getStatPublisherObserver(tenantID);
             //check is it a message or Ack message
             if (messageStat.isMessage()) {
-
-
-                System.out.print(msg + "+++++++++++++++++++++++ Message Stat Publisher Activated" +
-                        Thread.currentThread().getName());
                 try {
                     statPublisherObserver.statPublisherDataAgent.sendMessageStats(messageStat.getAndesMessageMetadata(),messageStat.getNoOfSubscribers());
                 } catch (MalformedObjectNameException e) {

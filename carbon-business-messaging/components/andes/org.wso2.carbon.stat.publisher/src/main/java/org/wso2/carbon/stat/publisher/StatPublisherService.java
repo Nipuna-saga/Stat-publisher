@@ -22,9 +22,9 @@ import org.apache.log4j.Logger;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
-import org.wso2.carbon.stat.publisher.internal.ds.ServiceValueHolder;
-import org.wso2.carbon.stat.publisher.publisher.StatPublisherManager;
-import org.wso2.carbon.stat.publisher.registry.RegistryPersistenceManager;
+import org.wso2.carbon.stat.publisher.internal.ds.StatPublisherValueHolder;
+import org.wso2.carbon.stat.publisher.internal.publisher.StatPublisherManager;
+import org.wso2.carbon.stat.publisher.internal.util.RegistryPersistenceManager;
 
 
 public class StatPublisherService {
@@ -44,14 +44,14 @@ public class StatPublisherService {
         int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
 
         RegistryPersistenceManager registryPersistenceManagerObject = new RegistryPersistenceManager();
-        StatPublisherManager statPublisherManager = ServiceValueHolder.getInstance().getStatPublisherManagerService();
-        statPublisherManager.onUpdate(tenantID);
+        StatPublisherManager statPublisherManager = StatPublisherValueHolder.getStatPublisherManager();
+        statPublisherManager.updateStatPublisherObserver(tenantID);
         try {
             registryPersistenceManagerObject.storeConfigurationData(statPublisherConfiguration, tenantID);
         } catch (StatPublisherConfigurationException e) {
             logger.error("Error occurs while trying to store configurations values to registry", e);
         }
-        statPublisherManager.onCreate(tenantID);
+        statPublisherManager.createStatPublisherObserver(tenantID);
     }
 
 

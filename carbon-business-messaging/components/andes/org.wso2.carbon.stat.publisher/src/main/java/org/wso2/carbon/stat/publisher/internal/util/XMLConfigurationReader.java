@@ -16,7 +16,7 @@
 * under the License.
 */
 
-package org.wso2.carbon.stat.publisher.util;
+package org.wso2.carbon.stat.publisher.internal.util;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
@@ -37,6 +37,8 @@ public class XMLConfigurationReader {
 
     private static final Logger logger = Logger.getLogger(XMLConfigurationReader.class);
 
+
+//todo convert all to static
     /**
      *Load xml files and read values
      */
@@ -61,12 +63,12 @@ public class XMLConfigurationReader {
                 String jmxRootNode = jmxDocument.getDocumentElement().getNodeName();
                 NodeList jmxDataList = jmxDocument.getElementsByTagName(jmxRootNode);
 
-                String startRMIServerValue =
+               /* String startRMIServerValue =
                         ((Element) jmxDataList.item(0)).getElementsByTagName("StartRMIServer").
                                 item(0).getChildNodes().item(0).getTextContent();
                 String nodeValue = startRMIServerValue.trim();
-                jmxConfiguration.setStartRMIServer(Boolean.parseBoolean(nodeValue));
-
+                //jmxConfiguration.setStartRMIServer(Boolean.parseBoolean(nodeValue));
+*/
                 String hostNameValue =
                         ((Element) jmxDataList.item(0)).getElementsByTagName("HostName").
                                 item(0).getChildNodes().item(0).getTextContent();
@@ -95,7 +97,7 @@ public class XMLConfigurationReader {
                     String rmiServerPortValue =
                             ((Element) carbonDataList.item(0)).getElementsByTagName("RMIServerPort").
                                     item(0).getChildNodes().item(0).getTextContent();
-                    jmxConfiguration.setRmiServerPort(rmiServerPortValue.trim());
+                    //jmxConfiguration.setRmiServerPort(rmiServerPortValue.trim());
 
                     String offSetValue =
                             ((Element) carbonDataList.item(0)).getElementsByTagName("Offset").
@@ -140,7 +142,7 @@ public class XMLConfigurationReader {
                 String versionMessageValue =
                         ((Element) dataList.item(0)).getElementsByTagName("versionMessage").
                                 item(0).getChildNodes().item(0).getTextContent();
-                streamConfiguration.setVersionMessage(versionMessageValue.trim());
+                streamConfiguration.setMessageStreamVersion(versionMessageValue.trim());
 
                 String versionAckValue =
                         ((Element) dataList.item(0)).getElementsByTagName("versionAck").
