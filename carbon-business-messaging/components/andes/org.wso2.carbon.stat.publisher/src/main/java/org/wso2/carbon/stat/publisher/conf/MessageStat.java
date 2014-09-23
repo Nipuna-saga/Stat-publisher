@@ -28,8 +28,6 @@ public class MessageStat {
     private AndesMessageMetadata andesMessageMetadata;
     private int noOfSubscribers;
     private String domain;
-
-
     private AndesAckData andesAckData;
 
     public AndesAckData getAndesAckData() {

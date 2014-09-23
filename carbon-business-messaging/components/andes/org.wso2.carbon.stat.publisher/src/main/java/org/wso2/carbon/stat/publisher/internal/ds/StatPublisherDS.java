@@ -24,8 +24,8 @@ import org.wso2.andes.kernel.MessagingEngine;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
-import org.wso2.carbon.stat.publisher.publisher.MessageStatPublisher;
-import org.wso2.carbon.stat.publisher.publisher.StatPublisherManager;
+import org.wso2.carbon.stat.publisher.internal.publisher.MessageStatPublisher;
+import org.wso2.carbon.stat.publisher.internal.publisher.StatPublisherManager;
 import org.wso2.carbon.user.api.UserStoreException;
 import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.utils.Axis2ConfigurationContextObserver;
@@ -55,11 +55,13 @@ public class StatPublisherDS {
             throws StatPublisherConfigurationException, UserStoreException {
 
         StatPublisherManager statPublisherManager = new StatPublisherManager();
-        ServiceValueHolder.getInstance().setStatPublisherManagerService(statPublisherManager);
+        StatPublisherValueHolder.setStatPublisherManager(statPublisherManager);
 
         //create StatPublisherObserver for super tenant
-        ServiceValueHolder.getInstance().getStatPublisherManagerService().
-                onCreate(CarbonContext.getThreadLocalCarbonContext().getTenantId());
+
+        //todo remove all getinstance()
+        StatPublisherValueHolder.getStatPublisherManager().
+                createStatPublisherObserver(CarbonContext.getThreadLocalCarbonContext().getTenantId());
 
         //set interface in andes StatPublisher to MessageStatPublisher for get messages and Ack messages
         MessagingEngine.getInstance().setStatPublisherGetMessageInterface(MessageStatPublisher.getInstance());
@@ -87,7 +89,7 @@ public class StatPublisherDS {
      */
     protected void setConfigurationContextService(
             ConfigurationContextService configurationContextService) {
-        ServiceValueHolder.getInstance().setConfigurationContextService(configurationContextService);
+        StatPublisherValueHolder.setConfigurationContextService(configurationContextService);
     }
 
     /**
@@ -97,7 +99,7 @@ public class StatPublisherDS {
      */
     protected void unsetConfigurationContextService(
             ConfigurationContextService configurationContextService) {
-        ServiceValueHolder.getInstance().setConfigurationContextService(null);
+        StatPublisherValueHolder.setConfigurationContextService(null);
     }
 
     /**
@@ -106,7 +108,7 @@ public class StatPublisherDS {
      * @param registryService - RegistryService
      */
     protected void setRegistryService(RegistryService registryService) {
-        ServiceValueHolder.getInstance().setRegistryService(registryService);
+        StatPublisherValueHolder.setRegistryService(registryService);
     }
 
     /**
@@ -115,7 +117,7 @@ public class StatPublisherDS {
      * @param registryService -RegistryService
      */
     protected void unsetRegistryService(RegistryService registryService) {
-        ServiceValueHolder.getInstance().setRegistryService(null);
+        StatPublisherValueHolder.setRegistryService(null);
     }
 
     /**
@@ -124,7 +126,7 @@ public class StatPublisherDS {
      * @param realmService - RealmService
      */
     protected void setRealmService(RealmService realmService) {
-        ServiceValueHolder.getInstance().setRealmService(realmService);
+        StatPublisherValueHolder.setRealmService(realmService);
     }
 
     /**
@@ -133,7 +135,7 @@ public class StatPublisherDS {
      * @param realmService - RealmService
      */
     protected void unsetRealmService(RealmService realmService) {
-        ServiceValueHolder.getInstance().setRealmService(null);
+        StatPublisherValueHolder.setRealmService(null);
     }
 
 }

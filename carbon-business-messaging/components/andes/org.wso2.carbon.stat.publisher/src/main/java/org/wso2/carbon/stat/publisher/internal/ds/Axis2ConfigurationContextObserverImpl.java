@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
-import org.wso2.carbon.stat.publisher.publisher.StatPublisherManager;
+import org.wso2.carbon.stat.publisher.internal.publisher.StatPublisherManager;
 import org.wso2.carbon.utils.Axis2ConfigurationContextObserver;
 
 public class Axis2ConfigurationContextObserverImpl implements Axis2ConfigurationContextObserver {
@@ -22,7 +22,7 @@ public class Axis2ConfigurationContextObserverImpl implements Axis2Configuration
         int tenantID=carbonContext.getTenantId();
         try {
             StatPublisherManager statPublisherManager = new StatPublisherManager();
-            statPublisherManager.onCreate(tenantID);
+            statPublisherManager.createStatPublisherObserver(tenantID);
         }catch (StatPublisherConfigurationException e){
             logger.error("Exception in initializing StatPublisherManager ",e);
             throw new StatPublisherRuntimeException(e);
@@ -40,7 +40,7 @@ public class Axis2ConfigurationContextObserverImpl implements Axis2Configuration
         int tenantID = carbonContext.getTenantId();
         try {
             StatPublisherManager statPublisherManager = new StatPublisherManager();
-            statPublisherManager.onRemove(tenantID);
+            statPublisherManager.removeStatPublisherObserver(tenantID);
 
         } catch (StatPublisherConfigurationException e) {
             logger.error("Exception in removing StatPublisherManager ", e);

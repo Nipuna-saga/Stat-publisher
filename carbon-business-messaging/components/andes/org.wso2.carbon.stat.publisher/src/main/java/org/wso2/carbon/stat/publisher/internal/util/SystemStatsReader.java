@@ -16,14 +16,13 @@
 * under the License.
 */
 
-package org.wso2.carbon.stat.publisher.serverStats;
+package org.wso2.carbon.stat.publisher.internal.util;
 
 import org.apache.log4j.Logger;
 import org.wso2.andes.management.common.JMXConnnectionFactory;
 import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
-import org.wso2.carbon.stat.publisher.internal.ds.ServiceValueHolder;
-import org.wso2.carbon.stat.publisher.serverStats.data.MbeansStatsData;
+import org.wso2.carbon.stat.publisher.internal.ds.StatPublisherValueHolder;
 import org.wso2.carbon.user.core.UserRealm;
 import org.wso2.carbon.user.core.UserStoreException;
 
@@ -38,24 +37,24 @@ import java.util.Set;
 //import com.sun.management.OperatingSystemMXBean;
 //import sun.management.ManagementFactory;
 
-public class MbeansStats {
+public class SystemStatsReader {
 
     private static JMXConnector jmxConnector;
     private static MBeanServerConnection connection = null;
     private static long timeout = 100000;
-    private MbeansStatsData mbeansStatsData;
-    private static MbeansStats mbeansStats = null;
-    private static final Logger logger = Logger.getLogger(MbeansStats.class);
-    public MbeansStats(JMXConfiguration jmxConfiguration)  {
 
-        mbeansStatsData = new MbeansStatsData();
+    private static SystemStatsReader mbeansStats = null;
+    private static final Logger logger = Logger.getLogger(SystemStatsReader.class);
+    public SystemStatsReader(JMXConfiguration jmxConfiguration)  {
+
+
 
         //get MB username and password
         UserRealm realm;
         String userName;
         String password;
         try {
-            realm = ServiceValueHolder.getInstance().getRealmService().getBootstrapRealm();
+            realm = StatPublisherValueHolder.getRealmService().getBootstrapRealm();
             userName = realm.getRealmConfiguration().getAdminUserName();
             password = realm.getRealmConfiguration().getAdminPassword();
         } catch (UserStoreException e) {
@@ -114,12 +113,44 @@ public class MbeansStats {
     }
 
 
-    public MbeansStatsData getMbeansStatsData() throws MalformedObjectNameException, InstanceNotFoundException, IOException, ReflectionException, AttributeNotFoundException, MBeanException {
+    public SystemStatsData getMbeansStatsData() throws MalformedObjectNameException, InstanceNotFoundException, IOException, ReflectionException, AttributeNotFoundException, MBeanException {
 
-        mbeansStatsData.setHeapMemoryUsage(HeapMemoryUsage());
-        mbeansStatsData.setNonHeapMemoryUsage(NonHeapMemoryUsage());
-        mbeansStatsData.setCPULoadAverage(CPUUsage());
+        SystemStatsData systemStatsData = new SystemStatsData();
+        systemStatsData.setHeapMemoryUsage(HeapMemoryUsage());
+        systemStatsData.setNonHeapMemoryUsage(NonHeapMemoryUsage());
+        systemStatsData.setCPULoadAverage(CPUUsage());
 
-        return mbeansStatsData;
+        return systemStatsData;
+    }
+
+    public static class SystemStatsData {
+
+        private String heapMemoryUsage;
+        private String nonHeapMemoryUsage;
+        private String CPULoadAverage;
+
+        public String getHeapMemoryUsage() {
+            return heapMemoryUsage;
+        }
+
+        public void setHeapMemoryUsage(String heapMemoryUsage) {
+            this.heapMemoryUsage = heapMemoryUsage;
+        }
+
+        public String getNonHeapMemoryUsage() {
+            return nonHeapMemoryUsage;
+        }
+
+        public void setNonHeapMemoryUsage(String nonHeapMemoryUsage) {
+            this.nonHeapMemoryUsage = nonHeapMemoryUsage;
+        }
+
+        public String getCPULoadAverage() {
+            return CPULoadAverage;
+        }
+
+        public void setCPULoadAverage(String CPULoadAverage) {
+            this.CPULoadAverage = CPULoadAverage;
+        }
     }
 }

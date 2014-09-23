@@ -16,12 +16,12 @@
 * under the License.
 */
 
-package org.wso2.carbon.stat.publisher.publisher;
+package org.wso2.carbon.stat.publisher.internal.publisher;
 
 import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
-import org.wso2.carbon.stat.publisher.util.XMLConfigurationReader;
+import org.wso2.carbon.stat.publisher.internal.util.XMLConfigurationReader;
 import org.wso2.carbon.user.api.UserStoreException;
 
 import java.util.HashMap;
@@ -35,7 +35,7 @@ public class StatPublisherManager {
 
     private JMXConfiguration jmxConfiguration;
     private StreamConfiguration streamConfiguration;
-    private XMLConfigurationReader xmlConfigurationReader;
+    private XMLConfigurationReader xmlConfigurationReader; //todo no need to create object
 
     private StatPublisherObserver statPublisherObserver;
     private HashMap<Integer, StatPublisherObserver> statPublisherObserverHashMap =
@@ -56,18 +56,19 @@ public class StatPublisherManager {
     /**
      * Create new StatPublisherObserver Instance and store it in Hash map by using tenant ID as key value
      */
-    public void onCreate(int tenantID) throws StatPublisherConfigurationException {
+    public void createStatPublisherObserver(int tenantID) throws StatPublisherConfigurationException {
         statPublisherObserver = new StatPublisherObserver(jmxConfiguration, streamConfiguration, tenantID);
         try {
             //start monitoring process
-            statPublisherObserver.startMonitor();
+            statPublisherObserver.startObserver();
         } catch (UserStoreException e) {
             throw new StatPublisherConfigurationException("Could not start monitoring!",e);
         }
         //Add observer to Hash map
         statPublisherObserverHashMap.put(tenantID, statPublisherObserver);
 
-        if (statPublisherObserver.getTenantDomain() != null) {
+        //todo check whether this is null or not
+        if (statPublisherObserver.getStatPublisherConfiguration().isMessageStatEnable()) {
             //if message statPublisher is enable it's relevant tenant domain add to hash map
             messageStatEnableMap.add(statPublisherObserver.getTenantDomain());
 
@@ -77,22 +78,23 @@ public class StatPublisherManager {
     /**
      * Stop monitoring process
      */
-
-    public void onUpdate(int tenantID) throws StatPublisherConfigurationException {
+    public void updateStatPublisherObserver(int tenantID) throws StatPublisherConfigurationException {
         statPublisherObserver = statPublisherObserverHashMap.get(tenantID);
         if (statPublisherObserver != null) {
             //stop monitoring process
-            statPublisherObserver.stopMonitor();
+            statPublisherObserver.stopObserver();
             //remove tenant domain from hash map
             messageStatEnableMap.remove(statPublisherObserver.getTenantDomain());
         }
+
+        //todo call remove then create
+
     }
 
     /**
      * Get Message stat Enable flag value
      */
-
-    public void onRemove(int tenantID) {
+    public void removeStatPublisherObserver(int tenantID) {
         statPublisherObserver = statPublisherObserverHashMap.get(tenantID);
         if (statPublisherObserver != null) {
             //remove tenant domain from hash map
@@ -101,17 +103,6 @@ public class StatPublisherManager {
             statPublisherObserverHashMap.remove(tenantID);
         }
     }
-
-    //This message use to get statPublisherConfiguration of specific tenant
-    /*public StatPublisherConfiguration getStatPublisherConfiguration(int tenantID) {
-        statPublisherObserver = statPublisherObserverHashMap.get(tenantID);
-
-
-        return statPublisherObserver.getStatPublisherConfiguration();
-
-
-    }
-    */
 
     public StatPublisherObserver getStatPublisherObserver(int tenantID) {
         statPublisherObserver = statPublisherObserverHashMap.get(tenantID);

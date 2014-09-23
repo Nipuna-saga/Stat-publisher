@@ -1,4 +1,4 @@
-package org.wso2.carbon.stat.publisher.publisher;
+package org.wso2.carbon.stat.publisher.internal.util;
 
 
 import org.wso2.carbon.databridge.commons.Attribute;
@@ -51,7 +51,7 @@ public class StreamDefinitionCreator {
     }
 
     public static StreamDefinition getMessageStatsStreamDef(StreamConfiguration streamConfiguration) throws MalformedStreamDefinitionException {
-        StreamDefinition streamDefinition = new StreamDefinition(messageStatsStreamName, streamConfiguration.getVersionMessage());
+        StreamDefinition streamDefinition = new StreamDefinition(messageStatsStreamName, streamConfiguration.getMessageStreamVersion());
         streamDefinition.setDescription(messageStatsDescription);
         streamDefinition.setNickName(messageStatsNickName);
         streamDefinition.setMetaData(getMetaDefinitions());

@@ -16,7 +16,7 @@
 * under the License.
 */
 
-package org.wso2.carbon.stat.publisher.publisher;
+package org.wso2.carbon.stat.publisher.internal.publisher;
 
 import org.apache.log4j.Logger;
 import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
@@ -24,8 +24,8 @@ import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
-import org.wso2.carbon.stat.publisher.internal.ds.ServiceValueHolder;
-import org.wso2.carbon.stat.publisher.registry.RegistryPersistenceManager;
+import org.wso2.carbon.stat.publisher.internal.ds.StatPublisherValueHolder;
+import org.wso2.carbon.stat.publisher.internal.util.RegistryPersistenceManager;
 import org.wso2.carbon.user.api.UserStoreException;
 import org.wso2.carbon.user.core.tenant.TenantManager;
 
@@ -43,41 +43,41 @@ import java.util.TimerTask;
 public class StatPublisherObserver {
 
     private static final Logger logger = Logger.getLogger(StatPublisherObserver.class);
+    public StatPublisherDataAgent statPublisherDataAgent;
+    TenantManager tenantManager = StatPublisherValueHolder.getRealmService().getTenantManager();
     private StatPublisherConfiguration statPublisherConfiguration;
     private RegistryPersistenceManager registryPersistenceManager;
     private Timer timer;
     private TimerTask statPublisherTimerTask;
-    public StatPublisherDataAgent statPublisherDataAgent;
     private String tenantDomain = null;
     private int tenantID;
-    TenantManager tenantManager = ServiceValueHolder.getInstance().getRealmService().getTenantManager();
-
-    public String getTenantDomain() {
-        return tenantDomain;
-    }
 
     public StatPublisherObserver(JMXConfiguration jmxConfiguration, StreamConfiguration streamConfiguration,
                                  int tenantID) throws StatPublisherConfigurationException {
         this.tenantID = tenantID;
         registryPersistenceManager = new RegistryPersistenceManager();
         this.statPublisherConfiguration = registryPersistenceManager.loadConfigurationData(tenantID);
-        if (statPublisherConfiguration.isSystemStatEnable() || statPublisherConfiguration.isMbStatEnable() || statPublisherConfiguration.isMessageStatEnable()) {
+        if (statPublisherConfiguration.isSystemStatEnable() || statPublisherConfiguration.isMbStatEnable()
+                || statPublisherConfiguration.isMessageStatEnable()) {
             statPublisherDataAgent =
                     new StatPublisherDataAgent(jmxConfiguration, streamConfiguration, statPublisherConfiguration);
         }
 
     }
 
+    public String getTenantDomain() {
+        return tenantDomain;
+    }
+
     /**
      * Start periodical statistic Publishing using timer task
      * activate publishing after read registry configurations
      */
-    public void startMonitor() throws UserStoreException {
+    public void startObserver() throws UserStoreException {
 
         if (statPublisherConfiguration.isMessageStatEnable()) {
             tenantDomain = tenantManager.getDomain(tenantID);
         }
-
         //Checking  System or MB stat enable or not
         if (statPublisherConfiguration.isSystemStatEnable() || statPublisherConfiguration.isMbStatEnable()) {
 
@@ -90,7 +90,7 @@ public class StatPublisherObserver {
                         try {
                             statPublisherDataAgent.sendSystemStats();
                         } catch (MalformedObjectNameException e) {
-                         throw new StatPublisherRuntimeException(e);
+                            throw new StatPublisherRuntimeException(e);
                         } catch (ReflectionException e) {
                             throw new StatPublisherRuntimeException(e);
                         } catch (IOException e) {
@@ -133,6 +133,7 @@ public class StatPublisherObserver {
             Thread timerTaskThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    //todo move to config file
                     long timeInterval = 15000;
                     timer.scheduleAtFixedRate(statPublisherTimerTask, new Date(), timeInterval);
                 }
@@ -144,7 +145,7 @@ public class StatPublisherObserver {
     /**
      * Stop periodical statistic Publishing uby stopping timer task
      */
-    public void stopMonitor() {
+    public void stopObserver() {
         if (timer != null) {
             timer.cancel();
         }

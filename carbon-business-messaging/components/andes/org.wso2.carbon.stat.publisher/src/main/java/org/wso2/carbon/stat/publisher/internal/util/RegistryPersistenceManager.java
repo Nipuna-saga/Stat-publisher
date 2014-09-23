@@ -16,15 +16,14 @@
 * under the License.
 */
 
-package org.wso2.carbon.stat.publisher.registry;
+package org.wso2.carbon.stat.publisher.internal.util;
 
 import org.wso2.carbon.registry.core.Registry;
 import org.wso2.carbon.registry.core.Resource;
 import org.wso2.carbon.registry.core.exceptions.RegistryException;
 import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
-import org.wso2.carbon.stat.publisher.internal.ds.ServiceValueHolder;
-import org.wso2.carbon.stat.publisher.util.StatPublisherConstants;
+import org.wso2.carbon.stat.publisher.internal.ds.StatPublisherValueHolder;
 import org.wso2.carbon.utils.xml.StringUtils;
 
 /**
@@ -40,7 +39,7 @@ public class RegistryPersistenceManager {
     public void storeConfigurationData(StatPublisherConfiguration statPublisherConfigurationWriteObject, int tenantId)
             throws StatPublisherConfigurationException {
         try {
-            Registry registry = ServiceValueHolder.getInstance().getRegistryService().getConfigSystemRegistry(tenantId);
+            Registry registry = StatPublisherValueHolder.getRegistryService().getConfigSystemRegistry(tenantId);
             String resourcePath = StatPublisherConstants.MEDIATION_STATISTICS_REG_PATH + StatPublisherConstants.RESOURCE;
             Resource resource;
             if (registry != null) {
@@ -95,7 +94,7 @@ public class RegistryPersistenceManager {
                                                                           StatPublisherConfigurationException {
         StatPublisherConfiguration statPublisherConfigurationReadObject = new StatPublisherConfiguration();
         try {
-            Registry registry = ServiceValueHolder.getInstance().getRegistryService().getConfigSystemRegistry(tenantId);
+            Registry registry = StatPublisherValueHolder.getRegistryService().getConfigSystemRegistry(tenantId);
             String resourcePath = StatPublisherConstants.MEDIATION_STATISTICS_REG_PATH + StatPublisherConstants.RESOURCE;
             if (registry != null) {
                 if (registry.resourceExists(resourcePath)) {

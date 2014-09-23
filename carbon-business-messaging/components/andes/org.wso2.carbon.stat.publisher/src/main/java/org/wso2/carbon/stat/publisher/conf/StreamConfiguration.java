@@ -23,17 +23,18 @@ package org.wso2.carbon.stat.publisher.conf;
  */
 public class StreamConfiguration {
 
-    private String versionMessage;
+    //todo change these names accoding to first name
+    private String messageStreamVersion;
     private String versionAck;
     private String versionSystemStatistic;
     private String versionMBStatistic;
 
     /**
      * Set value of message version
-     * @param versionMessage - String value
+     * @param messageStreamVersion - String value
      */
-    public void setVersionMessage(String versionMessage) {
-        this.versionMessage = versionMessage;
+    public void setMessageStreamVersion(String messageStreamVersion) {
+        this.messageStreamVersion = messageStreamVersion;
     }
 
     /**
@@ -62,10 +63,10 @@ public class StreamConfiguration {
 
     /**
      * Get message version
-     * @return versionMessage
+     * @return messageStreamVersion
      */
-    public String getVersionMessage() {
-        return versionMessage;
+    public String getMessageStreamVersion() {
+        return messageStreamVersion;
     }
 
     /**

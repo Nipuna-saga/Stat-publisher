@@ -134,24 +134,6 @@ public class StatPublisherConfiguration {
     }
 
     /**
-     * Get tenantID
-     * @return tenantID
-     */
-    /*public int getTenantID() {
-        return tenantID;
-    }
-    */
-
-    /**
-     * Set value of tenantID
-     * @param tenantID - integer value
-     */
-    /*
-    public void setTenantID(int tenantID) {
-        this.tenantID = tenantID;
-    }
-*/
-    /**
      * Get nodeURL
      * @return nodeURL
      */

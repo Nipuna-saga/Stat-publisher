@@ -16,7 +16,7 @@
 * under the License.
 */
 
-package org.wso2.carbon.stat.publisher.util;
+package org.wso2.carbon.stat.publisher.internal.util;
 
 import org.wso2.carbon.core.RegistryResources;
 
