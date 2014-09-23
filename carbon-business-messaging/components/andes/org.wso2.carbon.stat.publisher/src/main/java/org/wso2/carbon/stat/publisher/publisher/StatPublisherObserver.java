@@ -50,7 +50,7 @@ public class StatPublisherObserver {
     private RegistryPersistenceManager registryPersistenceManager;
     private Timer timer;
     private TimerTask statPublisherTimerTask;
-    private StatPublisherDataAgent statPublisherDataAgent;
+    public StatPublisherDataAgent statPublisherDataAgent;
 
 
     public String getTenantDomain() {
@@ -66,7 +66,7 @@ public class StatPublisherObserver {
         this.tenantID = tenantID;
         registryPersistenceManager = new RegistryPersistenceManager();
         this.statPublisherConfiguration = registryPersistenceManager.loadConfigurationData(tenantID);
-        if (statPublisherConfiguration.isSystemStatEnable() || statPublisherConfiguration.isMbStatEnable()) {
+        if (statPublisherConfiguration.isSystemStatEnable() || statPublisherConfiguration.isMbStatEnable() || statPublisherConfiguration.isMessageStatEnable()) {
             statPublisherDataAgent =
                     new StatPublisherDataAgent(jmxConfiguration, streamConfiguration, statPublisherConfiguration);
         }
@@ -102,7 +102,6 @@ public class StatPublisherObserver {
 
                         try {
                             statPublisherDataAgent.sendSystemStats();
-
                         } catch (MalformedObjectNameException e) {
                             e.printStackTrace();
                         } catch (ReflectionException e) {
@@ -125,7 +124,6 @@ public class StatPublisherObserver {
                         // dataAgentInstance.sendMBStatistics(URL, credentials);
 
                         try {
-
                             statPublisherDataAgent.sendMBStats();
                         } catch (MalformedObjectNameException e) {
                             e.printStackTrace();

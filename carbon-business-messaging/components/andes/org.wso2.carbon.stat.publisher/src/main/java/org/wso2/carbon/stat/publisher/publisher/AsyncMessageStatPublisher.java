@@ -26,6 +26,8 @@ import org.wso2.carbon.stat.publisher.internal.ds.ServiceValueHolder;
 import org.wso2.carbon.user.api.TenantManager;
 import org.wso2.carbon.user.api.UserStoreException;
 
+import javax.management.*;
+import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 
 public class AsyncMessageStatPublisher implements Runnable {
@@ -33,21 +35,27 @@ public class AsyncMessageStatPublisher implements Runnable {
     private MessageStat messageStat;
     private int tenantID;
     private StatPublisherConfiguration statPublisherConfiguration;
+    private StatPublisherObserver statPublisherObserver;
     private TenantManager tenantManager;
     private BlockingQueue<MessageStat> messageQueue = MessageStatPublisher.getInstance().getMessageQueue();
     int msg;
     private StreamConfiguration streamConfiguration;
 
+
+
     public AsyncMessageStatPublisher(int msg, StreamConfiguration streamConfiguration) {
 //TODO need to remove msg variable it's just use for testing purposes
         this.msg = msg;
         this.streamConfiguration = streamConfiguration;
+        //this.statPublisherDataAgent=statPublisherDataAgent;
     }
 
 
     @Override
     public void run() {
         //check message Queue has any object
+        //todo: meka waradilu. mokakda ekak balanna kiwwa. while(true) kiyala danna kiwwada koheda.
+
         while (messageQueue.size() > 0) {
             try {
                 //get object from queue
@@ -67,18 +75,55 @@ public class AsyncMessageStatPublisher implements Runnable {
             //get statPublisher Configuration relevant to tenantID
             statPublisherConfiguration = ServiceValueHolder.
                     getInstance().getStatPublisherManagerService().getStatPublisherConfiguration(tenantID);
+
+            statPublisherObserver=ServiceValueHolder.getInstance().getStatPublisherManagerService().getStatPublisherObserver(tenantID);
             //check is it a message or Ack message
             if (messageStat.isMessage()) {
 
                 //TODO you can get StreamConfiguration and statPublisherConfiguration for Data Agent
 
-                //TODO add message statPublishing code here you can get message by using messageStat.getAndesMessageMetadata() and No of subs   messageStat.setNoOfSubscribers()
-                System.out.print(msg + "+++++++++++++++++++++++ Message Stat Publisher Activated" + Thread.currentThread().getName());
+                //TODO add message statPublishing code here you can get message by using messageStat.getAndesMessag
+                // eMetadata() and No of subs   messageStat.setNoOfSubscribers()
+                System.out.print(msg + "+++++++++++++++++++++++ Message Stat Publisher Activated" +
+                        Thread.currentThread().getName());
+                try {
+                    statPublisherObserver.statPublisherDataAgent.sendMessageStats(messageStat.getAndesMessageMetadata(),messageStat.getNoOfSubscribers());
+                } catch (MalformedObjectNameException e) {
+                    e.printStackTrace();
+                } catch (ReflectionException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InstanceNotFoundException e) {
+                    e.printStackTrace();
+                } catch (AttributeNotFoundException e) {
+                    e.printStackTrace();
+                } catch (MBeanException e) {
+                    e.printStackTrace();
+                }
+
             } else {
 
                 //TODO add message statPublishing code here you can get message by using messageStat.getAndesAckData()
 
-                System.out.print(msg + "+++++++++++++++++++++++ Message Ack Stat Publisher Activated" + Thread.currentThread().getName());
+                System.out.print(msg + "+++++++++++++++++++++++ Message Ack Stat Publisher Activated" +
+                        Thread.currentThread().getName());
+
+                try {
+                    statPublisherObserver.statPublisherDataAgent.sendAckStats(messageStat.getAndesAckData());
+                } catch (MalformedObjectNameException e) {
+                    e.printStackTrace();
+                } catch (ReflectionException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InstanceNotFoundException e) {
+                    e.printStackTrace();
+                } catch (AttributeNotFoundException e) {
+                    e.printStackTrace();
+                } catch (MBeanException e) {
+                    e.printStackTrace();
+                }
 
 
             }

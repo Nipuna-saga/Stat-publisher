@@ -18,7 +18,6 @@
 
 package org.wso2.carbon.stat.publisher.publisher;
 
-import org.apache.log4j.Logger;
 import org.wso2.andes.kernel.*;
 import org.wso2.carbon.databridge.agent.thrift.exception.AgentException;
 import org.wso2.carbon.databridge.agent.thrift.lb.DataPublisherHolder;
@@ -40,29 +39,27 @@ import java.util.List;
 
 public class StatPublisherDataAgent {
 
-    private  JMXConfiguration jmxConfiguration;
-    private  StreamConfiguration streamConfiguration;
-    private  StatPublisherConfiguration statPublisherConfiguration;
-
-    private  MbeansStats mbeansStats = null;
+    private List<Subscrption> subscriptionsList;
+    private ArrayList<ReceiverGroup> allReceiverGroups;
+    private ArrayList<DataPublisherHolder> dataPublisherHolders;
+    private String[] urls;
+    private List<String> topics;
+    private JMXConfiguration jmxConfiguration;
+    private StreamConfiguration streamConfiguration;
+    private StatPublisherConfiguration statPublisherConfiguration;
+    private MbeansStats mbeansStats = null;
     private MbeansStatsData mbeansStatsData;
-
     private StreamDefinition serverStatsStreamDef;
     private StreamDefinition mbStatsStreamDef;
     private StreamDefinition messageStatsStreamDef;
     private StreamDefinition ackStatsStreamDef;
+    private LoadBalancingDataPublisher loadBalancingDataPublisher;
+    private List<Object> metaData;
+    private List<Object> payLoadData;
+    private SubscriptionStore subscriptionStore;
 
-   private LoadBalancingDataPublisher loadBalancingDataPublisher;
 
-   private List<Object> metaData;
-   private List<Object> payLoadData;
-
-    private MessagingEngine messagingEngine;
-    private  SubscriptionStore subscriptionStore;
-    List<Subscrption> subscriptionsList;
-
-    private  Logger logger = Logger.getLogger(StatPublisherDataAgent.class);
-
+    //first constructor
     public StatPublisherDataAgent(JMXConfiguration jmxConfiguration,
                                   StreamConfiguration streamConfiguration,
                                   StatPublisherConfiguration statPublisherConfiguration) {
@@ -74,27 +71,26 @@ public class StatPublisherDataAgent {
 
         try {
 
-            //creating all stream definitions
+            //creating stream definitions
             serverStatsStreamDef = StreamDefinitionCreator.getServerStatsStreamDef(streamConfiguration);
             mbStatsStreamDef = StreamDefinitionCreator.getMBStatsStreamDef(streamConfiguration);
             messageStatsStreamDef = StreamDefinitionCreator.getMessageStatsStreamDef(streamConfiguration);
             ackStatsStreamDef = StreamDefinitionCreator.getAckStatsStreamDef(streamConfiguration);
 
+
         } catch (MalformedStreamDefinitionException e) {
             e.printStackTrace();
         }
 
-        ArrayList<ReceiverGroup> allReceiverGroups = new ArrayList<ReceiverGroup>();
 
-        ArrayList<DataPublisherHolder> dataPublisherHolders = new ArrayList<DataPublisherHolder>();
-
-
+        allReceiverGroups = new ArrayList<ReceiverGroup>();
+        dataPublisherHolders = new ArrayList<DataPublisherHolder>();
         String[] urls = {statPublisherConfiguration.getURL()};
 
         for (String aUrl : urls) {
 
             DataPublisherHolder aNode = new DataPublisherHolder(null, aUrl.trim(),
-                    statPublisherConfiguration.getUsername(),statPublisherConfiguration.getPassword());
+                    statPublisherConfiguration.getUsername(), statPublisherConfiguration.getPassword());
             dataPublisherHolders.add(aNode);
         }
 
@@ -112,16 +108,15 @@ public class StatPublisherDataAgent {
         loadBalancingDataPublisher.addStreamDefinition(ackStatsStreamDef);
 
 
-        messagingEngine = MessagingEngine.getInstance();
-        subscriptionStore = messagingEngine.getSubscriptionStore();
-
     }
+
+
 
 
     public void sendSystemStats() throws MalformedObjectNameException, ReflectionException, IOException,
             InstanceNotFoundException, AttributeNotFoundException, MBeanException {
 
-        if(mbeansStats==null) {
+        if (mbeansStats == null) {
             mbeansStats = new MbeansStats(jmxConfiguration);
         }
 
@@ -130,7 +125,6 @@ public class StatPublisherDataAgent {
 
         metaData = getMetaData();
         payLoadData = getServerStatsPayLoadData(mbeansStatsData);
-
 
 
         try {
@@ -166,7 +160,8 @@ public class StatPublisherDataAgent {
 
     }
 
-    public void sendMessageStats(AndesMessageMetadata message, int subscribers) throws MalformedObjectNameException, ReflectionException, IOException,
+    public void sendMessageStats(AndesMessageMetadata message, int subscribers)
+            throws MalformedObjectNameException, ReflectionException, IOException,
             InstanceNotFoundException, AttributeNotFoundException, MBeanException {
 
 
@@ -188,11 +183,9 @@ public class StatPublisherDataAgent {
 
     }
 
-
     public void sendAckStats(AndesAckData message)
             throws MalformedObjectNameException, ReflectionException, IOException,
             InstanceNotFoundException, AttributeNotFoundException, MBeanException {
-
 
         metaData = getMetaData();
         try {
@@ -219,16 +212,19 @@ public class StatPublisherDataAgent {
         return null;
     }
 
-    public  List<Object> getMetaData() {
+
+
+    public List<Object> getMetaData() {
         List<Object> metaData = new ArrayList<Object>(1);
 
         //todo check whether this value is correct or not
-        metaData.add(statPublisherConfiguration.getNodeURL());
+       metaData.add("test");
         return metaData;
     }
 
 
-    public  List<Object> getServerStatsPayLoadData(MbeansStatsData mbeansStatsData) {
+
+    public List<Object> getServerStatsPayLoadData(MbeansStatsData mbeansStatsData) {
         List<Object> payloadData = new ArrayList<Object>(4);
         payloadData.add(mbeansStatsData.getHeapMemoryUsage());
         payloadData.add(mbeansStatsData.getNonHeapMemoryUsage());
@@ -237,7 +233,7 @@ public class StatPublisherDataAgent {
         return payloadData;
     }
 
-    public  List<Object> getMBStatsPayLoadData() throws Exception {
+    public List<Object> getMBStatsPayLoadData() throws Exception {
         List<Object> payloadData = new ArrayList<Object>(3);
 
         payloadData.add(getTotalSubscriptions());
@@ -248,7 +244,7 @@ public class StatPublisherDataAgent {
         return payloadData;
     }
 
-    public  List<Object> getMessageStatsPayLoadData(AndesMessageMetadata message, int subscribers) throws Exception {
+    public List<Object> getMessageStatsPayLoadData(AndesMessageMetadata message, int subscribers) throws Exception {
         List<Object> payloadData = new ArrayList<Object>(6);
 
         payloadData.add(message.getMessageID());
@@ -262,8 +258,7 @@ public class StatPublisherDataAgent {
         return payloadData;
     }
 
-
-    public  List<Object> getAckStatsPayLoadData(AndesAckData message) throws Exception {
+    public List<Object> getAckStatsPayLoadData(AndesAckData message) throws Exception {
         List<Object> payloadData = new ArrayList<Object>(3);
 
         payloadData.add(message.messageID);
@@ -273,19 +268,19 @@ public class StatPublisherDataAgent {
         return payloadData;
     }
 
-    private  long getCurrentTimeStamp(){
+    private long getCurrentTimeStamp() {
 
         return System.currentTimeMillis();
 
     }
-     List<String> topics;
-    private   int getTotalSubscriptions() throws Exception {
+
+    private int getTotalSubscriptions() throws Exception {
 
         int totalSubscribers = 0;
         topics = getTopicList();
 
         for (String topic : topics) {
-         subscriptionsList = subscriptionStore.getActiveClusterSubscribersForDestination(topic, true);
+            subscriptionsList = subscriptionStore.getActiveClusterSubscribersForDestination(topic, true);
             totalSubscribers += subscriptionsList.size();
         }
 
@@ -293,7 +288,7 @@ public class StatPublisherDataAgent {
 
     }
 
-    private  List<String> getTopicList() throws Exception {
+    private List<String> getTopicList() throws Exception {
 
         MessagingEngine messagingEngine = MessagingEngine.getInstance();
         subscriptionStore = messagingEngine.getSubscriptionStore();

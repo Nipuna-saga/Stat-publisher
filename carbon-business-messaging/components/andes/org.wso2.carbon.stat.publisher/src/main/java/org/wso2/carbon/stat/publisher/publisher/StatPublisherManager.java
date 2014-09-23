@@ -90,7 +90,6 @@ public class StatPublisherManager {
 
         statPublisherObserver = statPublisherObserverHashMap.get(tenantID);
 
-
         if (statPublisherObserver != null) {
             //stop monitoring process
             statPublisherObserver.stopMonitor();
@@ -121,10 +120,16 @@ public class StatPublisherManager {
     //This message use to get statPublisherConfiguration of specific tenant
     public StatPublisherConfiguration getStatPublisherConfiguration(int tenantID) {
         statPublisherObserver = statPublisherObserverHashMap.get(tenantID);
+
 //TODO check sometimes this method will occur null pointer exception
         return statPublisherObserver.getStatPublisherConfiguration();
 
 
+    }
+
+    public StatPublisherObserver getStatPublisherObserver(int tenantID) {
+        statPublisherObserver = statPublisherObserverHashMap.get(tenantID);
+        return  statPublisherObserver;
     }
 
 
