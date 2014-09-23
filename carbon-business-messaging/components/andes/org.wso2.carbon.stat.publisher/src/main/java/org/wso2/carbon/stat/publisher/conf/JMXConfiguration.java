@@ -73,18 +73,19 @@ public class JMXConfiguration {
      * Get value of startRMIServer
      * @return startRMIServer
      */
-    public boolean isStartRMIServer() {
+   /* public boolean isStartRMIServer() {
         return startRMIServer;
     }
-
+*/
     /**
      * Get value of rmiServerPort
      * @return rmiServerPort
      */
+    /*
     public String getRmiServerPort() {
         return rmiServerPort;
     }
-
+*/
     /**
      * Get value of hostName
      * @return hostName

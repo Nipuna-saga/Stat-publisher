@@ -20,7 +20,6 @@ package org.wso2.carbon.stat.publisher.publisher;
 
 
 import org.wso2.carbon.stat.publisher.conf.MessageStat;
-import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
 import org.wso2.carbon.stat.publisher.internal.ds.ServiceValueHolder;
@@ -35,19 +34,16 @@ public class AsyncMessageStatPublisher implements Runnable {
 
     private MessageStat messageStat;
     private int tenantID;
-    private StatPublisherConfiguration statPublisherConfiguration;
     private StatPublisherObserver statPublisherObserver;
     private TenantManager tenantManager;
     private BlockingQueue<MessageStat> messageQueue = MessageStatPublisher.getInstance().getMessageQueue();
     int msg;
-    private StreamConfiguration streamConfiguration;
-
 
 
     public AsyncMessageStatPublisher(int msg, StreamConfiguration streamConfiguration) {
 //TODO need to remove msg variable it's just use for testing purposes
         this.msg = msg;
-        this.streamConfiguration = streamConfiguration;
+        StreamConfiguration streamConfiguration1 = streamConfiguration;
         //this.statPublisherDataAgent=statPublisherDataAgent;
     }
 
@@ -55,7 +51,7 @@ public class AsyncMessageStatPublisher implements Runnable {
     @Override
     public void run() {
         //check message Queue has any object
-        //todo: meka waradilu. mokakda ekak balanna kiwwa. while(true) kiyala danna kiwwada koheda.
+
 
         while (messageQueue.size() > 0) {
             try {
@@ -74,17 +70,14 @@ public class AsyncMessageStatPublisher implements Runnable {
                 throw new StatPublisherRuntimeException(e);
             }
             //get statPublisher Configuration relevant to tenantID
-            statPublisherConfiguration = ServiceValueHolder.
-                    getInstance().getStatPublisherManagerService().getStatPublisherConfiguration(tenantID);
+           // StatPublisherConfiguration statPublisherConfiguration = ServiceValueHolder.
+              //      getInstance().getStatPublisherManagerService().getStatPublisherConfiguration(tenantID);
 
             statPublisherObserver=ServiceValueHolder.getInstance().getStatPublisherManagerService().getStatPublisherObserver(tenantID);
             //check is it a message or Ack message
             if (messageStat.isMessage()) {
 
-                //TODO you can get StreamConfiguration and statPublisherConfiguration for Data Agent
 
-                //TODO add message statPublishing code here you can get message by using messageStat.getAndesMessag
-                // eMetadata() and No of subs   messageStat.setNoOfSubscribers()
                 System.out.print(msg + "+++++++++++++++++++++++ Message Stat Publisher Activated" +
                         Thread.currentThread().getName());
                 try {
@@ -105,7 +98,7 @@ public class AsyncMessageStatPublisher implements Runnable {
 
             } else {
 
-                //TODO add message statPublishing code here you can get message by using messageStat.getAndesAckData()
+
 
                 System.out.print(msg + "+++++++++++++++++++++++ Message Ack Stat Publisher Activated" +
                         Thread.currentThread().getName());
