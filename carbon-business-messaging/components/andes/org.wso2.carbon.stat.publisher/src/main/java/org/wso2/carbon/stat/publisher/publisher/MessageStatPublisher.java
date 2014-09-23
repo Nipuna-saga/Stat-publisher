@@ -43,23 +43,20 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class MessageStatPublisher implements StatPublisherGetMessage {
 
 
-    private static MessageStatPublisher messageStatPublisher = new MessageStatPublisher();
-    MessageStat messageStat = new MessageStat();
-
-    private static int numberOfMessages = 0;
-    private static int numberOfAckMessages = 0;
-
     //This is the Queue that use to hold message details
     private static final int NumberOfQueueSlots = 20;
     private BlockingQueue<MessageStat> messageQueue = new LinkedBlockingQueue<MessageStat>(NumberOfQueueSlots);
     //Thread pool
     private static final int NumberOfThreads = 5;
     private ExecutorService executor = Executors.newFixedThreadPool(NumberOfThreads);
+    private static MessageStatPublisher messageStatPublisher = new MessageStatPublisher();
+    private static int numberOfMessages = 0;
+    private static int numberOfAckMessages = 0;
+    MessageStat messageStat = new MessageStat();
     StreamConfiguration streamConfiguration;
     XMLConfigurationReader xmlConfigurationReader;
+
     private String domain;
-
-
 
     //private constructor
     private MessageStatPublisher() {
@@ -69,6 +66,7 @@ public class MessageStatPublisher implements StatPublisherGetMessage {
         } catch (StatPublisherConfigurationException e) {
             e.printStackTrace();
         }
+
 
     }
 

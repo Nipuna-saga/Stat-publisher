@@ -13,21 +13,21 @@ import java.util.List;
 public class StreamDefinitionCreator {
 
 
-    public static String serverStatsStreamName = "SYSTEM_STATISTICS_MB_2";
-    public static String serverStatsNickName = "system stats";
+    public static String serverStatsStreamName = "SYSTEM_STATISTICS_MB";
+    public static String serverStatsNickName = "system_statistics";
     public static String serverStatsDescription = "Publish Message broker server statistics";
 
-    public static String mbStatsStreamName = "MB_STATISTICS_TEST2";
-    public static String mbStatsNickName = "MB stats";
-    public static String mbStatsDescription = "Publish Message broker statistics";
+    public static String mbStatsStreamName = "MB_STATISTICS_MB";
+    public static String mbStatsNickName = "MB_statistics";
+    public static String mbStatsDescription = "Publish Message broker topic/subscriber statistics";
 
-    public static String messageStatsStreamName = "MESSAGE_STATISTICS";
-    public static String messageStatsNickName = "message stats";
+    public static String messageStatsStreamName = "MESSAGE_STATISTICS_MB";
+    public static String messageStatsNickName = "message statistics";
     public static String messageStatsDescription = "Publish Message broker message statistics";
 
-    public static String ackStatsStreamName = "MESSAGE_STATISTICS";
-    public static String ackStatsNickName = "message stats";
-    public static String ackStatsDescription = "Publish Message broker message statistics";
+    public static String ackStatsStreamName = "ACK_STATISTICS_MB";
+    public static String ackStatsNickName = "ack statistics";
+    public static String ackStatsDescription = "Publish Message broker acknowledgement message statistics";
 
 
     public static StreamDefinition getServerStatsStreamDef(StreamConfiguration streamConfiguration) throws MalformedStreamDefinitionException {
