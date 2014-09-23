@@ -22,6 +22,7 @@ package org.wso2.carbon.stat.publisher.publisher;
 import org.wso2.carbon.stat.publisher.conf.MessageStat;
 import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
+import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
 import org.wso2.carbon.stat.publisher.internal.ds.ServiceValueHolder;
 import org.wso2.carbon.user.api.TenantManager;
 import org.wso2.carbon.user.api.UserStoreException;
@@ -61,7 +62,7 @@ public class AsyncMessageStatPublisher implements Runnable {
                 //get object from queue
                 messageStat = MessageStatPublisher.getInstance().getMessageQueue().take();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                throw new StatPublisherRuntimeException(e);
             }
 
 
@@ -70,7 +71,7 @@ public class AsyncMessageStatPublisher implements Runnable {
                 //get tenant ID from tenant domain
                 tenantID = tenantManager.getTenantId(messageStat.getDomain());
             } catch (UserStoreException e) {
-                e.printStackTrace();
+                throw new StatPublisherRuntimeException(e);
             }
             //get statPublisher Configuration relevant to tenantID
             statPublisherConfiguration = ServiceValueHolder.
@@ -89,17 +90,17 @@ public class AsyncMessageStatPublisher implements Runnable {
                 try {
                     statPublisherObserver.statPublisherDataAgent.sendMessageStats(messageStat.getAndesMessageMetadata(),messageStat.getNoOfSubscribers());
                 } catch (MalformedObjectNameException e) {
-                    e.printStackTrace();
+                    throw new StatPublisherRuntimeException(e);
                 } catch (ReflectionException e) {
-                    e.printStackTrace();
+                    throw new StatPublisherRuntimeException(e);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    throw new StatPublisherRuntimeException(e);
                 } catch (InstanceNotFoundException e) {
-                    e.printStackTrace();
+                    throw new StatPublisherRuntimeException(e);
                 } catch (AttributeNotFoundException e) {
-                    e.printStackTrace();
+                    throw new StatPublisherRuntimeException(e);
                 } catch (MBeanException e) {
-                    e.printStackTrace();
+                    throw new StatPublisherRuntimeException(e);
                 }
 
             } else {
@@ -112,17 +113,17 @@ public class AsyncMessageStatPublisher implements Runnable {
                 try {
                     statPublisherObserver.statPublisherDataAgent.sendAckStats(messageStat.getAndesAckData());
                 } catch (MalformedObjectNameException e) {
-                    e.printStackTrace();
+                    throw new StatPublisherRuntimeException(e);
                 } catch (ReflectionException e) {
-                    e.printStackTrace();
+                    throw new StatPublisherRuntimeException(e);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    throw new StatPublisherRuntimeException(e);
                 } catch (InstanceNotFoundException e) {
-                    e.printStackTrace();
+                    throw new StatPublisherRuntimeException(e);
                 } catch (AttributeNotFoundException e) {
-                    e.printStackTrace();
+                    throw new StatPublisherRuntimeException(e);
                 } catch (MBeanException e) {
-                    e.printStackTrace();
+                    throw new StatPublisherRuntimeException(e);
                 }
 
 

@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StreamDefinitionCreator {
-
-
     public static String serverStatsStreamName = "SYSTEM_STATISTICS_MB";
     public static String serverStatsNickName = "system_statistics";
     public static String serverStatsDescription = "Publish Message broker server statistics";
@@ -31,62 +29,58 @@ public class StreamDefinitionCreator {
 
 
     public static StreamDefinition getServerStatsStreamDef(StreamConfiguration streamConfiguration) throws MalformedStreamDefinitionException {
-
         StreamDefinition streamDefinition = new StreamDefinition(serverStatsStreamName, streamConfiguration.getVersionSystemStatistic());
         streamDefinition.setDescription(serverStatsDescription);
         streamDefinition.setNickName(serverStatsNickName);
         streamDefinition.setMetaData(getMetaDefinitions());
         streamDefinition.setPayloadData(getServerStatsPayloadDefinition());
         streamDefinition.setCorrelationData(null);
+
         return streamDefinition;
     }
 
     public static StreamDefinition getMBStatsStreamDef(StreamConfiguration streamConfiguration) throws MalformedStreamDefinitionException {
-
         StreamDefinition streamDefinition = new StreamDefinition(mbStatsStreamName, streamConfiguration.getVersionMBStatistic());
         streamDefinition.setDescription(mbStatsDescription);
         streamDefinition.setNickName(mbStatsNickName);
         streamDefinition.setMetaData(getMetaDefinitions());
         streamDefinition.setPayloadData(getMBStatsPayloadDefinition());
         streamDefinition.setCorrelationData(null);
+
         return streamDefinition;
     }
 
     public static StreamDefinition getMessageStatsStreamDef(StreamConfiguration streamConfiguration) throws MalformedStreamDefinitionException {
-
         StreamDefinition streamDefinition = new StreamDefinition(messageStatsStreamName, streamConfiguration.getVersionMessage());
         streamDefinition.setDescription(messageStatsDescription);
         streamDefinition.setNickName(messageStatsNickName);
         streamDefinition.setMetaData(getMetaDefinitions());
         streamDefinition.setPayloadData(getMessageStatsPayloadDefinition());
         streamDefinition.setCorrelationData(null);
+
         return streamDefinition;
     }
 
     public static StreamDefinition getAckStatsStreamDef(StreamConfiguration streamConfiguration) throws MalformedStreamDefinitionException {
-
         StreamDefinition streamDefinition = new StreamDefinition(ackStatsStreamName, streamConfiguration.getVersionAck());
         streamDefinition.setDescription(ackStatsDescription);
         streamDefinition.setNickName(ackStatsNickName);
         streamDefinition.setMetaData(getMetaDefinitions());
         streamDefinition.setPayloadData(getAckStatsPayloadDefinition());
         streamDefinition.setCorrelationData(null);
+
         return streamDefinition;
     }
 
     private static List<Attribute> getMetaDefinitions() {
-
         List<Attribute> metaList = new ArrayList<Attribute>(1);
-
         metaList.add(new Attribute("publisherIP", AttributeType.STRING));
 
         return metaList;
     }
 
     private static List<Attribute> getServerStatsPayloadDefinition() {
-
         List<Attribute> payloadList = new ArrayList<Attribute>(4);
-
         payloadList.add(new Attribute("heapMemoryUsage", AttributeType.STRING));
         payloadList.add(new Attribute("nonHeapMemoryUsage", AttributeType.STRING));
         payloadList.add(new Attribute("cpuLoadAverage", AttributeType.STRING));
@@ -96,9 +90,7 @@ public class StreamDefinitionCreator {
     }
 
     private static List<Attribute> getMBStatsPayloadDefinition() {
-
         List<Attribute> payloadList = new ArrayList<Attribute>(3);
-
         payloadList.add(new Attribute("noOfSubscribers", AttributeType.INT));
         payloadList.add(new Attribute("noOfTopics", AttributeType.INT));
         payloadList.add(new Attribute("timestamp", AttributeType.LONG));
@@ -109,9 +101,7 @@ public class StreamDefinitionCreator {
 
 
     private static List<Attribute> getMessageStatsPayloadDefinition() {
-
         List<Attribute> payloadList = new ArrayList<Attribute>(6);
-
         payloadList.add(new Attribute("messageId", AttributeType.LONG));
         payloadList.add(new Attribute("destination", AttributeType.STRING));
         payloadList.add(new Attribute("messageContentLength", AttributeType.INT));
@@ -123,9 +113,7 @@ public class StreamDefinitionCreator {
     }
 
     private static List<Attribute> getAckStatsPayloadDefinition() {
-
         List<Attribute> payloadList = new ArrayList<Attribute>(3);
-
         payloadList.add(new Attribute("messageId", AttributeType.LONG));
         payloadList.add(new Attribute("queueName", AttributeType.STRING));
         payloadList.add(new Attribute("timestamp", AttributeType.LONG));

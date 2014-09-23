@@ -49,25 +49,21 @@ public class StatPublisherManager {
     private HashSet<String> messageStatEnableMap = new HashSet<String>();
 
     public StatPublisherManager() throws StatPublisherConfigurationException {
-
         xmlConfigurationReader = new XMLConfigurationReader();
         jmxConfiguration = xmlConfigurationReader.readJMXConfiguration();
         streamConfiguration = xmlConfigurationReader.readStreamConfiguration();
-
     }
 
     /**
      * Create new StatPublisherObserver Instance and store it in Hash map by using tenant ID as key value
      */
-
     public void onCreate(int tenantID) throws StatPublisherConfigurationException {
-
         statPublisherObserver = new StatPublisherObserver(jmxConfiguration, streamConfiguration, tenantID);
         try {
             //start monitoring process
             statPublisherObserver.startMonitor();
         } catch (UserStoreException e) {
-            e.printStackTrace();
+            throw new StatPublisherConfigurationException("Could not start monitoring!",e);
         }
         //Add observer to Hash map
         statPublisherObserverHashMap.put(tenantID, statPublisherObserver);
@@ -77,9 +73,6 @@ public class StatPublisherManager {
             messageStatEnableMap.add(statPublisherObserver.getTenantDomain());
 
         }
-
-        System.out.println(statPublisherObserverHashMap + "" + messageStatEnableMap);
-
     }
 
     /**
@@ -87,26 +80,20 @@ public class StatPublisherManager {
      */
 
     public void onUpdate(int tenantID) throws StatPublisherConfigurationException {
-
         statPublisherObserver = statPublisherObserverHashMap.get(tenantID);
-
         if (statPublisherObserver != null) {
             //stop monitoring process
             statPublisherObserver.stopMonitor();
             //remove tenant domain from hash map
             messageStatEnableMap.remove(statPublisherObserver.getTenantDomain());
         }
-
-
     }
 
     /**
-     * get Message stat Enable flag value
+     * Get Message stat Enable flag value
      */
 
-
-    public void onRemove(int tenantID) throws StatPublisherConfigurationException {
-
+    public void onRemove(int tenantID) {
         statPublisherObserver = statPublisherObserverHashMap.get(tenantID);
         if (statPublisherObserver != null) {
             //remove tenant domain from hash map
@@ -114,14 +101,13 @@ public class StatPublisherManager {
             //remove publisher observer from hash map
             statPublisherObserverHashMap.remove(tenantID);
         }
-        System.out.println(statPublisherObserverHashMap);
     }
 
     //This message use to get statPublisherConfiguration of specific tenant
     public StatPublisherConfiguration getStatPublisherConfiguration(int tenantID) {
         statPublisherObserver = statPublisherObserverHashMap.get(tenantID);
 
-//TODO check sometimes this method will occur null pointer exception
+    //TODO check sometimes this method will occur null pointer exception
         return statPublisherObserver.getStatPublisherConfiguration();
 
 
