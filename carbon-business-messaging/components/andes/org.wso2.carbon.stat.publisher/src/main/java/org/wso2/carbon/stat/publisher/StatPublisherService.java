@@ -33,12 +33,10 @@ public class StatPublisherService {
 
     //StatPublisherConfiguration details get method
     public StatPublisherConfiguration getStatConfiguration() throws StatPublisherConfigurationException {
-        logger = Logger.getLogger(StatPublisherService.class);
         int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
         RegistryPersistenceManager registryPersistenceManagerObject = new RegistryPersistenceManager();
 
         return registryPersistenceManagerObject.loadConfigurationData(tenantID);
-
     }
 
     //StatConfiguration details set method
@@ -47,7 +45,6 @@ public class StatPublisherService {
 
         RegistryPersistenceManager registryPersistenceManagerObject = new RegistryPersistenceManager();
         StatPublisherManager statPublisherManager = ServiceValueHolder.getInstance().getStatPublisherManagerService();
-
         statPublisherManager.onUpdate(tenantID);
         try {
             registryPersistenceManagerObject.storeConfigurationData(statPublisherConfiguration, tenantID);
@@ -55,7 +52,6 @@ public class StatPublisherService {
             logger.error("Error occurs while trying to store configurations values to registry", e);
         }
         statPublisherManager.onCreate(tenantID);
-
     }
 
 

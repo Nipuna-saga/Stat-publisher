@@ -40,14 +40,11 @@ import java.util.Set;
 
 public class MbeansStats {
 
-
     private static JMXConnector jmxConnector;
     private static MBeanServerConnection connection = null;
     private static long timeout = 100000;
     private MbeansStatsData mbeansStatsData;
     private static MbeansStats mbeansStats = null;
-    private static Logger logger = Logger.getLogger(MbeansStats.class);
-
 
     public MbeansStats(JMXConfiguration jmxConfiguration)  {
 
@@ -67,7 +64,6 @@ public class MbeansStats {
         //create jmxConnection
         createJMXConnection(jmxConfiguration, userName, password);
 
-
     }
 
     private static void createJMXConnection(JMXConfiguration jmxConfiguration, String userName, String password){
@@ -75,15 +71,11 @@ public class MbeansStats {
         //get JMX port
         final int jmxPort = Integer.parseInt(jmxConfiguration.getRmiRegistryPort()) +
                 Integer.parseInt(jmxConfiguration.getOffSet());
-
-
         try {
             jmxConnector = JMXConnnectionFactory.getJMXConnection(timeout, jmxConfiguration.getHostName(),
                     jmxPort, userName, password);
             connection = jmxConnector.getMBeanServerConnection();
         } catch (Exception e) {
-
-
 
                 try {
                     Thread.sleep(2000);
@@ -93,28 +85,16 @@ public class MbeansStats {
                 } catch (InterruptedException e1) {
                     e1.printStackTrace();
                 }
-
-
         }
-
-
     }
-
-
-
-
-
 
     public String HeapMemoryUsage() throws MalformedObjectNameException, IOException, AttributeNotFoundException,
             MBeanException, ReflectionException, InstanceNotFoundException {
-
             Set<ObjectInstance> set = connection.queryMBeans(new ObjectName("java.lang:type=Memory"), null);
             ObjectInstance oi = set.iterator().next();
             Object attrValue = connection.getAttribute(oi.getObjectName(), "HeapMemoryUsage");
-            return ((CompositeData) attrValue).get("used").toString();
 
-
-
+        return ((CompositeData) attrValue).get("used").toString();
     }
 
     public String NonHeapMemoryUsage() throws MalformedObjectNameException, IOException, AttributeNotFoundException,
@@ -123,17 +103,14 @@ public class MbeansStats {
         Set<ObjectInstance> set = connection.queryMBeans(new ObjectName("java.lang:type=Memory"), null);
         ObjectInstance oi = set.iterator().next();
         Object attrValue_nonHeapMem = connection.getAttribute(oi.getObjectName(), "NonHeapMemoryUsage");
+
         return ((CompositeData) attrValue_nonHeapMem).get("used").toString();
-
-
     }
 
     public String CPUUsage(){
-
         OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
+
         return Double.toString(osBean.getSystemLoadAverage());
-
-
     }
 
 
@@ -144,9 +121,5 @@ public class MbeansStats {
         mbeansStatsData.setCPULoadAverage(CPUUsage());
 
         return mbeansStatsData;
-
-
     }
-
-
 }

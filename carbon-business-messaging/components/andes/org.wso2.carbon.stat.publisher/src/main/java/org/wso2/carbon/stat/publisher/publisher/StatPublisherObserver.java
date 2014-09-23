@@ -23,6 +23,7 @@ import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
+import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
 import org.wso2.carbon.stat.publisher.internal.ds.ServiceValueHolder;
 import org.wso2.carbon.stat.publisher.registry.RegistryPersistenceManager;
 import org.wso2.carbon.user.api.UserStoreException;
@@ -41,25 +42,19 @@ import java.util.TimerTask;
 
 public class StatPublisherObserver {
 
-    private static final Logger LOGGER = Logger.getLogger(StatPublisherObserver.class);
-    TenantManager tenantManager = ServiceValueHolder.getInstance().getRealmService().getTenantManager();
-
-
-
+    private static final Logger logger = Logger.getLogger(StatPublisherObserver.class);
     private StatPublisherConfiguration statPublisherConfiguration;
     private RegistryPersistenceManager registryPersistenceManager;
     private Timer timer;
     private TimerTask statPublisherTimerTask;
     public StatPublisherDataAgent statPublisherDataAgent;
-
+    private String tenantDomain = null;
+    private int tenantID;
+    TenantManager tenantManager = ServiceValueHolder.getInstance().getRealmService().getTenantManager();
 
     public String getTenantDomain() {
         return tenantDomain;
     }
-
-    private String tenantDomain = null;
-    private int tenantID;
-
 
     public StatPublisherObserver(JMXConfiguration jmxConfiguration, StreamConfiguration streamConfiguration,
                                  int tenantID) throws StatPublisherConfigurationException {
@@ -77,21 +72,14 @@ public class StatPublisherObserver {
      * Start periodical statistic Publishing using timer task
      * activate publishing after read registry configurations
      */
-
-
     public void startMonitor() throws UserStoreException {
 
-
         if (statPublisherConfiguration.isMessageStatEnable()) {
-
             tenantDomain = tenantManager.getDomain(tenantID);
-
         }
-
 
         //Checking  System or MB stat enable or not
         if (statPublisherConfiguration.isSystemStatEnable() || statPublisherConfiguration.isMbStatEnable()) {
-
 
             statPublisherTimerTask = new TimerTask() {
                 @Override
@@ -99,87 +87,70 @@ public class StatPublisherObserver {
                     //check system stat enable configuration
                     if (statPublisherConfiguration.isSystemStatEnable()) {
                         //System stat publishing activated
-
                         try {
                             statPublisherDataAgent.sendSystemStats();
                         } catch (MalformedObjectNameException e) {
-                            e.printStackTrace();
+                         throw new StatPublisherRuntimeException(e);
                         } catch (ReflectionException e) {
-                            e.printStackTrace();
+                            throw new StatPublisherRuntimeException(e);
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            throw new StatPublisherRuntimeException(e);
                         } catch (InstanceNotFoundException e) {
-                            e.printStackTrace();
+                            throw new StatPublisherRuntimeException(e);
                         } catch (AttributeNotFoundException e) {
-                            e.printStackTrace();
+                            throw new StatPublisherRuntimeException(e);
                         } catch (MBeanException e) {
-                            e.printStackTrace();
+                            throw new StatPublisherRuntimeException(e);
                         }
-
-                        LOGGER.info("System stat Publishing activated ");
+                        logger.info("System stat Publishing activated ");
                     }
                     //check MB stat enable configuration
                     if (statPublisherConfiguration.isMbStatEnable()) {
-                        //MB stat publishing activated
-                        // dataAgentInstance.sendMBStatistics(URL, credentials);
-
                         try {
                             statPublisherDataAgent.sendMBStats();
                         } catch (MalformedObjectNameException e) {
-                            e.printStackTrace();
+                            throw new StatPublisherRuntimeException(e);
                         } catch (ReflectionException e) {
-                            e.printStackTrace();
+                            throw new StatPublisherRuntimeException(e);
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            throw new StatPublisherRuntimeException(e);
                         } catch (InstanceNotFoundException e) {
-                            e.printStackTrace();
+                            throw new StatPublisherRuntimeException(e);
                         } catch (AttributeNotFoundException e) {
-                            e.printStackTrace();
+                            throw new StatPublisherRuntimeException(e);
                         } catch (MBeanException e) {
-                            e.printStackTrace();
+                            throw new StatPublisherRuntimeException(e);
                         }
 
-
-                        LOGGER.info("MB stat Publishing activated ");
+                        logger.info("MB stat Publishing activated ");
                     }
-
-
                 }
 
 
             };
             timer = new Timer();
             // scheduling the task at fixed rate
-
-
             Thread timerTaskThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     long timeInterval = 15000;
                     timer.scheduleAtFixedRate(statPublisherTimerTask, new Date(), timeInterval);
-
                 }
             });
             timerTaskThread.start();
         }
     }
 
-
     /**
      * Stop periodical statistic Publishing uby stopping timer task
      */
-
     public void stopMonitor() {
         if (timer != null) {
             timer.cancel();
         }
-
     }
-
 
     public StatPublisherConfiguration getStatPublisherConfiguration() {
         return statPublisherConfiguration;
     }
-
-
 }

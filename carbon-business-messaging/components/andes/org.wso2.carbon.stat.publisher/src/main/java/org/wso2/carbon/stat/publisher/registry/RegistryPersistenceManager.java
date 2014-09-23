@@ -124,8 +124,6 @@ public class RegistryPersistenceManager {
         }
         return statPublisherConfigurationReadObject;
     }
-
-
 }
 
 

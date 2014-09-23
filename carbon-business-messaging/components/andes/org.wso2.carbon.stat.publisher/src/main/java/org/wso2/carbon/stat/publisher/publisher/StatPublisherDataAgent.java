@@ -28,6 +28,8 @@ import org.wso2.carbon.databridge.commons.exception.MalformedStreamDefinitionExc
 import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
+import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
+import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
 import org.wso2.carbon.stat.publisher.serverStats.MbeansStats;
 import org.wso2.carbon.stat.publisher.serverStats.data.MbeansStatsData;
 
@@ -70,16 +72,13 @@ public class StatPublisherDataAgent {
         this.statPublisherConfiguration = statPublisherConfiguration;
 
         try {
-
             //creating stream definitions
             serverStatsStreamDef = StreamDefinitionCreator.getServerStatsStreamDef(streamConfiguration);
             mbStatsStreamDef = StreamDefinitionCreator.getMBStatsStreamDef(streamConfiguration);
             messageStatsStreamDef = StreamDefinitionCreator.getMessageStatsStreamDef(streamConfiguration);
             ackStatsStreamDef = StreamDefinitionCreator.getAckStatsStreamDef(streamConfiguration);
-
-
         } catch (MalformedStreamDefinitionException e) {
-            e.printStackTrace();
+            throw new StatPublisherRuntimeException(e);
         }
 
 
@@ -88,30 +87,22 @@ public class StatPublisherDataAgent {
         String[] urls = {statPublisherConfiguration.getURL()};
 
         for (String aUrl : urls) {
-
             DataPublisherHolder aNode = new DataPublisherHolder(null, aUrl.trim(),
                     statPublisherConfiguration.getUsername(), statPublisherConfiguration.getPassword());
             dataPublisherHolders.add(aNode);
         }
-
 
         ReceiverGroup group = new ReceiverGroup(dataPublisherHolders);
         allReceiverGroups.add(group);
 
         loadBalancingDataPublisher = new LoadBalancingDataPublisher(allReceiverGroups);
 
-
         //adding Stream definitions to publisher
         loadBalancingDataPublisher.addStreamDefinition(serverStatsStreamDef);
         loadBalancingDataPublisher.addStreamDefinition(mbStatsStreamDef);
         loadBalancingDataPublisher.addStreamDefinition(messageStatsStreamDef);
         loadBalancingDataPublisher.addStreamDefinition(ackStatsStreamDef);
-
-
     }
-
-
-
 
     public void sendSystemStats() throws MalformedObjectNameException, ReflectionException, IOException,
             InstanceNotFoundException, AttributeNotFoundException, MBeanException {
@@ -122,31 +113,25 @@ public class StatPublisherDataAgent {
 
         //get server statistics
         mbeansStatsData = mbeansStats.getMbeansStatsData();
-
         metaData = getMetaData();
         payLoadData = getServerStatsPayLoadData(mbeansStatsData);
-
 
         try {
             loadBalancingDataPublisher.publish(serverStatsStreamDef.getName(), serverStatsStreamDef.getVersion(),
                     getObjectArray(metaData), null,
                     getObjectArray(payLoadData));
         } catch (AgentException e) {
-            e.printStackTrace();
+           throw new StatPublisherRuntimeException(e);
         }
-
-
     }
 
     public void sendMBStats() throws MalformedObjectNameException, ReflectionException, IOException,
             InstanceNotFoundException, AttributeNotFoundException, MBeanException {
-
-
         metaData = getMetaData();
         try {
             payLoadData = getMBStatsPayLoadData();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new StatPublisherRuntimeException(e);
         }
 
         try {
@@ -154,7 +139,7 @@ public class StatPublisherDataAgent {
                     getObjectArray(metaData), null,
                     getObjectArray(payLoadData));
         } catch (AgentException e) {
-            e.printStackTrace();
+            throw new StatPublisherRuntimeException(e);
         }
 
 
@@ -163,24 +148,19 @@ public class StatPublisherDataAgent {
     public void sendMessageStats(AndesMessageMetadata message, int subscribers)
             throws MalformedObjectNameException, ReflectionException, IOException,
             InstanceNotFoundException, AttributeNotFoundException, MBeanException {
-
-
         metaData = getMetaData();
         try {
             payLoadData = getMessageStatsPayLoadData(message, subscribers);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new StatPublisherRuntimeException(e);
         }
-
         try {
             loadBalancingDataPublisher.publish(messageStatsStreamDef.getName(), messageStatsStreamDef.getVersion(),
                     getObjectArray(metaData), null,
                     getObjectArray(payLoadData));
         } catch (AgentException e) {
-            e.printStackTrace();
+            throw new StatPublisherRuntimeException(e);
         }
-
-
     }
 
     public void sendAckStats(AndesAckData message)
@@ -191,7 +171,7 @@ public class StatPublisherDataAgent {
         try {
             payLoadData = getAckStatsPayLoadData(message);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new StatPublisherRuntimeException(e);
         }
 
         try {
@@ -199,7 +179,7 @@ public class StatPublisherDataAgent {
                     getObjectArray(metaData), null,
                     getObjectArray(payLoadData));
         } catch (AgentException e) {
-            e.printStackTrace();
+            throw new StatPublisherRuntimeException(e);
         }
 
 
@@ -230,23 +210,21 @@ public class StatPublisherDataAgent {
         payloadData.add(mbeansStatsData.getNonHeapMemoryUsage());
         payloadData.add(mbeansStatsData.getCPULoadAverage());
         payloadData.add(getCurrentTimeStamp());
+
         return payloadData;
     }
 
     public List<Object> getMBStatsPayLoadData() throws Exception {
         List<Object> payloadData = new ArrayList<Object>(3);
-
         payloadData.add(getTotalSubscriptions());
         payloadData.add(getTopicList().size());
         payloadData.add(getCurrentTimeStamp());
-
 
         return payloadData;
     }
 
     public List<Object> getMessageStatsPayLoadData(AndesMessageMetadata message, int subscribers) throws Exception {
         List<Object> payloadData = new ArrayList<Object>(6);
-
         payloadData.add(message.getMessageID());
         payloadData.add(message.getDestination());
         payloadData.add(message.getMessageContentLength());
@@ -254,13 +232,11 @@ public class StatPublisherDataAgent {
         payloadData.add(subscribers);
         payloadData.add(getCurrentTimeStamp());
 
-
         return payloadData;
     }
 
     public List<Object> getAckStatsPayLoadData(AndesAckData message) throws Exception {
         List<Object> payloadData = new ArrayList<Object>(3);
-
         payloadData.add(message.messageID);
         payloadData.add(message.qName);
         payloadData.add(getCurrentTimeStamp());
@@ -271,11 +247,9 @@ public class StatPublisherDataAgent {
     private long getCurrentTimeStamp() {
 
         return System.currentTimeMillis();
-
     }
 
     private int getTotalSubscriptions() throws Exception {
-
         int totalSubscribers = 0;
         topics = getTopicList();
 
@@ -285,19 +259,13 @@ public class StatPublisherDataAgent {
         }
 
         return totalSubscribers;
-
     }
 
     private List<String> getTopicList() throws Exception {
-
         MessagingEngine messagingEngine = MessagingEngine.getInstance();
         subscriptionStore = messagingEngine.getSubscriptionStore();
         List<String> topics = subscriptionStore.getTopics();
 
         return topics;
-
-
     }
-
-
 }

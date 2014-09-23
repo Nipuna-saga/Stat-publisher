@@ -24,6 +24,7 @@ import org.wso2.andes.kernel.StatPublisherGetMessage;
 import org.wso2.carbon.stat.publisher.conf.MessageStat;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
+import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
 import org.wso2.carbon.stat.publisher.internal.ds.ServiceValueHolder;
 import org.wso2.carbon.stat.publisher.util.XMLConfigurationReader;
 
@@ -64,10 +65,8 @@ public class MessageStatPublisher implements StatPublisherGetMessage {
         try {
              streamConfiguration = xmlConfigurationReader.readStreamConfiguration();
         } catch (StatPublisherConfigurationException e) {
-            e.printStackTrace();
+            throw new StatPublisherRuntimeException(e);
         }
-
-
     }
 
     //get MessageStatPublisher instance
@@ -102,7 +101,7 @@ public class MessageStatPublisher implements StatPublisherGetMessage {
                 //add message stat object to message queue
                 messageQueue.put(messageStat);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                throw new StatPublisherRuntimeException(e);
             }
         }
 
@@ -110,8 +109,6 @@ public class MessageStatPublisher implements StatPublisherGetMessage {
         Runnable worker = new AsyncMessageStatPublisher(numberOfMessages,streamConfiguration);
         executor.execute(worker);
         numberOfMessages++;
-
-
     }
 
     /**
@@ -122,11 +119,8 @@ public class MessageStatPublisher implements StatPublisherGetMessage {
     public void getAckMessageDetails(AndesAckData andesAckData) {
 
         //get tenant domain of Ack message by splitting qName
-
         if (andesAckData.qName.split("/").length == 1) {
-
             domain = "carbon.super";
-
         } else {
             domain = andesAckData.qName.split("/")[0];
         }
@@ -140,7 +134,7 @@ public class MessageStatPublisher implements StatPublisherGetMessage {
                 //add message stat object to message queue
                 messageQueue.put(messageStat);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                throw new StatPublisherRuntimeException(e);
             }
         }
 
@@ -148,13 +142,10 @@ public class MessageStatPublisher implements StatPublisherGetMessage {
         Runnable worker = new AsyncMessageStatPublisher(numberOfAckMessages,streamConfiguration);
         executor.execute(worker);
         numberOfAckMessages++;
-
-
     }
 
     public BlockingQueue<MessageStat> getMessageQueue() {
         return messageQueue;
     }
-
 
 }

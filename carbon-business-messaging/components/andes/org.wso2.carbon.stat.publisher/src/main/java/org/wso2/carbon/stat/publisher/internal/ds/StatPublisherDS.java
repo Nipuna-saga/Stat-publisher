@@ -31,8 +31,6 @@ import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.utils.Axis2ConfigurationContextObserver;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
-//import org.wso2.carbon.stat.publisher.internal.ds.StatPublisherInterfaceImplementation;
-
 /**
  * @scr.component name="org.wso2.carbon.stat.publisher" immediate="true"
  * @scr.reference name="configurationContext.service"
@@ -47,16 +45,15 @@ import org.wso2.carbon.utils.ConfigurationContextService;
 
 public class StatPublisherDS {
 
-
     /**
      * Activate method in stat publisher bundle
      *
      * @param context - Component context
      * @throws StatPublisherConfigurationException
      */
-    protected void activate(ComponentContext context) throws StatPublisherConfigurationException, UserStoreException {
+    protected void activate(ComponentContext context)
+            throws StatPublisherConfigurationException, UserStoreException {
 
-        System.out.println("=====================Activating bundle=====================");
         StatPublisherManager statPublisherManager = new StatPublisherManager();
         ServiceValueHolder.getInstance().setStatPublisherManagerService(statPublisherManager);
 
@@ -64,16 +61,13 @@ public class StatPublisherDS {
         ServiceValueHolder.getInstance().getStatPublisherManagerService().
                 onCreate(CarbonContext.getThreadLocalCarbonContext().getTenantId());
 
-
-        System.out.println("=====================Activated bundle=====================");
-
-//set interface in andes StatPublisher to MessageStatPublisher for get messages and Ack messages
+        //set interface in andes StatPublisher to MessageStatPublisher for get messages and Ack messages
         MessagingEngine.getInstance().setStatPublisherGetMessageInterface(MessageStatPublisher.getInstance());
 
-//get Axis2ConfigurationContext services to get notification about changing configuration contexts
+        //get Axis2ConfigurationContext services to get notification about changing configuration contexts
         BundleContext bundleContext = context.getBundleContext();
         bundleContext.registerService(Axis2ConfigurationContextObserver.class.getName(),
-                new Axis2ConfigurationContextObserverImpl(), null);
+                                      new Axis2ConfigurationContextObserverImpl(), null);
 
     }
 
