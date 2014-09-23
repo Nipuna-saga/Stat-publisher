@@ -45,7 +45,7 @@ public class MbeansStats {
     private static long timeout = 100000;
     private MbeansStatsData mbeansStatsData;
     private static MbeansStats mbeansStats = null;
-
+    private static final Logger logger = Logger.getLogger(MbeansStats.class);
     public MbeansStats(JMXConfiguration jmxConfiguration)  {
 
         mbeansStatsData = new MbeansStatsData();
@@ -79,11 +79,11 @@ public class MbeansStats {
 
                 try {
                     Thread.sleep(2000);
-                    System.out.println("=========retrying ==================");
+                    logger.info("==============retrying==================");
                     createJMXConnection(jmxConfiguration , userName , password);
 
                 } catch (InterruptedException e1) {
-                    e1.printStackTrace();
+                    throw new StatPublisherRuntimeException(e1);
                 }
         }
     }

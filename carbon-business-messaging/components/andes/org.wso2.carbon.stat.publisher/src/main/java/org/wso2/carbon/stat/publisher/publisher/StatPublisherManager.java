@@ -19,7 +19,6 @@
 package org.wso2.carbon.stat.publisher.publisher;
 
 import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
-import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.wso2.carbon.stat.publisher.util.XMLConfigurationReader;
@@ -104,14 +103,15 @@ public class StatPublisherManager {
     }
 
     //This message use to get statPublisherConfiguration of specific tenant
-    public StatPublisherConfiguration getStatPublisherConfiguration(int tenantID) {
+    /*public StatPublisherConfiguration getStatPublisherConfiguration(int tenantID) {
         statPublisherObserver = statPublisherObserverHashMap.get(tenantID);
 
-    //TODO check sometimes this method will occur null pointer exception
+
         return statPublisherObserver.getStatPublisherConfiguration();
 
 
     }
+    */
 
     public StatPublisherObserver getStatPublisherObserver(int tenantID) {
         statPublisherObserver = statPublisherObserverHashMap.get(tenantID);

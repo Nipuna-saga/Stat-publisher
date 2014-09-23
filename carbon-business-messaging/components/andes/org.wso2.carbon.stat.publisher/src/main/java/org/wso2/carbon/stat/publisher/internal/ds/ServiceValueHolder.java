@@ -52,10 +52,10 @@ public class ServiceValueHolder {
      *
      * @return configuration context service of component
      */
-    public ConfigurationContextService getConfigurationContextService() {
+    /*public ConfigurationContextService getConfigurationContextService() {
         return configurationContextService;
     }
-
+*/
     /**
      * Set the configuration context of component
      * @param configurationContextService - configuration context of component
