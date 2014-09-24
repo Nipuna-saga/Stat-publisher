@@ -14,19 +14,15 @@ public class StreamDefinitionCreator {
     public static String serverStatsStreamName = "SYSTEM_STATISTICS_MB";
     public static String serverStatsNickName = "system_statistics";
     public static String serverStatsDescription = "Publish Message broker server statistics";
-
     public static String mbStatsStreamName = "MB_STATISTICS_MB";
     public static String mbStatsNickName = "MB_statistics";
     public static String mbStatsDescription = "Publish Message broker topic/subscriber statistics";
-
     public static String messageStatsStreamName = "MESSAGE_STATISTICS_MB";
     public static String messageStatsNickName = "message statistics";
     public static String messageStatsDescription = "Publish Message broker message statistics";
-
     public static String ackStatsStreamName = "ACK_STATISTICS_MB";
     public static String ackStatsNickName = "ack statistics";
     public static String ackStatsDescription = "Publish Message broker acknowledgement message statistics";
-
 
     public static StreamDefinition getServerStatsStreamDef(StreamConfiguration streamConfiguration) throws MalformedStreamDefinitionException {
         StreamDefinition streamDefinition = new StreamDefinition(serverStatsStreamName, streamConfiguration.getSystemStatisticStreamVersion());
@@ -79,7 +75,10 @@ public class StreamDefinitionCreator {
         return metaList;
     }
 
-    private static List<Attribute> getServerStatsPayloadDefinition() {
+    //TODO change all List in to arrays
+    private static List<Attribute> getServerStatsPayloadDefinition(){
+//import com.sun.management.OperatingSystemMXBean;
+//import sun.management.ManagementFactory;List<Attribute> getServerStatsPayloadDefinition() {
         List<Attribute> payloadList = new ArrayList<Attribute>(4);
         payloadList.add(new Attribute("heapMemoryUsage", AttributeType.STRING));
         payloadList.add(new Attribute("nonHeapMemoryUsage", AttributeType.STRING));
@@ -97,8 +96,6 @@ public class StreamDefinitionCreator {
 
         return payloadList;
     }
-
-
 
     private static List<Attribute> getMessageStatsPayloadDefinition() {
         List<Attribute> payloadList = new ArrayList<Attribute>(6);
@@ -120,4 +117,6 @@ public class StreamDefinitionCreator {
 
         return payloadList;
     }
+
+
 }

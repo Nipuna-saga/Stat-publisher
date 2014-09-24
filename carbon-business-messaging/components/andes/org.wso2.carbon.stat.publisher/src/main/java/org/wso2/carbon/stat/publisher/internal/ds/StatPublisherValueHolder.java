@@ -36,20 +36,25 @@ public class StatPublisherValueHolder {
     private StatPublisherValueHolder() {
     }
 
-
     /**
      * Set the configuration context of component
-     *
      * @param configurationContextService - configuration context of component
      */
     public static void setConfigurationContextService(
             ConfigurationContextService configurationContextService) {
-        this.configurationContextService = configurationContextService;
+        StatPublisherValueHolder.configurationContextService = configurationContextService;
+    }
+
+    /**
+     * Get configurationContext
+     * @return configurationContext
+     */
+    public static ConfigurationContextService getConfigurationContextService() {
+        return configurationContextService;
     }
 
     /**
      * Get registry service
-     *
      * @return registryService
      */
     public static RegistryService getRegistryService() {
@@ -58,16 +63,14 @@ public class StatPublisherValueHolder {
 
     /**
      * Initialize registry service
-     *
      * @param registryServiceParam - registry service
      */
     public static void setRegistryService(RegistryService registryServiceParam) {
-        this.registryService = registryServiceParam;
+        registryService = registryServiceParam;
     }
 
     /**
      * Get realmService
-     *
      * @return realmService
      */
     public static RealmService getRealmService() {
@@ -76,16 +79,14 @@ public class StatPublisherValueHolder {
 
     /**
      * Initialize realm service
-     *
      * @param realmServiceParam - Realm Service
      */
     public static void setRealmService(RealmService realmServiceParam) {
-        this.realmService = realmServiceParam;
+        StatPublisherValueHolder.realmService = realmServiceParam;
     }
 
     /**
      * Get StatPublisherManager instance
-     *
      * @return instance of statPublisherManager
      */
     public static StatPublisherManager getStatPublisherManager() {
@@ -94,15 +95,10 @@ public class StatPublisherValueHolder {
 
     /**
      * Set StatPublisherManager Service
-     *
      * @param statPublisherManager - StatPublisherManager instance
      */
-
-    //todo do this for all methods
     public static void setStatPublisherManager(StatPublisherManager statPublisherManager) {
         StatPublisherValueHolder.statPublisherManager = statPublisherManager;
-
-
     }
 
 }

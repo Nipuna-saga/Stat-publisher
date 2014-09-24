@@ -38,7 +38,6 @@ public class XMLConfigurationReader {
 
     private static final Logger logger = Logger.getLogger(XMLConfigurationReader.class);
 
-//todo convert all to static
     /**
      *Load xml files and read values
      */
