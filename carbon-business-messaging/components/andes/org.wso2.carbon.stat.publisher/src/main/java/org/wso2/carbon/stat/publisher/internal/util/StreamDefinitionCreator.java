@@ -29,7 +29,7 @@ public class StreamDefinitionCreator {
 
 
     public static StreamDefinition getServerStatsStreamDef(StreamConfiguration streamConfiguration) throws MalformedStreamDefinitionException {
-        StreamDefinition streamDefinition = new StreamDefinition(serverStatsStreamName, streamConfiguration.getVersionSystemStatistic());
+        StreamDefinition streamDefinition = new StreamDefinition(serverStatsStreamName, streamConfiguration.getSystemStatisticStreamVersion());
         streamDefinition.setDescription(serverStatsDescription);
         streamDefinition.setNickName(serverStatsNickName);
         streamDefinition.setMetaData(getMetaDefinitions());
@@ -40,7 +40,7 @@ public class StreamDefinitionCreator {
     }
 
     public static StreamDefinition getMBStatsStreamDef(StreamConfiguration streamConfiguration) throws MalformedStreamDefinitionException {
-        StreamDefinition streamDefinition = new StreamDefinition(mbStatsStreamName, streamConfiguration.getVersionMBStatistic());
+        StreamDefinition streamDefinition = new StreamDefinition(mbStatsStreamName, streamConfiguration.getMbStatisticStreamVersion());
         streamDefinition.setDescription(mbStatsDescription);
         streamDefinition.setNickName(mbStatsNickName);
         streamDefinition.setMetaData(getMetaDefinitions());
@@ -62,7 +62,7 @@ public class StreamDefinitionCreator {
     }
 
     public static StreamDefinition getAckStatsStreamDef(StreamConfiguration streamConfiguration) throws MalformedStreamDefinitionException {
-        StreamDefinition streamDefinition = new StreamDefinition(ackStatsStreamName, streamConfiguration.getVersionAck());
+        StreamDefinition streamDefinition = new StreamDefinition(ackStatsStreamName, streamConfiguration.getAcknowledgeStreamVersion());
         streamDefinition.setDescription(ackStatsDescription);
         streamDefinition.setNickName(ackStatsNickName);
         streamDefinition.setMetaData(getMetaDefinitions());

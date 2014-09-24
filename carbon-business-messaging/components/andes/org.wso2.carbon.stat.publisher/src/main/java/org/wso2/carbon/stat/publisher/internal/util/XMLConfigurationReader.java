@@ -23,6 +23,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
+import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.xml.sax.SAXException;
@@ -37,12 +38,11 @@ public class XMLConfigurationReader {
 
     private static final Logger logger = Logger.getLogger(XMLConfigurationReader.class);
 
-
 //todo convert all to static
     /**
      *Load xml files and read values
      */
-    public JMXConfiguration readJMXConfiguration() throws StatPublisherConfigurationException {
+    public static JMXConfiguration readJMXConfiguration() throws StatPublisherConfigurationException {
 
         JMXConfiguration jmxConfiguration=new JMXConfiguration();
         try {
@@ -63,12 +63,6 @@ public class XMLConfigurationReader {
                 String jmxRootNode = jmxDocument.getDocumentElement().getNodeName();
                 NodeList jmxDataList = jmxDocument.getElementsByTagName(jmxRootNode);
 
-               /* String startRMIServerValue =
-                        ((Element) jmxDataList.item(0)).getElementsByTagName("StartRMIServer").
-                                item(0).getChildNodes().item(0).getTextContent();
-                String nodeValue = startRMIServerValue.trim();
-                //jmxConfiguration.setStartRMIServer(Boolean.parseBoolean(nodeValue));
-*/
                 String hostNameValue =
                         ((Element) jmxDataList.item(0)).getElementsByTagName("HostName").
                                 item(0).getChildNodes().item(0).getTextContent();
@@ -94,11 +88,6 @@ public class XMLConfigurationReader {
                                     item(0).getChildNodes().item(0).getTextContent();
                     jmxConfiguration.setRmiRegistryPort(rmiRegistryPortValue.trim());
 
-                    String rmiServerPortValue =
-                            ((Element) carbonDataList.item(0)).getElementsByTagName("RMIServerPort").
-                                    item(0).getChildNodes().item(0).getTextContent();
-                    //jmxConfiguration.setRmiServerPort(rmiServerPortValue.trim());
-
                     String offSetValue =
                             ((Element) carbonDataList.item(0)).getElementsByTagName("Offset").
                                     item(0).getChildNodes().item(0).getTextContent();
@@ -118,9 +107,10 @@ public class XMLConfigurationReader {
     /**
      * Load mbStatConfiguration.xml and read values
      */
-    public StreamConfiguration readStreamConfiguration() throws StatPublisherConfigurationException {
+    public static StreamConfiguration readStreamConfiguration() throws StatPublisherConfigurationException {
 
-        StreamConfiguration streamConfiguration=new StreamConfiguration();
+        StreamConfiguration streamConfiguration = new StreamConfiguration();
+        StatPublisherConfiguration statPublisherConfiguration= new StatPublisherConfiguration();
         try {
             //Load mbStatConfiguration.xml file
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -147,17 +137,22 @@ public class XMLConfigurationReader {
                 String versionAckValue =
                         ((Element) dataList.item(0)).getElementsByTagName("versionAck").
                                 item(0).getChildNodes().item(0).getTextContent();
-                streamConfiguration.setVersionAck(versionAckValue.trim());
+                streamConfiguration.setAcknowledgeStreamVersion(versionAckValue.trim());
 
                 String versionSystemStatisticValue =
                         ((Element) dataList.item(0)).getElementsByTagName("versionSystemStatistic").
                                 item(0).getChildNodes().item(0).getTextContent();
-                streamConfiguration.setVersionSystemStatistic(versionSystemStatisticValue.trim());
+                streamConfiguration.setSystemStatisticStreamVersion(versionSystemStatisticValue.trim());
 
                 String versionMBStatisticValue =
                         ((Element) dataList.item(0)).getElementsByTagName("versionMBStatistic").
                                 item(0).getChildNodes().item(0).getTextContent();
-                streamConfiguration.setVersionMBStatistic(versionMBStatisticValue.trim());
+                streamConfiguration.setMbStatisticStreamVersion(versionMBStatisticValue.trim());
+
+                String timeIntervalValue =
+                        ((Element) dataList.item(0)).getElementsByTagName("timeInterval").
+                                item(0).getChildNodes().item(0).getTextContent();
+                statPublisherConfiguration.setTimeInterval(Integer.parseInt(timeIntervalValue.trim()));
             }
         } catch (ParserConfigurationException e) {
             throw new StatPublisherConfigurationException("Indicate configuration error!", e);

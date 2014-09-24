@@ -133,9 +133,7 @@ public class StatPublisherObserver {
             Thread timerTaskThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    //todo move to config file
-                    long timeInterval = 15000;
-                    timer.scheduleAtFixedRate(statPublisherTimerTask, new Date(), timeInterval);
+                    timer.scheduleAtFixedRate(statPublisherTimerTask, new Date(), statPublisherConfiguration.getTimeInterval() );
                 }
             });
             timerTaskThread.start();

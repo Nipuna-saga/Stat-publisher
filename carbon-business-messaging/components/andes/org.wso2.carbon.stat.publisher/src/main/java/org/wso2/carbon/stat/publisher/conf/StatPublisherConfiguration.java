@@ -19,7 +19,7 @@
 package org.wso2.carbon.stat.publisher.conf;
 
 /**
- * Statistic configuration values manage by user interface
+ * Statistic configuration values manage by user interface & relevant configurations
  */
 public class StatPublisherConfiguration {
 
@@ -27,15 +27,15 @@ public class StatPublisherConfiguration {
     private String username="";
     private String password="";
     private String url="";
-    //private int tenantID;
     private String nodeURL;
-
 
     //enable Stat publisher features (message,system and message broker)
     private boolean messageStatEnable=false;
     private boolean systemStatEnable=false;
     private boolean mbStatEnable =false;
 
+    //timeInterval for timerTask to publish statistics
+    private int timeInterval;
 
     /**
      * Get Username
@@ -149,4 +149,19 @@ public class StatPublisherConfiguration {
         this.nodeURL = nodeURL;
     }
 
+    /**
+     * Set value of timeInterval node
+     * @param timeInterval - int value
+     */
+    public void setTimeInterval(int timeInterval) {
+        this.timeInterval = timeInterval;
+    }
+
+    /**
+     * Get value of timeInterval node
+     * @return timeInterval
+     */
+    public int getTimeInterval() {
+        return timeInterval;
+    }
 }

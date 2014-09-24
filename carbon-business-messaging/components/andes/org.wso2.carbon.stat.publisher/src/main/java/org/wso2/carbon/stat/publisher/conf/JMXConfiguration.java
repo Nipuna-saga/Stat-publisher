@@ -55,7 +55,6 @@ public class JMXConfiguration {
      * Get value of hostName
      * @return hostName
      */
-    //todo check this
     public String getHostName() {
         return hostName;
     }
