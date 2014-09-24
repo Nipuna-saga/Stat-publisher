@@ -35,8 +35,6 @@ public class StatPublisherManager {
 
     private JMXConfiguration jmxConfiguration;
     private StreamConfiguration streamConfiguration;
-    private XMLConfigurationReader xmlConfigurationReader; //todo no need to create object
-
     private StatPublisherObserver statPublisherObserver;
     private HashMap<Integer, StatPublisherObserver> statPublisherObserverHashMap =
             new HashMap<Integer, StatPublisherObserver>();
@@ -48,9 +46,8 @@ public class StatPublisherManager {
     private HashSet<String> messageStatEnableMap = new HashSet<String>();
 
     public StatPublisherManager() throws StatPublisherConfigurationException {
-        xmlConfigurationReader = new XMLConfigurationReader();
-        jmxConfiguration = xmlConfigurationReader.readJMXConfiguration();
-        streamConfiguration = xmlConfigurationReader.readStreamConfiguration();
+        jmxConfiguration = XMLConfigurationReader.readJMXConfiguration();
+        streamConfiguration = XMLConfigurationReader.readStreamConfiguration();
     }
 
     /**

@@ -23,7 +23,6 @@ import org.wso2.andes.kernel.AndesMessageMetadata;
 
 public class MessageStat {
 
-
     private boolean message;
     private AndesMessageMetadata andesMessageMetadata;
     private int noOfSubscribers;

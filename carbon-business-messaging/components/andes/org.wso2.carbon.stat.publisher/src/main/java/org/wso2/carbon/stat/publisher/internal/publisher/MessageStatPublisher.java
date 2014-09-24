@@ -55,15 +55,12 @@ public class MessageStatPublisher implements StatPublisherGetMessage {
     private static int numberOfAckMessages = 0;
     MessageStat messageStat = new MessageStat();
     StreamConfiguration streamConfiguration;
-    XMLConfigurationReader xmlConfigurationReader;
-
     private String domain;
 
     //private constructor
     private MessageStatPublisher() {
-        xmlConfigurationReader = new XMLConfigurationReader();
         try {
-             streamConfiguration = xmlConfigurationReader.readStreamConfiguration();
+             streamConfiguration = XMLConfigurationReader.readStreamConfiguration();
         } catch (StatPublisherConfigurationException e) {
             throw new StatPublisherRuntimeException(e);
         }

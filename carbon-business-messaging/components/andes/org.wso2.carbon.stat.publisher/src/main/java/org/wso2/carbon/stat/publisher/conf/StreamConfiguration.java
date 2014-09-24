@@ -23,11 +23,10 @@ package org.wso2.carbon.stat.publisher.conf;
  */
 public class StreamConfiguration {
 
-    //todo change these names accoding to first name
     private String messageStreamVersion;
-    private String versionAck;
-    private String versionSystemStatistic;
-    private String versionMBStatistic;
+    private String acknowledgeStreamVersion;
+    private String systemStatisticStreamVersion;
+    private String mbStatisticStreamVersion;
 
     /**
      * Set value of message version
@@ -39,26 +38,26 @@ public class StreamConfiguration {
 
     /**
      * Set value of acknowledge packet version
-     * @param versionAck - String value
+     * @param acknowledgeStreamVersion - String value
      */
-    public void setVersionAck(String versionAck) {
-        this.versionAck = versionAck;
+    public void setAcknowledgeStreamVersion(String acknowledgeStreamVersion) {
+        this.acknowledgeStreamVersion = acknowledgeStreamVersion;
     }
 
     /**
      * Set value of system statistic version
-     * @param versionSystemStatistic - String value
+     * @param systemStatisticStreamVersion - String value
      */
-    public void setVersionSystemStatistic(String versionSystemStatistic) {
-        this.versionSystemStatistic = versionSystemStatistic;
+    public void setSystemStatisticStreamVersion(String systemStatisticStreamVersion) {
+        this.systemStatisticStreamVersion = systemStatisticStreamVersion;
     }
 
     /**
      * Set value of message broker statistic version
-     * @param versionMBStatistic - String value
+     * @param mbStatisticStreamVersion - String value
      */
-    public void setVersionMBStatistic(String versionMBStatistic) {
-        this.versionMBStatistic = versionMBStatistic;
+    public void setMbStatisticStreamVersion(String mbStatisticStreamVersion) {
+        this.mbStatisticStreamVersion = mbStatisticStreamVersion;
     }
 
     /**
@@ -71,25 +70,26 @@ public class StreamConfiguration {
 
     /**
      * Get acknowledge packet version
-     * @return versionAck
+     * @return acknowledgeStreamVersion
      */
-    public String getVersionAck() {
-        return versionAck;
+    public String getAcknowledgeStreamVersion() {
+        return acknowledgeStreamVersion;
     }
 
     /**
      * Get system statistic version
-     * @return versionSystemStatistic
+     * @return systemStatisticStreamVersion
      */
-    public String getVersionSystemStatistic() {
-        return versionSystemStatistic;
+    public String getSystemStatisticStreamVersion() {
+        return systemStatisticStreamVersion;
     }
 
     /**
      * Get message broker statistic version
-     * @return versionMBStatistic
+     * @return mbStatisticStreamVersion
      */
-    public String getVersionMBStatistic() {
-        return versionMBStatistic;
+    public String getMbStatisticStreamVersion() {
+        return mbStatisticStreamVersion;
     }
+
 }
