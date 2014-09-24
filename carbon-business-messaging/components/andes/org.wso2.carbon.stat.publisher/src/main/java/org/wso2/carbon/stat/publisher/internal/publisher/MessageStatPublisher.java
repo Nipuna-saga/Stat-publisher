@@ -106,6 +106,8 @@ public class MessageStatPublisher implements StatPublisherGetMessage {
         }
 
         //start a thread in from thread pool
+
+        //todo dont initialize this every time. do it only once
         Runnable worker = new AsyncMessageStatPublisher(numberOfMessages,streamConfiguration);
         executor.execute(worker);
         numberOfMessages++;
@@ -137,7 +139,7 @@ public class MessageStatPublisher implements StatPublisherGetMessage {
                 throw new StatPublisherRuntimeException(e);
             }
         }
-
+//todo dont initialize this every time. do it only once
         //start thread in from thread pool
         Runnable worker = new AsyncMessageStatPublisher(numberOfAckMessages,streamConfiguration);
         executor.execute(worker);
