@@ -45,11 +45,8 @@ public class StatPublisherDataAgent {
     private ArrayList<DataPublisherHolder> dataPublisherHolders;
     private String[] urls;
     private List<String> topics;
-    private JMXConfiguration jmxConfiguration;
-    private StreamConfiguration streamConfiguration;
     private StatPublisherConfiguration statPublisherConfiguration;
-    private SystemStatsReader mbeansStats = null;
-    private SystemStatsReader.SystemStatsData systemStatsData;
+    private SystemStatsReader systemStats = null;
     private StreamDefinition serverStatsStreamDef;
     private StreamDefinition mbStatsStreamDef;
     private StreamDefinition messageStatsStreamDef;
@@ -66,10 +63,8 @@ public class StatPublisherDataAgent {
                                   StatPublisherConfiguration statPublisherConfiguration) {
 
         //set configurations
-        this.jmxConfiguration = jmxConfiguration;
-        this.streamConfiguration = streamConfiguration;
-        this.statPublisherConfiguration = statPublisherConfiguration;
 
+        this.statPublisherConfiguration = statPublisherConfiguration;
 
         try {
             //creating stream definitions
@@ -102,20 +97,17 @@ public class StatPublisherDataAgent {
         loadBalancingDataPublisher.addStreamDefinition(mbStatsStreamDef);
         loadBalancingDataPublisher.addStreamDefinition(messageStatsStreamDef);
         loadBalancingDataPublisher.addStreamDefinition(ackStatsStreamDef);
+
+        metaData = constructMetaData();
+
+        //get server statistics
+        systemStats = new SystemStatsReader(jmxConfiguration);
     }
 
     public void sendSystemStats() throws MalformedObjectNameException, ReflectionException, IOException,
             InstanceNotFoundException, AttributeNotFoundException, MBeanException {
 
-        //todo move to constructor and rename as SystemStats
-        if (mbeansStats == null) {
-            mbeansStats = new SystemStatsReader(jmxConfiguration);
-        }
-
-        //get server statistics
-        //todo move to constuctor rename to constructMetaData
-        metaData = getMetaData();
-        payLoadData = getServerStatsPayLoadData(mbeansStats.getMbeansStatsData());
+        payLoadData = getServerStatsPayLoadData(systemStats.getMbeansStatsData());
 
         try {
             loadBalancingDataPublisher.publish(serverStatsStreamDef.getName(), serverStatsStreamDef.getVersion(),
@@ -128,7 +120,7 @@ public class StatPublisherDataAgent {
 
     public void sendMBStats() throws MalformedObjectNameException, ReflectionException, IOException,
             InstanceNotFoundException, AttributeNotFoundException, MBeanException {
-        metaData = getMetaData();
+
         try {
             payLoadData = getMBStatsPayLoadData();
         } catch (Exception e) {
@@ -149,7 +141,7 @@ public class StatPublisherDataAgent {
     public void sendMessageStats(AndesMessageMetadata message, int subscribers)
             throws MalformedObjectNameException, ReflectionException, IOException,
             InstanceNotFoundException, AttributeNotFoundException, MBeanException {
-        metaData = getMetaData();
+
         try {
             payLoadData = getMessageStatsPayLoadData(message, subscribers);
         } catch (Exception e) {
@@ -169,7 +161,7 @@ public class StatPublisherDataAgent {
             InstanceNotFoundException, AttributeNotFoundException, MBeanException {
 
 
-        metaData = getMetaData();
+
         try {
             payLoadData = getAckStatsPayLoadData(message);
         } catch (Exception e) {
@@ -196,18 +188,18 @@ public class StatPublisherDataAgent {
 
 
 //todo convert all lists to arrays
-    public List<Object> getMetaData() {
-        List<Object> metaData = new ArrayList<Object>(1);
+    public List<Object> constructMetaData() {
+        ArrayList<Object> metaData = new ArrayList<Object>(1);
 
         //todo check whether this value is correct or not
-       metaData.add("test");
+       metaData.add(statPublisherConfiguration.getNodeURL());
         return metaData;
     }
 
 
 
     public List<Object> getServerStatsPayLoadData(SystemStatsReader.SystemStatsData systemStatsData) {
-        List<Object> payloadData = new ArrayList<Object>(4);
+        ArrayList<Object> payloadData = new ArrayList<Object>(4);
         payloadData.add(systemStatsData.getHeapMemoryUsage());
         payloadData.add(systemStatsData.getNonHeapMemoryUsage());
         payloadData.add(systemStatsData.getCPULoadAverage());
@@ -217,7 +209,7 @@ public class StatPublisherDataAgent {
     }
 
     public List<Object> getMBStatsPayLoadData() throws Exception {
-        List<Object> payloadData = new ArrayList<Object>(3);
+        ArrayList<Object> payloadData = new ArrayList<Object>(3);
         payloadData.add(getTotalSubscriptions());
         payloadData.add(getTopicList().size());
         payloadData.add(getCurrentTimeStamp());
@@ -226,7 +218,7 @@ public class StatPublisherDataAgent {
     }
 
     public List<Object> getMessageStatsPayLoadData(AndesMessageMetadata message, int subscribers) throws Exception {
-        List<Object> payloadData = new ArrayList<Object>(6);
+        ArrayList<Object> payloadData = new ArrayList<Object>(6);
         payloadData.add(message.getMessageID());
         payloadData.add(message.getDestination());
         payloadData.add(message.getMessageContentLength());
@@ -238,7 +230,7 @@ public class StatPublisherDataAgent {
     }
 
     public List<Object> getAckStatsPayLoadData(AndesAckData message) throws Exception {
-        List<Object> payloadData = new ArrayList<Object>(3);
+        ArrayList<Object> payloadData = new ArrayList<Object>(3);
         payloadData.add(message.messageID);
         payloadData.add(message.qName);
         payloadData.add(getCurrentTimeStamp());
