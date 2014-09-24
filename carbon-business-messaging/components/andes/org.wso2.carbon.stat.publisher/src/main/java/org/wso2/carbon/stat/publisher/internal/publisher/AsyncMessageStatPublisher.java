@@ -70,6 +70,11 @@ public class AsyncMessageStatPublisher implements Runnable {
 
             statPublisherObserver= StatPublisherValueHolder.getStatPublisherManager().getStatPublisherObserver(tenantID);
             //check is it a message or Ack message
+
+
+         //TODO you can get StreamConfiguration and statPublisherConfiguration for Data Agent
+
+         //TODO add message statPublishing code here you can get message by using messageStat.getAndesMessag
             if (messageStat.isMessage()) {
                 try {
                     statPublisherObserver.statPublisherDataAgent.sendMessageStats(messageStat.getAndesMessageMetadata(),messageStat.getNoOfSubscribers());
