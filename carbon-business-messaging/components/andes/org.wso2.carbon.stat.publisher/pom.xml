@@ -47,7 +47,7 @@
             <artifactId>andes-broker</artifactId>
             <version>3.0.0-SNAPSHOT</version>
         </dependency>
-                <dependency>
+        <dependency>
             <groupId>org.wso2.andes.wso2</groupId>
             <artifactId>andes</artifactId>
             <version>3.0.0-SNAPSHOT</version>

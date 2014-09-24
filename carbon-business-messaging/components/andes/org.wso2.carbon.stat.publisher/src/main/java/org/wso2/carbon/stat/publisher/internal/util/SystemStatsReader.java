@@ -34,20 +34,14 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.util.Set;
 
-//import com.sun.management.OperatingSystemMXBean;
-//import sun.management.ManagementFactory;
-
 public class SystemStatsReader {
 
     private static JMXConnector jmxConnector;
     private static MBeanServerConnection connection = null;
     private static long timeout = 100000;
-
     private static SystemStatsReader mbeansStats = null;
     private static final Logger logger = Logger.getLogger(SystemStatsReader.class);
     public SystemStatsReader(JMXConfiguration jmxConfiguration)  {
-
-
 
         //get MB username and password
         UserRealm realm;
@@ -62,11 +56,9 @@ public class SystemStatsReader {
         }
         //create jmxConnection
         createJMXConnection(jmxConfiguration, userName, password);
-
     }
 
     private static void createJMXConnection(JMXConfiguration jmxConfiguration, String userName, String password){
-
         //get JMX port
         final int jmxPort = Integer.parseInt(jmxConfiguration.getRmiRegistryPort()) +
                 Integer.parseInt(jmxConfiguration.getOffSet());
@@ -75,7 +67,6 @@ public class SystemStatsReader {
                     jmxPort, userName, password);
             connection = jmxConnector.getMBeanServerConnection();
         } catch (Exception e) {
-
                 try {
                     Thread.sleep(2000);
                     logger.info("==============retrying==================");
@@ -98,7 +89,6 @@ public class SystemStatsReader {
 
     public String NonHeapMemoryUsage() throws MalformedObjectNameException, IOException, AttributeNotFoundException,
             MBeanException, ReflectionException, InstanceNotFoundException {
-
         Set<ObjectInstance> set = connection.queryMBeans(new ObjectName("java.lang:type=Memory"), null);
         ObjectInstance oi = set.iterator().next();
         Object attrValue_nonHeapMem = connection.getAttribute(oi.getObjectName(), "NonHeapMemoryUsage");
@@ -114,7 +104,6 @@ public class SystemStatsReader {
 
 
     public SystemStatsData getMbeansStatsData() throws MalformedObjectNameException, InstanceNotFoundException, IOException, ReflectionException, AttributeNotFoundException, MBeanException {
-
         SystemStatsData systemStatsData = new SystemStatsData();
         systemStatsData.setHeapMemoryUsage(HeapMemoryUsage());
         systemStatsData.setNonHeapMemoryUsage(NonHeapMemoryUsage());
@@ -124,7 +113,6 @@ public class SystemStatsReader {
     }
 
     public static class SystemStatsData {
-
         private String heapMemoryUsage;
         private String nonHeapMemoryUsage;
         private String CPULoadAverage;

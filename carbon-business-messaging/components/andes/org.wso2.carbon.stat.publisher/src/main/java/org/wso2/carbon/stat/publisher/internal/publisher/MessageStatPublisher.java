@@ -20,7 +20,7 @@ package org.wso2.carbon.stat.publisher.internal.publisher;
 
 import org.wso2.andes.kernel.AndesAckData;
 import org.wso2.andes.kernel.AndesMessageMetadata;
-import org.wso2.andes.kernel.StatPublisherGetMessage;
+import org.wso2.andes.kernel.StatPublisherMessageListener;
 import org.wso2.carbon.stat.publisher.conf.MessageStat;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
@@ -41,7 +41,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * messages and Ack messages hold in one queue in processing part they identify using boolean value of message variable
  */
 
-public class MessageStatPublisher implements StatPublisherGetMessage {
+public class MessageStatPublisher implements StatPublisherMessageListener {
 
 
     //This is the Queue that use to hold message details
@@ -77,7 +77,7 @@ public class MessageStatPublisher implements StatPublisherGetMessage {
      */
 
     @Override
-    public void getMessageDetails(AndesMessageMetadata andesMessageMetadata, int noOfSubscribers) {
+    public void sendMessageDetails(AndesMessageMetadata andesMessageMetadata, int noOfSubscribers) {
 
 //get tenant domain of message by splitting destination
         if (andesMessageMetadata.getDestination().split("/").length == 1) {
@@ -113,7 +113,7 @@ public class MessageStatPublisher implements StatPublisherGetMessage {
      * this method will handle Ack message stat publishing
      */
     @Override
-    public void getAckMessageDetails(AndesAckData andesAckData) {
+    public void sendAckMessageDetails(AndesAckData andesAckData) {
 
         //get tenant domain of Ack message by splitting qName
         if (andesAckData.qName.split("/").length == 1) {

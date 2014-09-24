@@ -59,12 +59,11 @@ public class StatPublisherDS {
 
         //create StatPublisherObserver for super tenant
 
-        //todo remove all getinstance()
         StatPublisherValueHolder.getStatPublisherManager().
                 createStatPublisherObserver(CarbonContext.getThreadLocalCarbonContext().getTenantId());
 
         //set interface in andes StatPublisher to MessageStatPublisher for get messages and Ack messages
-        MessagingEngine.getInstance().setStatPublisherGetMessageInterface(MessageStatPublisher.getInstance());
+        MessagingEngine.getInstance().setStatPublisherMessageListener(MessageStatPublisher.getInstance());
 
         //get Axis2ConfigurationContext services to get notification about changing configuration contexts
         BundleContext bundleContext = context.getBundleContext();
