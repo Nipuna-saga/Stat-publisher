@@ -38,7 +38,6 @@ import org.wso2.andes.tools.utils.DisruptorBasedExecutor;
 import java.nio.ByteBuffer;
 import java.util.*;
 
-
 /**
  * This class will handle all message related functions of WSO2 Message Broker
  */
@@ -52,14 +51,12 @@ public class MessagingEngine {
     private MessageIdGenerator messageIdGenerator;
     private ClusterConfiguration config;
     private final String ID_GENENRATOR = "idGenerator";
-    private StatPublisherGetMessage statPublisherGetMessage;
+    private StatPublisherMessageListener statPublisherMessageListener;
     private int noOfSubscribers = 0;
 
     //StatPublisher Interface set from StatPublisher Component
-    public void setStatPublisherGetMessageInterface(StatPublisherGetMessage statPublisherGetMessage) {
-
-        this.statPublisherGetMessage = statPublisherGetMessage;
-
+    public void setStatPublisherMessageListener(StatPublisherMessageListener statPublisherMessageListener) {
+        this.statPublisherMessageListener = statPublisherMessageListener;
     }
 
     public static synchronized MessagingEngine getInstance() {
@@ -76,7 +73,6 @@ public class MessagingEngine {
         config = ClusterResourceHolder.getInstance().getClusterConfiguration();
         configureMessageIDGenerator();
     }
-
 
     public MessageStore getCassandraBasedMessageStore() {
         return cassandraBasedMessageStore;
@@ -198,18 +194,17 @@ public class MessagingEngine {
         } catch (Exception e) {
             throw new AndesException("Error in storing the message to the store", e);
         }
-//
+
         //Check StatPublisher component activate or not
-        if (statPublisherGetMessage != null) {
-            statPublisherGetMessage.getMessageDetails(message, noOfSubscribers);
+        if (statPublisherMessageListener != null) {
+            statPublisherMessageListener.sendMessageDetails(message, noOfSubscribers);
         }
     }
 
-    public void ackReceived(AndesAckData ack) {
-
+     public void ackReceived(AndesAckData ack) {
         disruptorBasedExecutor.ackReceived(ack);
-        if (statPublisherGetMessage != null) {
-            statPublisherGetMessage.getAckMessageDetails(ack);}
+        if (statPublisherMessageListener != null) {
+            statPublisherMessageListener.sendAckMessageDetails(ack);}
     }
 
     public void messageReturned(List<AndesAckData> ackList) {
