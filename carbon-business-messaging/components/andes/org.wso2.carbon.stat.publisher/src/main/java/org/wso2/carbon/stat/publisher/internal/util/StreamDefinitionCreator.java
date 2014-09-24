@@ -1,14 +1,11 @@
 package org.wso2.carbon.stat.publisher.internal.util;
 
-
 import org.wso2.carbon.databridge.commons.Attribute;
 import org.wso2.carbon.databridge.commons.AttributeType;
 import org.wso2.carbon.databridge.commons.StreamDefinition;
 import org.wso2.carbon.databridge.commons.exception.MalformedStreamDefinitionException;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class StreamDefinitionCreator {
     public static String serverStatsStreamName = "SYSTEM_STATISTICS_MB";
@@ -68,18 +65,17 @@ public class StreamDefinitionCreator {
         return streamDefinition;
     }
 
-    private static List<Attribute> getMetaDefinitions() {
-        List<Attribute> metaList = new ArrayList<Attribute>(1);
+    private static ArrayList<Attribute> getMetaDefinitions() {
+        ArrayList<Attribute> metaList = new ArrayList<Attribute>(1);
         metaList.add(new Attribute("publisherIP", AttributeType.STRING));
 
         return metaList;
     }
 
     //TODO change all List in to arrays
-    private static List<Attribute> getServerStatsPayloadDefinition(){
-//import com.sun.management.OperatingSystemMXBean;
-//import sun.management.ManagementFactory;List<Attribute> getServerStatsPayloadDefinition() {
-        List<Attribute> payloadList = new ArrayList<Attribute>(4);
+    private static ArrayList<Attribute> getServerStatsPayloadDefinition(){
+
+        ArrayList<Attribute> payloadList = new ArrayList<Attribute>(4);
         payloadList.add(new Attribute("heapMemoryUsage", AttributeType.STRING));
         payloadList.add(new Attribute("nonHeapMemoryUsage", AttributeType.STRING));
         payloadList.add(new Attribute("cpuLoadAverage", AttributeType.STRING));
@@ -88,8 +84,8 @@ public class StreamDefinitionCreator {
         return payloadList;
     }
 
-    private static List<Attribute> getMBStatsPayloadDefinition() {
-        List<Attribute> payloadList = new ArrayList<Attribute>(3);
+    private static ArrayList<Attribute> getMBStatsPayloadDefinition() {
+        ArrayList<Attribute> payloadList = new ArrayList<Attribute>(3);
         payloadList.add(new Attribute("noOfSubscribers", AttributeType.INT));
         payloadList.add(new Attribute("noOfTopics", AttributeType.INT));
         payloadList.add(new Attribute("timestamp", AttributeType.LONG));
@@ -97,8 +93,8 @@ public class StreamDefinitionCreator {
         return payloadList;
     }
 
-    private static List<Attribute> getMessageStatsPayloadDefinition() {
-        List<Attribute> payloadList = new ArrayList<Attribute>(6);
+    private static ArrayList<Attribute> getMessageStatsPayloadDefinition() {
+        ArrayList<Attribute> payloadList = new ArrayList<Attribute>(6);
         payloadList.add(new Attribute("messageId", AttributeType.LONG));
         payloadList.add(new Attribute("destination", AttributeType.STRING));
         payloadList.add(new Attribute("messageContentLength", AttributeType.INT));
@@ -109,8 +105,8 @@ public class StreamDefinitionCreator {
         return payloadList;
     }
 
-    private static List<Attribute> getAckStatsPayloadDefinition() {
-        List<Attribute> payloadList = new ArrayList<Attribute>(3);
+    private static ArrayList<Attribute> getAckStatsPayloadDefinition() {
+        ArrayList<Attribute> payloadList = new ArrayList<Attribute>(3);
         payloadList.add(new Attribute("messageId", AttributeType.LONG));
         payloadList.add(new Attribute("queueName", AttributeType.STRING));
         payloadList.add(new Attribute("timestamp", AttributeType.LONG));
