@@ -81,6 +81,7 @@ public class StatPublisherDS {
      * @param context - Component context
      */
     protected void deactivate(ComponentContext context) {
+        //TODO remove message stat publisher thread
 
     }
 

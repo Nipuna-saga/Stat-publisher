@@ -33,9 +33,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
-
-//TODO need to remove umberOfMessages ,numberOfAckMessages variables because they use to identify number of messages going to our component
-
 /**
  * This class will handle message stat publishing all events
  * messages and Ack messages hold in one queue in processing part they identify using boolean value of message variable
@@ -44,34 +41,33 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class StatPublisherMessageListenerImpl implements StatPublisherMessageListener {
 
 
-    //This is the Queue that use to hold message details
+    //This is the Queue that use to hold message details//TODO get values from xml
     private static final int NumberOfQueueSlots = 20;
     public static BlockingQueue<MessageStat> messageQueue = new LinkedBlockingQueue<MessageStat>(NumberOfQueueSlots);
     //Thread pool
+    //TODO use 1 thread
     private static final int NumberOfThreads = 5;
-    private ExecutorService executor = Executors.newFixedThreadPool(NumberOfThreads);
+    private ExecutorService executorService = Executors.newFixedThreadPool(NumberOfThreads);
     private static StatPublisherMessageListenerImpl statPublisherMessageListenerImpl = new StatPublisherMessageListenerImpl();
+    private Runnable runnableWorker;
+    //MessageStat Object
+    private MessageStat messageStat = new MessageStat();
+    private StreamConfiguration streamConfiguration;
+    private String tenantDomain;
 
-    MessageStat messageStat = new MessageStat();
-    StreamConfiguration streamConfiguration;
-    private String domain;
-    private Runnable worker;
 
     //private constructor
     private StatPublisherMessageListenerImpl() {
         try {
             streamConfiguration = XMLConfigurationReader.readStreamConfiguration();
+
         } catch (StatPublisherConfigurationException e) {
+
             throw new StatPublisherRuntimeException(e);
-        }
-        try {
-            worker = new AsyncMessageStatPublisher(streamConfiguration);
-        } catch (Exception e) {
-
-            e.printStackTrace();
 
         }
 
+        runnableWorker = new AsyncMessageStatPublisher(streamConfiguration);
 
     }
 
@@ -88,34 +84,27 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
     @Override
     public void sendMessageDetails(AndesMessageMetadata andesMessageMetadata, int noOfSubscribers) {
 
-//get tenant domain of message by splitting destination
+//get tenant tenantDomain of message by splitting destination
         if (andesMessageMetadata.getDestination().split("/").length == 1) {
 
-            domain = "carbon.super";
+            tenantDomain = "carbon.super";
 
         } else {
-            domain = andesMessageMetadata.getDestination().split("/")[0];
+            tenantDomain = andesMessageMetadata.getDestination().split("/")[0];
         }
         //check message's tenant  activate or not message stat Publisher by checking MessageStatEnableMap
-        if (StatPublisherValueHolder.getStatPublisherManager().getMessageStatEnableMap().contains(domain)) {
-            try {
-                //if it's enable add message details to message stat object
-                messageStat.setAndesMessageMetadata(andesMessageMetadata);
-                messageStat.setDomain(domain);
-                messageStat.setNoOfSubscribers(noOfSubscribers);
-                messageStat.setMessage(true);
-                //add message stat object to message queue
-                messageQueue.put(messageStat);
-            } catch (InterruptedException e) {
-                throw new StatPublisherRuntimeException(e);
-            }
+        if (StatPublisherValueHolder.getStatPublisherManager().getMessageStatEnableMap().contains(tenantDomain)) {
+            //if it's enable add message details to message stat object
+            messageStat.setAndesMessageMetadata(andesMessageMetadata);
+            messageStat.setDomain(tenantDomain);
+            messageStat.setNoOfSubscribers(noOfSubscribers);
+            messageStat.setMessage(true);
+            //add message stat object to message queue
+            messageQueue.offer(messageStat);
         }
 
         //start a thread in from thread pool
-
-        //todo don't initialize this every time. do it only once
-        //  Runnable worker = new AsyncMessageStatPublisher(streamConfiguration);
-        executor.execute(worker);
+        executorService.execute(runnableWorker);
 
     }
 
@@ -126,29 +115,23 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
     @Override
     public void sendAckMessageDetails(AndesAckData andesAckData) {
 
-        //get tenant domain of Ack message by splitting qName
+        //get tenant tenantDomain of Ack message by splitting qName
         if (andesAckData.qName.split("/").length == 1) {
-            domain = "carbon.super";
+            tenantDomain = "carbon.super";
         } else {
-            domain = andesAckData.qName.split("/")[0];
+            tenantDomain = andesAckData.qName.split("/")[0];
         }
         //check message's tenant  activate or not message stat Publisher by checking MessageStatEnableMap
-        if (StatPublisherValueHolder.getStatPublisherManager().getMessageStatEnableMap().contains(domain)) {
-            try {
-                //if it's enable add message details to message stat object
-                messageStat.setAndesAckData(andesAckData);
-                messageStat.setDomain(domain);
-                messageStat.setMessage(false);
-                //add message stat object to message queue
-                messageQueue.put(messageStat);
-            } catch (InterruptedException e) {
-                throw new StatPublisherRuntimeException(e);
-            }
+        if (StatPublisherValueHolder.getStatPublisherManager().getMessageStatEnableMap().contains(tenantDomain)) {
+            //if it's enable add message details to message stat object
+            messageStat.setAndesAckData(andesAckData);
+            messageStat.setDomain(tenantDomain);
+            messageStat.setMessage(false);
+            //add message stat object to message queue
+             messageQueue.offer(messageStat);
         }
-//todo don't initialize this every time. do it only once
         //start thread in from thread pool
-        //  Runnable worker = new AsyncMessageStatPublisher(streamConfiguration);
-        executor.execute(worker);
+        executorService.execute(runnableWorker);
 
     }
 

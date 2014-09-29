@@ -21,10 +21,16 @@ package org.wso2.carbon.stat.publisher.internal.publisher;
 
 import org.wso2.carbon.stat.publisher.conf.MessageStat;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
+import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
+import org.wso2.carbon.stat.publisher.internal.ds.StatPublisherValueHolder;
+
 import org.wso2.carbon.user.api.TenantManager;
+import org.wso2.carbon.user.api.UserStoreException;
 
+import javax.management.*;
+import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
-
+//TODO messageStatPublisher
 public class AsyncMessageStatPublisher implements Runnable {
 
     private MessageStat messageStat;
@@ -43,12 +49,13 @@ public class AsyncMessageStatPublisher implements Runnable {
 
     @Override
     public void run() {
-/*
+
         //check message Queue has any object
+        //TODO always true
         while (messageQueue.size() > 0) {
             try {
                 //get object from queue
-                messageStat = StatPublisherMessageListenerImpl.getInstance().getMessageQueue().take();
+                messageStat = messageQueue.take();
             } catch (InterruptedException e) {
                 throw new StatPublisherRuntimeException(e);
             }
@@ -68,7 +75,7 @@ public class AsyncMessageStatPublisher implements Runnable {
 
             //TODO you can get StreamConfiguration and statPublisherConfiguration for Data Agent
 
-            //TODO add message statPublishing code here you can get message by using messageStat.getAndesMessag
+            //TODO add message statPublishing code here you can get message by using messageStat.getAndesMessage
             if (messageStat.isMessage()) {
                 try {
                     statPublisherObserver.statPublisherDataAgent.sendMessageStats(messageStat.getAndesMessageMetadata(),
@@ -112,7 +119,7 @@ public class AsyncMessageStatPublisher implements Runnable {
 
             }
 
-        }*/
+        }
     }
 
 }

@@ -101,12 +101,20 @@ public class StatPublisherDataAgent {
         metaData = constructMetaData();
 
         //get server statistics
+        //TODO System Stat Reader implent using thread and set to systemStat while set it remain as null
+        Thread t=new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        } );
+        t.start();
         systemStats = new SystemStatsReader(jmxConfiguration);
     }
 
     public void sendSystemStats() throws MalformedObjectNameException, ReflectionException, IOException,
             InstanceNotFoundException, AttributeNotFoundException, MBeanException {
-
+//TODO check null/not null of systemStat
         payLoadData = getServerStatsPayLoadData(systemStats.getMbeansStatsData());
 
         try {

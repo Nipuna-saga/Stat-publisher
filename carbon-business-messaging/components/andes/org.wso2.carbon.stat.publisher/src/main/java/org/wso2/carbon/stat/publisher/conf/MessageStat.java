@@ -23,6 +23,7 @@ import org.wso2.andes.kernel.AndesMessageMetadata;
 
 public class MessageStat {
 
+    //This boolean value use to determine it's a message or Ack message
     private boolean message;
     private AndesMessageMetadata andesMessageMetadata;
     private AndesAckData andesAckData;
@@ -37,9 +38,13 @@ public class MessageStat {
         this.andesAckData = andesAckData;
     }
 
+    //If it is message stat return true ,If it is Ack message stat return false
+
     public boolean isMessage() {
         return message;
     }
+
+    //If it is message stat set as true ,If it is Ack message stat set as false
 
     public void setMessage(boolean message) {
         this.message = message;

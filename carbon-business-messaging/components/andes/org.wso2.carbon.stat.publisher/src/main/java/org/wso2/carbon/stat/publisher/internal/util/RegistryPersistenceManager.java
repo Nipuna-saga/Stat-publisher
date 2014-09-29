@@ -29,6 +29,7 @@ import org.wso2.carbon.utils.xml.StringUtils;
 /**
  * Handle registry while store and retrieve data sent from User Interface
  */
+//Todo make it static
 public class RegistryPersistenceManager {
 
     /**
