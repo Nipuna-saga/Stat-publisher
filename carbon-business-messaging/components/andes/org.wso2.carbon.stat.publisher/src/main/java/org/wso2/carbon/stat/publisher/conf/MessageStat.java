@@ -25,9 +25,9 @@ public class MessageStat {
 
     private boolean message;
     private AndesMessageMetadata andesMessageMetadata;
+    private AndesAckData andesAckData;
     private int noOfSubscribers;
     private String domain;
-    private AndesAckData andesAckData;
 
     public AndesAckData getAndesAckData() {
         return andesAckData;

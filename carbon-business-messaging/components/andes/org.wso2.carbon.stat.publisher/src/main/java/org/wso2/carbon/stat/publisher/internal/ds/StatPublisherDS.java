@@ -24,7 +24,7 @@ import org.wso2.andes.kernel.MessagingEngine;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
-import org.wso2.carbon.stat.publisher.internal.publisher.MessageStatPublisher;
+import org.wso2.carbon.stat.publisher.internal.publisher.StatPublisherMessageListenerImpl;
 import org.wso2.carbon.stat.publisher.internal.publisher.StatPublisherManager;
 import org.wso2.carbon.user.api.UserStoreException;
 import org.wso2.carbon.user.core.service.RealmService;
@@ -66,7 +66,7 @@ public class StatPublisherDS {
                 createStatPublisherObserver(CarbonContext.getThreadLocalCarbonContext().getTenantId());
 
         //set interface in andes StatPublisher to MessageStatPublisher for get messages and Ack messages
-        MessagingEngine.getInstance().setStatPublisherMessageListener(MessageStatPublisher.getInstance());
+        MessagingEngine.getInstance().setStatPublisherMessageListener(StatPublisherMessageListenerImpl.getInstance());
 
         //get Axis2ConfigurationContext services to get notification about changing configuration contexts
         BundleContext bundleContext = context.getBundleContext();

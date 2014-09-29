@@ -60,9 +60,9 @@ public class StatPublisherObserver {
         registryPersistenceManager = new RegistryPersistenceManager();
         this.statPublisherConfiguration = registryPersistenceManager.loadConfigurationData(tenantID);
         if (statPublisherConfiguration.isSystemStatEnable() || statPublisherConfiguration.isMbStatEnable()
-                || statPublisherConfiguration.isMessageStatEnable()) {
-            statPublisherDataAgent =
-                    new StatPublisherDataAgent(jmxConfiguration, streamConfiguration, statPublisherConfiguration);
+                ) {
+           // statPublisherDataAgent =
+             //       new StatPublisherDataAgent(jmxConfiguration, streamConfiguration, statPublisherConfiguration);
         }
 
     }

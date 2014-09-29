@@ -33,7 +33,6 @@ public final class StatPublisherConstants {
     public static final String SYSTEM_STAT_ENABLE = "systemStatEnable";
     public static final String MEDIATION_STATISTICS_REG_PATH =
             RegistryResources.COMPONENTS + "org.wso2.carbon.stat.publisher"+File.separator+"messageBrokerStats"+File.separator;
-    public static final String PREFIX_FOR_REGISTRY_HIDDEN_PROPERTIES="registry.";
     public static final String JMX_XML = "jmx.xml";
     public static final String CARBON_XML = "carbon.xml";
     public static final String STAT_CONF_XML = "mbStatConfiguration.xml";

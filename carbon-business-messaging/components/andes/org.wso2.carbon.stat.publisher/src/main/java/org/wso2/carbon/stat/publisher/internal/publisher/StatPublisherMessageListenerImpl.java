@@ -41,34 +41,43 @@ import java.util.concurrent.LinkedBlockingQueue;
  * messages and Ack messages hold in one queue in processing part they identify using boolean value of message variable
  */
 
-public class MessageStatPublisher implements StatPublisherMessageListener {
+public class StatPublisherMessageListenerImpl implements StatPublisherMessageListener {
 
 
     //This is the Queue that use to hold message details
     private static final int NumberOfQueueSlots = 20;
-    private BlockingQueue<MessageStat> messageQueue = new LinkedBlockingQueue<MessageStat>(NumberOfQueueSlots);
+    public static BlockingQueue<MessageStat> messageQueue = new LinkedBlockingQueue<MessageStat>(NumberOfQueueSlots);
     //Thread pool
     private static final int NumberOfThreads = 5;
     private ExecutorService executor = Executors.newFixedThreadPool(NumberOfThreads);
-    private static MessageStatPublisher messageStatPublisher = new MessageStatPublisher();
-    private static int numberOfMessages = 0;
-    private static int numberOfAckMessages = 0;
+    private static StatPublisherMessageListenerImpl statPublisherMessageListenerImpl = new StatPublisherMessageListenerImpl();
+
     MessageStat messageStat = new MessageStat();
     StreamConfiguration streamConfiguration;
     private String domain;
+    private Runnable worker;
 
     //private constructor
-    private MessageStatPublisher() {
+    private StatPublisherMessageListenerImpl() {
         try {
-             streamConfiguration = XMLConfigurationReader.readStreamConfiguration();
+            streamConfiguration = XMLConfigurationReader.readStreamConfiguration();
         } catch (StatPublisherConfigurationException e) {
             throw new StatPublisherRuntimeException(e);
         }
+        try {
+            worker = new AsyncMessageStatPublisher(streamConfiguration);
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+
     }
 
     //get MessageStatPublisher instance
-    public static MessageStatPublisher getInstance() {
-        return messageStatPublisher;
+    public static StatPublisherMessageListenerImpl getInstance() {
+        return statPublisherMessageListenerImpl;
     }
 
     /**
@@ -104,10 +113,10 @@ public class MessageStatPublisher implements StatPublisherMessageListener {
 
         //start a thread in from thread pool
 
-        //todo dont initialize this every time. do it only once
-        Runnable worker = new AsyncMessageStatPublisher(numberOfMessages,streamConfiguration);
+        //todo don't initialize this every time. do it only once
+        //  Runnable worker = new AsyncMessageStatPublisher(streamConfiguration);
         executor.execute(worker);
-        numberOfMessages++;
+
     }
 
     /**
@@ -136,15 +145,12 @@ public class MessageStatPublisher implements StatPublisherMessageListener {
                 throw new StatPublisherRuntimeException(e);
             }
         }
-//todo dont initialize this every time. do it only once
+//todo don't initialize this every time. do it only once
         //start thread in from thread pool
-        Runnable worker = new AsyncMessageStatPublisher(numberOfAckMessages,streamConfiguration);
+        //  Runnable worker = new AsyncMessageStatPublisher(streamConfiguration);
         executor.execute(worker);
-        numberOfAckMessages++;
+
     }
 
-    public BlockingQueue<MessageStat> getMessageQueue() {
-        return messageQueue;
-    }
 
 }

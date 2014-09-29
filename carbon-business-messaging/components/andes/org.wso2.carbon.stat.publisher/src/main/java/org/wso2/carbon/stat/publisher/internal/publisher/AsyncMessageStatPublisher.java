@@ -21,13 +21,8 @@ package org.wso2.carbon.stat.publisher.internal.publisher;
 
 import org.wso2.carbon.stat.publisher.conf.MessageStat;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
-import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
-import org.wso2.carbon.stat.publisher.internal.ds.StatPublisherValueHolder;
 import org.wso2.carbon.user.api.TenantManager;
-import org.wso2.carbon.user.api.UserStoreException;
 
-import javax.management.*;
-import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 
 public class AsyncMessageStatPublisher implements Runnable {
@@ -36,13 +31,11 @@ public class AsyncMessageStatPublisher implements Runnable {
     private int tenantID;
     private StatPublisherObserver statPublisherObserver;
     private TenantManager tenantManager;
-    private BlockingQueue<MessageStat> messageQueue = MessageStatPublisher.getInstance().getMessageQueue();
-    int msg;
+    private BlockingQueue<MessageStat> messageQueue = StatPublisherMessageListenerImpl.messageQueue;
 
 
-    public AsyncMessageStatPublisher(int msg, StreamConfiguration streamConfiguration) {
+    public AsyncMessageStatPublisher(StreamConfiguration streamConfiguration) {
 //TODO need to remove msg variable it's just use for testing purposes
-        this.msg = msg;
         StreamConfiguration streamConfiguration1 = streamConfiguration;
         //this.statPublisherDataAgent=statPublisherDataAgent;
     }
@@ -50,12 +43,12 @@ public class AsyncMessageStatPublisher implements Runnable {
 
     @Override
     public void run() {
-
+/*
         //check message Queue has any object
-     while (messageQueue.size() > 0) {
+        while (messageQueue.size() > 0) {
             try {
                 //get object from queue
-                messageStat = MessageStatPublisher.getInstance().getMessageQueue().take();
+                messageStat = StatPublisherMessageListenerImpl.getInstance().getMessageQueue().take();
             } catch (InterruptedException e) {
                 throw new StatPublisherRuntimeException(e);
             }
@@ -68,16 +61,18 @@ public class AsyncMessageStatPublisher implements Runnable {
                 throw new StatPublisherRuntimeException(e);
             }
 
-            statPublisherObserver= StatPublisherValueHolder.getStatPublisherManager().getStatPublisherObserver(tenantID);
+            statPublisherObserver = StatPublisherValueHolder.getStatPublisherManager().
+                    getStatPublisherObserver(tenantID);
             //check is it a message or Ack message
 
 
-         //TODO you can get StreamConfiguration and statPublisherConfiguration for Data Agent
+            //TODO you can get StreamConfiguration and statPublisherConfiguration for Data Agent
 
-         //TODO add message statPublishing code here you can get message by using messageStat.getAndesMessag
+            //TODO add message statPublishing code here you can get message by using messageStat.getAndesMessag
             if (messageStat.isMessage()) {
                 try {
-                    statPublisherObserver.statPublisherDataAgent.sendMessageStats(messageStat.getAndesMessageMetadata(),messageStat.getNoOfSubscribers());
+                    statPublisherObserver.statPublisherDataAgent.sendMessageStats(messageStat.getAndesMessageMetadata(),
+                            messageStat.getNoOfSubscribers());
                 } catch (MalformedObjectNameException e) {
                     throw new StatPublisherRuntimeException(e);
                 } catch (ReflectionException e) {
@@ -95,8 +90,7 @@ public class AsyncMessageStatPublisher implements Runnable {
             } else {
 
 
-
-                System.out.print(msg + "+++++++++++++++++++++++ Message Ack Stat Publisher Activated" +
+                System.out.print("+++++++++++++++++++++++ Message Ack Stat Publisher Activated" +
                         Thread.currentThread().getName());
 
                 try {
@@ -118,7 +112,7 @@ public class AsyncMessageStatPublisher implements Runnable {
 
             }
 
-        }
+        }*/
     }
 
 }
