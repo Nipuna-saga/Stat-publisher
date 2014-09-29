@@ -34,9 +34,6 @@ public class StatPublisherConfiguration {
     private boolean systemStatEnable=false;
     private boolean mbStatEnable =false;
 
-    //timeInterval for timerTask to publish statistics
-    private int timeInterval;
-
     /**
      * Get Username
      * @return username
@@ -149,19 +146,4 @@ public class StatPublisherConfiguration {
         this.nodeURL = nodeURL;
     }
 
-    /**
-     * Set value of timeInterval node
-     * @param timeInterval - int value
-     */
-    public void setTimeInterval(int timeInterval) {
-        this.timeInterval = timeInterval;
-    }
-
-    /**
-     * Get value of timeInterval node
-     * @return timeInterval
-     */
-    public int getTimeInterval() {
-        return timeInterval;
-    }
 }

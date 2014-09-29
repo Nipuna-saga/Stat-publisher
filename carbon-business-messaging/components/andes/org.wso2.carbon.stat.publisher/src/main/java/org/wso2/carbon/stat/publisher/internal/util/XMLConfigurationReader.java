@@ -23,7 +23,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
-import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.xml.sax.SAXException;
@@ -109,7 +108,6 @@ public class XMLConfigurationReader {
     public static StreamConfiguration readStreamConfiguration() throws StatPublisherConfigurationException {
 
         StreamConfiguration streamConfiguration = new StreamConfiguration();
-        StatPublisherConfiguration statPublisherConfiguration= new StatPublisherConfiguration();
         try {
             //Load mbStatConfiguration.xml file
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -151,7 +149,7 @@ public class XMLConfigurationReader {
                 String timeIntervalValue =
                         ((Element) dataList.item(0)).getElementsByTagName("timeInterval").
                                 item(0).getChildNodes().item(0).getTextContent();
-                statPublisherConfiguration.setTimeInterval(Integer.parseInt(timeIntervalValue.trim()));
+                streamConfiguration.setTimeInterval(Integer.parseInt(timeIntervalValue.trim()));
             }
         } catch (ParserConfigurationException e) {
             throw new StatPublisherConfigurationException("Indicate configuration error!", e);

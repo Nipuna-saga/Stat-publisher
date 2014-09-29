@@ -51,10 +51,12 @@ public class StatPublisherObserver {
     private TimerTask statPublisherTimerTask;
     private String tenantDomain = null;
     private int tenantID;
+    private StreamConfiguration streamConfiguration;
 
     public StatPublisherObserver(JMXConfiguration jmxConfiguration, StreamConfiguration streamConfiguration,
                                  int tenantID) throws StatPublisherConfigurationException {
         this.tenantID = tenantID;
+        this.streamConfiguration=streamConfiguration;
         registryPersistenceManager = new RegistryPersistenceManager();
         this.statPublisherConfiguration = registryPersistenceManager.loadConfigurationData(tenantID);
         if (statPublisherConfiguration.isSystemStatEnable() || statPublisherConfiguration.isMbStatEnable()
@@ -133,7 +135,7 @@ public class StatPublisherObserver {
             Thread timerTaskThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    timer.scheduleAtFixedRate(statPublisherTimerTask, new Date(), statPublisherConfiguration.getTimeInterval() );
+                    timer.scheduleAtFixedRate(statPublisherTimerTask, new Date(),streamConfiguration.getTimeInterval() );
                 }
             });
             timerTaskThread.start();

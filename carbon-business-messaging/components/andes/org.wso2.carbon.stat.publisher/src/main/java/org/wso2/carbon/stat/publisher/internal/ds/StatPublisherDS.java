@@ -57,6 +57,9 @@ public class StatPublisherDS {
         StatPublisherManager statPublisherManager = new StatPublisherManager();
         StatPublisherValueHolder.setStatPublisherManager(statPublisherManager);
 
+
+        System.out.print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
         //create StatPublisherObserver for super tenant
 
         StatPublisherValueHolder.getStatPublisherManager().
