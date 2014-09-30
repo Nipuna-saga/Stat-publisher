@@ -1,6 +1,6 @@
 {
   "streamId": "MESSAGE_STATISTICS_MB:1.0.0",
-  "name": "MESSAGE_STATISTICS",
+  "name": "MESSAGE_STATISTICS_MB",
   "version": "1.0.0",
   "nickName": "message statistics",
   "description": "Publish Message broker message statistics",
