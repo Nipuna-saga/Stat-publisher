@@ -28,9 +28,6 @@ public class StreamConfiguration {
     private String systemStatisticStreamVersion;
     private String mbStatisticStreamVersion;
 
-    //timeInterval for timerTask to publish statistics
-    private int timeInterval;
-
     /**
      * Set value of message version
      * @param messageStreamVersion - String value
@@ -95,20 +92,5 @@ public class StreamConfiguration {
         return mbStatisticStreamVersion;
     }
 
-    /**
-     * Set value of timeInterval node
-     * @param timeInterval - int value
-     */
-    public void setTimeInterval(int timeInterval) {
-        this.timeInterval = timeInterval;
-    }
-
-    /**
-     * Get value of timeInterval node
-     * @return timeInterval
-     */
-    public int getTimeInterval() {
-        return timeInterval;
-    }
 
 }

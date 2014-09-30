@@ -19,7 +19,10 @@
 package org.wso2.carbon.stat.publisher.internal.publisher;
 
 import org.apache.log4j.Logger;
+
 import org.wso2.carbon.databridge.agent.thrift.exception.AgentException;
+
+
 import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
@@ -27,6 +30,7 @@ import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationExcept
 import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
 import org.wso2.carbon.stat.publisher.internal.ds.StatPublisherValueHolder;
 import org.wso2.carbon.stat.publisher.internal.util.RegistryPersistenceManager;
+import org.wso2.carbon.stat.publisher.internal.util.XMLConfigurationReader;
 import org.wso2.carbon.user.api.UserStoreException;
 import org.wso2.carbon.user.core.tenant.TenantManager;
 
@@ -51,12 +55,10 @@ public class StatPublisherObserver {
     private TimerTask statPublisherTimerTask;
     private String tenantDomain = null;
     private int tenantID;
-    private StreamConfiguration streamConfiguration;
 
     public StatPublisherObserver(JMXConfiguration jmxConfiguration, StreamConfiguration streamConfiguration,
                                  int tenantID) throws StatPublisherConfigurationException {
         this.tenantID = tenantID;
-        this.streamConfiguration=streamConfiguration;
         this.statPublisherConfiguration = RegistryPersistenceManager.loadConfigurationData(tenantID);
         if (statPublisherConfiguration.isSystemStatEnable() || statPublisherConfiguration.isMbStatEnable()
                 ) {
@@ -91,8 +93,10 @@ public class StatPublisherObserver {
                         try {
 
 
+
                                 statPublisherDataAgent.sendSystemStats();
                             logger.info("Sent system stats");
+
 
                         } catch (MalformedObjectNameException e) {
                            throw  new StatPublisherRuntimeException("Fail to send system stats", e);
@@ -143,7 +147,12 @@ public class StatPublisherObserver {
             Thread timerTaskThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    timer.scheduleAtFixedRate(statPublisherTimerTask, new Date(),streamConfiguration.getTimeInterval() );
+                    try {
+                        timer.scheduleAtFixedRate(statPublisherTimerTask, new Date(), XMLConfigurationReader.readGeneralConfiguration().getTimeInterval());
+                    } catch (StatPublisherConfigurationException e) {
+                        logger.error("Exception in TimerTask initialization"+e);
+                        throw new StatPublisherRuntimeException(e);
+                    }
                 }
             });
             timerTaskThread.start();

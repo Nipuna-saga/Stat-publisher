@@ -35,30 +35,49 @@ import java.util.concurrent.LinkedBlockingQueue;
  * This class will handle message stat publishing all events
  * messages and Ack messages hold in one queue in processing part they identify using boolean value of message variable
  */
+
 public class StatPublisherMessageListenerImpl implements StatPublisherMessageListener {
 
     //This is the Queue that use to hold message details//TODO get values from xml
     private static final int NumberOfQueueSlots = 20;
-    public static BlockingQueue<MessageStatistic> messageQueue = new LinkedBlockingQueue<MessageStatistic>(NumberOfQueueSlots);
+
     //Thread
     public static Thread messageStatPublisherThread;
+
     //TODO use 1 thread
     private static StatPublisherMessageListenerImpl statPublisherMessageListenerImpl = new StatPublisherMessageListenerImpl();
+    //This is the Queue that use to hold message details
+
+    public static BlockingQueue<MessageStatistic> messageQueue;
     //MessageStat Object
+
     private MessageStatistic messageStatistic = new MessageStatistic();
     private StreamConfiguration streamConfiguration;
     private String tenantDomain;
 
+
+
     //private constructor
     private StatPublisherMessageListenerImpl() {
+        StreamConfiguration streamConfiguration;
         try {
+
             streamConfiguration = XMLConfigurationReader.readStreamConfiguration();
         } catch (StatPublisherConfigurationException e) {
             throw new StatPublisherRuntimeException(e);
         }
+        int NumberOfQueueSlots = 0;
+        try {
+            NumberOfQueueSlots = XMLConfigurationReader.readGeneralConfiguration().getNumberOfQueueSlots();
+        } catch (StatPublisherConfigurationException e) {
+            e.printStackTrace();
+        }
+        messageQueue = new LinkedBlockingQueue<MessageStatistic>(NumberOfQueueSlots);
         // Start Message stat publisher thread
         messageStatPublisherThread = new Thread(new AsyncMessageStatPublisher(streamConfiguration));
         messageStatPublisherThread.start();
+
+
     }
 
     //get MessageStatPublisher instance
