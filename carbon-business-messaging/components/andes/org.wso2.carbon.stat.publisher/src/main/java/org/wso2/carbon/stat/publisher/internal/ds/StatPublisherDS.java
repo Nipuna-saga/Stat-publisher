@@ -59,7 +59,6 @@ public class StatPublisherDS {
         StatPublisherValueHolder.setStatPublisherManager(statPublisherManager);
 
 
-
         //create StatPublisherObserver for super tenant
 
         StatPublisherValueHolder.getStatPublisherManager().
@@ -71,7 +70,7 @@ public class StatPublisherDS {
         //get Axis2ConfigurationContext services to get notification about changing configuration contexts
         BundleContext bundleContext = context.getBundleContext();
         bundleContext.registerService(Axis2ConfigurationContextObserver.class.getName(),
-                                      new Axis2ConfigurationContextObserverImpl(), null);
+                new Axis2ConfigurationContextObserverImpl(), null);
 
     }
 
@@ -81,8 +80,8 @@ public class StatPublisherDS {
      * @param context - Component context
      */
     protected void deactivate(ComponentContext context) {
-        //TODO remove message stat publisher thread
-
+        if (StatPublisherMessageListenerImpl.messageStatPublisherThread.isAlive())
+            StatPublisherMessageListenerImpl.messageStatPublisherThread.stop();
     }
 
     /**

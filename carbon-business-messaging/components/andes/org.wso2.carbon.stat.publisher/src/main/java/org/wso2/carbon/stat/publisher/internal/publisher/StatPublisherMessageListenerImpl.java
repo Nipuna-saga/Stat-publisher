@@ -18,6 +18,7 @@
 
 package org.wso2.carbon.stat.publisher.internal.publisher;
 
+import org.apache.log4j.Logger;
 import org.wso2.andes.kernel.AndesAckData;
 import org.wso2.andes.kernel.AndesMessageMetadata;
 import org.wso2.andes.kernel.StatPublisherMessageListener;
@@ -37,29 +38,26 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 
 public class StatPublisherMessageListenerImpl implements StatPublisherMessageListener {
-
-    //This is the Queue that use to hold message details//TODO get values from xml
-    private static final int NumberOfQueueSlots = 20;
-
-    //Thread
+    private static final Logger logger = Logger.getLogger(StatPublisherMessageListenerImpl.class);
+    //Thread that use to publish message stats
     public static Thread messageStatPublisherThread;
 
-    //TODO use 1 thread
-    private static StatPublisherMessageListenerImpl statPublisherMessageListenerImpl = new StatPublisherMessageListenerImpl();
-    //This is the Queue that use to hold message details
+    private static StatPublisherMessageListenerImpl statPublisherMessageListenerImpl =
 
+            new StatPublisherMessageListenerImpl();
+    //This is the Queue that use to hold message details
     public static BlockingQueue<MessageStatistic> messageQueue;
     //MessageStat Object
-
-    private MessageStatistic messageStatistic = new MessageStatistic();
+    private MessageStatistic messageStatistic;
     private StreamConfiguration streamConfiguration;
     private String tenantDomain;
 
 
-
     //private constructor
     private StatPublisherMessageListenerImpl() {
-        StreamConfiguration streamConfiguration;
+
+        messageStatistic = new MessageStatistic();
+
         try {
 
             streamConfiguration = XMLConfigurationReader.readStreamConfiguration();
@@ -70,14 +68,13 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
         try {
             NumberOfQueueSlots = XMLConfigurationReader.readGeneralConfiguration().getNumberOfQueueSlots();
         } catch (StatPublisherConfigurationException e) {
-            e.printStackTrace();
+            logger.error("Error occur while try to retrieve number of queue slots from mbStatConfiguration.xml ");
+            throw new StatPublisherRuntimeException(e);
         }
         messageQueue = new LinkedBlockingQueue<MessageStatistic>(NumberOfQueueSlots);
         // Start Message stat publisher thread
         messageStatPublisherThread = new Thread(new AsyncMessageStatPublisher(streamConfiguration));
         messageStatPublisherThread.start();
-
-
     }
 
     //get MessageStatPublisher instance
