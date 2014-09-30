@@ -21,7 +21,7 @@ package org.wso2.carbon.stat.publisher.internal.publisher;
 import org.wso2.andes.kernel.AndesAckData;
 import org.wso2.andes.kernel.AndesMessageMetadata;
 import org.wso2.andes.kernel.StatPublisherMessageListener;
-import org.wso2.carbon.stat.publisher.conf.MessageStat;
+import org.wso2.carbon.stat.publisher.conf.MessageStatistic;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
@@ -29,46 +29,36 @@ import org.wso2.carbon.stat.publisher.internal.ds.StatPublisherValueHolder;
 import org.wso2.carbon.stat.publisher.internal.util.XMLConfigurationReader;
 
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * This class will handle message stat publishing all events
  * messages and Ack messages hold in one queue in processing part they identify using boolean value of message variable
  */
-
 public class StatPublisherMessageListenerImpl implements StatPublisherMessageListener {
-
 
     //This is the Queue that use to hold message details//TODO get values from xml
     private static final int NumberOfQueueSlots = 20;
-    public static BlockingQueue<MessageStat> messageQueue = new LinkedBlockingQueue<MessageStat>(NumberOfQueueSlots);
-    //Thread pool
+    public static BlockingQueue<MessageStatistic> messageQueue = new LinkedBlockingQueue<MessageStatistic>(NumberOfQueueSlots);
+    //Thread
+    public static Thread messageStatPublisherThread;
     //TODO use 1 thread
-    private static final int NumberOfThreads = 5;
-    private ExecutorService executorService = Executors.newFixedThreadPool(NumberOfThreads);
     private static StatPublisherMessageListenerImpl statPublisherMessageListenerImpl = new StatPublisherMessageListenerImpl();
-    private Runnable runnableWorker;
     //MessageStat Object
-    private MessageStat messageStat = new MessageStat();
+    private MessageStatistic messageStatistic = new MessageStatistic();
     private StreamConfiguration streamConfiguration;
     private String tenantDomain;
-
 
     //private constructor
     private StatPublisherMessageListenerImpl() {
         try {
             streamConfiguration = XMLConfigurationReader.readStreamConfiguration();
-
         } catch (StatPublisherConfigurationException e) {
-
             throw new StatPublisherRuntimeException(e);
-
         }
-
-        runnableWorker = new AsyncMessageStatPublisher(streamConfiguration);
-
+        // Start Message stat publisher thread
+        messageStatPublisherThread = new Thread(new AsyncMessageStatPublisher(streamConfiguration));
+        messageStatPublisherThread.start();
     }
 
     //get MessageStatPublisher instance
@@ -80,32 +70,25 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
      * This method will get all messages that received to MessagingEngine class's messageReceived
      * this method will handle message stat publishing
      */
-
     @Override
     public void sendMessageDetails(AndesMessageMetadata andesMessageMetadata, int noOfSubscribers) {
 
 //get tenant tenantDomain of message by splitting destination
         if (andesMessageMetadata.getDestination().split("/").length == 1) {
-
             tenantDomain = "carbon.super";
-
         } else {
             tenantDomain = andesMessageMetadata.getDestination().split("/")[0];
         }
         //check message's tenant  activate or not message stat Publisher by checking MessageStatEnableMap
         if (StatPublisherValueHolder.getStatPublisherManager().getMessageStatEnableMap().contains(tenantDomain)) {
             //if it's enable add message details to message stat object
-            messageStat.setAndesMessageMetadata(andesMessageMetadata);
-            messageStat.setDomain(tenantDomain);
-            messageStat.setNoOfSubscribers(noOfSubscribers);
-            messageStat.setMessage(true);
+            messageStatistic.setAndesMessageMetadata(andesMessageMetadata);
+            messageStatistic.setDomain(tenantDomain);
+            messageStatistic.setNoOfSubscribers(noOfSubscribers);
+            messageStatistic.setMessage(true);
             //add message stat object to message queue
-            messageQueue.offer(messageStat);
+            messageQueue.offer(messageStatistic);
         }
-
-        //start a thread in from thread pool
-        executorService.execute(runnableWorker);
-
     }
 
     /**
@@ -114,7 +97,6 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
      */
     @Override
     public void sendAckMessageDetails(AndesAckData andesAckData) {
-
         //get tenant tenantDomain of Ack message by splitting qName
         if (andesAckData.qName.split("/").length == 1) {
             tenantDomain = "carbon.super";
@@ -124,15 +106,12 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
         //check message's tenant  activate or not message stat Publisher by checking MessageStatEnableMap
         if (StatPublisherValueHolder.getStatPublisherManager().getMessageStatEnableMap().contains(tenantDomain)) {
             //if it's enable add message details to message stat object
-            messageStat.setAndesAckData(andesAckData);
-            messageStat.setDomain(tenantDomain);
-            messageStat.setMessage(false);
+            messageStatistic.setAndesAckData(andesAckData);
+            messageStatistic.setDomain(tenantDomain);
+            messageStatistic.setMessage(false);
             //add message stat object to message queue
-             messageQueue.offer(messageStat);
+            messageQueue.offer(messageStatistic);
         }
-        //start thread in from thread pool
-        executorService.execute(runnableWorker);
-
     }
 
 

@@ -141,7 +141,6 @@ public class StatPublisherObserver {
             timerTaskThread.start();
         }
     }
-
     /**
      * Stop periodical statistic Publishing uby stopping timer task
      */

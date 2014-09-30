@@ -21,7 +21,7 @@ package org.wso2.carbon.stat.publisher.conf;
 import org.wso2.andes.kernel.AndesAckData;
 import org.wso2.andes.kernel.AndesMessageMetadata;
 
-public class MessageStat {
+public class MessageStatistic {
 
     //This boolean value use to determine it's a message or Ack message
     private boolean message;
@@ -39,13 +39,11 @@ public class MessageStat {
     }
 
     //If it is message stat return true ,If it is Ack message stat return false
-
     public boolean isMessage() {
         return message;
     }
 
     //If it is message stat set as true ,If it is Ack message stat set as false
-
     public void setMessage(boolean message) {
         this.message = message;
     }

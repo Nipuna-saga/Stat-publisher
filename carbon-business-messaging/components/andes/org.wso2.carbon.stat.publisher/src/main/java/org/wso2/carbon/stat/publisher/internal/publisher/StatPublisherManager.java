@@ -68,7 +68,6 @@ public class StatPublisherManager {
         if (statPublisherObserver.getStatPublisherConfiguration().isMessageStatEnable()) {
             //if message statPublisher is enable it's relevant tenant domain add to hash map
             messageStatEnableMap.add(statPublisherObserver.getTenantDomain());
-
         }
     }
 
