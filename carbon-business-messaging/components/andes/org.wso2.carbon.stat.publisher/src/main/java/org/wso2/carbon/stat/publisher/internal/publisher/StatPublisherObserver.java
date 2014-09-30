@@ -45,7 +45,6 @@ public class StatPublisherObserver {
     public StatPublisherDataAgent statPublisherDataAgent;
     TenantManager tenantManager = StatPublisherValueHolder.getRealmService().getTenantManager();
     private StatPublisherConfiguration statPublisherConfiguration;
-    private RegistryPersistenceManager registryPersistenceManager;
     private Timer timer;
     private TimerTask statPublisherTimerTask;
     private String tenantDomain = null;
@@ -56,8 +55,7 @@ public class StatPublisherObserver {
                                  int tenantID) throws StatPublisherConfigurationException {
         this.tenantID = tenantID;
         this.streamConfiguration=streamConfiguration;
-        registryPersistenceManager = new RegistryPersistenceManager();
-       this.statPublisherConfiguration = registryPersistenceManager.loadConfigurationData(tenantID);
+        this.statPublisherConfiguration = RegistryPersistenceManager.loadConfigurationData(tenantID);
         if (statPublisherConfiguration.isSystemStatEnable() || statPublisherConfiguration.isMbStatEnable()
                 ) {
            statPublisherDataAgent =

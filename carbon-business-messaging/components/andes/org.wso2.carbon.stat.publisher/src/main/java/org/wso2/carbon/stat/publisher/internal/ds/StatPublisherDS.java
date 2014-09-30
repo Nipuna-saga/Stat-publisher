@@ -57,8 +57,7 @@ public class StatPublisherDS {
         System.out.println("=================activating the bundle===============");
         StatPublisherManager statPublisherManager = new StatPublisherManager();
         StatPublisherValueHolder.setStatPublisherManager(statPublisherManager);
-
-
+        
         System.out.print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
         //create StatPublisherObserver for super tenant
