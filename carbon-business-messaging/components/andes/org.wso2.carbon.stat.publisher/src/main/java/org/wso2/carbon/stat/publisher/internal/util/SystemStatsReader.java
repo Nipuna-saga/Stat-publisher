@@ -36,8 +36,8 @@ import java.util.Set;
 
 public class SystemStatsReader {
 
-    private JMXConnector jmxConnector;
-    private MBeanServerConnection connection = null;
+    private JMXConnector jmxConnector = null;
+    public MBeanServerConnection connection = null;
     private long timeout = 100000;
     private SystemStatsReader mbeansStats = null;
     private final Logger logger = Logger.getLogger(SystemStatsReader.class);

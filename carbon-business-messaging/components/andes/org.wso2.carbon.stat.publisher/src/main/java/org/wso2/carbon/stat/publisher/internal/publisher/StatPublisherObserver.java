@@ -19,10 +19,12 @@
 package org.wso2.carbon.stat.publisher.internal.publisher;
 
 import org.apache.log4j.Logger;
+import org.wso2.carbon.databridge.agent.thrift.exception.AgentException;
 import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
+import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
 import org.wso2.carbon.stat.publisher.internal.ds.StatPublisherValueHolder;
 import org.wso2.carbon.stat.publisher.internal.util.RegistryPersistenceManager;
 import org.wso2.carbon.user.api.UserStoreException;
@@ -91,44 +93,48 @@ public class StatPublisherObserver {
                         try {
 
 
-                              statPublisherDataAgent.sendSystemStats();
+                                statPublisherDataAgent.sendSystemStats();
+                            logger.info("Sent system stats");
 
                         } catch (MalformedObjectNameException e) {
-                            logger.error("Fail to publish system stats");
+                           throw  new StatPublisherRuntimeException("Fail to send system stats", e);
                         } catch (ReflectionException e) {
-                            logger.error("Fail to publish system stats");
+                            throw  new StatPublisherRuntimeException("Fail to send system stats", e);
                         } catch (IOException e) {
-                            logger.error("Fail to publish system stats");
+                            throw  new StatPublisherRuntimeException("Fail to send system stats", e);
                         } catch (InstanceNotFoundException e) {
-                            logger.error("Fail to publish system stats");
+                            throw  new StatPublisherRuntimeException("Fail to send system stats", e);
                         } catch (AttributeNotFoundException e) {
-                            logger.error("Fail to publish system stats");
+                            throw  new StatPublisherRuntimeException("Fail to send system stats", e);
                         } catch (MBeanException e) {
-                            logger.error("Fail to publish system stats");
+                            throw  new StatPublisherRuntimeException("Fail to send system stats", e);
+                        } catch (AgentException e) {
+                            throw  new StatPublisherRuntimeException("Fail to send system stats", e);
                         }
 
-                        logger.info("System stat Publishing activated ");
+
                     }
                     //check MB stat enable configuration
                     if (statPublisherConfiguration.isMbStatEnable()) {
                       try {
                             statPublisherDataAgent.sendMBStats();
+                          logger.info("Sent MB stats");
                         } catch (MalformedObjectNameException e) {
-                          logger.error("Fail to publish MB stats");
+                          throw  new StatPublisherRuntimeException("Fail to send MB stats", e);
                         } catch (ReflectionException e) {
-                          logger.error("Fail to publish MB stats");
+                          throw  new StatPublisherRuntimeException("Fail to send MB stats", e);
                         } catch (IOException e) {
-                          logger.error("Fail to publish MB stats");
+                          throw  new StatPublisherRuntimeException("Fail to send MB stats", e);
                         } catch (InstanceNotFoundException e) {
-                          logger.error("Fail to publish MB stats");
+                          throw  new StatPublisherRuntimeException("Fail to send MB stats", e);
                         } catch (AttributeNotFoundException e) {
-                          logger.error("Fail to publish MB stats");
+                          throw  new StatPublisherRuntimeException("Fail to send MB stats", e);
                         } catch (MBeanException e) {
-                          logger.error("Fail to publish MB stats");
+                          throw  new StatPublisherRuntimeException("Fail to send MB stats", e);
                         }
 
 
-                        logger.info("MB stat Publishing activated ");
+
                     }
                 }
 
