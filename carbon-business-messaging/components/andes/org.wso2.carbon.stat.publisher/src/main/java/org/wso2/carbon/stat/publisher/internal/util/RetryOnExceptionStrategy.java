@@ -19,9 +19,7 @@ public class RetryOnExceptionStrategy {
         this.timeToWait = timeToWait;
     }
 
-    /**
-     * @return true if there are tries left
-     */
+
     public boolean shouldRetry() {
         return numberOfTriesLeft > 0;
     }

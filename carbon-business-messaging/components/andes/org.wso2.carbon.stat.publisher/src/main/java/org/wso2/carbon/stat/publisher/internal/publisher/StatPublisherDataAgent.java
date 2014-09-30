@@ -57,13 +57,11 @@ public class StatPublisherDataAgent {
     private SubscriptionStore subscriptionStore;
 
 
-    //first constructor
     public StatPublisherDataAgent(JMXConfiguration jmxConfiguration,
                                   StreamConfiguration streamConfiguration,
                                   StatPublisherConfiguration statPublisherConfiguration) {
 
         //set configurations
-
         this.statPublisherConfiguration = statPublisherConfiguration;
 
         try {
@@ -101,20 +99,11 @@ public class StatPublisherDataAgent {
         metaData = constructMetaData();
 
         //get server statistics
-        //TODO System Stat Reader implent using thread and set to systemStat while set it remain as null
-        Thread t=new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        } );
-        t.start();
         systemStats = new SystemStatsReader(jmxConfiguration);
     }
 
     public void sendSystemStats() throws MalformedObjectNameException, ReflectionException, IOException,
             InstanceNotFoundException, AttributeNotFoundException, MBeanException, AgentException {
-//TODO check null/not null of systemStat
         if(systemStats.connection != null) {
             payLoadData = getServerStatsPayLoadData(systemStats.getMbeansStatsData());
 
@@ -167,8 +156,6 @@ public class StatPublisherDataAgent {
             throws MalformedObjectNameException, ReflectionException, IOException,
             InstanceNotFoundException, AttributeNotFoundException, MBeanException {
 
-
-
         try {
             payLoadData = getAckStatsPayLoadData(message);
         } catch (Exception e) {
@@ -193,17 +180,11 @@ public class StatPublisherDataAgent {
         return null;
     }
 
-
-//todo convert all lists to arrays
     public List<Object> constructMetaData() {
         ArrayList<Object> metaData = new ArrayList<Object>(1);
-
-        //todo check whether this value is correct or not
        metaData.add(statPublisherConfiguration.getNodeURL());
         return metaData;
     }
-
-
 
     public List<Object> getServerStatsPayLoadData(SystemStatsReader.SystemStatsData systemStatsData) {
         ArrayList<Object> payloadData = new ArrayList<Object>(4);
