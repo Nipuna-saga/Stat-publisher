@@ -33,10 +33,6 @@ import java.util.concurrent.BlockingQueue;
 //TODO messageStatPublisher
 public class AsyncMessageStatPublisher implements Runnable {
 
-    private MessageStat messageStat;
-    private int tenantID;
-    private StatPublisherObserver statPublisherObserver;
-    private TenantManager tenantManager;
     private BlockingQueue<MessageStat> messageQueue = StatPublisherMessageListenerImpl.messageQueue;
 
 
@@ -53,6 +49,7 @@ public class AsyncMessageStatPublisher implements Runnable {
         //check message Queue has any object
         //TODO always true
         while (messageQueue.size() > 0) {
+            MessageStat messageStat;
             try {
                 //get object from queue
                 messageStat = messageQueue.take();
@@ -60,7 +57,8 @@ public class AsyncMessageStatPublisher implements Runnable {
                 throw new StatPublisherRuntimeException(e);
             }
 
-            tenantManager = StatPublisherValueHolder.getRealmService().getTenantManager();
+            TenantManager tenantManager = StatPublisherValueHolder.getRealmService().getTenantManager();
+            int tenantID;
             try {
                 //get tenant ID from tenant domain
                 tenantID = tenantManager.getTenantId(messageStat.getDomain());
@@ -68,7 +66,7 @@ public class AsyncMessageStatPublisher implements Runnable {
                 throw new StatPublisherRuntimeException(e);
             }
 
-            statPublisherObserver = StatPublisherValueHolder.getStatPublisherManager().
+            StatPublisherObserver statPublisherObserver = StatPublisherValueHolder.getStatPublisherManager().
                     getStatPublisherObserver(tenantID);
             //check is it a message or Ack message
 
