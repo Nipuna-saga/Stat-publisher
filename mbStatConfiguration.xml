@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<configuration>
-    <timeInterval>15000</timeInterval>
-    <versionMessage>1.0.0</versionMessage>
-    <versionAck>1.0.2</versionAck>
-    <versionSystemStatistic>1.0.0</versionSystemStatistic>
-    <versionMBStatistic>1.0.0</versionMBStatistic>
-</configuration>
-
