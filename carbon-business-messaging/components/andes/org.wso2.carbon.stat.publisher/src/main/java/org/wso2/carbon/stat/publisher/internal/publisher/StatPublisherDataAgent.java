@@ -113,17 +113,16 @@ public class StatPublisherDataAgent {
     }
 
     public void sendSystemStats() throws MalformedObjectNameException, ReflectionException, IOException,
-            InstanceNotFoundException, AttributeNotFoundException, MBeanException {
+            InstanceNotFoundException, AttributeNotFoundException, MBeanException, AgentException {
 //TODO check null/not null of systemStat
-        payLoadData = getServerStatsPayLoadData(systemStats.getMbeansStatsData());
+        if(systemStats.connection != null) {
+            payLoadData = getServerStatsPayLoadData(systemStats.getMbeansStatsData());
 
-        try {
             loadBalancingDataPublisher.publish(serverStatsStreamDef.getName(), serverStatsStreamDef.getVersion(),
                     getObjectArray(metaData), null,
                     getObjectArray(payLoadData));
-        } catch (AgentException e) {
-           throw new StatPublisherRuntimeException(e);
         }
+
     }
 
     public void sendMBStats() throws MalformedObjectNameException, ReflectionException, IOException,

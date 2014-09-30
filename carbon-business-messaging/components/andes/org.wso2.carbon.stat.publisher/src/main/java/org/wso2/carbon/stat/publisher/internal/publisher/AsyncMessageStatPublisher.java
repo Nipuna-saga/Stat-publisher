@@ -19,6 +19,7 @@
 package org.wso2.carbon.stat.publisher.internal.publisher;
 
 
+import org.apache.log4j.Logger;
 import org.wso2.carbon.stat.publisher.conf.MessageStat;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
@@ -35,9 +36,10 @@ public class AsyncMessageStatPublisher implements Runnable {
 
     private BlockingQueue<MessageStat> messageQueue = StatPublisherMessageListenerImpl.messageQueue;
 
+    private static final Logger logger = Logger.getLogger(StatPublisherObserver.class);
+
 
     public AsyncMessageStatPublisher(StreamConfiguration streamConfiguration) {
-//TODO need to remove msg variable it's just use for testing purposes
         StreamConfiguration streamConfiguration1 = streamConfiguration;
         //this.statPublisherDataAgent=statPublisherDataAgent;
     }
@@ -78,6 +80,7 @@ public class AsyncMessageStatPublisher implements Runnable {
                 try {
                     statPublisherObserver.statPublisherDataAgent.sendMessageStats(messageStat.getAndesMessageMetadata(),
                             messageStat.getNoOfSubscribers());
+                    logger.info("Sent message stats");
                 } catch (MalformedObjectNameException e) {
                     throw new StatPublisherRuntimeException(e);
                 } catch (ReflectionException e) {
