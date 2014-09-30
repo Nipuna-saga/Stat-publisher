@@ -33,17 +33,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import static org.wso2.carbon.stat.publisher.internal.util.XMLConfigurationReader.*;
+
 /**
  * This class will handle message stat publishing all events
  * messages and Ack messages hold in one queue in processing part they identify using boolean value of message variable
  */
 
-public class StatPublisherMessageListenerImpl implements StatPublisherMessageListener {
+public class StatPublisherMessageListenerImpl implements StatPublisherMessageListener  {
 
-
-    //This is the Queue that use to hold message details//TODO get values from xml
-    private static final int NumberOfQueueSlots = 20;
-    public static BlockingQueue<MessageStat> messageQueue = new LinkedBlockingQueue<MessageStat>(NumberOfQueueSlots);
     //Thread pool
     //TODO use 1 thread
     private static final int NumberOfThreads = 5;
@@ -52,23 +50,20 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
     private Runnable runnableWorker;
     //MessageStat Object
     private MessageStat messageStat = new MessageStat();
-    private StreamConfiguration streamConfiguration;
     private String tenantDomain;
-
-
+     //This is the Queue that use to hold message details
+    BlockingQueue<MessageStat> messageQueue;
     //private constructor
     private StatPublisherMessageListenerImpl() {
+        StreamConfiguration streamConfiguration;
         try {
-            streamConfiguration = XMLConfigurationReader.readStreamConfiguration();
-
+            streamConfiguration = readStreamConfiguration();
+            int NumberOfQueueSlots = XMLConfigurationReader.readGeneralConfiguration().getNumberOfQueueSlots();
+            messageQueue = new LinkedBlockingQueue<MessageStat>(NumberOfQueueSlots);
         } catch (StatPublisherConfigurationException e) {
-
             throw new StatPublisherRuntimeException(e);
-
         }
-
         runnableWorker = new AsyncMessageStatPublisher(streamConfiguration);
-
     }
 
     //get MessageStatPublisher instance

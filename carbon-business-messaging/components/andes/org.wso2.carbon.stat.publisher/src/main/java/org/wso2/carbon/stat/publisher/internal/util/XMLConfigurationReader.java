@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.wso2.carbon.stat.publisher.conf.GeneralConfiguration;
 import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
@@ -103,7 +104,7 @@ public class XMLConfigurationReader {
     }
 
     /**
-     * Load mbStatConfiguration.xml and read values
+     * Load mbStatConfiguration.xml and read stream configuration values
      */
     public static StreamConfiguration readStreamConfiguration() throws StatPublisherConfigurationException {
 
@@ -146,10 +147,6 @@ public class XMLConfigurationReader {
                                 item(0).getChildNodes().item(0).getTextContent();
                 streamConfiguration.setMbStatisticStreamVersion(versionMBStatisticValue.trim());
 
-                String timeIntervalValue =
-                        ((Element) dataList.item(0)).getElementsByTagName("timeInterval").
-                                item(0).getChildNodes().item(0).getTextContent();
-                streamConfiguration.setTimeInterval(Integer.parseInt(timeIntervalValue.trim()));
             }
         } catch (ParserConfigurationException e) {
             throw new StatPublisherConfigurationException("Indicate configuration error!", e);
@@ -159,5 +156,49 @@ public class XMLConfigurationReader {
             throw new StatPublisherConfigurationException("Indicate file loading error!", e);
         }
         return  streamConfiguration;
+    }
+
+    /**
+     * Load mbStatConfiguration.xml and read general configuration values
+     */
+    public static GeneralConfiguration readGeneralConfiguration() throws StatPublisherConfigurationException {
+
+        GeneralConfiguration generalConfiguration = new GeneralConfiguration();
+        try {
+            //Load mbStatConfiguration.xml file
+            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+            Document document;
+            String filePath = StatPublisherConstants.CONF_DIRECTORY_PATH+StatPublisherConstants.STAT_CONF_XML;
+            File file = new File(filePath);
+
+            if (!file.exists()) {
+                logger.error("mbStatConfiguration.xml does not exists in "+file.getPath());
+                throw new StatPublisherConfigurationException("mbStatConfiguration.xml does not exists in "+
+                                                              file.getPath());
+            } else {
+                document = docBuilder.parse(filePath);
+                document.getDocumentElement().normalize();
+                String rootNode = document.getDocumentElement().getNodeName();
+                NodeList dataList = document.getElementsByTagName(rootNode);
+
+                String numberOfQueueSlotsValue =
+                        ((Element) dataList.item(0)).getElementsByTagName("numberOfQueueSlots").
+                                item(0).getChildNodes().item(0).getTextContent();
+                generalConfiguration.setNumberOfQueueSlots(Integer.parseInt(numberOfQueueSlotsValue.trim()));
+
+                String timeIntervalValue =
+                        ((Element) dataList.item(0)).getElementsByTagName("timeInterval").
+                                item(0).getChildNodes().item(0).getTextContent();
+                generalConfiguration.setTimeInterval(Integer.parseInt(timeIntervalValue.trim()));
+            }
+        } catch (ParserConfigurationException e) {
+            throw new StatPublisherConfigurationException("Indicate configuration error!", e);
+        } catch (SAXException e) {
+            throw new StatPublisherConfigurationException("Indicate a general SAX error or warning!", e);
+        } catch (IOException e) {
+            throw new StatPublisherConfigurationException("Indicate file loading error!", e);
+        }
+        return  generalConfiguration;
     }
 }
