@@ -36,47 +36,73 @@ import java.util.Set;
 
 public class SystemStatsReader {
 
-    private static JMXConnector jmxConnector;
-    private static MBeanServerConnection connection = null;
-    private static long timeout = 100000;
-    private static SystemStatsReader mbeansStats = null;
-    private static final Logger logger = Logger.getLogger(SystemStatsReader.class);
-    public SystemStatsReader(JMXConfiguration jmxConfiguration)  {
+    private JMXConnector jmxConnector;
+    private MBeanServerConnection connection = null;
+    private long timeout = 100000;
+    private SystemStatsReader mbeansStats = null;
+    private final Logger logger = Logger.getLogger(SystemStatsReader.class);
+
+    int i = 0;
+
+    public SystemStatsReader(final JMXConfiguration jmxConfiguration) {
 
         //get MB username and password
         UserRealm realm;
-        String userName;
-        String password;
+        final String userName;
+        final String password;
         try {
             realm = StatPublisherValueHolder.getRealmService().getBootstrapRealm();
             userName = realm.getRealmConfiguration().getAdminUserName();
             password = realm.getRealmConfiguration().getAdminPassword();
         } catch (UserStoreException e) {
-            throw new StatPublisherRuntimeException("Fail to get admin username or password of MB" , e );
+            throw new StatPublisherRuntimeException("Fail to get admin username or password of MB", e);
         }
         //create jmxConnection
-        createJMXConnection(jmxConfiguration, userName, password);
+
+        final RetryOnExceptionStrategy retry = new RetryOnExceptionStrategy();
+
+        Thread createJMXConnectionThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (retry.shouldRetry()) {
+                    try {
+
+                        createJMXConnection(jmxConfiguration, userName, password);
+                        logger.info("JMX connection created");
+                        break;
+
+                    } catch (Exception e) {
+                        try {
+                            System.out.println("in catch.....");
+                            logger.error("===============retrying==================");
+                            retry.errorOccured();
+                        } catch (RuntimeException e1) {
+                            throw new RuntimeException("Exception while creating jmx connection"
+                                    , e);
+                        } catch (Exception e1) {
+                            throw new RuntimeException(e1);
+                        }
+                    }
+                }
+            }
+        });
+        createJMXConnectionThread.start();
+
+
     }
 
-    private static void createJMXConnection(JMXConfiguration jmxConfiguration, String userName, String password){
-        //get JMX port
+    private  void createJMXConnection(JMXConfiguration jmxConfiguration, String userName, String password) throws Exception {
+        //get JMX port if() {
         final int jmxPort = Integer.parseInt(jmxConfiguration.getRmiRegistryPort()) +
                 Integer.parseInt(jmxConfiguration.getOffSet());
-        try {
-            jmxConnector = JMXConnnectionFactory.getJMXConnection(timeout, jmxConfiguration.getHostName(),
-                    jmxPort, userName, password);
-            connection = jmxConnector.getMBeanServerConnection();
-        } catch (Exception e) {
-                try {
-                    Thread.sleep(2000);
-                    logger.info("==============retrying==================");
-                    createJMXConnection(jmxConfiguration , userName , password);
 
-                } catch (InterruptedException e1) {
-                    throw new StatPublisherRuntimeException(e1);
-                }
+
+                jmxConnector = JMXConnnectionFactory.getJMXConnection(timeout, jmxConfiguration.getHostName(),
+                        jmxPort, userName, password);
+                connection = jmxConnector.getMBeanServerConnection();
+
         }
-    }
+
 
     public String HeapMemoryUsage() throws MalformedObjectNameException, IOException, AttributeNotFoundException,
             MBeanException, ReflectionException, InstanceNotFoundException {

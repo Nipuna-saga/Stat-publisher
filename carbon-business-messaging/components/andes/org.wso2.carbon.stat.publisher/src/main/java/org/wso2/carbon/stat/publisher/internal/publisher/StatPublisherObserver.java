@@ -23,7 +23,6 @@ import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
-import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
 import org.wso2.carbon.stat.publisher.internal.ds.StatPublisherValueHolder;
 import org.wso2.carbon.stat.publisher.internal.util.RegistryPersistenceManager;
 import org.wso2.carbon.user.api.UserStoreException;
@@ -58,11 +57,11 @@ public class StatPublisherObserver {
         this.tenantID = tenantID;
         this.streamConfiguration=streamConfiguration;
         registryPersistenceManager = new RegistryPersistenceManager();
-        this.statPublisherConfiguration = registryPersistenceManager.loadConfigurationData(tenantID);
+       this.statPublisherConfiguration = registryPersistenceManager.loadConfigurationData(tenantID);
         if (statPublisherConfiguration.isSystemStatEnable() || statPublisherConfiguration.isMbStatEnable()
                 ) {
-           // statPublisherDataAgent =
-             //       new StatPublisherDataAgent(jmxConfiguration, streamConfiguration, statPublisherConfiguration);
+           statPublisherDataAgent =
+                    new StatPublisherDataAgent(jmxConfiguration, streamConfiguration, statPublisherConfiguration);
         }
 
     }
@@ -90,39 +89,44 @@ public class StatPublisherObserver {
                     if (statPublisherConfiguration.isSystemStatEnable()) {
                         //System stat publishing activated
                         try {
-                            statPublisherDataAgent.sendSystemStats();
+
+
+                              statPublisherDataAgent.sendSystemStats();
+
                         } catch (MalformedObjectNameException e) {
-                            throw new StatPublisherRuntimeException(e);
+                            logger.error("Fail to publish system stats");
                         } catch (ReflectionException e) {
-                            throw new StatPublisherRuntimeException(e);
+                            logger.error("Fail to publish system stats");
                         } catch (IOException e) {
-                            throw new StatPublisherRuntimeException(e);
+                            logger.error("Fail to publish system stats");
                         } catch (InstanceNotFoundException e) {
-                            throw new StatPublisherRuntimeException(e);
+                            logger.error("Fail to publish system stats");
                         } catch (AttributeNotFoundException e) {
-                            throw new StatPublisherRuntimeException(e);
+                            logger.error("Fail to publish system stats");
                         } catch (MBeanException e) {
-                            throw new StatPublisherRuntimeException(e);
+                            logger.error("Fail to publish system stats");
                         }
+
                         logger.info("System stat Publishing activated ");
                     }
                     //check MB stat enable configuration
                     if (statPublisherConfiguration.isMbStatEnable()) {
-                        try {
+                      try {
                             statPublisherDataAgent.sendMBStats();
                         } catch (MalformedObjectNameException e) {
-                            throw new StatPublisherRuntimeException(e);
+                          logger.error("Fail to publish MB stats");
                         } catch (ReflectionException e) {
-                            throw new StatPublisherRuntimeException(e);
+                          logger.error("Fail to publish MB stats");
                         } catch (IOException e) {
-                            throw new StatPublisherRuntimeException(e);
+                          logger.error("Fail to publish MB stats");
                         } catch (InstanceNotFoundException e) {
-                            throw new StatPublisherRuntimeException(e);
+                          logger.error("Fail to publish MB stats");
                         } catch (AttributeNotFoundException e) {
-                            throw new StatPublisherRuntimeException(e);
+                          logger.error("Fail to publish MB stats");
                         } catch (MBeanException e) {
-                            throw new StatPublisherRuntimeException(e);
+                          logger.error("Fail to publish MB stats");
                         }
+
 
                         logger.info("MB stat Publishing activated ");
                     }
