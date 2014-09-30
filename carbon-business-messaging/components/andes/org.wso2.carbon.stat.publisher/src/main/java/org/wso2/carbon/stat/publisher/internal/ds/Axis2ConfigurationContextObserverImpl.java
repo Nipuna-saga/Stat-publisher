@@ -8,14 +8,23 @@ import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
 import org.wso2.carbon.stat.publisher.internal.publisher.StatPublisherManager;
 import org.wso2.carbon.utils.Axis2ConfigurationContextObserver;
 
+/**
+ * THis class will activate StatPublisherObserver when tenant activating
+ */
 public class Axis2ConfigurationContextObserverImpl implements Axis2ConfigurationContextObserver {
 
     private static final Logger logger = Logger.getLogger(Axis2ConfigurationContextObserverImpl.class);
+
+    /**
+     * This will start when logging to the tenant
+     */
     @Override
     public void creatingConfigurationContext(int i) {
-
     }
 
+    /**
+     * This will start after logged to the tenant. This method override to start StatPublisherObserver
+     */
     @Override
     public void createdConfigurationContext(ConfigurationContext configurationContext) {
         PrivilegedCarbonContext carbonContext = PrivilegedCarbonContext.getThreadLocalCarbonContext();
@@ -30,10 +39,16 @@ public class Axis2ConfigurationContextObserverImpl implements Axis2Configuration
 
     }
 
+    /**
+     * This will start when tenant timeout
+     */
     @Override
     public void terminatingConfigurationContext(ConfigurationContext configurationContext) {
     }
 
+    /**
+     * This will start after tenant timeout. This method override to terminate StatPublisherObserver
+     */
     @Override
     public void terminatedConfigurationContext(ConfigurationContext configurationContext) {
         PrivilegedCarbonContext carbonContext = PrivilegedCarbonContext.getThreadLocalCarbonContext();

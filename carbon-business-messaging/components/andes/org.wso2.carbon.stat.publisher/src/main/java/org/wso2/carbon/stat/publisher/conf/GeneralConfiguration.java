@@ -1,6 +1,8 @@
 package org.wso2.carbon.stat.publisher.conf;
 
-
+/**
+ *  Read general configuration values from mbStatConfiguration.xml file.
+ */
 public class GeneralConfiguration {
     //timeInterval for timerTask to publish statistics
     private int timeInterval;
@@ -32,7 +34,6 @@ public class GeneralConfiguration {
         this.numberOfQueueSlots = numberOfQueueSlots;
     }
 
-    /**
     /**
      * Get value of numberOfQueueSlots node
      * @return numberOfQueueSlots
