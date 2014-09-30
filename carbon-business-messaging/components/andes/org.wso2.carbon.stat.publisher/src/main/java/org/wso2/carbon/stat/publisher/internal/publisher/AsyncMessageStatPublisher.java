@@ -18,7 +18,9 @@
 
 package org.wso2.carbon.stat.publisher.internal.publisher;
 
+
 import org.wso2.carbon.stat.publisher.conf.MessageStatistic;
+
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
 import org.wso2.carbon.stat.publisher.internal.ds.StatPublisherValueHolder;
@@ -26,12 +28,14 @@ import org.wso2.carbon.user.api.TenantManager;
 import org.wso2.carbon.user.api.UserStoreException;
 import java.util.concurrent.BlockingQueue;
 
+
 public class AsyncMessageStatPublisher implements Runnable {
     private MessageStatistic messageStatistic;
     private int tenantID;
     private StatPublisherObserver statPublisherObserver;
     private TenantManager tenantManager;
     private BlockingQueue<MessageStatistic> messageQueue = StatPublisherMessageListenerImpl.messageQueue;
+
 
     public AsyncMessageStatPublisher(StreamConfiguration streamConfiguration) {
         StreamConfiguration streamConfiguration1 = streamConfiguration;
@@ -43,22 +47,26 @@ public class AsyncMessageStatPublisher implements Runnable {
         //check message Queue has any object
         boolean running = true;
         //TODO always true
+
         while (running) {
+
             try {
                 //get object from queue
             messageStatistic = messageQueue.take();
             } catch (InterruptedException e) {
                 throw new StatPublisherRuntimeException(e);
             }
+
             tenantManager = StatPublisherValueHolder.getRealmService().getTenantManager();
+
             try {
                 //get tenant ID from tenant domain
                 tenantID = tenantManager.getTenantId(messageStatistic.getDomain());
             } catch (UserStoreException e) {
                 throw new StatPublisherRuntimeException(e);
             }
-            statPublisherObserver = StatPublisherValueHolder.getStatPublisherManager().
-                    getStatPublisherObserver(tenantID);
+
+            statPublisherObserver = StatPublisherValueHolder.getStatPublisherManager().getStatPublisherObserver(tenantID);
 
             //check is it a message or Ack message
             if (messageStatistic.isMessage()) {
@@ -67,6 +75,16 @@ public class AsyncMessageStatPublisher implements Runnable {
             /*    try {
                     statPublisherObserver.statPublisherDataAgent.sendMessageStats(messageStat.
                     getAndesMessageMetadata(),messageStat.getNoOfSubscribers());
+
+            //TODO you can get StreamConfiguration and statPublisherConfiguration for Data Agent
+
+            //TODO add message statPublishing code here you can get message by using messageStat.getAndesMessage
+            if (messageStat.isMessage()) {
+                try {
+                    statPublisherObserver.statPublisherDataAgent.sendMessageStats(messageStat.getAndesMessageMetadata(),
+                            messageStat.getNoOfSubscribers());
+                    logger.info("Sent message stats");
+>>>>>>> 3de4456f3b06e79a3c79a334de6ba92c384f9e67
                 } catch (MalformedObjectNameException e) {
                     throw new StatPublisherRuntimeException(e);
                 } catch (ReflectionException e) {

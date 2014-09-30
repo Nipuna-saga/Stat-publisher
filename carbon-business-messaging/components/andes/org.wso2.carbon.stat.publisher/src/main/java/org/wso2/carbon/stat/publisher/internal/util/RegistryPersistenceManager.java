@@ -29,7 +29,6 @@ import org.wso2.carbon.utils.xml.StringUtils;
 /**
  * Handle registry while store and retrieve data sent from User Interface
  */
-//Todo make it static
 public class RegistryPersistenceManager {
 
     /**
@@ -37,7 +36,7 @@ public class RegistryPersistenceManager {
      * @param statPublisherConfigurationWriteObject - eventing configuration data
      * @param tenantId                     - get tenantID
      */
-    public void storeConfigurationData(StatPublisherConfiguration statPublisherConfigurationWriteObject, int tenantId)
+    public static void storeConfigurationData(StatPublisherConfiguration statPublisherConfigurationWriteObject, int tenantId)
             throws StatPublisherConfigurationException {
         try {
             Registry registry = StatPublisherValueHolder.getRegistryService().getConfigSystemRegistry(tenantId);
@@ -91,7 +90,7 @@ public class RegistryPersistenceManager {
      * @return statConfigurationObject - statConfiguration class object with retrieved values from
      *                                   registry
      */
-    public StatPublisherConfiguration loadConfigurationData(int tenantId) throws
+    public static StatPublisherConfiguration loadConfigurationData(int tenantId) throws
                                                                           StatPublisherConfigurationException {
         StatPublisherConfiguration statPublisherConfigurationReadObject = new StatPublisherConfiguration();
         try {

@@ -54,11 +54,13 @@ public class StatPublisherDS {
     protected void activate(ComponentContext context)
             throws StatPublisherConfigurationException, UserStoreException {
 
+        System.out.println("=================activating the bundle===============");
         StatPublisherManager statPublisherManager = new StatPublisherManager();
         StatPublisherValueHolder.setStatPublisherManager(statPublisherManager);
 
 
         System.out.print("+++++++++++++++++++++++++++++++DS++++++++++++++++++++++++++++++++++++++++++");
+
 
         //create StatPublisherObserver for super tenant
 
