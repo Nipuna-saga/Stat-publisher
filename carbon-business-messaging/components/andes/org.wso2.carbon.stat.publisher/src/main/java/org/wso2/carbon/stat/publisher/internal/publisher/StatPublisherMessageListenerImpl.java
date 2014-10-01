@@ -39,47 +39,39 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class StatPublisherMessageListenerImpl implements StatPublisherMessageListener {
     private static final Logger logger = Logger.getLogger(StatPublisherMessageListenerImpl.class);
+
     //Thread that use to publish message stats
     public static Thread messageStatPublisherThread;
 
     private static StatPublisherMessageListenerImpl statPublisherMessageListenerImpl =
-
             new StatPublisherMessageListenerImpl();
     //This is the Queue that use to hold message details
     public static BlockingQueue<MessageStatistic> messageQueue;
     //MessageStat Object
     private MessageStatistic messageStatistic;
-    private StreamConfiguration streamConfiguration;
     private String tenantDomain;
-
 
     //private constructor
     private StatPublisherMessageListenerImpl() {
-
         messageStatistic = new MessageStatistic();
-
+        StreamConfiguration streamConfiguration;
         try {
-
             streamConfiguration = XMLConfigurationReader.readStreamConfiguration();
         } catch (StatPublisherConfigurationException e) {
             throw new StatPublisherRuntimeException(e);
         }
-        int NumberOfQueueSlots = 0;
+
+        int numberOfQueueSlots;
         try {
-            NumberOfQueueSlots = XMLConfigurationReader.readGeneralConfiguration().getNumberOfQueueSlots();
+            numberOfQueueSlots = XMLConfigurationReader.readGeneralConfiguration().getNumberOfQueueSlots();
         } catch (StatPublisherConfigurationException e) {
             logger.error("Error occur while try to retrieve number of queue slots from mbStatConfiguration.xml ");
             throw new StatPublisherRuntimeException(e);
         }
-        messageQueue = new LinkedBlockingQueue<MessageStatistic>(NumberOfQueueSlots);
+        messageQueue = new LinkedBlockingQueue<MessageStatistic>(numberOfQueueSlots);
         // Start Message stat publisher thread
         messageStatPublisherThread = new Thread(new AsyncMessageStatPublisher(streamConfiguration));
         messageStatPublisherThread.start();
-    }
-
-    //get MessageStatPublisher instance
-    public static StatPublisherMessageListenerImpl getInstance() {
-        return statPublisherMessageListenerImpl;
     }
 
     /**
@@ -120,7 +112,8 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
             tenantDomain = andesAckData.qName.split("/")[0];
         }
         //check message's tenant  activate or not message stat Publisher by checking MessageStatEnableMap
-        if (StatPublisherValueHolder.getStatPublisherManager().getMessageStatEnableMap().contains(tenantDomain)) {
+        boolean value = StatPublisherManager.messageStatEnableMap.contains(tenantDomain);
+        if (value) {
             //if it's enable add message details to message stat object
             messageStatistic.setAndesAckData(andesAckData);
             messageStatistic.setDomain(tenantDomain);
@@ -130,5 +123,9 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
         }
     }
 
+    //get MessageStatPublisher instance
+    public static StatPublisherMessageListenerImpl getInstance() {
+        return statPublisherMessageListenerImpl;
+    }
 
 }

@@ -19,10 +19,6 @@
 package org.wso2.carbon.stat.publisher.internal.publisher;
 
 import org.apache.log4j.Logger;
-
-import org.wso2.carbon.databridge.agent.thrift.exception.AgentException;
-
-
 import org.wso2.carbon.stat.publisher.conf.JMXConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StatPublisherConfiguration;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
@@ -34,8 +30,6 @@ import org.wso2.carbon.stat.publisher.internal.util.XMLConfigurationReader;
 import org.wso2.carbon.user.api.UserStoreException;
 import org.wso2.carbon.user.core.tenant.TenantManager;
 
-import javax.management.*;
-import java.io.IOException;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -62,7 +56,7 @@ public class StatPublisherObserver {
         this.statPublisherConfiguration = RegistryPersistenceManager.loadConfigurationData(tenantID);
         if (statPublisherConfiguration.isSystemStatEnable() || statPublisherConfiguration.isMbStatEnable()
                 ) {
-           statPublisherDataAgent =
+            statPublisherDataAgent =
                     new StatPublisherDataAgent(jmxConfiguration, streamConfiguration, statPublisherConfiguration);
         }
 
@@ -90,9 +84,9 @@ public class StatPublisherObserver {
                     //check system stat enable configuration
                     if (statPublisherConfiguration.isSystemStatEnable()) {
                         //System stat publishing activated
+                        System.out.print("+++++++++++++++++++++++ System  Stat Publisher Activated" +
+                                Thread.currentThread().getName() + " Tenant => " + tenantID);/*
                         try {
-
-
 
                                 statPublisherDataAgent.sendSystemStats();
                             logger.info("Sent system stats");
@@ -114,11 +108,13 @@ public class StatPublisherObserver {
                             throw  new StatPublisherRuntimeException("Fail to send system stats", e);
                         }
 
-
+*/
                     }
                     //check MB stat enable configuration
                     if (statPublisherConfiguration.isMbStatEnable()) {
-                      try {
+                        System.out.print("+++++++++++++++++++++++ Message  Stat Publisher Activated" +
+                                Thread.currentThread().getName() + " Tenant => " + tenantID);
+                   /*   try {
                             statPublisherDataAgent.sendMBStats();
                           logger.info("Sent MB stats");
                         } catch (MalformedObjectNameException e) {
@@ -135,7 +131,7 @@ public class StatPublisherObserver {
                           throw  new StatPublisherRuntimeException("Fail to send MB stats", e);
                         }
 
-
+*/
 
                     }
                 }
@@ -150,7 +146,7 @@ public class StatPublisherObserver {
                     try {
                         timer.scheduleAtFixedRate(statPublisherTimerTask, new Date(), XMLConfigurationReader.readGeneralConfiguration().getTimeInterval());
                     } catch (StatPublisherConfigurationException e) {
-                        logger.error("Exception in TimerTask initialization"+e);
+                        logger.error("Exception in TimerTask initialization" + e);
                         throw new StatPublisherRuntimeException(e);
                     }
                 }
@@ -158,6 +154,7 @@ public class StatPublisherObserver {
             timerTaskThread.start();
         }
     }
+
     /**
      * Stop periodical statistic Publishing uby stopping timer task
      */

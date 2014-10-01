@@ -33,23 +33,25 @@ public class StatPublisherService {
 
     //StatPublisherConfiguration details get method
     public StatPublisherConfiguration getStatConfiguration() throws StatPublisherConfigurationException {
-        int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
+        //get tenant ID
+        int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();
 
         return RegistryPersistenceManager.loadConfigurationData(tenantID);
     }
 
     //StatConfiguration details set method
     public void setStatConfiguration(StatPublisherConfiguration statPublisherConfiguration) throws StatPublisherConfigurationException {
-        int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();//get tenant ID
+        //get tenant ID
+        int tenantID = CarbonContext.getThreadLocalCarbonContext().getTenantId();
 
         StatPublisherManager statPublisherManager = StatPublisherValueHolder.getStatPublisherManager();
-        statPublisherManager.updateStatPublisherObserver(tenantID);
+       // statPublisherManager.updateStatPublisherObserver(tenantID);
         try {
             RegistryPersistenceManager.storeConfigurationData(statPublisherConfiguration, tenantID);
         } catch (StatPublisherConfigurationException e) {
             logger.error("Error occurs while trying to store configurations values to registry", e);
         }
-        statPublisherManager.createStatPublisherObserver(tenantID);
+        statPublisherManager.updateStatPublisherObserver(tenantID);
     }
 
 

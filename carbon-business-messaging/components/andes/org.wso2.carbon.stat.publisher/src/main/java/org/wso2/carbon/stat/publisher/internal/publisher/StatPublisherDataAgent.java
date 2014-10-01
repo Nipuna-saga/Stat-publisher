@@ -51,6 +51,11 @@ public class StatPublisherDataAgent {
     private StreamDefinition mbStatsStreamDef;
     private StreamDefinition messageStatsStreamDef;
     private StreamDefinition ackStatsStreamDef;
+
+    public LoadBalancingDataPublisher getLoadBalancingDataPublisher() {
+        return loadBalancingDataPublisher;
+    }
+
     private LoadBalancingDataPublisher loadBalancingDataPublisher;
     private List<Object> metaData;
     private List<Object> payLoadData;

@@ -18,24 +18,18 @@
 
 package org.wso2.carbon.stat.publisher.internal.publisher;
 
-
 import org.wso2.carbon.stat.publisher.conf.MessageStatistic;
-
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
 import org.wso2.carbon.stat.publisher.internal.ds.StatPublisherValueHolder;
 import org.wso2.carbon.user.api.TenantManager;
 import org.wso2.carbon.user.api.UserStoreException;
+
 import java.util.concurrent.BlockingQueue;
 
 
 public class AsyncMessageStatPublisher implements Runnable {
-    private MessageStatistic messageStatistic;
-    private int tenantID;
-    private StatPublisherObserver statPublisherObserver;
-    private TenantManager tenantManager;
     private BlockingQueue<MessageStatistic> messageQueue = StatPublisherMessageListenerImpl.messageQueue;
-
 
     public AsyncMessageStatPublisher(StreamConfiguration streamConfiguration) {
         StreamConfiguration streamConfiguration1 = streamConfiguration;
@@ -45,20 +39,16 @@ public class AsyncMessageStatPublisher implements Runnable {
     @Override
     public void run() {
         //check message Queue has any object
-        boolean running = true;
-        //TODO always true
-
-        while (running) {
-
+        while (true) {
+            MessageStatistic messageStatistic;
             try {
                 //get object from queue
-            messageStatistic = messageQueue.take();
+                messageStatistic = messageQueue.take();
             } catch (InterruptedException e) {
                 throw new StatPublisherRuntimeException(e);
             }
-
-            tenantManager = StatPublisherValueHolder.getRealmService().getTenantManager();
-
+            TenantManager tenantManager = StatPublisherValueHolder.getRealmService().getTenantManager();
+            int tenantID;
             try {
                 //get tenant ID from tenant domain
                 tenantID = tenantManager.getTenantId(messageStatistic.getDomain());
@@ -66,12 +56,13 @@ public class AsyncMessageStatPublisher implements Runnable {
                 throw new StatPublisherRuntimeException(e);
             }
 
-            statPublisherObserver = StatPublisherValueHolder.getStatPublisherManager().getStatPublisherObserver(tenantID);
+            StatPublisherObserver statPublisherObserver = StatPublisherValueHolder.
+                    getStatPublisherManager().getStatPublisherObserver(tenantID);
 
             //check is it a message or Ack message
             if (messageStatistic.isMessage()) {
                 System.out.print("+++++++++++++++++++++++ Message  Stat Publisher Activated" +
-                        Thread.currentThread().getName());
+                        Thread.currentThread().getName()+" Tenant => "+tenantID);
             /*    try {
                     statPublisherObserver.statPublisherDataAgent.sendMessageStats(messageStat.
                     getAndesMessageMetadata(),messageStat.getNoOfSubscribers());
@@ -101,7 +92,7 @@ public class AsyncMessageStatPublisher implements Runnable {
 */
             } else {
                 System.out.print("+++++++++++++++++++++++ Message Ack Stat Publisher Activated" +
-                        Thread.currentThread().getName());
+                        Thread.currentThread().getName()+" Tenant => "+tenantID);
           /*      try {
                     statPublisherObserver.statPublisherDataAgent.sendAckStats(messageStat.getAndesAckData());
                 } catch (MalformedObjectNameException e) {
@@ -117,7 +108,8 @@ public class AsyncMessageStatPublisher implements Runnable {
                 } catch (MBeanException e) {
                     throw new StatPublisherRuntimeException(e);
                 }
-        */    }
+        */
+            }
 
         }
     }

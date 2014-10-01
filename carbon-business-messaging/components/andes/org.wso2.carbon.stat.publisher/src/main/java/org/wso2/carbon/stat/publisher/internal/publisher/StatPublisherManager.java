@@ -43,7 +43,7 @@ public class StatPublisherManager {
         return messageStatEnableMap;
     }
 
-    private HashSet<String> messageStatEnableMap = new HashSet<String>();
+    public static HashSet<String> messageStatEnableMap = new HashSet<String>();
 
     public StatPublisherManager() throws StatPublisherConfigurationException {
         jmxConfiguration = XMLConfigurationReader.readJMXConfiguration();
@@ -59,7 +59,7 @@ public class StatPublisherManager {
             //start monitoring process
             statPublisherObserver.startObserver();
         } catch (UserStoreException e) {
-            throw new StatPublisherConfigurationException("Could not start monitoring!",e);
+            throw new StatPublisherConfigurationException("Could not start monitoring!", e);
         }
         //Add observer to Hash map
         statPublisherObserverHashMap.put(tenantID, statPublisherObserver);
@@ -81,9 +81,11 @@ public class StatPublisherManager {
             statPublisherObserver.stopObserver();
             //remove tenant domain from hash map
             messageStatEnableMap.remove(statPublisherObserver.getTenantDomain());
+            if (statPublisherObserver.statPublisherDataAgent != null)
+                statPublisherObserver.statPublisherDataAgent.getLoadBalancingDataPublisher().stop();
         }
 
-        //todo call remove then create
+        createStatPublisherObserver(tenantID);
 
     }
 
@@ -97,12 +99,14 @@ public class StatPublisherManager {
             messageStatEnableMap.remove(statPublisherObserver.getTenantDomain());
             //remove publisher observer from hash map
             statPublisherObserverHashMap.remove(tenantID);
+            if (statPublisherObserver.statPublisherDataAgent != null)
+                statPublisherObserver.statPublisherDataAgent.getLoadBalancingDataPublisher().stop();
         }
     }
 
     public StatPublisherObserver getStatPublisherObserver(int tenantID) {
         statPublisherObserver = statPublisherObserverHashMap.get(tenantID);
-        return  statPublisherObserver;
+        return statPublisherObserver;
     }
 
 
