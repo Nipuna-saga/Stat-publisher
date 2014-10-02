@@ -31,6 +31,7 @@ import java.util.concurrent.BlockingQueue;
 
 
 public class AsyncMessageStatPublisher implements Runnable {
+
     private BlockingQueue<MessageStatistic> messageQueue = StatPublisherMessageListenerImpl.messageQueue;
 
     public AsyncMessageStatPublisher(StreamConfiguration streamConfiguration) {
@@ -61,10 +62,10 @@ public class AsyncMessageStatPublisher implements Runnable {
 
             //check is it a message or Ack message
             if (messageStatistic.isMessage()) {
+
                 try {
                     statPublisherObserver.statPublisherDataAgent.sendMessageStats(messageStatistic.
                             getAndesMessageMetadata(), messageStatistic.getNoOfSubscribers());
-
 
                 } catch (MalformedObjectNameException e) {
                     throw new StatPublisherRuntimeException(e);

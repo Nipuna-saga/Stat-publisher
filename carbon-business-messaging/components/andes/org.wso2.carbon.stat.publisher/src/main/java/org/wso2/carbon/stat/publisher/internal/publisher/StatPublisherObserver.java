@@ -89,7 +89,6 @@ public class StatPublisherObserver {
                     if (statPublisherConfiguration.isSystemStatEnable()) {
                         //System stat publishing activated
                         try {
-
                             statPublisherDataAgent.sendSystemStats();
                             logger.info("Sent system stats");
 
@@ -108,12 +107,12 @@ public class StatPublisherObserver {
                         } catch (AgentException e) {
                             throw new StatPublisherRuntimeException("Fail to send system stats", e);
                         }
-
-
                     }
                     //check MB stat enable configuration
                     if (statPublisherConfiguration.isMbStatEnable()) {
+
                         try {
+
                             statPublisherDataAgent.sendMBStats();
                             logger.info("Sent MB stats");
                         } catch (MalformedObjectNameException e) {
@@ -129,8 +128,6 @@ public class StatPublisherObserver {
                         } catch (MBeanException e) {
                             throw new StatPublisherRuntimeException("Fail to send MB stats", e);
                         }
-
-
                     }
                 }
 
