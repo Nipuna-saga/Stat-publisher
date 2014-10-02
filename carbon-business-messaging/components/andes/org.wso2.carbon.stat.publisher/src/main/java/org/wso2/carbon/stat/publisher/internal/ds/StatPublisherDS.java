@@ -18,6 +18,7 @@
 
 package org.wso2.carbon.stat.publisher.internal.ds;
 
+import org.apache.log4j.Logger;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.ComponentContext;
 import org.wso2.andes.kernel.MessagingEngine;
@@ -44,6 +45,7 @@ import org.wso2.carbon.utils.ConfigurationContextService;
  */
 
 public class StatPublisherDS {
+    private static final Logger logger = Logger.getLogger(StatPublisherDS.class);
 
     /**
      * Activate method in stat publisher bundle
@@ -54,7 +56,6 @@ public class StatPublisherDS {
     protected void activate(ComponentContext context)
             throws StatPublisherConfigurationException, UserStoreException {
 
-        System.out.println("=================activating the bundle===============");
         StatPublisherManager statPublisherManager = new StatPublisherManager();
         StatPublisherValueHolder.setStatPublisherManager(statPublisherManager);
 
@@ -71,6 +72,8 @@ public class StatPublisherDS {
         BundleContext bundleContext = context.getBundleContext();
         bundleContext.registerService(Axis2ConfigurationContextObserver.class.getName(),
                 new Axis2ConfigurationContextObserverImpl(), null);
+        logger.info("==========Statistics Publisher Bundle Successfully Activated==========");
+
 
     }
 

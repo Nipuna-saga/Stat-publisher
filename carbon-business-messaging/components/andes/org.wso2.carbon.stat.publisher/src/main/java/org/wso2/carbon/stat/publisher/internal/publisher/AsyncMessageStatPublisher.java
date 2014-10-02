@@ -25,6 +25,8 @@ import org.wso2.carbon.stat.publisher.internal.ds.StatPublisherValueHolder;
 import org.wso2.carbon.user.api.TenantManager;
 import org.wso2.carbon.user.api.UserStoreException;
 
+import javax.management.*;
+import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 
 
@@ -32,8 +34,6 @@ public class AsyncMessageStatPublisher implements Runnable {
     private BlockingQueue<MessageStatistic> messageQueue = StatPublisherMessageListenerImpl.messageQueue;
 
     public AsyncMessageStatPublisher(StreamConfiguration streamConfiguration) {
-        StreamConfiguration streamConfiguration1 = streamConfiguration;
-        //this.statPublisherDataAgent=statPublisherDataAgent;
     }
 
     @Override
@@ -61,21 +61,11 @@ public class AsyncMessageStatPublisher implements Runnable {
 
             //check is it a message or Ack message
             if (messageStatistic.isMessage()) {
-                System.out.print("+++++++++++++++++++++++ Message  Stat Publisher Activated" +
-                        Thread.currentThread().getName()+" Tenant => "+tenantID);
-            /*    try {
-                    statPublisherObserver.statPublisherDataAgent.sendMessageStats(messageStat.
-                    getAndesMessageMetadata(),messageStat.getNoOfSubscribers());
-
-            //TODO you can get StreamConfiguration and statPublisherConfiguration for Data Agent
-
-            //TODO add message statPublishing code here you can get message by using messageStat.getAndesMessage
-            if (messageStat.isMessage()) {
                 try {
-                    statPublisherObserver.statPublisherDataAgent.sendMessageStats(messageStat.getAndesMessageMetadata(),
-                            messageStat.getNoOfSubscribers());
-                    logger.info("Sent message stats");
->>>>>>> 3de4456f3b06e79a3c79a334de6ba92c384f9e67
+                    statPublisherObserver.statPublisherDataAgent.sendMessageStats(messageStatistic.
+                            getAndesMessageMetadata(), messageStatistic.getNoOfSubscribers());
+
+
                 } catch (MalformedObjectNameException e) {
                     throw new StatPublisherRuntimeException(e);
                 } catch (ReflectionException e) {
@@ -89,12 +79,10 @@ public class AsyncMessageStatPublisher implements Runnable {
                 } catch (MBeanException e) {
                     throw new StatPublisherRuntimeException(e);
                 }
-*/
+
             } else {
-                System.out.print("+++++++++++++++++++++++ Message Ack Stat Publisher Activated" +
-                        Thread.currentThread().getName()+" Tenant => "+tenantID);
-          /*      try {
-                    statPublisherObserver.statPublisherDataAgent.sendAckStats(messageStat.getAndesAckData());
+                try {
+                    statPublisherObserver.statPublisherDataAgent.sendAckStats(messageStatistic.getAndesAckData());
                 } catch (MalformedObjectNameException e) {
                     throw new StatPublisherRuntimeException(e);
                 } catch (ReflectionException e) {
@@ -108,7 +96,7 @@ public class AsyncMessageStatPublisher implements Runnable {
                 } catch (MBeanException e) {
                     throw new StatPublisherRuntimeException(e);
                 }
-        */
+
             }
 
         }

@@ -64,7 +64,6 @@ public class StatPublisherManager {
         //Add observer to Hash map
         statPublisherObserverHashMap.put(tenantID, statPublisherObserver);
 
-        //todo check whether this is null or not
         if (statPublisherObserver.getStatPublisherConfiguration().isMessageStatEnable()) {
             //if message statPublisher is enable it's relevant tenant domain add to hash map
             messageStatEnableMap.add(statPublisherObserver.getTenantDomain());
