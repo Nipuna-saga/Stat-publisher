@@ -82,9 +82,10 @@ public class StatPublisherDataAgent {
 
         allReceiverGroups = new ArrayList<ReceiverGroup>();
         dataPublisherHolders = new ArrayList<DataPublisherHolder>();
-        String[] urls = {statPublisherConfiguration.getURL()};
+        String[] urls = statPublisherConfiguration.getURL().split(",");
 
         for (String aUrl : urls) {
+            System.out.println(aUrl);
             DataPublisherHolder aNode = new DataPublisherHolder(null, aUrl.trim(),
                     statPublisherConfiguration.getUsername(), statPublisherConfiguration.getPassword());
             dataPublisherHolders.add(aNode);
