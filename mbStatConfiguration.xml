@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<configuration>
-    <numberOfQueueSlots>1000</numberOfQueueSlots>
+<mbStatConfiguration>
+<!--General Configuration-->
+    <!--Size of the Queue which store messages-->
+    <asyncMessagePublisherBufferTime>1000</asyncMessagePublisherBufferTime>
+    <!-- Time interval for timer task-->
     <timeInterval>15000</timeInterval>
-    <versionMessage>1.0.0</versionMessage>
-    <versionAck>1.0.0</versionAck>
-    <versionSystemStatistic>1.0.0</versionSystemStatistic>
-    <versionMBStatistic>1.0.0</versionMBStatistic>
-</configuration>
+<!--Stream Configuration-->
+    <!--Versions of message, acknowledge packet,system and mb statistics-->
+    <messageStreamVersion>1.0.0</messageStreamVersion>
+    <acknowledgeStreamVersion>1.0.0</acknowledgeStreamVersion>
+    <systemStatisticStreamVersion>1.0.0</systemStatisticStreamVersion>
+    <mbStatisticStreamVersion>1.0.0</mbStatisticStreamVersion>
+</mbStatConfiguration>
+
 
