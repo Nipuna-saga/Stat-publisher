@@ -1,5 +1,5 @@
 /*
-*  Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*  Copyright (c) 2005-2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -29,7 +29,7 @@ public class JMXConfiguration {
 
     /**
      * Set value of hostName node
-     * @param hostName - String value
+     * @param hostName - connect to MB server
      */
     public void setHostName(String hostName) {
         this.hostName = hostName;
@@ -37,7 +37,7 @@ public class JMXConfiguration {
 
     /**
      * Set value of rmiRegistryPort node
-     * @param rmiRegistryPort - String value
+     * @param rmiRegistryPort - Registry port used by RMI
      */
     public void setRmiRegistryPort(String rmiRegistryPort) {
         this.rmiRegistryPort = rmiRegistryPort;
@@ -45,7 +45,7 @@ public class JMXConfiguration {
 
     /**
      * Set value of offSet node
-     * @param offSet - String value
+     * @param offSet - which used to change port
      */
     public void setOffSet(String offSet) {
         this.offSet = offSet;
