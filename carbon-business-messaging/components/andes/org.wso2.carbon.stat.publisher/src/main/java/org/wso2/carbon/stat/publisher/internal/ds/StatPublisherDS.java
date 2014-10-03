@@ -1,5 +1,5 @@
 /*
-*  Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*  Copyright (c) 2005-2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -34,9 +34,6 @@ import org.wso2.carbon.utils.ConfigurationContextService;
 
 /**
  * @scr.component name="org.wso2.carbon.stat.publisher" immediate="true"
- * @scr.reference name="configurationContext.service"
- * interface="org.wso2.carbon.utils.ConfigurationContextService" cardinality="1..1"
- * policy="dynamic" bind="setConfigurationContextService" unbind="unsetConfigurationContextService"
  * @scr.reference name="org.wso2.carbon.registry.service"
  * interface="org.wso2.carbon.registry.core.service.RegistryService" cardinality="1..1"
  * policy="dynamic" bind="setRegistryService" unbind="unsetRegistryService"
@@ -44,12 +41,14 @@ import org.wso2.carbon.utils.ConfigurationContextService;
  * cardinality="1..1" policy="dynamic" bind="setRealmService" unbind="unsetRealmService"
  */
 
+/**
+ * Activation class of Statistic Publisher Component
+ */
 public class StatPublisherDS {
     private static final Logger logger = Logger.getLogger(StatPublisherDS.class);
 
     /**
      * Activate method in stat publisher bundle
-     *
      * @param context - Component context
      * @throws StatPublisherConfigurationException
      */
@@ -59,9 +58,7 @@ public class StatPublisherDS {
         StatPublisherManager statPublisherManager = new StatPublisherManager();
         StatPublisherValueHolder.setStatPublisherManager(statPublisherManager);
 
-
         //create StatPublisherObserver for super tenant
-
         StatPublisherValueHolder.getStatPublisherManager().
                 createStatPublisherObserver(CarbonContext.getThreadLocalCarbonContext().getTenantId());
 
@@ -72,14 +69,12 @@ public class StatPublisherDS {
         BundleContext bundleContext = context.getBundleContext();
         bundleContext.registerService(Axis2ConfigurationContextObserver.class.getName(),
                 new Axis2ConfigurationContextObserverImpl(), null);
-        logger.info("==========Statistics Publisher Bundle Successfully Activated==========");
-
+        logger.info("Statistics Publisher Bundle Successfully Activated");
 
     }
 
     /**
      * Deactivate method in stat publisher component
-     *
      * @param context - Component context
      */
     protected void deactivate(ComponentContext context) {
@@ -88,28 +83,7 @@ public class StatPublisherDS {
     }
 
     /**
-     * Set ConfigurationContextService
-     *
-     * @param configurationContextService - ConfigurationContextService
-     */
-    protected void setConfigurationContextService(
-            ConfigurationContextService configurationContextService) {
-        StatPublisherValueHolder.setConfigurationContextService(configurationContextService);
-    }
-
-    /**
-     * Remove ConfigurationContextService
-     *
-     * @param configurationContextService -ConfigurationContextService
-     */
-    protected void unsetConfigurationContextService(
-            ConfigurationContextService configurationContextService) {
-        StatPublisherValueHolder.setConfigurationContextService(null);
-    }
-
-    /**
      * Set RegistryService
-     *
      * @param registryService - RegistryService
      */
     protected void setRegistryService(RegistryService registryService) {
@@ -118,7 +92,6 @@ public class StatPublisherDS {
 
     /**
      * Remove RegistryService
-     *
      * @param registryService -RegistryService
      */
     protected void unsetRegistryService(RegistryService registryService) {
@@ -127,7 +100,6 @@ public class StatPublisherDS {
 
     /**
      * Set RealmService
-     *
      * @param realmService - RealmService
      */
     protected void setRealmService(RealmService realmService) {
@@ -136,7 +108,6 @@ public class StatPublisherDS {
 
     /**
      * Remove RealmService
-     *
      * @param realmService - RealmService
      */
     protected void unsetRealmService(RealmService realmService) {
