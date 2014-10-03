@@ -8,7 +8,7 @@ public class GeneralConfiguration {
     private int timeInterval;
 
     //number of queue slots to store message/ack details
-    private int numberOfQueueSlots;
+    private int asyncMessagePublisherBufferTime;
 
     /**
      * Set value of timeInterval node
@@ -28,18 +28,18 @@ public class GeneralConfiguration {
 
     /**
      * Set value of numberOfQueueSlots node
-     * @param numberOfQueueSlots - int value
+     * @param asyncMessagePublisherBufferTime - int value
      */
-    public void setNumberOfQueueSlots(int numberOfQueueSlots) {
-        this.numberOfQueueSlots = numberOfQueueSlots;
+    public void setAsyncMessagePublisherBufferTime(int asyncMessagePublisherBufferTime) {
+        this.asyncMessagePublisherBufferTime = asyncMessagePublisherBufferTime;
     }
 
     /**
      * Get value of numberOfQueueSlots node
      * @return numberOfQueueSlots
      */
-    public int getNumberOfQueueSlots() {
-        return numberOfQueueSlots;
+    public int getAsyncMessagePublisherBufferTime() {
+        return asyncMessagePublisherBufferTime;
     }
 
 }
