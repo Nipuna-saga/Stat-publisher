@@ -1,5 +1,5 @@
 /*
-*  Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*  Copyright (c) 2005-2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -44,7 +44,7 @@ public class StatPublisherConfiguration {
 
     /**
      * Set Username
-     * @param username - String value
+     * @param username - username of CEP/BAM
      */
     public void setUsername(String username) {
         this.username = username;
@@ -60,7 +60,7 @@ public class StatPublisherConfiguration {
 
     /**
      * Set password
-     * @param password - String value
+     * @param password - password of CEP/BAM
      */
     public void setPassword(String password) {
         this.password = password;
@@ -76,7 +76,7 @@ public class StatPublisherConfiguration {
 
     /**
      * Set url
-     * @param url - String value
+     * @param url - destination to publish stat
      */
     public void setURL(String url) {
         this.url = url;
@@ -92,7 +92,7 @@ public class StatPublisherConfiguration {
 
     /**
      * Set whether message stat publishing enable or not
-     * @param messageStatEnable - boolean value
+     * @param messageStatEnable - whether enable message stat publishing or not
      */
     public void setMessageStatEnable(boolean messageStatEnable) {
         this.messageStatEnable = messageStatEnable;
@@ -108,7 +108,7 @@ public class StatPublisherConfiguration {
 
     /**
      * Set whether system stat enable or not
-     * @param systemStatEnable - boolean value
+     * @param systemStatEnable -  whether enable system stat publishing or not
      */
     public void setSystemStatEnable(boolean systemStatEnable) {
         this.systemStatEnable = systemStatEnable;
@@ -124,7 +124,7 @@ public class StatPublisherConfiguration {
 
     /**
      * Set whether message broker stat enable or not
-     * @param mbStatEnable - boolean value
+     * @param mbStatEnable -  whether enable mb stat publishing or not
      */
     public void setMbStatEnable(boolean mbStatEnable) {
         this.mbStatEnable = mbStatEnable;
@@ -140,7 +140,7 @@ public class StatPublisherConfiguration {
 
     /**
      * Set value of nodeURL
-     * @param nodeURL - String value
+     * @param nodeURL - Unique value of the node
      */
     public void setNodeURL(String nodeURL) {
         this.nodeURL = nodeURL;

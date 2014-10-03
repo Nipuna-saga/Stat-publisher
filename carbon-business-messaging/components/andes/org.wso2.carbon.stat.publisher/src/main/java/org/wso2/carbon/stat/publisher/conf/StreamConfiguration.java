@@ -1,5 +1,5 @@
 /*
-*  Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*  Copyright (c) 2005-2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -30,7 +30,7 @@ public class StreamConfiguration {
 
     /**
      * Set value of message version
-     * @param messageStreamVersion - String value
+     * @param messageStreamVersion - version of stream used to publish message stats
      */
     public void setMessageStreamVersion(String messageStreamVersion) {
         this.messageStreamVersion = messageStreamVersion;
@@ -38,7 +38,7 @@ public class StreamConfiguration {
 
     /**
      * Set value of acknowledge packet version
-     * @param acknowledgeStreamVersion - String value
+     * @param acknowledgeStreamVersion - version of stream used to publish ack stats
      */
     public void setAcknowledgeStreamVersion(String acknowledgeStreamVersion) {
         this.acknowledgeStreamVersion = acknowledgeStreamVersion;
@@ -46,7 +46,7 @@ public class StreamConfiguration {
 
     /**
      * Set value of system statistic version
-     * @param systemStatisticStreamVersion - String value
+     * @param systemStatisticStreamVersion - version of stream used to publish system stats
      */
     public void setSystemStatisticStreamVersion(String systemStatisticStreamVersion) {
         this.systemStatisticStreamVersion = systemStatisticStreamVersion;
@@ -54,7 +54,7 @@ public class StreamConfiguration {
 
     /**
      * Set value of message broker statistic version
-     * @param mbStatisticStreamVersion - String value
+     * @param mbStatisticStreamVersion - version of stream used to publish MB stats
      */
     public void setMbStatisticStreamVersion(String mbStatisticStreamVersion) {
         this.mbStatisticStreamVersion = mbStatisticStreamVersion;
