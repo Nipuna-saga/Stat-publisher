@@ -63,7 +63,7 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
 
         int numberOfQueueSlots;
         try {
-            numberOfQueueSlots = XMLConfigurationReader.readGeneralConfiguration().getNumberOfQueueSlots();
+            numberOfQueueSlots = XMLConfigurationReader.readGeneralConfiguration().getAsyncMessagePublisherBufferTime();
         } catch (StatPublisherConfigurationException e) {
             logger.error("Error occur while try to retrieve number of queue slots from mbStatConfiguration.xml ");
             throw new StatPublisherRuntimeException(e);

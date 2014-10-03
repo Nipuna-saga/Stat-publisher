@@ -127,25 +127,25 @@ public class XMLConfigurationReader {
                 String rootNode = document.getDocumentElement().getNodeName();
                 NodeList dataList = document.getElementsByTagName(rootNode);
 
-                String versionMessageValue =
-                        ((Element) dataList.item(0)).getElementsByTagName("versionMessage").
+                String messageStreamVersionValue =
+                        ((Element) dataList.item(0)).getElementsByTagName("messageStreamVersion").
                                 item(0).getChildNodes().item(0).getTextContent();
-                streamConfiguration.setMessageStreamVersion(versionMessageValue.trim());
+                streamConfiguration.setMessageStreamVersion(messageStreamVersionValue.trim());
 
-                String versionAckValue =
-                        ((Element) dataList.item(0)).getElementsByTagName("versionAck").
+                String acknowledgeStreamVersionValue =
+                        ((Element) dataList.item(0)).getElementsByTagName("acknowledgeStreamVersion").
                                 item(0).getChildNodes().item(0).getTextContent();
-                streamConfiguration.setAcknowledgeStreamVersion(versionAckValue.trim());
+                streamConfiguration.setAcknowledgeStreamVersion(acknowledgeStreamVersionValue.trim());
 
-                String versionSystemStatisticValue =
-                        ((Element) dataList.item(0)).getElementsByTagName("versionSystemStatistic").
+                String systemStatisticStreamVersionValue =
+                        ((Element) dataList.item(0)).getElementsByTagName("systemStatisticStreamVersion").
                                 item(0).getChildNodes().item(0).getTextContent();
-                streamConfiguration.setSystemStatisticStreamVersion(versionSystemStatisticValue.trim());
+                streamConfiguration.setSystemStatisticStreamVersion(systemStatisticStreamVersionValue.trim());
 
-                String versionMBStatisticValue =
-                        ((Element) dataList.item(0)).getElementsByTagName("versionMBStatistic").
+                String mbStatisticStreamVersionValue =
+                        ((Element) dataList.item(0)).getElementsByTagName("mbStatisticStreamVersion").
                                 item(0).getChildNodes().item(0).getTextContent();
-                streamConfiguration.setMbStatisticStreamVersion(versionMBStatisticValue.trim());
+                streamConfiguration.setMbStatisticStreamVersion(mbStatisticStreamVersionValue.trim());
 
             }
         } catch (ParserConfigurationException e) {
@@ -182,10 +182,10 @@ public class XMLConfigurationReader {
                 String rootNode = document.getDocumentElement().getNodeName();
                 NodeList dataList = document.getElementsByTagName(rootNode);
 
-                String numberOfQueueSlotsValue =
-                        ((Element) dataList.item(0)).getElementsByTagName("numberOfQueueSlots").
+                String asyncMessagePublisherBufferTimeValue =
+                        ((Element) dataList.item(0)).getElementsByTagName("asyncMessagePublisherBufferTime").
                                 item(0).getChildNodes().item(0).getTextContent();
-                generalConfiguration.setNumberOfQueueSlots(Integer.parseInt(numberOfQueueSlotsValue.trim()));
+                generalConfiguration.setAsyncMessagePublisherBufferTime(Integer.parseInt(asyncMessagePublisherBufferTimeValue.trim()));
 
                 String timeIntervalValue =
                         ((Element) dataList.item(0)).getElementsByTagName("timeInterval").
