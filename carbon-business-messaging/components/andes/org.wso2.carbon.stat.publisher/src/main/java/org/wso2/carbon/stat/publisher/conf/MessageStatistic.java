@@ -22,7 +22,7 @@ import org.wso2.andes.kernel.AndesAckData;
 import org.wso2.andes.kernel.AndesMessageMetadata;
 
 public class MessageStatistic {
-
+//todo change comments into methods comments and put licence statements
     //This boolean value use to determine it's a message or Ack message
     private boolean message;
     private AndesMessageMetadata andesMessageMetadata;

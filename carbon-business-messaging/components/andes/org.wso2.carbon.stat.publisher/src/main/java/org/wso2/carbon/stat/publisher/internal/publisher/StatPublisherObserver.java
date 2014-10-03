@@ -45,8 +45,8 @@ import java.util.TimerTask;
 public class StatPublisherObserver {
 
     private static final Logger logger = Logger.getLogger(StatPublisherObserver.class);
-    public StatPublisherDataAgent statPublisherDataAgent;
-    TenantManager tenantManager = StatPublisherValueHolder.getRealmService().getTenantManager();
+    private StatPublisherDataAgent statPublisherDataAgent;//todo create a get method
+    private TenantManager tenantManager = StatPublisherValueHolder.getRealmService().getTenantManager();
     private StatPublisherConfiguration statPublisherConfiguration;
     private Timer timer;
     private TimerTask statPublisherTimerTask;
@@ -139,7 +139,8 @@ public class StatPublisherObserver {
                 @Override
                 public void run() {
                     try {
-                        timer.scheduleAtFixedRate(statPublisherTimerTask, new Date(), XMLConfigurationReader.readGeneralConfiguration().getTimeInterval());
+                        timer.scheduleAtFixedRate(statPublisherTimerTask, new Date(),
+                                XMLConfigurationReader.readGeneralConfiguration().getTimeInterval());
                     } catch (StatPublisherConfigurationException e) {
                         logger.error("Exception in TimerTask initialization" + e);
                         throw new StatPublisherRuntimeException(e);

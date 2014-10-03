@@ -21,7 +21,6 @@ package org.wso2.carbon.stat.publisher.internal.ds;
 import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.stat.publisher.internal.publisher.StatPublisherManager;
 import org.wso2.carbon.user.core.service.RealmService;
-import org.wso2.carbon.utils.ConfigurationContextService;
 
 /**
  * Keep service values
@@ -31,26 +30,8 @@ public class StatPublisherValueHolder {
     private static RegistryService registryService;
     private static RealmService realmService;
     private static StatPublisherManager statPublisherManager;
-    private static ConfigurationContextService configurationContextService;
 
     private StatPublisherValueHolder() {
-    }
-
-    /**
-     * Set the configuration context of component
-     * @param configurationContextService - configuration context of component
-     */
-    public static void setConfigurationContextService(
-            ConfigurationContextService configurationContextService) {
-        StatPublisherValueHolder.configurationContextService = configurationContextService;
-    }
-
-    /**
-     * Get configurationContext
-     * @return configurationContext
-     */
-    public static ConfigurationContextService getConfigurationContextService() {
-        return configurationContextService;
     }
 
     /**

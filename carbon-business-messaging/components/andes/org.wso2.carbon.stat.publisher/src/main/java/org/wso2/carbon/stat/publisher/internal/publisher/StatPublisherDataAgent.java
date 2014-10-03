@@ -40,13 +40,8 @@ import java.util.List;
 
 public class StatPublisherDataAgent {
 
-    private List<Subscrption> subscriptionsList;
-    private ArrayList<ReceiverGroup> allReceiverGroups;
-    private ArrayList<DataPublisherHolder> dataPublisherHolders;
-    private String[] urls;
-    private List<String> topics;
     private StatPublisherConfiguration statPublisherConfiguration;
-    private SystemStatsReader systemStats = null;
+    private SystemStatsReader systemStatReader = null;
     private StreamDefinition serverStatsStreamDef;
     private StreamDefinition mbStatsStreamDef;
     private StreamDefinition messageStatsStreamDef;
@@ -80,8 +75,8 @@ public class StatPublisherDataAgent {
         }
 
 
-        allReceiverGroups = new ArrayList<ReceiverGroup>();
-        dataPublisherHolders = new ArrayList<DataPublisherHolder>();
+        ArrayList<ReceiverGroup> allReceiverGroups = new ArrayList<ReceiverGroup>();
+        ArrayList<DataPublisherHolder> dataPublisherHolders = new ArrayList<DataPublisherHolder>();
         String[] urls = statPublisherConfiguration.getURL().split(",");
 
         for (String aUrl : urls) {
@@ -105,13 +100,13 @@ public class StatPublisherDataAgent {
         metaData = constructMetaData();
 
         //get server statistics
-        systemStats = new SystemStatsReader(jmxConfiguration);
+        systemStatReader = new SystemStatsReader(jmxConfiguration);
     }
 
     public void sendSystemStats() throws MalformedObjectNameException, ReflectionException, IOException,
             InstanceNotFoundException, AttributeNotFoundException, MBeanException, AgentException {
-        if(systemStats.connection != null) {
-            payLoadData = getServerStatsPayLoadData(systemStats.getMbeansStatsData());
+        if(systemStatReader.connection != null) {
+            payLoadData = getServerStatsPayLoadData(systemStatReader.getMbeansStatsData());
 
             loadBalancingDataPublisher.publish(serverStatsStreamDef.getName(), serverStatsStreamDef.getVersion(),
                     getObjectArray(metaData), null,
@@ -239,10 +234,10 @@ public class StatPublisherDataAgent {
 
     private int getTotalSubscriptions() throws Exception {
         int totalSubscribers = 0;
-        topics = getTopicList();
+        List<String> topics = getTopicList();
 
         for (String topic : topics) {
-            subscriptionsList = subscriptionStore.getActiveClusterSubscribersForDestination(topic, true);
+            List<Subscrption> subscriptionsList = subscriptionStore.getActiveClusterSubscribersForDestination(topic, true);
             totalSubscribers += subscriptionsList.size();
         }
 
@@ -252,8 +247,6 @@ public class StatPublisherDataAgent {
     private List<String> getTopicList() throws Exception {
         MessagingEngine messagingEngine = MessagingEngine.getInstance();
         subscriptionStore = messagingEngine.getSubscriptionStore();
-        List<String> topics = subscriptionStore.getTopics();
-
-        return topics;
+        return subscriptionStore.getTopics();
     }
 }

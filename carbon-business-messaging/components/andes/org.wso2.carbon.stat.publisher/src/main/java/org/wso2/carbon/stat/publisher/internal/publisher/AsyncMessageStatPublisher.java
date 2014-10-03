@@ -19,7 +19,6 @@
 package org.wso2.carbon.stat.publisher.internal.publisher;
 
 import org.wso2.carbon.stat.publisher.conf.MessageStatistic;
-import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
 import org.wso2.carbon.stat.publisher.internal.ds.StatPublisherValueHolder;
 import org.wso2.carbon.user.api.TenantManager;
@@ -33,9 +32,6 @@ import java.util.concurrent.BlockingQueue;
 public class AsyncMessageStatPublisher implements Runnable {
 
     private BlockingQueue<MessageStatistic> messageQueue = StatPublisherMessageListenerImpl.messageQueue;
-
-    public AsyncMessageStatPublisher(StreamConfiguration streamConfiguration) {
-    }
 
     @Override
     public void run() {
@@ -66,7 +62,6 @@ public class AsyncMessageStatPublisher implements Runnable {
                 try {
                     statPublisherObserver.statPublisherDataAgent.sendMessageStats(messageStatistic.
                             getAndesMessageMetadata(), messageStatistic.getNoOfSubscribers());
-
                 } catch (MalformedObjectNameException e) {
                     throw new StatPublisherRuntimeException(e);
                 } catch (ReflectionException e) {

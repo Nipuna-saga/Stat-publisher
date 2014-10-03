@@ -22,7 +22,7 @@ package org.wso2.carbon.stat.publisher.conf;
  * Read stream configuration values from mbStatConfiguration.xml file.
  */
 public class StreamConfiguration {
-
+//todo use these names in xml file
     private String messageStreamVersion;
     private String acknowledgeStreamVersion;
     private String systemStatisticStreamVersion;
@@ -32,6 +32,7 @@ public class StreamConfiguration {
      * Set value of message version
      * @param messageStreamVersion - String value
      */
+    //todo use a meaningful values instead of string value
     public void setMessageStreamVersion(String messageStreamVersion) {
         this.messageStreamVersion = messageStreamVersion;
     }

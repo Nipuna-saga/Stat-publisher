@@ -5,6 +5,7 @@ import org.wso2.carbon.databridge.commons.AttributeType;
 import org.wso2.carbon.databridge.commons.StreamDefinition;
 import org.wso2.carbon.databridge.commons.exception.MalformedStreamDefinitionException;
 import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
+
 import java.util.ArrayList;
 
 public class StreamDefinitionCreator {
@@ -21,8 +22,10 @@ public class StreamDefinitionCreator {
     public static String ackStatsNickName = "ack statistics";
     public static String ackStatsDescription = "Publish Message broker acknowledgement message statistics";
 
-    public static StreamDefinition getServerStatsStreamDef(StreamConfiguration streamConfiguration) throws MalformedStreamDefinitionException {
-        StreamDefinition streamDefinition = new StreamDefinition(serverStatsStreamName, streamConfiguration.getSystemStatisticStreamVersion());
+    public static StreamDefinition getServerStatsStreamDef(StreamConfiguration streamConfiguration) throws
+            MalformedStreamDefinitionException {
+        StreamDefinition streamDefinition = new StreamDefinition(serverStatsStreamName,
+                streamConfiguration.getSystemStatisticStreamVersion());
         streamDefinition.setDescription(serverStatsDescription);
         streamDefinition.setNickName(serverStatsNickName);
         streamDefinition.setMetaData(getMetaDefinitions());
@@ -32,8 +35,10 @@ public class StreamDefinitionCreator {
         return streamDefinition;
     }
 
-    public static StreamDefinition getMBStatsStreamDef(StreamConfiguration streamConfiguration) throws MalformedStreamDefinitionException {
-        StreamDefinition streamDefinition = new StreamDefinition(mbStatsStreamName, streamConfiguration.getMbStatisticStreamVersion());
+    public static StreamDefinition getMBStatsStreamDef(StreamConfiguration streamConfiguration) throws
+            MalformedStreamDefinitionException {
+        StreamDefinition streamDefinition = new StreamDefinition(mbStatsStreamName,
+                streamConfiguration.getMbStatisticStreamVersion());
         streamDefinition.setDescription(mbStatsDescription);
         streamDefinition.setNickName(mbStatsNickName);
         streamDefinition.setMetaData(getMetaDefinitions());
@@ -43,8 +48,10 @@ public class StreamDefinitionCreator {
         return streamDefinition;
     }
 
-    public static StreamDefinition getMessageStatsStreamDef(StreamConfiguration streamConfiguration) throws MalformedStreamDefinitionException {
-        StreamDefinition streamDefinition = new StreamDefinition(messageStatsStreamName, streamConfiguration.getMessageStreamVersion());
+    public static StreamDefinition getMessageStatsStreamDef(StreamConfiguration streamConfiguration) throws
+            MalformedStreamDefinitionException {
+        StreamDefinition streamDefinition = new StreamDefinition(messageStatsStreamName,
+                streamConfiguration.getMessageStreamVersion());
         streamDefinition.setDescription(messageStatsDescription);
         streamDefinition.setNickName(messageStatsNickName);
         streamDefinition.setMetaData(getMetaDefinitions());
@@ -54,8 +61,10 @@ public class StreamDefinitionCreator {
         return streamDefinition;
     }
 
-    public static StreamDefinition getAckStatsStreamDef(StreamConfiguration streamConfiguration) throws MalformedStreamDefinitionException {
-        StreamDefinition streamDefinition = new StreamDefinition(ackStatsStreamName, streamConfiguration.getAcknowledgeStreamVersion());
+    public static StreamDefinition getAckStatsStreamDef(StreamConfiguration streamConfiguration)
+            throws MalformedStreamDefinitionException {
+        StreamDefinition streamDefinition = new StreamDefinition(ackStatsStreamName,
+                streamConfiguration.getAcknowledgeStreamVersion());
         streamDefinition.setDescription(ackStatsDescription);
         streamDefinition.setNickName(ackStatsNickName);
         streamDefinition.setMetaData(getMetaDefinitions());
@@ -67,13 +76,13 @@ public class StreamDefinitionCreator {
 
     private static ArrayList<Attribute> getMetaDefinitions() {
         ArrayList<Attribute> metaList = new ArrayList<Attribute>(1);
+        //todo move to constance
         metaList.add(new Attribute("publisherIP", AttributeType.STRING));
-
         return metaList;
     }
 
-    //TODO change all List in to arrays
-    private static ArrayList<Attribute> getServerStatsPayloadDefinition(){
+    //TODO change all array lists to lists
+    private static ArrayList<Attribute> getServerStatsPayloadDefinition() {
 
         ArrayList<Attribute> payloadList = new ArrayList<Attribute>(4);
         payloadList.add(new Attribute("heapMemoryUsage", AttributeType.STRING));
@@ -108,11 +117,12 @@ public class StreamDefinitionCreator {
     private static ArrayList<Attribute> getAckStatsPayloadDefinition() {
         ArrayList<Attribute> payloadList = new ArrayList<Attribute>(3);
         payloadList.add(new Attribute("messageId", AttributeType.LONG));
+       //todo topic/ques
         payloadList.add(new Attribute("queueName", AttributeType.STRING));
         payloadList.add(new Attribute("timestamp", AttributeType.LONG));
 
         return payloadList;
     }
 
-
+//todo message comparing in bam dashboard
 }

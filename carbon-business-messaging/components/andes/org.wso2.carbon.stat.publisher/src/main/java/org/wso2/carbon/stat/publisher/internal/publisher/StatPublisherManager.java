@@ -40,10 +40,10 @@ public class StatPublisherManager {
             new HashMap<Integer, StatPublisherObserver>();
 
     public HashSet<String> getMessageStatEnableMap() {
-        return messageStatEnableMap;
+        return messageStatEnableSet;
     }
 
-    public static HashSet<String> messageStatEnableMap = new HashSet<String>();
+    public static HashSet<String> messageStatEnableSet = new HashSet<String>();
 
     public StatPublisherManager() throws StatPublisherConfigurationException {
         jmxConfiguration = XMLConfigurationReader.readJMXConfiguration();
@@ -65,8 +65,8 @@ public class StatPublisherManager {
         statPublisherObserverHashMap.put(tenantID, statPublisherObserver);
 
         if (statPublisherObserver.getStatPublisherConfiguration().isMessageStatEnable()) {
-            //if message statPublisher is enable it's relevant tenant domain add to hash map
-            messageStatEnableMap.add(statPublisherObserver.getTenantDomain());
+            //if message statPublisher is enable it's relevant tenant domain add to hash set
+            messageStatEnableSet.add(statPublisherObserver.getTenantDomain());
         }
     }
 
@@ -74,16 +74,8 @@ public class StatPublisherManager {
      * Stop monitoring process
      */
     public void updateStatPublisherObserver(int tenantID) throws StatPublisherConfigurationException {
-        statPublisherObserver = statPublisherObserverHashMap.get(tenantID);
-        if (statPublisherObserver != null) {
-            //stop monitoring process
-            statPublisherObserver.stopObserver();
-            //remove tenant domain from hash map
-            messageStatEnableMap.remove(statPublisherObserver.getTenantDomain());
-            if (statPublisherObserver.statPublisherDataAgent != null)
-                statPublisherObserver.statPublisherDataAgent.getLoadBalancingDataPublisher().stop();
-        }
 
+        removeStatPublisherObserver(tenantID);
         createStatPublisherObserver(tenantID);
 
     }
@@ -95,7 +87,7 @@ public class StatPublisherManager {
         statPublisherObserver = statPublisherObserverHashMap.get(tenantID);
         if (statPublisherObserver != null) {
             //remove tenant domain from hash map
-            messageStatEnableMap.remove(statPublisherObserver.getTenantDomain());
+            messageStatEnableSet.remove(statPublisherObserver.getTenantDomain());
             //remove publisher observer from hash map
             statPublisherObserverHashMap.remove(tenantID);
             if (statPublisherObserver.statPublisherDataAgent != null)

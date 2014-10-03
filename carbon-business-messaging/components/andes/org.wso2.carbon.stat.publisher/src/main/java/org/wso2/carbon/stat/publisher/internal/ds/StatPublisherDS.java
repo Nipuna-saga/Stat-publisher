@@ -25,12 +25,11 @@ import org.wso2.andes.kernel.MessagingEngine;
 import org.wso2.carbon.context.CarbonContext;
 import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
-import org.wso2.carbon.stat.publisher.internal.publisher.StatPublisherMessageListenerImpl;
 import org.wso2.carbon.stat.publisher.internal.publisher.StatPublisherManager;
+import org.wso2.carbon.stat.publisher.internal.publisher.StatPublisherMessageListenerImpl;
 import org.wso2.carbon.user.api.UserStoreException;
 import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.utils.Axis2ConfigurationContextObserver;
-import org.wso2.carbon.utils.ConfigurationContextService;
 
 /**
  * @scr.component name="org.wso2.carbon.stat.publisher" immediate="true"
@@ -44,6 +43,7 @@ import org.wso2.carbon.utils.ConfigurationContextService;
  * cardinality="1..1" policy="dynamic" bind="setRealmService" unbind="unsetRealmService"
  */
 
+//todo try to put jmxconnnection factory service as a reference
 public class StatPublisherDS {
     private static final Logger logger = Logger.getLogger(StatPublisherDS.class);
 
@@ -72,7 +72,7 @@ public class StatPublisherDS {
         BundleContext bundleContext = context.getBundleContext();
         bundleContext.registerService(Axis2ConfigurationContextObserver.class.getName(),
                 new Axis2ConfigurationContextObserverImpl(), null);
-        logger.info("==========Statistics Publisher Bundle Successfully Activated==========");
+        logger.info("Statistics Publisher Bundle Successfully Activated");
 
 
     }
@@ -84,27 +84,9 @@ public class StatPublisherDS {
      */
     protected void deactivate(ComponentContext context) {
         if (StatPublisherMessageListenerImpl.messageStatPublisherThread.isAlive())
+
+            //todo create single thread executer and shutdown
             StatPublisherMessageListenerImpl.messageStatPublisherThread.stop();
-    }
-
-    /**
-     * Set ConfigurationContextService
-     *
-     * @param configurationContextService - ConfigurationContextService
-     */
-    protected void setConfigurationContextService(
-            ConfigurationContextService configurationContextService) {
-        StatPublisherValueHolder.setConfigurationContextService(configurationContextService);
-    }
-
-    /**
-     * Remove ConfigurationContextService
-     *
-     * @param configurationContextService -ConfigurationContextService
-     */
-    protected void unsetConfigurationContextService(
-            ConfigurationContextService configurationContextService) {
-        StatPublisherValueHolder.setConfigurationContextService(null);
     }
 
     /**
