@@ -56,12 +56,12 @@ public class StatPublisherDS {
             throws StatPublisherConfigurationException, UserStoreException {
         StatPublisherManager statPublisherManager = new StatPublisherManager();
         StatPublisherValueHolder.setStatPublisherManager(statPublisherManager);
-    //create StatPublisherObserver for super tenant
+        //create StatPublisherObserver for super tenant
         StatPublisherValueHolder.getStatPublisherManager().
                 createStatPublisherObserver(CarbonContext.getThreadLocalCarbonContext().getTenantId());
-    //set interface in andes StatPublisher to MessageStatPublisher for get messages and Ack messages
+        //set interface in andes StatPublisher to MessageStatPublisher for get messages and Ack messages
         MessagingEngine.getInstance().setStatPublisherMessageListener(StatPublisherMessageListenerImpl.getInstance());
-    //get Axis2ConfigurationContext services to get notification about changing configuration contexts
+        //get Axis2ConfigurationContext services to get notification about changing configuration contexts
         BundleContext bundleContext = context.getBundleContext();
         bundleContext.registerService(Axis2ConfigurationContextObserver.class.getName(),
                 new Axis2ConfigurationContextObserverImpl(), null);

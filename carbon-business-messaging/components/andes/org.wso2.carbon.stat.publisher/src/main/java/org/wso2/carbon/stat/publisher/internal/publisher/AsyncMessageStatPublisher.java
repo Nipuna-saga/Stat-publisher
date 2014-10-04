@@ -19,7 +19,6 @@
 package org.wso2.carbon.stat.publisher.internal.publisher;
 
 import org.wso2.carbon.stat.publisher.conf.MessageStatistic;
-import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
 import org.wso2.carbon.stat.publisher.internal.ds.StatPublisherValueHolder;
 import org.wso2.carbon.user.api.TenantManager;
@@ -32,10 +31,7 @@ import java.util.concurrent.BlockingQueue;
 
 public class AsyncMessageStatPublisher implements Runnable {
 
-    private BlockingQueue<MessageStatistic> messageQueue = StatPublisherMessageListenerImpl.messageQueue;
-
-    public AsyncMessageStatPublisher(StreamConfiguration streamConfiguration) {
-    }
+    private BlockingQueue<MessageStatistic> messageQueue = StatPublisherMessageListenerImpl.getMessageQueue();
 
     @Override
     public void run() {
@@ -64,9 +60,8 @@ public class AsyncMessageStatPublisher implements Runnable {
             if (messageStatistic.isMessage()) {
 
                 try {
-                    statPublisherObserver.statPublisherDataAgent.sendMessageStats(messageStatistic.
+                    statPublisherObserver.getStatPublisherDataAgent().sendMessageStats(messageStatistic.
                             getAndesMessageMetadata(), messageStatistic.getNoOfSubscribers());
-
                 } catch (MalformedObjectNameException e) {
                     throw new StatPublisherRuntimeException(e);
                 } catch (ReflectionException e) {
@@ -83,7 +78,7 @@ public class AsyncMessageStatPublisher implements Runnable {
 
             } else {
                 try {
-                    statPublisherObserver.statPublisherDataAgent.sendAckStats(messageStatistic.getAndesAckData());
+                    statPublisherObserver.getStatPublisherDataAgent().sendAckStats(messageStatistic.getAndesAckData());
                 } catch (MalformedObjectNameException e) {
                     throw new StatPublisherRuntimeException(e);
                 } catch (ReflectionException e) {

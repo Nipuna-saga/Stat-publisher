@@ -25,7 +25,6 @@ import org.wso2.andes.kernel.AndesMessageMetadata;
  *  Store message and ack statistics
  */
 public class MessageStatistic {
-
     //This boolean value use to determine it's a message or Ack message
     private boolean message;
     private AndesMessageMetadata andesMessageMetadata;

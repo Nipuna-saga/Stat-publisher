@@ -23,7 +23,6 @@ import org.wso2.andes.kernel.AndesAckData;
 import org.wso2.andes.kernel.AndesMessageMetadata;
 import org.wso2.andes.kernel.StatPublisherMessageListener;
 import org.wso2.carbon.stat.publisher.conf.MessageStatistic;
-import org.wso2.carbon.stat.publisher.conf.StreamConfiguration;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherConfigurationException;
 import org.wso2.carbon.stat.publisher.exception.StatPublisherRuntimeException;
 import org.wso2.carbon.stat.publisher.internal.ds.StatPublisherValueHolder;
@@ -46,8 +45,13 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
 
     private static StatPublisherMessageListenerImpl statPublisherMessageListenerImpl =
             new StatPublisherMessageListenerImpl();
+
+    public static BlockingQueue<MessageStatistic> getMessageQueue() {
+        return messageQueue;
+    }
+
     //This is the Queue that use to hold message details
-    public static BlockingQueue<MessageStatistic> messageQueue;
+    private static BlockingQueue<MessageStatistic> messageQueue;
     //MessageStat Object
     private MessageStatistic messageStatistic;
     private String tenantDomain;
@@ -55,15 +59,8 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
     //private constructor
     private StatPublisherMessageListenerImpl() {
         messageStatistic = new MessageStatistic();
-        StreamConfiguration streamConfiguration;
         MessageStatPublisherThreadContinue = true;
-        try {
-            streamConfiguration = XMLConfigurationReader.readStreamConfiguration();
-        } catch (StatPublisherConfigurationException e) {
-            throw new StatPublisherRuntimeException(e);
-        }
-
-        int numberOfQueueSlots;
+             int numberOfQueueSlots;
         try {
             numberOfQueueSlots = XMLConfigurationReader.readGeneralConfiguration().getAsyncMessagePublisherBufferTime();
         } catch (StatPublisherConfigurationException e) {
@@ -72,7 +69,7 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
         }
         messageQueue = new LinkedBlockingQueue<MessageStatistic>(numberOfQueueSlots);
         // Start Message stat publisher thread
-        messageStatPublisherThread = new Thread(new AsyncMessageStatPublisher(streamConfiguration));
+        messageStatPublisherThread = new Thread(new AsyncMessageStatPublisher());
         messageStatPublisherThread.start();
     }
 
@@ -122,7 +119,7 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
             tenantDomain = andesAckData.qName.split("/")[0];
         }
         //check message's tenant  activate or not message stat Publisher by checking MessageStatEnableMap
-        boolean value = StatPublisherManager.messageStatEnableMap.contains(tenantDomain);
+        boolean value = StatPublisherManager.messageStatEnableSet.contains(tenantDomain);
         if (value) {
             //if it's enable add message details to message stat object
             messageStatistic.setAndesAckData(andesAckData);

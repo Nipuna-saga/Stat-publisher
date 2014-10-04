@@ -36,13 +36,8 @@ import java.util.Set;
 
 public class SystemStatsReader {
 
-    private JMXConnector jmxConnector = null;
     public MBeanServerConnection connection = null;
-    private long timeout = 100000;
-    private SystemStatsReader mbeansStats = null;
     private final Logger logger = Logger.getLogger(SystemStatsReader.class);
-
-    int i = 0;
 
     public SystemStatsReader(final JMXConfiguration jmxConfiguration) {
 
@@ -73,8 +68,7 @@ public class SystemStatsReader {
 
                     } catch (Exception e) {
                         try {
-                            System.out.println("in catch.....");
-                            logger.error("===============retrying==================");
+                            logger.error("Retrying to get JMX connection",e);
                             retry.errorOccured();
                         } catch (RuntimeException e1) {
                             throw new RuntimeException("Exception while creating jmx connection"
@@ -91,25 +85,23 @@ public class SystemStatsReader {
 
     }
 
-    private  void createJMXConnection(JMXConfiguration jmxConfiguration, String userName, String password) throws Exception {
+    private void createJMXConnection(JMXConfiguration jmxConfiguration, String userName, String password)
+            throws Exception {
         //get JMX port if() {
         final int jmxPort = Integer.parseInt(jmxConfiguration.getRmiRegistryPort()) +
                 Integer.parseInt(jmxConfiguration.getOffSet());
+        long timeout = 100000;
+        JMXConnector jmxConnector = JMXConnnectionFactory.getJMXConnection(timeout, jmxConfiguration.getHostName(),
+                jmxPort, userName, password);
+        connection = jmxConnector.getMBeanServerConnection();
 
-
-                jmxConnector = JMXConnnectionFactory.getJMXConnection(timeout, jmxConfiguration.getHostName(),
-                        jmxPort, userName, password);
-                connection = jmxConnector.getMBeanServerConnection();
-
-        }
-
+    }
 
     public String HeapMemoryUsage() throws MalformedObjectNameException, IOException, AttributeNotFoundException,
-            MBeanException, ReflectionException, InstanceNotFoundException {
-            Set<ObjectInstance> set = connection.queryMBeans(new ObjectName("java.lang:type=Memory"), null);
-            ObjectInstance oi = set.iterator().next();
-            Object attrValue = connection.getAttribute(oi.getObjectName(), "HeapMemoryUsage");
-
+        MBeanException, ReflectionException, InstanceNotFoundException {
+        Set<ObjectInstance> set = connection.queryMBeans(new ObjectName("java.lang:type=Memory"), null);
+        ObjectInstance oi = set.iterator().next();
+        Object attrValue = connection.getAttribute(oi.getObjectName(), "HeapMemoryUsage");
         return ((CompositeData) attrValue).get("used").toString();
     }
 
@@ -122,14 +114,15 @@ public class SystemStatsReader {
         return ((CompositeData) attrValue_nonHeapMem).get("used").toString();
     }
 
-    public String CPUUsage(){
+    public String CPUUsage() {
         OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
 
         return Double.toString(osBean.getSystemLoadAverage());
     }
 
 
-    public SystemStatsData getMbeansStatsData() throws MalformedObjectNameException, InstanceNotFoundException, IOException, ReflectionException, AttributeNotFoundException, MBeanException {
+    public SystemStatsData getMbeansStatsData() throws MalformedObjectNameException, InstanceNotFoundException,
+        IOException, ReflectionException, AttributeNotFoundException, MBeanException {
         SystemStatsData systemStatsData = new SystemStatsData();
         systemStatsData.setHeapMemoryUsage(HeapMemoryUsage());
         systemStatsData.setNonHeapMemoryUsage(NonHeapMemoryUsage());

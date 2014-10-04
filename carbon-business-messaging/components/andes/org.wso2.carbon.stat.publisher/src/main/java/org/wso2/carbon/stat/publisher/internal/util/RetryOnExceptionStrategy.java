@@ -18,6 +18,7 @@
 
 package org.wso2.carbon.stat.publisher.internal.util;
 
+//todo class definitions and method definitions
 public class RetryOnExceptionStrategy {
     public static final int DEFAULT_RETRIES = 5;
     public static final long DEFAULT_WAIT_TIME_IN_MILLI = 2000;
@@ -46,6 +47,7 @@ public class RetryOnExceptionStrategy {
 
         numberOfTriesLeft--;
         if (!shouldRetry()) {
+            //use statpublisher conf exception
             throw new Exception("Retry Failed: Total " + numberOfRetries
                     + " attempts made at interval " + getTimeToWait()
                     + "ms");

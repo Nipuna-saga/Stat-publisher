@@ -31,8 +31,6 @@ import java.rmi.RemoteException;
 public class StatPublisherClient {
 
     private StatPublisherServiceStub stub;
-    private static StatPublisherClient statPublisherClient;
-
 
     public StatPublisherClient(ConfigurationContext configCtx, String backendServerURL, String cookie) throws Exception {
         String serviceURL = backendServerURL + "StatPublisherService";
@@ -41,15 +39,7 @@ public class StatPublisherClient {
         Options options = client.getOptions();
         options.setManageSession(true);
         options.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, cookie);
-        statPublisherClient = this;
 
-    }
-
-
-    //get statisticPublisher client
-    public static StatPublisherClient getStatPublisherClient() {
-
-        return statPublisherClient;
     }
 
     //get statistic configuration from StatPublisher service

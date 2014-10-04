@@ -45,8 +45,13 @@ import java.util.TimerTask;
 public class StatPublisherObserver {
 
     private static final Logger logger = Logger.getLogger(StatPublisherObserver.class);
-    public StatPublisherDataAgent statPublisherDataAgent;
-    TenantManager tenantManager = StatPublisherValueHolder.getRealmService().getTenantManager();
+
+    public StatPublisherDataAgent getStatPublisherDataAgent() {
+        return getStatPublisherDataAgent;
+    }
+
+    private StatPublisherDataAgent getStatPublisherDataAgent;//todo create a get method
+    private TenantManager tenantManager = StatPublisherValueHolder.getRealmService().getTenantManager();
     private StatPublisherConfiguration statPublisherConfiguration;
     private Timer timer;
     private TimerTask statPublisherTimerTask;
@@ -58,8 +63,8 @@ public class StatPublisherObserver {
         this.tenantID = tenantID;
         this.statPublisherConfiguration = RegistryPersistenceManager.loadConfigurationData(tenantID);
         if (statPublisherConfiguration.isSystemStatEnable() || statPublisherConfiguration.isMbStatEnable()
-                ) {
-            statPublisherDataAgent =
+                || statPublisherConfiguration.isMessageStatEnable()) {
+            getStatPublisherDataAgent =
                     new StatPublisherDataAgent(jmxConfiguration, streamConfiguration, statPublisherConfiguration);
         }
 
@@ -81,7 +86,7 @@ public class StatPublisherObserver {
         //Checking  System or MB stat enable or not
         if (statPublisherConfiguration.isSystemStatEnable() || statPublisherConfiguration.isMbStatEnable()) {
 
-            
+
             statPublisherTimerTask = new TimerTask() {
                 @Override
                 public void run() {
@@ -89,7 +94,7 @@ public class StatPublisherObserver {
                     if (statPublisherConfiguration.isSystemStatEnable()) {
                         //System stat publishing activated
                         try {
-                            statPublisherDataAgent.sendSystemStats();
+                            getStatPublisherDataAgent.sendSystemStats();
                             logger.info("Sent system stats");
 
                         } catch (MalformedObjectNameException e) {
@@ -113,7 +118,7 @@ public class StatPublisherObserver {
 
                         try {
 
-                            statPublisherDataAgent.sendMBStats();
+                            getStatPublisherDataAgent.sendMBStats();
                             logger.info("Sent MB stats");
                         } catch (MalformedObjectNameException e) {
                             throw new StatPublisherRuntimeException("Fail to send MB stats", e);
@@ -139,7 +144,8 @@ public class StatPublisherObserver {
                 @Override
                 public void run() {
                     try {
-                        timer.scheduleAtFixedRate(statPublisherTimerTask, new Date(), XMLConfigurationReader.readGeneralConfiguration().getTimeInterval());
+                        timer.scheduleAtFixedRate(statPublisherTimerTask, new Date(),
+                                XMLConfigurationReader.readGeneralConfiguration().getTimeInterval());
                     } catch (StatPublisherConfigurationException e) {
                         logger.error("Exception in TimerTask initialization" + e);
                         throw new StatPublisherRuntimeException(e);
