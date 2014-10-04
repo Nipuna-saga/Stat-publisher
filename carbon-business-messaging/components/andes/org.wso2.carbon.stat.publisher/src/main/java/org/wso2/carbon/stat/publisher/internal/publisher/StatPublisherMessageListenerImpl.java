@@ -39,9 +39,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class StatPublisherMessageListenerImpl implements StatPublisherMessageListener {
     private static final Logger logger = Logger.getLogger(StatPublisherMessageListenerImpl.class);
+    private static boolean MessageStatPublisherThreadContinue;
 
     //Thread that use to publish message stats
-    public static Thread messageStatPublisherThread;
+    private static Thread messageStatPublisherThread;
 
     private static StatPublisherMessageListenerImpl statPublisherMessageListenerImpl =
             new StatPublisherMessageListenerImpl();
@@ -55,6 +56,7 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
     private StatPublisherMessageListenerImpl() {
         messageStatistic = new MessageStatistic();
         StreamConfiguration streamConfiguration;
+        MessageStatPublisherThreadContinue = true;
         try {
             streamConfiguration = XMLConfigurationReader.readStreamConfiguration();
         } catch (StatPublisherConfigurationException e) {
@@ -72,6 +74,14 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
         // Start Message stat publisher thread
         messageStatPublisherThread = new Thread(new AsyncMessageStatPublisher(streamConfiguration));
         messageStatPublisherThread.start();
+    }
+
+    public static boolean isMessageStatPublisherThreadContinue() {
+        return MessageStatPublisherThreadContinue;
+    }
+
+    public static void setMessageStatPublisherThreadContinue(boolean messageStatPublisherThreadContinue) {
+        MessageStatPublisherThreadContinue = messageStatPublisherThreadContinue;
     }
 
     /**
@@ -128,4 +138,8 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
         return statPublisherMessageListenerImpl;
     }
 
+    public static void MessageStatPublisherThreadStop() {
+        if (StatPublisherMessageListenerImpl.messageStatPublisherThread.isAlive())
+            StatPublisherMessageListenerImpl.setMessageStatPublisherThreadContinue(false);
+    }
 }

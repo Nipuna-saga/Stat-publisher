@@ -40,7 +40,7 @@ public class AsyncMessageStatPublisher implements Runnable {
     @Override
     public void run() {
         //check message Queue has any object
-        while (true) {
+        while (StatPublisherMessageListenerImpl.isMessageStatPublisherThreadContinue()) {
             MessageStatistic messageStatistic;
             try {
                 //get object from queue

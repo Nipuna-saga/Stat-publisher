@@ -24,18 +24,19 @@ package org.wso2.carbon.stat.publisher.conf;
 public class StatPublisherConfiguration {
 
     //credential details
-    private String username="";
-    private String password="";
-    private String url="";
+    private String username = "";
+    private String password = "";
+    private String url = "";
     private String nodeURL;
 
     //enable Stat publisher features (message,system and message broker)
-    private boolean messageStatEnable=false;
-    private boolean systemStatEnable=false;
-    private boolean mbStatEnable =false;
+    private boolean messageStatEnable = false;
+    private boolean systemStatEnable = false;
+    private boolean mbStatEnable = false;
 
     /**
      * Get Username
+     *
      * @return username
      */
     public String getUsername() {
@@ -44,6 +45,7 @@ public class StatPublisherConfiguration {
 
     /**
      * Set Username
+     *
      * @param username - username of CEP/BAM
      */
     public void setUsername(String username) {
@@ -52,6 +54,7 @@ public class StatPublisherConfiguration {
 
     /**
      * Get password
+     *
      * @return password
      */
     public String getPassword() {
@@ -60,6 +63,7 @@ public class StatPublisherConfiguration {
 
     /**
      * Set password
+     *
      * @param password - password of CEP/BAM
      */
     public void setPassword(String password) {
@@ -68,6 +72,7 @@ public class StatPublisherConfiguration {
 
     /**
      * Get url
+     *
      * @return url
      */
     public String getURL() {
@@ -76,6 +81,7 @@ public class StatPublisherConfiguration {
 
     /**
      * Set url
+     *
      * @param url - destination to publish stat
      */
     public void setURL(String url) {
@@ -84,6 +90,7 @@ public class StatPublisherConfiguration {
 
     /**
      * Get value of messageStatEnable
+     *
      * @return messageStatEnable
      */
     public boolean isMessageStatEnable() {
@@ -92,6 +99,7 @@ public class StatPublisherConfiguration {
 
     /**
      * Set whether message stat publishing enable or not
+     *
      * @param messageStatEnable - whether enable message stat publishing or not
      */
     public void setMessageStatEnable(boolean messageStatEnable) {
@@ -100,6 +108,7 @@ public class StatPublisherConfiguration {
 
     /**
      * Get value of systemStatEnable
+     *
      * @return systemStatEnable
      */
     public boolean isSystemStatEnable() {
@@ -108,6 +117,7 @@ public class StatPublisherConfiguration {
 
     /**
      * Set whether system stat enable or not
+     *
      * @param systemStatEnable -  whether enable system stat publishing or not
      */
     public void setSystemStatEnable(boolean systemStatEnable) {
@@ -116,6 +126,7 @@ public class StatPublisherConfiguration {
 
     /**
      * Get value of mbStatEnable
+     *
      * @return mbStatEnable
      */
     public boolean isMbStatEnable() {
@@ -124,6 +135,7 @@ public class StatPublisherConfiguration {
 
     /**
      * Set whether message broker stat enable or not
+     *
      * @param mbStatEnable -  whether enable mb stat publishing or not
      */
     public void setMbStatEnable(boolean mbStatEnable) {
@@ -132,6 +144,7 @@ public class StatPublisherConfiguration {
 
     /**
      * Get nodeURL
+     *
      * @return nodeURL
      */
     public String getNodeURL() {
@@ -140,6 +153,7 @@ public class StatPublisherConfiguration {
 
     /**
      * Set value of nodeURL
+     *
      * @param nodeURL - Unique value of the node
      */
     public void setNodeURL(String nodeURL) {

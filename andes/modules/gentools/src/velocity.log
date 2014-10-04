@@ -1,7 +1,7 @@
-2014-09-29 10:41:02,257 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
-2014-09-29 10:41:02,257 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
-2014-09-29 10:41:02,257 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
-2014-09-29 10:41:02,258 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+2014-10-03 18:02:06,872 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2014-10-03 18:02:06,872 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2014-10-03 18:02:06,872 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2014-10-03 18:02:06,873 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
 java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
 	at java.lang.Class.forName0(Native Method)
 	at java.lang.Class.forName(Class.java:249)
@@ -24,44 +24,44 @@ Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
 	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:301)
 	at java.lang.ClassLoader.loadClass(ClassLoader.java:247)
 	... 13 more
-2014-09-29 10:41:02,260 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
-2014-09-29 10:41:02,260 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
-2014-09-29 10:41:02,263 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
-2014-09-29 10:41:02,267 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2014-09-29 10:41:02,268 - Do unicode file recognition:  false
-2014-09-29 10:41:02,268 - FileResourceLoader : adding path '/home/nipuna/WSO2-repo/Stat-Publisher/andes/modules/andes-core/broker/src/velocity/templates/org/wso2/andes/server/logging/messages'
-2014-09-29 10:41:02,319 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
-2014-09-29 10:41:02,320 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
-2014-09-29 10:41:02,322 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
-2014-09-29 10:41:02,324 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
-2014-09-29 10:41:02,325 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
-2014-09-29 10:41:02,326 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
-2014-09-29 10:41:02,359 - Created '20' parsers.
-2014-09-29 10:41:02,371 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
-2014-09-29 10:41:02,371 - Velocimacro : Default library not found.
-2014-09-29 10:41:02,372 - Velocimacro : allowInline = true : VMs can be defined inline in templates
-2014-09-29 10:41:02,372 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
-2014-09-29 10:41:02,372 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
-2014-09-29 10:41:02,372 - Velocimacro : autoload off : VM system will not automatically reload global library macros
-2014-09-29 10:41:02,458 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2014-09-29 10:41:02,508 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2014-09-29 10:41:02,542 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2014-09-29 10:41:02,570 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2014-09-29 10:41:02,589 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2014-09-29 10:41:02,607 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2014-09-29 10:41:02,627 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2014-09-29 10:41:02,649 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2014-09-29 10:41:02,667 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2014-09-29 10:41:02,692 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2014-09-29 10:41:02,706 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2014-09-29 10:41:02,725 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2014-09-29 10:41:02,759 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2014-09-29 10:41:02,773 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2014-09-29 10:42:26,405 - Log4JLogChute initialized using file 'velocity.log'
-2014-09-29 10:42:26,405 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
-2014-09-29 10:42:26,406 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
-2014-09-29 10:42:26,406 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
-2014-09-29 10:42:26,406 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+2014-10-03 18:02:06,875 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2014-10-03 18:02:06,875 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2014-10-03 18:02:06,878 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2014-10-03 18:02:06,881 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-10-03 18:02:06,883 - Do unicode file recognition:  false
+2014-10-03 18:02:06,883 - FileResourceLoader : adding path '/home/nipuna/WSO2-repo/Stat-Publisher/andes/modules/andes-core/broker/src/velocity/templates/org/wso2/andes/server/logging/messages'
+2014-10-03 18:02:06,936 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2014-10-03 18:02:06,938 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2014-10-03 18:02:06,940 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2014-10-03 18:02:06,941 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2014-10-03 18:02:06,943 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2014-10-03 18:02:06,944 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2014-10-03 18:02:06,979 - Created '20' parsers.
+2014-10-03 18:02:06,992 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2014-10-03 18:02:07,006 - Velocimacro : Default library not found.
+2014-10-03 18:02:07,006 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2014-10-03 18:02:07,006 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2014-10-03 18:02:07,006 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2014-10-03 18:02:07,006 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2014-10-03 18:02:07,085 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-10-03 18:02:07,135 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-10-03 18:02:07,170 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-10-03 18:02:07,204 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-10-03 18:02:07,234 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-10-03 18:02:07,259 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-10-03 18:02:07,278 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-10-03 18:02:07,295 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-10-03 18:02:07,313 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-10-03 18:02:07,354 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-10-03 18:02:07,369 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-10-03 18:02:07,390 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-10-03 18:02:07,450 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-10-03 18:02:07,470 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-10-03 18:03:35,633 - Log4JLogChute initialized using file 'velocity.log'
+2014-10-03 18:03:35,634 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2014-10-03 18:03:35,634 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2014-10-03 18:03:35,634 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2014-10-03 18:03:35,634 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
 java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
 	at java.lang.Class.forName0(Native Method)
 	at java.lang.Class.forName(Class.java:249)
@@ -84,23 +84,23 @@ Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
 	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:301)
 	at java.lang.ClassLoader.loadClass(ClassLoader.java:247)
 	... 13 more
-2014-09-29 10:42:26,409 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
-2014-09-29 10:42:26,409 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
-2014-09-29 10:42:26,411 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
-2014-09-29 10:42:26,415 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2014-09-29 10:42:26,416 - Do unicode file recognition:  false
-2014-09-29 10:42:26,417 - FileResourceLoader : adding path '/home/nipuna/WSO2-repo/Stat-Publisher/andes/modules/andes-core/broker/src/velocity/templates/org/wso2/andes/server/logging/messages'
-2014-09-29 10:42:26,432 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
-2014-09-29 10:42:26,433 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
-2014-09-29 10:42:26,435 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
-2014-09-29 10:42:26,437 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
-2014-09-29 10:42:26,438 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
-2014-09-29 10:42:26,439 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
-2014-09-29 10:42:26,471 - Created '20' parsers.
-2014-09-29 10:42:26,481 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
-2014-09-29 10:42:26,482 - Velocimacro : Default library not found.
-2014-09-29 10:42:26,482 - Velocimacro : allowInline = true : VMs can be defined inline in templates
-2014-09-29 10:42:26,482 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
-2014-09-29 10:42:26,482 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
-2014-09-29 10:42:26,482 - Velocimacro : autoload off : VM system will not automatically reload global library macros
-2014-09-29 10:42:26,558 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-10-03 18:03:35,637 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2014-10-03 18:03:35,637 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2014-10-03 18:03:35,639 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2014-10-03 18:03:35,643 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-10-03 18:03:35,645 - Do unicode file recognition:  false
+2014-10-03 18:03:35,645 - FileResourceLoader : adding path '/home/nipuna/WSO2-repo/Stat-Publisher/andes/modules/andes-core/broker/src/velocity/templates/org/wso2/andes/server/logging/messages'
+2014-10-03 18:03:35,658 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2014-10-03 18:03:35,660 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2014-10-03 18:03:35,661 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2014-10-03 18:03:35,663 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2014-10-03 18:03:35,665 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2014-10-03 18:03:35,666 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2014-10-03 18:03:35,698 - Created '20' parsers.
+2014-10-03 18:03:35,709 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2014-10-03 18:03:35,710 - Velocimacro : Default library not found.
+2014-10-03 18:03:35,710 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2014-10-03 18:03:35,710 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2014-10-03 18:03:35,710 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2014-10-03 18:03:35,710 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2014-10-03 18:03:35,813 - ResourceManager : found LogMessages.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader

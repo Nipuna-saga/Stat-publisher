@@ -74,15 +74,7 @@ public class StatPublisherManager {
      * Stop monitoring process
      */
     public void updateStatPublisherObserver(int tenantID) throws StatPublisherConfigurationException {
-        statPublisherObserver = statPublisherObserverHashMap.get(tenantID);
-        if (statPublisherObserver != null) {
-            //stop monitoring process
-            statPublisherObserver.stopObserver();
-            //remove tenant domain from hash map
-            messageStatEnableMap.remove(statPublisherObserver.getTenantDomain());
-            if (statPublisherObserver.statPublisherDataAgent != null)
-                statPublisherObserver.statPublisherDataAgent.getLoadBalancingDataPublisher().stop();
-        }
+        removeStatPublisherObserver(tenantID);
 
         createStatPublisherObserver(tenantID);
 
@@ -94,6 +86,8 @@ public class StatPublisherManager {
     public void removeStatPublisherObserver(int tenantID) {
         statPublisherObserver = statPublisherObserverHashMap.get(tenantID);
         if (statPublisherObserver != null) {
+            //stop monitoring process
+            statPublisherObserver.stopObserver();
             //remove tenant domain from hash map
             messageStatEnableMap.remove(statPublisherObserver.getTenantDomain());
             //remove publisher observer from hash map
