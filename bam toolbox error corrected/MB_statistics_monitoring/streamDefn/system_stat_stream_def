@@ -1,0 +1,31 @@
+{
+  "streamId": "SYSTEM_STATISTICS_MB:1.0.0",
+  "name": "SYSTEM_STATISTICS_MB",
+  "version": "1.0.0",
+  "nickName": "system_statistics",
+  "description": "Publish Message broker server statistics",
+  "metaData": [
+    {
+      "name": "publisherIP",
+      "type": "STRING"
+    }
+  ],
+  "payloadData": [
+    {
+      "name": "heapMemoryUsage",
+      "type": "STRING"
+    },
+    {
+      "name": "nonHeapMemoryUsage",
+      "type": "STRING"
+    },
+    {
+      "name": "cpuLoadAverage",
+      "type": "STRING"
+    },
+    {
+      "name": "timestamp",
+      "type": "LONG"
+    }
+  ]
+}

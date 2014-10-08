@@ -1,0 +1,28 @@
+{
+  "streamId": "MB_STATISTICS_MB:1.0.0",
+  "name": "MB_STATISTICS_MB",
+  "version": "1.0.0",
+  "nickName": "MB_statistics",
+  "description": "Publish Message broker topic/subscriber statistics",
+  "metaData": [
+    {
+      "name": "publisherIP",
+      "type": "STRING"
+    }
+  ],
+  "payloadData": [
+    {
+      "name": "noOfSubscribers",
+      "type": "INT"
+    },
+    {
+      "name": "noOfTopics",
+      "type": "INT"
+    },
+    {
+      "name": "timestamp",
+      "type": "LONG"
+    }
+  ]
+}
+
