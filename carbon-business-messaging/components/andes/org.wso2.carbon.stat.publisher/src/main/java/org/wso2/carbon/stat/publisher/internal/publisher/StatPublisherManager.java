@@ -44,7 +44,6 @@ public class StatPublisherManager {
 
     /**
      * public constructor of StatPublisherManager
-     *
      * @throws StatPublisherConfigurationException
      */
     public StatPublisherManager() throws StatPublisherConfigurationException {
@@ -54,7 +53,6 @@ public class StatPublisherManager {
 
     /**
      * Create new StatPublisherObserver Instance and store it in Hash map by using tenant ID as key value
-     *
      * @param tenantID tenantID of the specific tenant that need to create StatPublisherObserver instance
      * @throws StatPublisherConfigurationException
      */
@@ -77,7 +75,6 @@ public class StatPublisherManager {
 
     /**
      * This will use to update StatPublisherObserver Instance from Hash map
-     *
      * @param tenantID tenantID of the specific tenant that need to update StatPublisherObserver instance
      * @throws StatPublisherConfigurationException
      */
@@ -88,7 +85,6 @@ public class StatPublisherManager {
 
     /**
      * This will use to remove StatPublisherObserver Instance from Hash map
-     *
      * @param tenantID tenantID of the specific tenant that need to remove StatPublisherObserver instance
      */
     public void removeStatPublisherObserver(int tenantID) {
@@ -108,7 +104,6 @@ public class StatPublisherManager {
 
     /**
      * Get Message StatPublisherObserver for specific tenant from statPublisherObserverHashMap Hash map
-     *
      * @param tenantID tenantID of the specific tenant that need to get StatPublisherObserver instance
      * @return StatPublisherObserver instance for requested tenant
      */
@@ -119,7 +114,6 @@ public class StatPublisherManager {
 
     /**
      * This will use to get public messageStatEnableSet
-     *
      * @return messageStatEnableSet
      */
     public HashSet<String> getMessageStatEnableMap() {

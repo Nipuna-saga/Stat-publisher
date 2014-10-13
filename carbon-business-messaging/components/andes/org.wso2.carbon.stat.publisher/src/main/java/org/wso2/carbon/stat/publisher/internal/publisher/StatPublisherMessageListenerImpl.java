@@ -57,7 +57,7 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
         MessageStatPublisherThreadContinue = true;
         int numberOfQueueSlots;
         try {
-            numberOfQueueSlots = XMLConfigurationReader.readGeneralConfiguration().getAsyncMessagePublisherBufferTime();
+            numberOfQueueSlots = XMLConfigurationReader.readGeneralConfiguration().getAsyncMessagePublisherBufferSize();
         } catch (StatPublisherConfigurationException e) {
             logger.error("Error occur while try to retrieve number of queue slots from mbStatConfiguration.xml ");
             throw new StatPublisherRuntimeException(e);
@@ -70,7 +70,6 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
 
     /**
      * This method use to set threadContinueValue of async message stat publishing thread
-     *
      * @param messageStatPublisherThreadContinue true will continue thread and false stop thread
      */
     public static void setMessageStatPublisherThreadContinue(boolean messageStatPublisherThreadContinue) {
@@ -80,7 +79,6 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
     /**
      * This method will get all messages that received to MessagingEngine class's messageReceived
      * this method will handle message stat publishing
-     *
      * @param andesMessageMetadata messageMessageMetadata (JMS message)
      * @param noOfSubscribers      number of subscribers for that message
      */
@@ -108,7 +106,6 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
     /**
      * This method will get all Ack messages that received to MessagingEngine class's ackReceived
      * this method will handle Ack message stat publishing
-     *
      * @param andesAckData ack message from receiver when it receive JMS message from Message Broker
      */
     @Override
@@ -133,7 +130,6 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
 
     /**
      * get MessageStatPublisher instance
-     *
      * @return statPublisherMessageListenerImpl singleton instance
      */
     public static StatPublisherMessageListenerImpl getInstance() {
@@ -150,7 +146,6 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
 
     /**
      * Use to get MessageStatPublisherThreadContinue boolean value
-     *
      * @return MessageStatPublisherThreadContinue true/false
      */
     public static boolean isMessageStatPublisherThreadContinue() {
@@ -158,8 +153,7 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
     }
 
     /**
-     * Use to get MessageQueue that use to store message and ack message of MB as MessageStatistic insatnces
-     *
+     * Use to get MessageQueue that use to store message and ack message of MB as MessageStatistic instances
      * @return MessageStatistic instances
      */
     public static BlockingQueue<MessageStatistic> getMessageQueue() {

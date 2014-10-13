@@ -166,7 +166,6 @@ public class StatPublisherObserver {
 
     /**
      * get statPublisher registry Configuration  of this Stat Publisher observer
-     *
      * @return statPublisherConfiguration instance
      */
     public StatPublisherConfiguration getStatPublisherConfiguration() {
@@ -184,7 +183,6 @@ public class StatPublisherObserver {
 
     /**
      * get tenant domain of this Stat Publisher observer if message stat enabled else it's return null
-     *
      * @return tenantDomain
      */
     public String getTenantDomain() {

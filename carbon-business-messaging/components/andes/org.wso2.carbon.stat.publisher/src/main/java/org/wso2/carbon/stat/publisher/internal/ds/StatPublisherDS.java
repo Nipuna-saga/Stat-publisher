@@ -48,7 +48,6 @@ public class StatPublisherDS {
 
     /**
      * Activate method in stat publisher bundle
-     *
      * @param context - Component context
      * @throws StatPublisherConfigurationException
      */
@@ -73,7 +72,6 @@ public class StatPublisherDS {
 
     /**
      * Deactivate method in stat publisher component
-     *
      * @param context - Component context
      */
     protected void deactivate(ComponentContext context) {
@@ -82,8 +80,7 @@ public class StatPublisherDS {
 
     /**
      * Set ConfigurationContextService
-     *
-     * @param configurationContextService - ConfigurationContextService
+     * @param configurationContextService - Component context
      */
     protected void setConfigurationContextService(
             ConfigurationContextService configurationContextService) {
@@ -92,8 +89,7 @@ public class StatPublisherDS {
 
     /**
      * Remove ConfigurationContextService
-     *
-     * @param configurationContextService -ConfigurationContextService
+     * @param configurationContextService -Services provide through the component context
      */
     protected void unsetConfigurationContextService(
             ConfigurationContextService configurationContextService) {
@@ -102,8 +98,7 @@ public class StatPublisherDS {
 
     /**
      * Set RegistryService
-     *
-     * @param registryService - RegistryService
+     * @param registryService - Registry for this server
      */
     protected void setRegistryService(RegistryService registryService) {
         StatPublisherValueHolder.setRegistryService(registryService);
@@ -111,8 +106,7 @@ public class StatPublisherDS {
 
     /**
      * Remove RegistryService
-     *
-     * @param registryService -RegistryService
+     * @param registryService -Registry for this server
      */
     protected void unsetRegistryService(RegistryService registryService) {
         StatPublisherValueHolder.setRegistryService(null);
@@ -120,8 +114,7 @@ public class StatPublisherDS {
 
     /**
      * Set RealmService
-     *
-     * @param realmService - RealmService
+     * @param realmService - RealmService for this server
      */
     protected void setRealmService(RealmService realmService) {
         StatPublisherValueHolder.setRealmService(realmService);
@@ -129,8 +122,7 @@ public class StatPublisherDS {
 
     /**
      * Remove RealmService
-     *
-     * @param realmService - RealmService
+     * @param realmService -  RealmService for this server
      */
     protected void unsetRealmService(RealmService realmService) {
         StatPublisherValueHolder.setRealmService(null);
