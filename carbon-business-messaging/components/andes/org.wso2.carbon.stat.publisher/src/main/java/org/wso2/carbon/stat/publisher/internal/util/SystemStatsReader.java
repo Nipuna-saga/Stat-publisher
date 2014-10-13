@@ -41,6 +41,7 @@ public class SystemStatsReader {
 
     public SystemStatsReader(final JMXConfiguration jmxConfiguration) {
 
+
         //get MB username and password
         UserRealm realm;
         final String userName;
@@ -116,7 +117,6 @@ public class SystemStatsReader {
 
     public String CPUUsage() {
         OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
-
         return Double.toString(osBean.getSystemLoadAverage());
     }
 

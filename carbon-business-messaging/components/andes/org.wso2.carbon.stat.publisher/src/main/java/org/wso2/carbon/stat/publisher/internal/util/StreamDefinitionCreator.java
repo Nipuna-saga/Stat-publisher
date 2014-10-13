@@ -125,7 +125,7 @@ public class StreamDefinitionCreator {
         payloadList.add(new Attribute("messageId", AttributeType.LONG));
         payloadList.add(new Attribute("destination", AttributeType.STRING));
         payloadList.add(new Attribute("messageContentLength", AttributeType.INT));
-        payloadList.add(new Attribute("expirationTime", AttributeType.LONG));
+        payloadList.add(new Attribute("expirationTime", AttributeType.STRING));
         payloadList.add(new Attribute("noOfSubscriptions", AttributeType.INT));
         payloadList.add(new Attribute("timestamp", AttributeType.LONG));
 
