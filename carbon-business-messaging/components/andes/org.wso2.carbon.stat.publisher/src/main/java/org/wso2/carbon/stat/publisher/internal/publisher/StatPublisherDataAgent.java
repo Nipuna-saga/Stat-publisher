@@ -211,7 +211,7 @@ public class StatPublisherDataAgent {
         payloadData.add(message.getMessageID());
         payloadData.add(message.getDestination());
         payloadData.add(message.getMessageContentLength());
-        payloadData.add(message.getExpirationTime());
+        payloadData.add(Long.toString(message.getExpirationTime()));
         payloadData.add(subscribers);
         payloadData.add(getCurrentTimeStamp());
 
