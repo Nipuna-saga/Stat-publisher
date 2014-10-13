@@ -1,0 +1,39 @@
+{
+  "streamId": "MESSAGE_STATISTICS_MB:1.0.0",
+  "name": "MESSAGE_STATISTICS_MB",
+  "version": "1.0.0",
+  "nickName": "message statistics",
+  "description": "Publish Message broker message statistics",
+  "metaData": [
+    {
+      "name": "publisherIP",
+      "type": "STRING"
+    }
+  ],
+  "payloadData": [
+    {
+      "name": "messageId",
+      "type": "LONG"
+    },
+    {
+      "name": "destination",
+      "type": "STRING"
+    },
+    {
+      "name": "messageContentLength",
+      "type": "INT"
+    },
+    {
+      "name": "expirationTime",
+      "type": "LONG"
+    },
+    {
+      "name": "noOfSubscriptions",
+      "type": "INT"
+    },
+    {
+      "name": "timestamp",
+      "type": "LONG"
+    }
+  ]
+}
