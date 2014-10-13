@@ -35,7 +35,6 @@ import java.util.concurrent.LinkedBlockingQueue;
  * This class will handle message stat publishing all events
  * messages and Ack messages hold in one queue in processing part they identify using boolean value of message variable
  */
-
 public class StatPublisherMessageListenerImpl implements StatPublisherMessageListener {
     private static final Logger logger = Logger.getLogger(StatPublisherMessageListenerImpl.class);
     private static boolean MessageStatPublisherThreadContinue;
@@ -46,13 +45,9 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
     private static StatPublisherMessageListenerImpl statPublisherMessageListenerImpl =
             new StatPublisherMessageListenerImpl();
 
-    public static BlockingQueue<MessageStatistic> getMessageQueue() {
-        return messageQueue;
-    }
-
     //This is the Queue that use to hold message details
     private static BlockingQueue<MessageStatistic> messageQueue;
-    //MessageStat Object
+    //MessageStat instance
     private MessageStatistic messageStatistic;
     private String tenantDomain;
 
@@ -60,7 +55,7 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
     private StatPublisherMessageListenerImpl() {
         messageStatistic = new MessageStatistic();
         MessageStatPublisherThreadContinue = true;
-             int numberOfQueueSlots;
+        int numberOfQueueSlots;
         try {
             numberOfQueueSlots = XMLConfigurationReader.readGeneralConfiguration().getAsyncMessagePublisherBufferTime();
         } catch (StatPublisherConfigurationException e) {
@@ -73,10 +68,11 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
         messageStatPublisherThread.start();
     }
 
-    public static boolean isMessageStatPublisherThreadContinue() {
-        return MessageStatPublisherThreadContinue;
-    }
-
+    /**
+     * This method use to set threadContinueValue of async message stat publishing thread
+     *
+     * @param messageStatPublisherThreadContinue true will continue thread and false stop thread
+     */
     public static void setMessageStatPublisherThreadContinue(boolean messageStatPublisherThreadContinue) {
         MessageStatPublisherThreadContinue = messageStatPublisherThreadContinue;
     }
@@ -84,11 +80,14 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
     /**
      * This method will get all messages that received to MessagingEngine class's messageReceived
      * this method will handle message stat publishing
+     *
+     * @param andesMessageMetadata messageMessageMetadata (JMS message)
+     * @param noOfSubscribers      number of subscribers for that message
      */
     @Override
     public void sendMessageDetails(AndesMessageMetadata andesMessageMetadata, int noOfSubscribers) {
 
-//get tenant tenantDomain of message by splitting destination
+        //get tenant tenantDomain of message by splitting destination
         if (andesMessageMetadata.getDestination().split("/").length == 1) {
             tenantDomain = "carbon.super";
         } else {
@@ -109,6 +108,8 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
     /**
      * This method will get all Ack messages that received to MessagingEngine class's ackReceived
      * this method will handle Ack message stat publishing
+     *
+     * @param andesAckData ack message from receiver when it receive JMS message from Message Broker
      */
     @Override
     public void sendAckMessageDetails(AndesAckData andesAckData) {
@@ -130,13 +131,39 @@ public class StatPublisherMessageListenerImpl implements StatPublisherMessageLis
         }
     }
 
-    //get MessageStatPublisher instance
+    /**
+     * get MessageStatPublisher instance
+     *
+     * @return statPublisherMessageListenerImpl singleton instance
+     */
     public static StatPublisherMessageListenerImpl getInstance() {
         return statPublisherMessageListenerImpl;
     }
 
+    /**
+     * This method use to stop Async message stat Publisher thread
+     */
     public static void MessageStatPublisherThreadStop() {
         if (StatPublisherMessageListenerImpl.messageStatPublisherThread.isAlive())
             StatPublisherMessageListenerImpl.setMessageStatPublisherThreadContinue(false);
     }
+
+    /**
+     * Use to get MessageStatPublisherThreadContinue boolean value
+     *
+     * @return MessageStatPublisherThreadContinue true/false
+     */
+    public static boolean isMessageStatPublisherThreadContinue() {
+        return MessageStatPublisherThreadContinue;
+    }
+
+    /**
+     * Use to get MessageQueue that use to store message and ack message of MB as MessageStatistic insatnces
+     *
+     * @return MessageStatistic instances
+     */
+    public static BlockingQueue<MessageStatistic> getMessageQueue() {
+        return messageQueue;
+    }
+
 }

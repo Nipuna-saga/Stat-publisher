@@ -24,9 +24,14 @@ package org.wso2.carbon.stat.publisher.conf;
 public class StatPublisherConfiguration {
 
     //credential details
+
+    // username of publishing destination
     private String username = "";
+    //password of publishing destination
     private String password = "";
+    //publishing destination urls
     private String url = "";
+    //node url of current MB node (this will use t uniquely identify MB node)
     private String nodeURL;
 
     //enable Stat publisher features (message,system and message broker)
@@ -82,7 +87,7 @@ public class StatPublisherConfiguration {
     /**
      * Set url
      *
-     * @param url - destination to publish stat
+     * @param url - destination to publish statistics
      */
     public void setURL(String url) {
         this.url = url;

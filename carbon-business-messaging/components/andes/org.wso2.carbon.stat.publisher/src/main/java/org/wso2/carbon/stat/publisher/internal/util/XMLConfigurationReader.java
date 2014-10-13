@@ -39,7 +39,7 @@ public class XMLConfigurationReader {
     private static final Logger logger = Logger.getLogger(XMLConfigurationReader.class);
 
     /**
-     *Load xml files and read values
+     *Load xml files and read JMX configurations
      */
     public static JMXConfiguration readJMXConfiguration() throws StatPublisherConfigurationException {
 

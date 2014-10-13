@@ -27,44 +27,51 @@ import org.wso2.carbon.stat.publisher.internal.publisher.StatPublisherManager;
 import org.wso2.carbon.utils.Axis2ConfigurationContextObserver;
 
 /**
- * THis class will activate StatPublisherObserver when tenant activating
+ * This class use get notification about creating and terminating  carbon context for particular tenant
+ * This class implemented Axis2ConfigurationContextObserver from carbon utils
  */
 public class Axis2ConfigurationContextObserverImpl implements Axis2ConfigurationContextObserver {
 
     private static final Logger logger = Logger.getLogger(Axis2ConfigurationContextObserverImpl.class);
 
     /**
-     * This will start when logging to the tenant
+     * This will triggered before tenant create carbon context.
      */
+
     @Override
     public void creatingConfigurationContext(int i) {
     }
 
     /**
-     * This will start after logged to the tenant. This method override to start StatPublisherObserver
+     * This will triggered after tenant create carbon context.
+     *
+     * @param configurationContext -configurationContext for specific tenant
      */
     @Override
     public void createdConfigurationContext(ConfigurationContext configurationContext) {
         PrivilegedCarbonContext carbonContext = PrivilegedCarbonContext.getThreadLocalCarbonContext();
-        int tenantID=carbonContext.getTenantId();
+        int tenantID = carbonContext.getTenantId();
         try {
             StatPublisherManager statPublisherManager = new StatPublisherManager();
             statPublisherManager.createStatPublisherObserver(tenantID);
-        }catch (StatPublisherConfigurationException e){
-            logger.error("Exception in initializing StatPublisherManager ",e);
+        } catch (StatPublisherConfigurationException e) {
+            logger.error("Exception in initializing StatPublisherManager ", e);
             throw new StatPublisherRuntimeException(e);
         }
     }
 
     /**
-     * This will start when tenant timeout
+     * This will triggered before tenant terminate it's carbon context (tenant clean up)
      */
     @Override
     public void terminatingConfigurationContext(ConfigurationContext configurationContext) {
     }
 
     /**
-     * This will start after tenant timeout. This method override to terminate StatPublisherObserver
+     * This will triggered after tenant terminate it's carbon context (tenant clean up)
+     * Using this Observer instance for specific tenant will remove from observer list in StatPublisherManager
+     *
+     * @param configurationContext-configurationContext for specific tenant
      */
     @Override
     public void terminatedConfigurationContext(ConfigurationContext configurationContext) {

@@ -39,24 +39,24 @@ import java.util.TimerTask;
 
 /**
  * StatPublisherObserver create observer Instance for every tenant
- * Stat publishing activation and deactivation methods handle by this class
+ * System and MB Stat publishing activation and deactivation methods handle by this class
+ * Message and ack stat publisher enable value also set in this class
+ * Create a Data agent instance for tenant which enable stat publishing in any type of statistic
  */
 
 public class StatPublisherObserver {
 
     private static final Logger logger = Logger.getLogger(StatPublisherObserver.class);
 
-    public StatPublisherDataAgent getStatPublisherDataAgent() {
-        return getStatPublisherDataAgent;
-    }
-
-    private StatPublisherDataAgent getStatPublisherDataAgent;//todo create a get method
-    private TenantManager tenantManager = StatPublisherValueHolder.getRealmService().getTenantManager();
+    private StatPublisherDataAgent getStatPublisherDataAgent;
     private StatPublisherConfiguration statPublisherConfiguration;
-    private Timer timer;
+    private Timer statPublisherTimer;
     private TimerTask statPublisherTimerTask;
     private String tenantDomain = null;
     private int tenantID;
+
+    private TenantManager tenantManager = StatPublisherValueHolder.getRealmService().getTenantManager();
+
 
     public StatPublisherObserver(JMXConfiguration jmxConfiguration, StreamConfiguration streamConfiguration,
                                  int tenantID) throws StatPublisherConfigurationException {
@@ -64,22 +64,21 @@ public class StatPublisherObserver {
         this.statPublisherConfiguration = RegistryPersistenceManager.loadConfigurationData(tenantID);
         if (statPublisherConfiguration.isSystemStatEnable() || statPublisherConfiguration.isMbStatEnable()
                 || statPublisherConfiguration.isMessageStatEnable()) {
+            //create dataAgent for this observer
             getStatPublisherDataAgent =
                     new StatPublisherDataAgent(jmxConfiguration, streamConfiguration, statPublisherConfiguration);
         }
-
     }
 
-    public String getTenantDomain() {
-        return tenantDomain;
-    }
 
     /**
      * Start periodical statistic Publishing using timer task
      * activate publishing after read registry configurations
+     * set tenant domain value if MessageStat enabled in registry
      */
     public void startObserver() throws UserStoreException {
 
+        //set tenant domain using tenantID
         if (statPublisherConfiguration.isMessageStatEnable()) {
             tenantDomain = tenantManager.getDomain(tenantID);
         }
@@ -138,13 +137,13 @@ public class StatPublisherObserver {
 
 
             };
-            timer = new Timer();
+            statPublisherTimer = new Timer();
             // scheduling the task at fixed rate
             Thread timerTaskThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        timer.scheduleAtFixedRate(statPublisherTimerTask, new Date(),
+                        statPublisherTimer.scheduleAtFixedRate(statPublisherTimerTask, new Date(),
                                 XMLConfigurationReader.readGeneralConfiguration().getTimeInterval());
                     } catch (StatPublisherConfigurationException e) {
                         logger.error("Exception in TimerTask initialization" + e);
@@ -157,15 +156,38 @@ public class StatPublisherObserver {
     }
 
     /**
-     * Stop periodical statistic Publishing uby stopping timer task
+     * Stop periodical statistic Publishing by stopping statPublisherTimer task
      */
     public void stopObserver() {
-        if (timer != null) {
-            timer.cancel();
+        if (statPublisherTimer != null) {
+            statPublisherTimer.cancel();
         }
     }
 
+    /**
+     * get statPublisher registry Configuration  of this Stat Publisher observer
+     *
+     * @return statPublisherConfiguration instance
+     */
     public StatPublisherConfiguration getStatPublisherConfiguration() {
         return statPublisherConfiguration;
+    }
+
+    /**
+     * get statPublisher DataAgent instance of this Stat Publisher observer
+     *
+     * @return getStatPublisherDataAgent
+     */
+    public StatPublisherDataAgent getStatPublisherDataAgent() {
+        return getStatPublisherDataAgent;
+    }
+
+    /**
+     * get tenant domain of this Stat Publisher observer if message stat enabled else it's return null
+     *
+     * @return tenantDomain
+     */
+    public String getTenantDomain() {
+        return tenantDomain;
     }
 }

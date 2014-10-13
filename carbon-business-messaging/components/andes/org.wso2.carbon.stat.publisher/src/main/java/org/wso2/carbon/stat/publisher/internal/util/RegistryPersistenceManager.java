@@ -33,8 +33,9 @@ public class RegistryPersistenceManager {
 
     /**
      * Updates the registry with given configuration data.
-     * @param statPublisherConfigurationWriteObject - eventing configuration data
-     * @param tenantId                     - get tenantID
+     *
+     * @param statPublisherConfigurationWriteObject - eventing configuration data which send from UI
+     * @param tenantId                              tenantID of specific tenant that need to store values in that tenant
      */
     public static void storeConfigurationData(StatPublisherConfiguration statPublisherConfigurationWriteObject,
                                               int tenantId)
@@ -49,39 +50,39 @@ public class RegistryPersistenceManager {
                 if (!registry.resourceExists(resourcePath)) {
                     resource = registry.newResource();
                     resource.addProperty(StatPublisherConstants.NODE_URL,
-                                         statPublisherConfigurationWriteObject.getNodeURL());
+                            statPublisherConfigurationWriteObject.getNodeURL());
                     resource.addProperty(StatPublisherConstants.USER_NAME,
-                                         statPublisherConfigurationWriteObject.getUsername());
+                            statPublisherConfigurationWriteObject.getUsername());
                     resource.addProperty(StatPublisherConstants.PASSWORD,
-                                         statPublisherConfigurationWriteObject.getPassword());
+                            statPublisherConfigurationWriteObject.getPassword());
                     resource.addProperty(StatPublisherConstants.URL,
-                                         statPublisherConfigurationWriteObject.getURL());
+                            statPublisherConfigurationWriteObject.getURL());
                     resource.addProperty(StatPublisherConstants.MESSAGE_STAT_ENABLE,
-                                         Boolean.toString(statPublisherConfigurationWriteObject.
-                                                 isMessageStatEnable()));
+                            Boolean.toString(statPublisherConfigurationWriteObject.
+                                    isMessageStatEnable()));
                     resource.addProperty(StatPublisherConstants.SYSTEM_STAT_ENABLE,
-                                         Boolean.toString(statPublisherConfigurationWriteObject.
-                                                 isSystemStatEnable()));
+                            Boolean.toString(statPublisherConfigurationWriteObject.
+                                    isSystemStatEnable()));
                     resource.addProperty(StatPublisherConstants.MB_STAT_ENABLE,
-                                         Boolean.toString(statPublisherConfigurationWriteObject.
-                                                 isMbStatEnable()));
+                            Boolean.toString(statPublisherConfigurationWriteObject.
+                                    isMbStatEnable()));
                     registry.put(resourcePath, resource);
                 } else {
                     resource = registry.get(resourcePath);
                     resource.setProperty(StatPublisherConstants.NODE_URL,
-                                         statPublisherConfigurationWriteObject.getNodeURL());
+                            statPublisherConfigurationWriteObject.getNodeURL());
                     resource.setProperty(StatPublisherConstants.USER_NAME,
-                                         statPublisherConfigurationWriteObject.getUsername());
+                            statPublisherConfigurationWriteObject.getUsername());
                     resource.setProperty(StatPublisherConstants.PASSWORD,
-                                         statPublisherConfigurationWriteObject.getPassword());
+                            statPublisherConfigurationWriteObject.getPassword());
                     resource.setProperty(StatPublisherConstants.URL,
-                                         statPublisherConfigurationWriteObject.getURL());
+                            statPublisherConfigurationWriteObject.getURL());
                     resource.setProperty(StatPublisherConstants.MESSAGE_STAT_ENABLE,
-                                         Boolean.toString(statPublisherConfigurationWriteObject.isMessageStatEnable()));
+                            Boolean.toString(statPublisherConfigurationWriteObject.isMessageStatEnable()));
                     resource.setProperty(StatPublisherConstants.SYSTEM_STAT_ENABLE,
-                                         Boolean.toString(statPublisherConfigurationWriteObject.isSystemStatEnable()));
+                            Boolean.toString(statPublisherConfigurationWriteObject.isSystemStatEnable()));
                     resource.setProperty(StatPublisherConstants.MB_STAT_ENABLE,
-                                         Boolean.toString(statPublisherConfigurationWriteObject.isMbStatEnable()));
+                            Boolean.toString(statPublisherConfigurationWriteObject.isMbStatEnable()));
                     registry.put(resourcePath, resource);
                 }
             }
@@ -92,12 +93,13 @@ public class RegistryPersistenceManager {
 
     /**
      * Load configuration from registry.
-     * @param tenantId - get tenantID
+     *
+     * @param tenantId - tenantID of specific tenant that need to retrieve values in that tenant from registry
      * @return statConfigurationObject - statConfiguration class object with retrieved values from
-     *                                   registry
+     * registry
      */
     public static StatPublisherConfiguration loadConfigurationData(int tenantId) throws
-                                                                          StatPublisherConfigurationException {
+            StatPublisherConfigurationException {
         StatPublisherConfiguration statPublisherConfigurationReadObject = new StatPublisherConfiguration();
         try {
             Registry registry = StatPublisherValueHolder.getRegistryService().getConfigSystemRegistry(tenantId);

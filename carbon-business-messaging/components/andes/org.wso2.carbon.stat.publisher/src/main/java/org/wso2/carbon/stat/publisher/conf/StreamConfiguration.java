@@ -31,7 +31,7 @@ public class StreamConfiguration {
      * Set value of message version
      * @param messageStreamVersion - version of stream used to publish message stats
      */
-    //todo use a meaningful values instead of string value
+
     public void setMessageStreamVersion(String messageStreamVersion) {
         this.messageStreamVersion = messageStreamVersion;
     }
@@ -62,7 +62,7 @@ public class StreamConfiguration {
 
     /**
      * Get message version
-     * @return messageStreamVersion
+     * @return messageStreamVersion Stream version for message stat publisher stream
      */
     public String getMessageStreamVersion() {
         return messageStreamVersion;
@@ -70,7 +70,7 @@ public class StreamConfiguration {
 
     /**
      * Get acknowledge packet version
-     * @return acknowledgeStreamVersion
+     * @return acknowledgeStreamVersion Stream version for acknowledge message stat publisher stream
      */
     public String getAcknowledgeStreamVersion() {
         return acknowledgeStreamVersion;
@@ -78,7 +78,7 @@ public class StreamConfiguration {
 
     /**
      * Get system statistic version
-     * @return systemStatisticStreamVersion
+     * @return systemStatisticStreamVersion Stream version for system stat publisher stream
      */
     public String getSystemStatisticStreamVersion() {
         return systemStatisticStreamVersion;
@@ -86,7 +86,7 @@ public class StreamConfiguration {
 
     /**
      * Get message broker statistic version
-     * @return mbStatisticStreamVersion
+     * @return mbStatisticStreamVersion Stream version for MB stat publisher stream
      */
     public String getMbStatisticStreamVersion() {
         return mbStatisticStreamVersion;

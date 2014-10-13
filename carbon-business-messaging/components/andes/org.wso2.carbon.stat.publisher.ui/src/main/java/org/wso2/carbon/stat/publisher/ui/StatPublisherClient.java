@@ -1,5 +1,5 @@
 /*
-*  Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*  Copyright (c) 2005-2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -42,7 +42,12 @@ public class StatPublisherClient {
 
     }
 
-    //get statistic configuration from StatPublisher service
+    /**
+     * get statistic configuration from StatPublisher server component
+     *
+     * @return stat publisher configurations store in registry
+     * @throws StatPublisherServiceStatPublisherConfigurationExceptionException
+     */
     public StatPublisherConfiguration getStatConfiguration() throws StatPublisherServiceStatPublisherConfigurationExceptionException {
 
         StatPublisherConfiguration statConfigurationInstance;
@@ -55,8 +60,13 @@ public class StatPublisherClient {
         return statConfigurationInstance;
     }
 
-    //send statistic configuration from StatPublisher service
-    public String setStatConfiguration(StatPublisherConfiguration statPublisherConfiguration){
+    /**
+     * send statistic configuration to StatPublisher server component
+     *
+     * @param statPublisherConfiguration stat publisher configurations that set through UI
+     * @return Configuration Saved Successfully if process is success else return exception message
+     */
+    public String setStatConfiguration(StatPublisherConfiguration statPublisherConfiguration) {
         String response;
 
         try {

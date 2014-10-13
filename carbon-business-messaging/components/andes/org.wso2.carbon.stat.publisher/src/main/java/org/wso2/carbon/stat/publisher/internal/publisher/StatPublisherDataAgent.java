@@ -189,9 +189,9 @@ public class StatPublisherDataAgent {
 
     public List<Object> getServerStatsPayLoadData(SystemStatsReader.SystemStatsData systemStatsData) {
         ArrayList<Object> payloadData = new ArrayList<Object>(4);
-        payloadData.add(systemStatsData.getHeapMemoryUsage());
-        payloadData.add(systemStatsData.getNonHeapMemoryUsage());
-        payloadData.add(systemStatsData.getCPULoadAverage());
+        payloadData.add(Long.parseLong(systemStatsData.getHeapMemoryUsage()));
+        payloadData.add(Long.parseLong(systemStatsData.getNonHeapMemoryUsage()));
+        payloadData.add(Double.parseDouble(systemStatsData.getCPULoadAverage()));
         payloadData.add(getCurrentTimeStamp());
 
         return payloadData;
@@ -212,6 +212,7 @@ public class StatPublisherDataAgent {
         payloadData.add(message.getDestination());
         payloadData.add(message.getMessageContentLength());
         payloadData.add(message.getExpirationTime());
+
         payloadData.add(subscribers);
         payloadData.add(getCurrentTimeStamp());
 

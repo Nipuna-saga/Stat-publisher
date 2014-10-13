@@ -28,31 +28,35 @@ import javax.management.*;
 import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 
-
+/**
+ * AsyncMessageStatPublisher class use for publish message statistics asynchronously
+ * this will get message stats from messageQueue Queue and publish to configured destination with out blocking
+ * main message flow of message broker
+ */
 public class AsyncMessageStatPublisher implements Runnable {
 
     private BlockingQueue<MessageStatistic> messageQueue = StatPublisherMessageListenerImpl.getMessageQueue();
 
     @Override
     public void run() {
+        int tenantID;
         //check message Queue has any object
         while (StatPublisherMessageListenerImpl.isMessageStatPublisherThreadContinue()) {
             MessageStatistic messageStatistic;
             try {
-                //get object from queue
+                //get message object from queue
                 messageStatistic = messageQueue.take();
             } catch (InterruptedException e) {
                 throw new StatPublisherRuntimeException(e);
             }
             TenantManager tenantManager = StatPublisherValueHolder.getRealmService().getTenantManager();
-            int tenantID;
             try {
                 //get tenant ID from tenant domain
                 tenantID = tenantManager.getTenantId(messageStatistic.getDomain());
             } catch (UserStoreException e) {
                 throw new StatPublisherRuntimeException(e);
             }
-
+            //get statPublisher Observer objects from StatPublisherObserver list in statPublisher manager
             StatPublisherObserver statPublisherObserver = StatPublisherValueHolder.
                     getStatPublisherManager().getStatPublisherObserver(tenantID);
 
@@ -60,6 +64,7 @@ public class AsyncMessageStatPublisher implements Runnable {
             if (messageStatistic.isMessage()) {
 
                 try {
+                    //publish message stat
                     statPublisherObserver.getStatPublisherDataAgent().sendMessageStats(messageStatistic.
                             getAndesMessageMetadata(), messageStatistic.getNoOfSubscribers());
                 } catch (MalformedObjectNameException e) {
@@ -78,7 +83,9 @@ public class AsyncMessageStatPublisher implements Runnable {
 
             } else {
                 try {
+                    //publish ack message stat
                     statPublisherObserver.getStatPublisherDataAgent().sendAckStats(messageStatistic.getAndesAckData());
+
                 } catch (MalformedObjectNameException e) {
                     throw new StatPublisherRuntimeException(e);
                 } catch (ReflectionException e) {

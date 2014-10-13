@@ -54,7 +54,9 @@ public class StatPublisherDS {
      */
     protected void activate(ComponentContext context)
             throws StatPublisherConfigurationException, UserStoreException {
+        //initialize Stat Publisher manager instance
         StatPublisherManager statPublisherManager = new StatPublisherManager();
+        // Store Stat Publisher manager instance in StatPublisherValueHolder
         StatPublisherValueHolder.setStatPublisherManager(statPublisherManager);
         //create StatPublisherObserver for super tenant
         StatPublisherValueHolder.getStatPublisherManager().
@@ -63,6 +65,7 @@ public class StatPublisherDS {
         MessagingEngine.getInstance().setStatPublisherMessageListener(StatPublisherMessageListenerImpl.getInstance());
         //get Axis2ConfigurationContext services to get notification about changing configuration contexts
         BundleContext bundleContext = context.getBundleContext();
+        //register in Axis2ConfigurationContextObserver for get notification  out carbon context changes
         bundleContext.registerService(Axis2ConfigurationContextObserver.class.getName(),
                 new Axis2ConfigurationContextObserverImpl(), null);
         logger.info("Statistics Publisher Bundle Successfully Activated");
