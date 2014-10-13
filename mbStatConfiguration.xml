@@ -2,7 +2,7 @@
 <mbStatConfiguration>
 <!--General Configuration-->
     <!--Size of the Queue which store messages-->
-    <asyncMessagePublisherBufferTime>1000</asyncMessagePublisherBufferTime>
+    <asyncMessagePublisherBufferSize>1000</asyncMessagePublisherBufferSize>
     <!-- Time interval for timer task-->
     <timeInterval>15000</timeInterval>
 <!--Stream Configuration-->
