@@ -36,15 +36,14 @@ public class Axis2ConfigurationContextObserverImpl implements Axis2Configuration
 
     /**
      * This will triggered before tenant create carbon context.
+     * @param i - tenantID used in here
      */
-
     @Override
     public void creatingConfigurationContext(int i) {
     }
 
     /**
      * This will triggered after tenant create carbon context.
-     *
      * @param configurationContext -configurationContext for specific tenant
      */
     @Override
@@ -62,6 +61,7 @@ public class Axis2ConfigurationContextObserverImpl implements Axis2Configuration
 
     /**
      * This will triggered before tenant terminate it's carbon context (tenant clean up)
+     * @param configurationContext -configurationContext for specific tenant
      */
     @Override
     public void terminatingConfigurationContext(ConfigurationContext configurationContext) {
@@ -70,7 +70,6 @@ public class Axis2ConfigurationContextObserverImpl implements Axis2Configuration
     /**
      * This will triggered after tenant terminate it's carbon context (tenant clean up)
      * Using this Observer instance for specific tenant will remove from observer list in StatPublisherManager
-     *
      * @param configurationContext-configurationContext for specific tenant
      */
     @Override

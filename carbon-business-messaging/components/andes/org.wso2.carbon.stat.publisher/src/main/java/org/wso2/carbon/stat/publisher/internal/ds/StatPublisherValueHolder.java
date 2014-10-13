@@ -54,7 +54,7 @@ public class StatPublisherValueHolder {
     }
     /**
      * Initialize registry service
-     * @param registryServiceParam - registry service
+     * @param registryServiceParam - registry service of the server
      */
     public static void setRegistryService(RegistryService registryServiceParam) {
         registryService = registryServiceParam;
@@ -68,7 +68,7 @@ public class StatPublisherValueHolder {
     }
     /**
      * Initialize realm service
-     * @param realmServiceParam - Realm Service
+     * @param realmServiceParam - Realm Service of the server
      */
     public static void setRealmService(RealmService realmServiceParam) {
         StatPublisherValueHolder.realmService = realmServiceParam;
