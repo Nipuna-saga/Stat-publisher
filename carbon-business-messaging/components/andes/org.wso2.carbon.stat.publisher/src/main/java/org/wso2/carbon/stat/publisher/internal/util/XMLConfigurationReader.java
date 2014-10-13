@@ -34,12 +34,15 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Read configurations from different xml files
+ */
 public class XMLConfigurationReader {
 
     private static final Logger logger = Logger.getLogger(XMLConfigurationReader.class);
 
     /**
-     *Load xml files and read JMX configurations
+     *Load xml files and read values
      */
     public static JMXConfiguration readJMXConfiguration() throws StatPublisherConfigurationException {
 
@@ -182,10 +185,10 @@ public class XMLConfigurationReader {
                 String rootNode = document.getDocumentElement().getNodeName();
                 NodeList dataList = document.getElementsByTagName(rootNode);
 
-                String asyncMessagePublisherBufferTimeValue =
-                        ((Element) dataList.item(0)).getElementsByTagName("asyncMessagePublisherBufferTime").
+                String asyncMessagePublisherBufferSizeValue =
+                        ((Element) dataList.item(0)).getElementsByTagName("asyncMessagePublisherBufferSize").
                                 item(0).getChildNodes().item(0).getTextContent();
-                generalConfiguration.setAsyncMessagePublisherBufferTime(Integer.parseInt(asyncMessagePublisherBufferTimeValue.trim()));
+                generalConfiguration.setAsyncMessagePublisherBufferSize(Integer.parseInt(asyncMessagePublisherBufferSizeValue.trim()));
 
                 String timeIntervalValue =
                         ((Element) dataList.item(0)).getElementsByTagName("timeInterval").
