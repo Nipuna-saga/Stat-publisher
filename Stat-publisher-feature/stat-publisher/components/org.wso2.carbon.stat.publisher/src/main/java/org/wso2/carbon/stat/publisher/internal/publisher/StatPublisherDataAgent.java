@@ -19,6 +19,7 @@
 package org.wso2.carbon.stat.publisher.internal.publisher;
 
 import org.wso2.andes.kernel.*;
+import org.wso2.andes.subscription.SubscriptionStore;
 import org.wso2.carbon.databridge.agent.thrift.exception.AgentException;
 import org.wso2.carbon.databridge.agent.thrift.lb.DataPublisherHolder;
 import org.wso2.carbon.databridge.agent.thrift.lb.LoadBalancingDataPublisher;
@@ -238,7 +239,7 @@ public class StatPublisherDataAgent {
         List<String> topics = getTopicList();
 
         for (String topic : topics) {
-            List<Subscrption> subscriptionsList = subscriptionStore.getActiveClusterSubscribersForDestination(topic, true);
+            List<AndesSubscription> subscriptionsList = subscriptionStore.getActiveClusterSubscribersForDestination(topic, true);
             totalSubscribers += subscriptionsList.size();
         }
 
@@ -247,7 +248,7 @@ public class StatPublisherDataAgent {
 
     private List<String> getTopicList() throws Exception {
         MessagingEngine messagingEngine = MessagingEngine.getInstance();
-        subscriptionStore = messagingEngine.getSubscriptionStore();
+        subscriptionStore = AndesContext.getInstance().getSubscriptionStore();
         return subscriptionStore.getTopics();
     }
 }
